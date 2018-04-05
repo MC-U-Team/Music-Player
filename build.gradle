@@ -1,0 +1,104 @@
+buildscript {
+    repositories {
+        jcenter()
+        maven { url = "http://files.minecraftforge.net/maven" }
+        maven { url = "https://plugins.gradle.org/m2/" }
+    }
+    dependencies {
+        classpath "net.minecraftforge.gradle:ForgeGradle:2.0-SNAPSHOT"
+        classpath "gradle.plugin.com.matthewprenger:CurseGradle:1.0.9"
+    }
+}
+
+apply plugin: "net.minecraftforge.gradle.forge"
+apply plugin: "com.matthewprenger.cursegradle"
+
+
+ext.buildProps = file "build.properties"
+
+buildProps.withReader {
+    def prop = new Properties()
+    prop.load(it)
+    ext.config = new ConfigSlurper().parse prop
+}
+
+version = config.mod.version
+archivesBaseName = config.mod.modid
+
+sourceCompatibility = targetCompatibility = "1.8"
+
+compileJava {
+    sourceCompatibility = targetCompatibility = "1.8"
+}
+
+minecraft {
+    version = config.forge.version
+    runDir = "run"
+    mappings = config.forge.mappings
+    makeObfSourceJar = false
+}
+
+jar {
+    from "LICENSE"
+    
+    archiveName = archivesBaseName + "-" + minecraft.version + "-v" + version + ".jar"
+    
+    manifest.mainAttributes(
+       	"Implementation-Title": config.mod.name,
+    	"Implementation-Version": version,
+		"Built-On": minecraft.version
+	)
+	
+	manifest {
+    	attributes("FMLCorePlugin": "info.u_team.u_team_core.intern.libaryloader.LibaryLoader", "FMLCorePluginContainsFMLMod": "true")
+	}
+}
+
+task deobfJar(type: Jar) {
+    from sourceSets.main.output
+    
+    from "LICENSE"
+    
+    archiveName = archivesBaseName + "-" + minecraft.version + "-v" + version + "-dev.jar"
+    
+    manifest.mainAttributes(
+       	"Implementation-Title": config.mod.name,
+    	"Implementation-Version": version,
+		"Built-On": minecraft.version
+	)
+	
+	manifest {
+    	attributes("FMLCorePlugin": "info.u_team.u_team_core.intern.libaryloader.LibaryLoader", "FMLCorePluginContainsFMLMod": "true")
+	}
+}
+
+artifacts {
+    archives deobfJar
+    archives jar
+}
+
+dependencies {
+}
+
+processResources {
+	from(sourceSets.main.resources.srcDirs) {
+        exclude "*"
+	}
+}
+
+curseforge {
+	apiKey = project.properties["token"]
+  	project {
+    	id = config.curse.id
+    	releaseType = config.curse.type
+
+    	mainArtifact(jar) {
+      		displayName = config.curse.display + "-" + minecraft.version + "-" + version
+    	}
+    	
+    	addArtifact(deobfJar) {
+    		displayName = config.curse.display + "-" + minecraft.version + "-" + version + "-dev"
+    		 changelog = "Mappings: " + config.forge.mappings
+    	}
+  	}
+}
