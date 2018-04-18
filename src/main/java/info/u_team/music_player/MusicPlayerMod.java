@@ -2,12 +2,11 @@ package info.u_team.music_player;
 
 import static info.u_team.music_player.MusicPlayerConstants.*;
 
-import net.minecraftforge.fml.common.*;
+import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.*;
 import net.minecraftforge.fml.common.event.*;
-import net.minecraftforge.fml.relauncher.Side;
 
-@Mod(modid = MODID, name = NAME, version = VERSION)
+@Mod(modid = MODID, name = NAME, version = VERSION, acceptedMinecraftVersions = MCVERSION)
 public class MusicPlayerMod {
 	
 	@Instance
@@ -19,10 +18,6 @@ public class MusicPlayerMod {
 	
 	@EventHandler
 	public void preinit(FMLPreInitializationEvent event) {
-		if (event.getSide() == Side.SERVER) {
-			FMLLog.bigWarning("This mod (modid: %s, name: %s) can only be used on client side! Please remove it on server side!", MODID, NAME);
-			FMLCommonHandler.instance().exitJava(0, false);
-		}
 	}
 	
 	@EventHandler

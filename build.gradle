@@ -13,6 +13,9 @@ buildscript {
 apply plugin: "net.minecraftforge.gradle.forge"
 apply plugin: "com.matthewprenger.cursegradle"
 
+repositories {
+	jcenter()    
+}
 
 ext.buildProps = file "build.properties"
 
@@ -50,7 +53,7 @@ jar {
 	)
 	
 	manifest {
-    	attributes("FMLCorePlugin": "info.u_team.u_team_core.intern.libaryloader.LibaryLoader", "FMLCorePluginContainsFMLMod": "true")
+    	attributes("FMLCorePlugin": "info.u_team.music_player.coremod.CoreMod", "FMLCorePluginContainsFMLMod": "true")
 	}
 }
 
@@ -68,7 +71,7 @@ task deobfJar(type: Jar) {
 	)
 	
 	manifest {
-    	attributes("FMLCorePlugin": "info.u_team.u_team_core.intern.libaryloader.LibaryLoader", "FMLCorePluginContainsFMLMod": "true")
+    	attributes("FMLCorePlugin": "info.u_team.music_player.coremod.CoreMod", "FMLCorePluginContainsFMLMod": "true")
 	}
 }
 
@@ -78,6 +81,7 @@ artifacts {
 }
 
 dependencies {
+	compile group: 'org.apache.ivy', name: 'ivy', version: '2.4.0'
 }
 
 processResources {
