@@ -44,7 +44,7 @@ minecraft {
 jar {
     from "LICENSE"
     
-    archiveName = archivesBaseName + "-" + minecraft.version + "-v" + version + ".jar"
+    archiveName = archivesBaseName + "-v" + version + ".jar"
     
     manifest.mainAttributes(
        	"Implementation-Title": config.mod.name,
@@ -53,7 +53,7 @@ jar {
 	)
 	
 	manifest {
-    	attributes("FMLCorePlugin": "info.u_team.music_player.coremod.CoreMod", "FMLCorePluginContainsFMLMod": "true")
+    	attributes("FMLCorePlugin": "info.u_team.music_player.plugin.MusicPlayerPlugin", "FMLCorePluginContainsFMLMod": "true")
 	}
 }
 
@@ -62,7 +62,7 @@ task deobfJar(type: Jar) {
     
     from "LICENSE"
     
-    archiveName = archivesBaseName + "-" + minecraft.version + "-v" + version + "-dev.jar"
+    archiveName = archivesBaseName + "-v" + version + "-dev.jar"
     
     manifest.mainAttributes(
        	"Implementation-Title": config.mod.name,
@@ -71,7 +71,7 @@ task deobfJar(type: Jar) {
 	)
 	
 	manifest {
-    	attributes("FMLCorePlugin": "info.u_team.music_player.coremod.CoreMod", "FMLCorePluginContainsFMLMod": "true")
+    	attributes("FMLCorePlugin": "info.u_team.music_player.plugin.MusicPlayerPlugin", "FMLCorePluginContainsFMLMod": "true")
 	}
 }
 
@@ -97,12 +97,12 @@ curseforge {
     	releaseType = config.curse.type
 
     	mainArtifact(jar) {
-      		displayName = config.curse.display + "-" + minecraft.version + "-" + version
+      		displayName = config.curse.display + "-" + version
     	}
     	
     	addArtifact(deobfJar) {
-    		displayName = config.curse.display + "-" + minecraft.version + "-" + version + "-dev"
-    		 changelog = "Mappings: " + config.forge.mappings
+    		displayName = config.curse.display + "-" + version + "-dev"
+    		changelog = "Mappings: " + config.forge.mappings
     	}
   	}
 }

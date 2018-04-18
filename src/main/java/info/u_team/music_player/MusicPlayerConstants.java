@@ -11,7 +11,7 @@ public class MusicPlayerConstants {
 	
 	public static final String MODID = "musicplayer";
 	public static final String NAME = "Music Player";
-	public static final String VERSION = "0.0.1";
+	public static final String VERSION = "1.0.0";
 	public static final String MCVERSION = "[1.8,1.12.2]";
 	
 	public static final MavenEntry[] MAVENENTRY = new MavenEntry[] { new MavenEntry("com.sedmelluq", "lavaplayer", "1.2.62") };
