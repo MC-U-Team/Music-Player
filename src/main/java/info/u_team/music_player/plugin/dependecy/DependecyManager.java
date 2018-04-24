@@ -2,7 +2,7 @@ package info.u_team.music_player.plugin.dependecy;
 
 import static info.u_team.music_player.MusicPlayerConstants.*;
 
-import java.io.File;
+import java.io.*;
 import java.lang.reflect.Method;
 import java.net.*;
 import java.util.*;
@@ -13,9 +13,11 @@ import net.minecraft.launchwrapper.LaunchClassLoader;
 
 public class DependecyManager {
 	
+	private File path = new File(PATH, "dependecies");
+	
 	public DependecyManager() {
-		if (!PATH.exists()) {
-			PATH.mkdirs();
+		if (!path.exists()) {
+			path.mkdirs();
 		}
 	}
 	
@@ -24,21 +26,15 @@ public class DependecyManager {
 		for (MavenEntry mavenentry : MAVENENTRY) {
 			loadDependency(mavenentry);
 		}
+		setupMod();
 	}
 	
 	private void setupIvy() {
 		try {
 			String name = "ivy.jar";
-			String link = "http://central.maven.org/maven2/org/apache/ivy/ivy/2.4.0/ivy-2.4.0.jar";
+			URL url = new URL("http://central.maven.org/maven2/org/apache/ivy/ivy/2.4.0/ivy-2.4.0.jar");
 			
-			File file = new File(PATH, name);
-			
-			if (!file.exists()) {
-				FileUtils.copyURLToFile(new URL(link), file);
-				LOGGER.info("Downloaded " + name + " from " + link + " to " + file + ".");
-			} else {
-				LOGGER.info("Found " + name + " in path " + file + ".");
-			}
+			File file = copyFromURLtoFile(url, name);
 			
 			URLClassLoader classloader = (URLClassLoader) LaunchClassLoader.class.getClassLoader();
 			Method method = URLClassLoader.class.getDeclaredMethod("addURL", URL.class);
@@ -50,12 +46,42 @@ public class DependecyManager {
 		}
 	}
 	
+	private void setupMod() {
+		try {
+			String name = "musicplayer-impl.jar";
+			URL url = getClass().getResource("/impl.jar");
+			
+			if (url == null) {
+				throw new RuntimeException("Resource can't be found in jar!");
+			}
+			
+			File file = copyFromURLtoFile(url, name);
+			
+			CLASSLOADER.addFile(file);
+		} catch (Exception ex) {
+			LOGGER.error("Failed to setup mod impl version! This should not happen?!", ex);
+		}
+	}
+	
+	private File copyFromURLtoFile(URL url, String name) throws Exception {
+		File file = new File(path, name);
+		
+		if (!file.exists()) {
+			FileUtils.copyURLToFile(url, file);
+			LOGGER.info("Downloaded " + name + " from " + url + " to " + file + ".");
+		} else {
+			LOGGER.info("Found " + name + " in path " + file + ".");
+		}
+		
+		return file;
+	}
+	
 	private void loadDependency(MavenEntry mavenentry) {
 		try {
 			LOGGER.info("Try to setup dependecy " + mavenentry + ".");
 			
-			File output = new File(PATH, "files");
-			new IvyDownloader(mavenentry, PATH, output).execute();
+			File output = new File(path, "files");
+			new IvyDownloader(mavenentry, path, output).execute();
 			
 			List<File> validfiles = new ArrayList<File>();
 			File[] files = output.listFiles();
