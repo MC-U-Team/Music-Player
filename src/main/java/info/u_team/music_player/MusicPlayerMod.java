@@ -2,6 +2,7 @@ package info.u_team.music_player;
 
 import static info.u_team.music_player.MusicPlayerConstants.*;
 
+import info.u_team.music_player.config.Config;
 import info.u_team.music_player.connector.IConnector;
 import net.minecraftforge.fml.common.*;
 import net.minecraftforge.fml.common.Mod.*;
@@ -19,6 +20,8 @@ public class MusicPlayerMod {
 	
 	private IConnector connector;
 	
+	public Config config;
+	
 	@EventHandler
 	public void preinit(FMLPreInitializationEvent event) {
 		try {
@@ -31,6 +34,7 @@ public class MusicPlayerMod {
 			LOGGER.fatal("Fatal error while trying to get MusicPlayerImpl via IConnector! Please report to the mod authors!", ex);
 			FMLCommonHandler.instance().exitJava(0, false);
 		}
+		config = new Config(event.getSuggestedConfigurationFile());
 		connector.preinit(event);
 	}
 	
