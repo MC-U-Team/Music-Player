@@ -8,11 +8,13 @@ public class Config {
 	
 	private Configuration configuration;
 	
-	private Property music_volume = configuration.get("Volume", "Music", 10, "Volume of musicplayer in %", 0, 100);
+	private Property music_volume;
 	
 	public Config(File file) {
 		configuration = new Configuration(file);
 		configuration.load();
+		
+		music_volume = configuration.get("Volume", "Music", 10, "Volume of musicplayer in %", 0, 100);
 	}
 	
 	public void setVolume(int volume) {
