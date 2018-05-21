@@ -51,10 +51,6 @@ jar {
     	"Implementation-Version": version,
 		"Built-On": minecraft.version
 	)
-	
-	manifest {
-    	attributes("FMLCorePlugin": "info.u_team.music_player.plugin.MusicPlayerPlugin", "FMLCorePluginContainsFMLMod": "true")
-	}
 }
 
 task deobfJar(type: Jar) {
@@ -69,10 +65,6 @@ task deobfJar(type: Jar) {
     	"Implementation-Version": version,
 		"Built-On": minecraft.version
 	)
-	
-	manifest {
-    	attributes("FMLCorePlugin": "info.u_team.music_player.plugin.MusicPlayerPlugin", "FMLCorePluginContainsFMLMod": "true")
-	}
 }
 
 artifacts {
