@@ -14,6 +14,7 @@ build
 .gradle
 gradlew.bat
 gradlew
+!gradlew/
 gradle.properties
 eclipse
 run
