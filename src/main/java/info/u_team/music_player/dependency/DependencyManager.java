@@ -71,6 +71,11 @@ public class DependencyManager {
 		URL url = getClass().getResource("/impl/" + name);
 		try {
 			File file = new File(PATH, name);
+			try {
+				file.delete();
+			} catch (Exception ex) {
+				// Dont do anything. If it fails it doesn't matter cause its only a clean up. Should be overwrited anyways
+			}
 			FileUtils.copyURLToFile(url, file);
 			CLASSLOADER.addFile(file);
 		} catch (Exception ex) {

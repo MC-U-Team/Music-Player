@@ -43,6 +43,9 @@ minecraft {
     runDir = "run"
     mappings = config.forge.mapping
     makeObfSourceJar = false
+    
+    replace "@VERSION@", config.mod.version
+    replace "@UTEAMCOREVERSION@", config.uteamcore.version
 }
 
 jar {
@@ -102,7 +105,7 @@ artifacts {
 }
 
 dependencies {
-	compile "u-team-core:u_team_core-${minecraft.version}:v1.1.1:dev"
+	compile "u-team-core:u_team_core-${minecraft.version}:v${config.uteamcore.version}:dev"
 }
 
 processResources {
