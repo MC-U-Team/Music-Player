@@ -17,6 +17,8 @@ public class Config {
 		
 		music_volume = configuration.get("Music", "Volume", 10, "Volume of musicplayer in %", 0, 100);
 		overlay_display = configuration.get("Overlay", "Overlay Display", true, "Display current track as an overlay");
+		
+		configuration.save();
 	}
 	
 	public void setVolume(int volume) {
@@ -25,7 +27,6 @@ public class Config {
 	}
 	
 	public int getVolume() {
-		configuration.load();
 		return music_volume.getInt();
 	}
 	
@@ -35,7 +36,6 @@ public class Config {
 	}
 	
 	public boolean getOverlayDisplay() {
-		configuration.load();
 		return overlay_display.getBoolean();
 	}
 	

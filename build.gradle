@@ -73,7 +73,6 @@ artifacts {
 }
 
 dependencies {
-	compile group: 'org.apache.ivy', name: 'ivy', version: '2.4.0'
 }
 
 processResources {
