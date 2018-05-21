@@ -4,25 +4,30 @@ import static info.u_team.music_player.MusicPlayerConstants.*;
 
 import java.io.*;
 import java.lang.reflect.Field;
+import java.net.URL;
+
+import org.apache.commons.io.FileUtils;
 
 import net.hycrafthd.gradlew.*;
+import net.minecraft.launchwrapper.Launch;
 import net.minecraftforge.common.ForgeVersion;
 
 public class DependencyManager {
 	
 	private String mcversion;
+	private boolean isDev;
 	private File project;
 	
 	public DependencyManager() {
 		mcversion = getMcVersion();
+		isDev = isDev();
 		PATH.mkdirs();
 	}
 	
 	public void execute() {
 		runGradle();
 		addLibariesToClassLoader();
-		// CLASSLOADER.addFile(new File("C:\\Users\\hycra\\Desktop\\music_player_impl-1.8.jar")); 
-		//TODO load jars from file to classloader
+		loadImpl();
 	}
 	
 	private void runGradle() {
@@ -61,6 +66,18 @@ public class DependencyManager {
 		}
 	}
 	
+	private void loadImpl() {
+		String name = "music_player_impl-" + mcversion + (isDev ? "-dev" : "") + ".jar";
+		URL url = getClass().getResource("/impl/" + name);
+		try {
+			File file = new File(PATH, name);
+			FileUtils.copyURLToFile(url, file);
+			CLASSLOADER.addFile(file);
+		} catch (Exception ex) {
+			LOGGER.fatal("Failed to load right impl jar (" + name + "). When you are indev, you can ignore this error. Else check you Minecraft version.", ex);
+		}
+	}
+	
 	private String getMcVersion() {
 		try {
 			Field field = ForgeVersion.class.getDeclaredField("mcVersion");
@@ -70,4 +87,7 @@ public class DependencyManager {
 		}
 	}
 	
+	private boolean isDev() {
+		return ((Boolean) Launch.blackboard.get("fml.deobfuscatedEnvironment"));
+	}
 }
