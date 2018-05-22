@@ -43,9 +43,6 @@ minecraft {
     runDir = "run"
     mappings = config.forge.mapping
     makeObfSourceJar = false
-    
-    replace "@VERSION@", config.mod.version
-    replace "@UTEAMCOREVERSION@", config.uteamcore.version
 }
 
 jar {
