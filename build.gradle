@@ -29,6 +29,40 @@ repositories {
 	}
 }
 
+"git add .".execute().waitFor()
+"git commit -m \"Commit forced, because of new build\"".execute().waitFor()
+
+def branch = "git rev-parse --abbrev-ref HEAD".execute().text.trim()
+def exist = "git rev-parse --verify versioning".execute().text.trim();
+
+def patch = new File("patch")
+
+if(!exist?.trim()) {
+	println "Create branch and then setup build version"
+    patch.write "1"
+    "git checkout --orphan versioning".execute().waitFor()
+    "git rm --cache -r -f *".execute().waitFor()
+    "git add patch -f".execute().waitFor()
+    "git commit -m \"First version\"".execute().waitFor()
+    "git push -u origin versioning".execute().waitFor()
+} else {
+    println "Update and increment buildversion"
+    "git checkout versioning --force".execute().waitFor()
+	"git pull origin versioning".execute().waitFor()
+    def count = evaluate("${patch.text}+1")
+    patch.write "" + count
+    "git rm --cache -r -f *".execute().waitFor()
+    "git add patch -f".execute().waitFor()
+    def process = "git commit -m \"Update patch build to ${count}\"".execute()
+	def sout = new StringBuilder(), serr = new StringBuilder()
+	process.consumeProcessOutput(sout, serr)
+	process.waitFor() 
+	println "out> $sout err> $serr"
+    "git push -u origin versioning".execute().waitFor()
+}
+
+"git checkout ${branch} --force".execute().waitFor()
+
 version = config.mod.version
 archivesBaseName = config.mod.filename
 
