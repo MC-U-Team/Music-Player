@@ -29,8 +29,19 @@ repositories {
 	}
 }
 
-"git add .".execute().waitFor()
-"git commit -m \"Commit forced, because of new build\"".execute().waitFor()
+def process = "git add .".execute()
+
+	def sout = new StringBuilder(), serr = new StringBuilder()
+	process.consumeProcessOutput(sout, serr)
+	process.waitFor() 
+	println "out> $sout err> $serr"
+
+def process2 = "git commit -m \"Commit forced, because of new build\"".execute()
+
+	def sout2 = new StringBuilder(), serr2 = new StringBuilder()
+	process2.consumeProcessOutput(sout2, serr2)
+	process2.waitFor() 
+	println "out> $sout2 err> $serr2"
 
 def branch = "git rev-parse --abbrev-ref HEAD".execute().text.trim()
 def exist = "git rev-parse --verify versioning".execute().text.trim();
@@ -53,11 +64,7 @@ if(!exist?.trim()) {
     patch.write "" + count
     "git rm --cache -r -f *".execute().waitFor()
     "git add patch -f".execute().waitFor()
-    def process = "git commit -m \"Update patch build to ${count}\"".execute()
-	def sout = new StringBuilder(), serr = new StringBuilder()
-	process.consumeProcessOutput(sout, serr)
-	process.waitFor() 
-	println "out> $sout err> $serr"
+	"git commit -m \"Update patch build to ${count}\"".execute().waitFor()
     "git push -u origin versioning".execute().waitFor()
 }
 
