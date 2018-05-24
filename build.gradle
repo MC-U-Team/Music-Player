@@ -140,6 +140,8 @@ build.dependsOn copyJars
 task createBuildNumberFiles {
 	dependsOn build
 	config.buildnumber = buildNumber()
+	println deobfJar
+	println jar
 	doLast {
 		copy {
             from "build/libs/"
