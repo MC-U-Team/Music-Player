@@ -30,7 +30,7 @@ repositories {
 	}
 }
 
-def buildnumber = getBuildNumber()
+compileJava.dependsOn getBuildNumber
 
 version = "${config.mod.version}-${buildnumber}"
 archivesBaseName = config.mod.filename
@@ -144,16 +144,12 @@ task copyJars {
 
 build.dependsOn copyJars
 
-task updateBuildNumber() {
-	dependsOn build
-	setBuildNumber(buildnumber)
-}
-
 curseforge {
 
 	apiKey = project.properties["token"]
 	
-	tasks.curseforge.dependsOn updateBuildNumber
+	tasks.curseforge.dependsOn build
+	tasks.curseforge.dependsOn setBuildNumber
 	
   	project {
     	id = config.curse.id
