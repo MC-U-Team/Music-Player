@@ -140,8 +140,6 @@ build.dependsOn copyJars
 task createBuildNumberFiles {
 	dependsOn build
 	config.buildnumber = buildNumber()
-	println deobfJar
-	println jar
 	doLast {
 		copy {
             from "build/libs/"
@@ -180,12 +178,12 @@ curseforge {
       		requiredLibrary "u-team-core"
     	}
 
-    	mainArtifact(jar) {
-      		displayName = config.curse.display + "-" + version
+    	mainArtifact("${buildDir}/libs/${archivesBaseName}-${version}-${config.buildnumber}.jar") {
+      		displayName = "${config.curse.display}-${version}-${config.buildnumber}"
     	}
     	
-    	addArtifact(deobfJar) {
-    		displayName = config.curse.display + "-" + version + "-dev"
+    	addArtifact("${buildDir}/libs/${archivesBaseName}-${version}-${config.buildnumber}-dev.jar") {
+    		displayName = "${config.curse.display}-${version}-${config.buildnumber}-dev"
     		changelog = "Mappings: " + config.forge.mappings
     	}
   	}
