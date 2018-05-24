@@ -183,13 +183,13 @@ task createBuildNumberFiles {
             from "build/libs/"
             into "build/libs/"
 			include "${archivesBaseName}-${version}.jar"
-			rename "(.*).jar", "$1-${config.buildnumber}.jar"
+			rename "(.*).jar", "$1-" + config.buildnumber + ".jar"
         }
 		copy {
             from "build/libs/"
             into "build/libs/"
 			include "${archivesBaseName}-${version}-dev.jar"
-			rename "(.*)-dev.jar", "$1-${config.buildnumber}-dev.jar"
+			rename "(.*)-dev.jar", "$1-" + config.buildnumber + "-dev.jar"
         }
     }
 }
