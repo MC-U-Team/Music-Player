@@ -1,0 +1,179 @@
+buildscript {
+    
+	apply from: "https://raw.githubusercontent.com/HyCraftHD/Blank-Forge-Project/master/build.methods"
+	setup()
+		
+	repositories {
+        jcenter()
+        maven { url = "http://files.minecraftforge.net/maven" }
+        maven { url = "https://plugins.gradle.org/m2/" }
+    }
+    dependencies {
+        classpath "net.minecraftforge.gradle:ForgeGradle:${config.forge.gradle}"
+        classpath "gradle.plugin.com.matthewprenger:CurseGradle:1.0.10"
+    }
+}
+
+apply from: "https://raw.githubusercontent.com/HyCraftHD/Blank-Forge-Project/master/build.methods"
+apply from: "https://raw.githubusercontent.com/HyCraftHD/Blank-Forge-Project/master/git.methods"
+setup()
+info()
+
+apply plugin: "net.minecraftforge.gradle.forge"
+apply plugin: "com.matthewprenger.cursegradle"
+
+repositories {
+	jcenter()
+	maven {
+        name = "CurseForge"
+        url = "https://minecraft.curseforge.com/api/maven/"
+	}
+}
+
+println "Try git stuff"
+def buildnumber = buildNumber()
+println buildnumber
+
+version = config.mod.version
+archivesBaseName = config.mod.filename
+
+sourceCompatibility = targetCompatibility = "1.8"
+
+compileJava {
+    sourceCompatibility = targetCompatibility = "1.8"
+}
+
+minecraft {
+    version = config.forge.version
+    runDir = "run"
+    mappings = config.forge.mapping
+    makeObfSourceJar = false
+}
+
+jar {
+    from "LICENSE"
+    
+    archiveName = "${archivesBaseName}-${version}.jar"
+    
+    manifest.mainAttributes(
+       	"Implementation-Title": config.mod.name,
+    	"Implementation-Version": version,
+		"Built-On": "1.8-1.12.2"
+	)
+	
+	from ("../impl-builds/") {
+		exclude "*-dev.jar"
+		into "impl"
+	}
+}
+
+task deobfJar(type: Jar) {
+    from sourceSets.main.output
+    
+    from "LICENSE"
+    
+   	archiveName = "${archivesBaseName}-${version}-dev.jar"
+    
+    manifest.mainAttributes(
+       	"Implementation-Title": config.mod.name,
+    	"Implementation-Version": version,
+		"Built-On": "1.8-1.12.2"
+	)
+	
+	from ("../impl-builds/") {
+		include "*-dev.jar"
+		into "impl"
+	}
+}
+
+task devJar(type: Jar) {
+	from sourceSets.main.output
+    
+    from "LICENSE"
+    
+    archiveName = "${archivesBaseName}-indev.jar"
+    
+    manifest.mainAttributes(
+       	"Implementation-Title": config.mod.name,
+    	"Implementation-Version": version,
+		"Built-On": "1.8-1.12.2"
+	)
+}
+
+artifacts {
+    archives deobfJar
+    archives jar
+    archives devJar
+}
+
+dependencies {
+	compile "u-team-core:u_team_core-${minecraft.version}:v${config.uteamcore.version}:dev"
+}
+
+processResources {
+	from(sourceSets.main.resources.srcDirs) {
+        exclude "*"
+	}
+}
+
+task signJar(type: SignJar, dependsOn: reobfJar) {
+
+    keyPass = project.properties["signJar.keyPass"]
+    keyStore = project.properties["signJar.keyStore"]
+    storePass = project.properties["signJar.storePass"]
+    alias = project.properties["signJar.alias"]
+
+    inputFile = jar.archivePath
+    outputFile = jar.archivePath
+}
+
+build.dependsOn signJar
+
+curseforge {
+	apiKey = project.properties["token"]
+	
+	tasks.curseforge.dependsOn build
+	
+  	project {
+    	id = config.curse.id
+    	releaseType = config.curse.type
+
+		addGameVersion "1.8"
+		addGameVersion "1.8.8"
+		addGameVersion "1.8.9"
+		addGameVersion "1.9"
+		addGameVersion "1.9.4"
+		addGameVersion "1.10"
+		addGameVersion "1.10.2"
+		addGameVersion "1.11"
+		addGameVersion "1.11.2"
+		addGameVersion "1.12"
+		addGameVersion "1.12.1"
+		addGameVersion "1.12.2"
+
+		relations {
+      		requiredLibrary "u-team-core"
+    	}
+
+    	mainArtifact(jar) {
+      		displayName = config.curse.display + "-" + version
+    	}
+    	
+    	addArtifact(deobfJar) {
+    		displayName = config.curse.display + "-" + version + "-dev"
+    		changelog = "Mappings: " + config.forge.mappings
+    	}
+  	}
+}
+
+task copyJars {
+	doLast {
+		copy {
+            from "build/libs/"
+            include "*-indev.jar"
+            into "../dev"
+        }
+    }
+} 
+
+build.dependsOn copyJars
