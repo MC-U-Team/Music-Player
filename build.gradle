@@ -30,7 +30,9 @@ repositories {
 	}
 }
 
-version = config.mod.version
+def buildnumber = getBuildNumber()
+
+version = "${config.mod.version}-${buildnumber}"
 archivesBaseName = config.mod.filename
 
 sourceCompatibility = targetCompatibility = "1.8"
@@ -44,18 +46,14 @@ minecraft {
     runDir = "run"
     mappings = config.forge.mapping
     makeObfSourceJar = false
-}
-
-task createBuildNumberFiles {
-	config.buildnumber = buildNumber()
+    
+    replace "@VERSION@", "${version}"
 }
 
 jar {
-	dependsOn createBuildNumberFiles
-
     from "LICENSE"
     
-    archiveName = "${archivesBaseName}-${version}-${config.buildnumber}.jar"
+    archiveName = "${archivesBaseName}-${version}.jar"
     
     manifest.mainAttributes(
        	"Implementation-Title": config.mod.name,
@@ -67,18 +65,16 @@ jar {
 		exclude "*-dev.jar"
 		into "impl"
 	}
-	
-	replace "@VERSION@", "${version}-${config.buildnumber}"
+
 }
 
 task deobfJar(type: Jar) {
-	dependsOn createBuildNumberFiles
-	
+
     from sourceSets.main.output
     
     from "LICENSE"
     
-   	archiveName = "${archivesBaseName}-${version}-${config.buildnumber}-dev.jar"
+   	archiveName = "${archivesBaseName}-${version}-dev.jar"
     
     manifest.mainAttributes(
        	"Implementation-Title": config.mod.name,
@@ -91,7 +87,6 @@ task deobfJar(type: Jar) {
 		into "impl"
 	}
 	
-	replace "@VERSION@", "${version}-${config.buildnumber}"
 }
 
 task devJar(type: Jar) {
@@ -149,11 +144,16 @@ task copyJars {
 
 build.dependsOn copyJars
 
+task updateBuildNumber() {
+	dependsOn build
+	setBuildNumber(buildnumber)
+}
+
 curseforge {
 
 	apiKey = project.properties["token"]
 	
-	tasks.curseforge.dependsOn build
+	tasks.curseforge.dependsOn updateBuildNumber
 	
   	project {
     	id = config.curse.id
@@ -177,11 +177,11 @@ curseforge {
     	}
 
     	mainArtifact(jar) {
-      		displayName = "${config.curse.display}-${version}-${config.buildnumber}"
+      		displayName = "${config.curse.display}-${version}"
     	}
     	
     	addArtifact(deobfJar) {
-    		displayName = "${config.curse.display}-${version}-${config.buildnumber}-dev"
+    		displayName = "${config.curse.display}-${version}-dev"
     		changelog = "Mappings: " + config.forge.mappings
     	}
   	}
