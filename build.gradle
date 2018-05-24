@@ -32,7 +32,7 @@ repositories {
 
 compileJava.dependsOn getBuildNumber
 
-version = "${config.mod.version}-${config.buildnumber}"
+version = "${config.mod.version}"
 archivesBaseName = config.mod.filename
 
 sourceCompatibility = targetCompatibility = "1.8"
@@ -53,11 +53,11 @@ minecraft {
 jar {
     from "LICENSE"
     
-    archiveName = "${archivesBaseName}-${version}.jar"
+    archiveName = "${archivesBaseName}-${version}-${config.buildnumber}.jar"
     
     manifest.mainAttributes(
        	"Implementation-Title": config.mod.name,
-    	"Implementation-Version": version,
+    	"Implementation-Version": "${version}-${config.buildnumber}",
 		"Built-On": "1.8-1.12.2"
 	)
 	
@@ -74,11 +74,11 @@ task deobfJar(type: Jar) {
     
     from "LICENSE"
     
-   	archiveName = "${archivesBaseName}-${version}-dev.jar"
+   	archiveName = "${archivesBaseName}-${version}-${config.buildnumber}-dev.jar"
     
     manifest.mainAttributes(
        	"Implementation-Title": config.mod.name,
-    	"Implementation-Version": version,
+    	"Implementation-Version": "${version}-${config.buildnumber}",
 		"Built-On": "1.8-1.12.2"
 	)
 	
@@ -98,7 +98,7 @@ task devJar(type: Jar) {
     
     manifest.mainAttributes(
        	"Implementation-Title": config.mod.name,
-    	"Implementation-Version": version,
+    	"Implementation-Version": "${version}-${config.buildnumber}",
 		"Built-On": "1.8-1.12.2"
 	)
 }
@@ -173,11 +173,11 @@ curseforge {
     	}
 
     	mainArtifact(jar) {
-      		displayName = "${config.curse.display}-${version}"
+      		displayName = "${config.curse.display}-${version}-${config.buildnumber}"
     	}
     	
     	addArtifact(deobfJar) {
-    		displayName = "${config.curse.display}-${version}-dev"
+    		displayName = "${config.curse.display}-${version}-${config.buildnumber}-dev"
     		changelog = "Mappings: " + config.forge.mappings
     	}
   	}
