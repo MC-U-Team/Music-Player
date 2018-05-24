@@ -188,4 +188,4 @@ task createBuildNumberFiles {
     }
 }
 
-curseforge.dependsOn createBuildNumberFiles
+tasks.curseforge.dependsOn createBuildNumberFiles
