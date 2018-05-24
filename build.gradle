@@ -15,6 +15,7 @@ buildscript {
 }
 
 apply from: "https://raw.githubusercontent.com/HyCraftHD/Blank-Forge-Project/master/build.methods"
+apply from: "../test.methods"
 setup()
 info()
 
@@ -28,6 +29,10 @@ repositories {
         url = "https://minecraft.curseforge.com/api/maven/"
 	}
 }
+
+println "Do git versioning stuff..."
+def buildnumber = buildNumber()
+println buildnumber
 
 version = config.mod.version
 archivesBaseName = config.mod.filename
