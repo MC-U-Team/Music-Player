@@ -15,7 +15,7 @@ buildscript {
 }
 
 apply from: "https://raw.githubusercontent.com/HyCraftHD/Blank-Forge-Project/master/build.methods"
-apply from: "../test.methods"
+apply from: "https://raw.githubusercontent.com/HyCraftHD/Blank-Forge-Project/master/git.methods"
 setup()
 info()
 
@@ -29,10 +29,6 @@ repositories {
         url = "https://minecraft.curseforge.com/api/maven/"
 	}
 }
-
-println "Do git versioning stuff..."
-def buildnumber = buildNumber()
-println buildnumber
 
 version = config.mod.version
 archivesBaseName = config.mod.filename
@@ -130,9 +126,11 @@ task signJar(type: SignJar, dependsOn: reobfJar) {
 build.dependsOn signJar
 
 curseforge {
+
 	apiKey = project.properties["token"]
 	
 	tasks.curseforge.dependsOn build
+	tasks.curseforge.dependsOn createBuildNumberFiles
 	
   	project {
     	id = config.curse.id
@@ -177,3 +175,21 @@ task copyJars {
 } 
 
 build.dependsOn copyJars
+
+task createBuildNumberFiles {
+	config.buildnumber = buildNumber()
+	doLast {
+		copy {
+            from "build/libs/"
+            into "build/libs/"
+			include "${archivesBaseName}-${version}.jar"
+			rename "(.*).jar", "$1-${config.buildnumber}.jar"
+        }
+		copy {
+            from "build/libs/"
+            into "build/libs/"
+			include "${archivesBaseName}-${version}-dev.jar"
+			rename "(.*)-dev.jar", "$1-${config.buildnumber}-dev.jar"
+        }
+    }
+}
