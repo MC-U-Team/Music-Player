@@ -129,7 +129,7 @@ curseforge {
 
 	apiKey = project.properties["token"]
 	
-	tasks.curseforge.dependsOn build
+	tasks.curseforge.dependsOn createBuildNumberFiles
 	
   	project {
     	id = config.curse.id
@@ -188,4 +188,4 @@ task createBuildNumberFiles {
     }
 }
 
-tasks.curseforge.dependsOn createBuildNumberFiles
+tasks.createBuildNumberFiles.dependsOn build
