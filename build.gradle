@@ -30,9 +30,9 @@ repositories {
 	}
 }
 
-compileJava.dependsOn getBuildNumber
+getBuildNumber()
 
-version = "${config.mod.version}"
+version = "${config.mod.version}-${config.buildnumber}"
 archivesBaseName = config.mod.filename
 
 sourceCompatibility = targetCompatibility = "1.8"
@@ -53,11 +53,11 @@ minecraft {
 jar {
     from "LICENSE"
     
-    archiveName = "${archivesBaseName}-${version}-${config.buildnumber}.jar"
+    archiveName = "${archivesBaseName}-${version}.jar"
     
     manifest.mainAttributes(
        	"Implementation-Title": config.mod.name,
-    	"Implementation-Version": "${version}-${config.buildnumber}",
+    	"Implementation-Version": version,
 		"Built-On": "1.8-1.12.2"
 	)
 	
@@ -74,11 +74,11 @@ task deobfJar(type: Jar) {
     
     from "LICENSE"
     
-   	archiveName = "${archivesBaseName}-${version}-${config.buildnumber}-dev.jar"
+   	archiveName = "${archivesBaseName}-${version}-dev.jar"
     
     manifest.mainAttributes(
        	"Implementation-Title": config.mod.name,
-    	"Implementation-Version": "${version}-${config.buildnumber}",
+    	"Implementation-Version": version,
 		"Built-On": "1.8-1.12.2"
 	)
 	
@@ -98,7 +98,7 @@ task devJar(type: Jar) {
     
     manifest.mainAttributes(
        	"Implementation-Title": config.mod.name,
-    	"Implementation-Version": "${version}-${config.buildnumber}",
+    	"Implementation-Version": version,
 		"Built-On": "1.8-1.12.2"
 	)
 }
@@ -120,15 +120,13 @@ processResources {
 }
 
 task signJar(type: SignJar, dependsOn: reobfJar) {
-	doLast {
-	    keyPass = project.properties["signJar.keyPass"]
-	    keyStore = project.properties["signJar.keyStore"]
-	    storePass = project.properties["signJar.storePass"]
-	    alias = project.properties["signJar.alias"]
+	keyPass = project.properties["signJar.keyPass"]
+	keyStore = project.properties["signJar.keyStore"]
+	storePass = project.properties["signJar.storePass"]
+	alias = project.properties["signJar.alias"]
 	
-	    inputFile = jar.archivePath
-	    outputFile = jar.archivePath
-    }
+	inputFile = jar.archivePath
+	outputFile = jar.archivePath
 }
 
 build.dependsOn signJar
@@ -174,11 +172,11 @@ curseforge {
     	}
 
     	mainArtifact(jar) {
-      		displayName = "${config.curse.display}-${version}-${config.buildnumber}"
+      		displayName = "${config.curse.display}-${version}"
     	}
     	
     	addArtifact(deobfJar) {
-    		displayName = "${config.curse.display}-${version}-${config.buildnumber}-dev"
+    		displayName = "${config.curse.display}-${version}-dev"
     		changelog = "Mappings: " + config.forge.mappings
     	}
   	}
