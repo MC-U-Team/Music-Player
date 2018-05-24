@@ -120,14 +120,15 @@ processResources {
 }
 
 task signJar(type: SignJar, dependsOn: reobfJar) {
-
-    keyPass = project.properties["signJar.keyPass"]
-    keyStore = project.properties["signJar.keyStore"]
-    storePass = project.properties["signJar.storePass"]
-    alias = project.properties["signJar.alias"]
-
-    inputFile = jar.archivePath
-    outputFile = jar.archivePath
+	doLast {
+	    keyPass = project.properties["signJar.keyPass"]
+	    keyStore = project.properties["signJar.keyStore"]
+	    storePass = project.properties["signJar.storePass"]
+	    alias = project.properties["signJar.alias"]
+	
+	    inputFile = jar.archivePath
+	    outputFile = jar.archivePath
+    }
 }
 
 build.dependsOn signJar
