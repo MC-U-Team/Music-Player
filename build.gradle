@@ -177,7 +177,7 @@ curseforge {
     	
     	addArtifact(deobfJar) {
     		displayName = "${config.curse.display}-${version}-dev"
-    		changelog = "Mappings: " + config.forge.mappings
+    		changelog = "Mappings: " + config.forge.mapping
     	}
   	}
 }
