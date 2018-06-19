@@ -6,12 +6,12 @@ import net.minecraftforge.common.config.*;
 
 public class Config {
 	
-	private Configuration configuration;
+	private static Configuration configuration;
 	
-	private Property music_volume;
-	private Property overlay_display;
+	private static Property music_volume;
+	private static Property overlay_display;
 	
-	public Config(File file) {
+	public static void init(File file) {
 		configuration = new Configuration(file);
 		configuration.load();
 		
@@ -21,21 +21,21 @@ public class Config {
 		configuration.save();
 	}
 	
-	public void setVolume(int volume) {
+	public static void setVolume(int volume) {
 		music_volume.set(volume);
 		configuration.save();
 	}
 	
-	public int getVolume() {
+	public static int getVolume() {
 		return music_volume.getInt();
 	}
 	
-	public void setOverlayDisplay(boolean display) {
+	public static void setOverlayDisplay(boolean display) {
 		overlay_display.set(display);
 		configuration.save();
 	}
 	
-	public boolean getOverlayDisplay() {
+	public static boolean getOverlayDisplay() {
 		return overlay_display.getBoolean();
 	}
 	

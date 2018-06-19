@@ -27,8 +27,6 @@ public class MusicPlayerMod extends USubMod {
 	
 	private IConnector connector;
 	
-	public Config config;
-	
 	@Override
 	@EventHandler
 	public void preinit(FMLPreInitializationEvent event) {
@@ -51,7 +49,7 @@ public class MusicPlayerMod extends USubMod {
 			disabled = true;
 			return;
 		}
-		config = new Config(event.getSuggestedConfigurationFile());
+		Config.init(event.getSuggestedConfigurationFile());
 		
 		Events events = new Events(connector);
 		FMLCommonHandler.instance().bus().register(events);
