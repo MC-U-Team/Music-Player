@@ -8,6 +8,7 @@ import java.net.URL;
 
 import org.apache.commons.io.FileUtils;
 
+import info.u_team.music_player.MusicPlayerConstants;
 import net.hycrafthd.gradlew.*;
 import net.minecraft.launchwrapper.Launch;
 import net.minecraftforge.common.ForgeVersion;
@@ -67,7 +68,9 @@ public class DependencyManager {
 	}
 	
 	private void loadImpl() {
-		String name = "music_player_impl-" + mcversion + (isDev ? "-dev" : "") + ".jar";
+		String[] split = MusicPlayerConstants.VERSION.split("\\.");
+		String version = split[0] + "." + split[1] + "." + split[2];
+		String name = "music_player_impl-" + mcversion + "-" + version + (isDev ? "-dev" : "") + ".jar";
 		URL url = getClass().getResource("/impl/" + name);
 		try {
 			File file = new File(PATH, name);
