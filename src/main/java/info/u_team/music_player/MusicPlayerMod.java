@@ -13,12 +13,8 @@ import net.minecraftforge.fml.common.Mod.*;
 import net.minecraftforge.fml.common.event.*;
 import net.minecraftforge.fml.relauncher.*;
 
-@Mod(modid = MODID, name = NAME, version = VERSION, acceptedMinecraftVersions = MCVERSION, dependencies = DEPENDENCIES)
+@Mod(modid = MODID, name = NAME, version = VERSION, acceptedMinecraftVersions = MCVERSION, dependencies = DEPENDENCIES, updateJSON = UPDATEURL)
 public class MusicPlayerMod extends USubMod {
-	
-	public MusicPlayerMod() {
-		super(MODID, NAME, VERSION, UPDATEURL);
-	}
 	
 	@Instance
 	private static MusicPlayerMod instance;
