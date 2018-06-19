@@ -61,7 +61,7 @@ jar {
 	)
 	
 	from ("../impl-builds/") {
-		include "*-dev.jar"
+		exclude "*-dev.jar"
 		into "impl"
 	}
 }
