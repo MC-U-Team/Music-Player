@@ -23,17 +23,16 @@ apply plugin: "net.minecraftforge.gradle.forge"
 apply plugin: "com.matthewprenger.cursegradle"
 
 repositories {
-	jcenter()
-	maven {
+    maven {
         name = "CurseForge"
         url = "https://minecraft.curseforge.com/api/maven/"
-	}
+    }
 }
 
 getBuildNumber()
 
-version = "${config.mod.version}-${config.buildnumber}"
-archivesBaseName = config.mod.filename
+version = "${config.mod.version}.${config.buildnumber}"
+archivesBaseName = "${config.mod.filename}-[1.8-1.12.2]"
 
 sourceCompatibility = targetCompatibility = "1.8"
 
@@ -46,39 +45,18 @@ minecraft {
     runDir = "run"
     mappings = config.forge.mapping
     makeObfSourceJar = false
-    
-    replace "@VERSION@", "${config.mod.version}-${config.buildnumber}"
+	
+	replace "@VERSION@", "${project.version}"
 }
 
 jar {
+	classifier = ""
+
     from "LICENSE"
-    
-    archiveName = "${archivesBaseName}-${version}.jar"
-    
+       
     manifest.mainAttributes(
        	"Implementation-Title": config.mod.name,
-    	"Implementation-Version": version,
-		"Built-On": "1.8-1.12.2"
-	)
-	
-	from ("../impl-builds/") {
-		exclude "*-dev.jar"
-		into "impl"
-	}
-
-}
-
-task deobfJar(type: Jar) {
-
-    from sourceSets.main.output
-    
-    from "LICENSE"
-    
-   	archiveName = "${archivesBaseName}-${version}-dev.jar"
-    
-    manifest.mainAttributes(
-       	"Implementation-Title": config.mod.name,
-    	"Implementation-Version": version,
+    	"Implementation-Version": project.version,
 		"Built-On": "1.8-1.12.2"
 	)
 	
@@ -86,19 +64,36 @@ task deobfJar(type: Jar) {
 		include "*-dev.jar"
 		into "impl"
 	}
+}
+
+task deobfJar(type: Jar) {
+	classifier = "dev"
+
+    from sourceSets.main.output
+    from "LICENSE"
+        
+    manifest.mainAttributes(
+       	"Implementation-Title": config.mod.name,
+    	"Implementation-Version": project.version,
+		"Built-On": "1.8-1.12.2"
+	)
 	
+	from ("../impl-builds/") {
+		include "*-dev.jar"
+		into "impl"
+	}
 }
 
 task devJar(type: Jar) {
-	from sourceSets.main.output
-    
+	
+	archiveName = "${config.mod.filename}-indev.jar"
+
+    from sourceSets.main.output
     from "LICENSE"
-    
-    archiveName = "${archivesBaseName}-indev.jar"
-    
+        
     manifest.mainAttributes(
        	"Implementation-Title": config.mod.name,
-    	"Implementation-Version": version,
+    	"Implementation-Version": project.version,
 		"Built-On": "1.8-1.12.2"
 	)
 }
@@ -106,17 +101,18 @@ task devJar(type: Jar) {
 artifacts {
     archives deobfJar
     archives jar
-    archives devJar
+	archives devJar
+}
+
+sourceSets {
+   	main {
+		java
+		resources
+   	}
 }
 
 dependencies {
-	compile "u-team-core:u_team_core-${minecraft.version}:v${config.uteamcore.version}:dev"
-}
-
-processResources {
-	from(sourceSets.main.resources.srcDirs) {
-        exclude "*"
-	}
+	compile "u-team-core:u_team_core-${minecraft.version}:${config.uteamcore.version}:dev"
 }
 
 task signJar(type: SignJar, dependsOn: reobfJar) {
@@ -144,7 +140,6 @@ task copyJars {
 build.dependsOn copyJars
 
 curseforge {
-
 	apiKey = project.properties["token"]
 	
 	tasks.curseforge.dependsOn build
@@ -166,17 +161,17 @@ curseforge {
 		addGameVersion "1.12"
 		addGameVersion "1.12.1"
 		addGameVersion "1.12.2"
-
+		
 		relations {
       		requiredLibrary "u-team-core"
     	}
 
     	mainArtifact(jar) {
-      		displayName = "${config.curse.display}-${version}"
+      		displayName = "${config.curse.display}-[1.8-1.12.2]-${version}"
     	}
     	
     	addArtifact(deobfJar) {
-    		displayName = "${config.curse.display}-${version}-dev"
+    		displayName = "${config.curse.display}-[1.8-1.12.2]-${version}-dev"
     		changelog = "Mappings: " + config.forge.mapping
     	}
   	}

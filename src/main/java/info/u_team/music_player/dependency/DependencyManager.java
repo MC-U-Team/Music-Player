@@ -74,12 +74,13 @@ public class DependencyManager {
 			try {
 				file.delete();
 			} catch (Exception ex) {
-				// Dont do anything. If it fails it doesn't matter cause its only a clean up. Should be overwrited anyways
+				// Dont do anything. If it fails it doesn't matter cause its only a clean up.
+				// Should be overwrited anyways
 			}
 			FileUtils.copyURLToFile(url, file);
 			CLASSLOADER.addFile(file);
 		} catch (Exception ex) {
-			LOGGER.fatal("Failed to load right impl jar (" + name + "). When you are indev, you can ignore this error. Else check you Minecraft version.", ex);
+			LOGGER.fatal("Failed to load right impl jar (" + name + "). When you are indev, you can ignore this error. Else check your Minecraft version.", ex);
 		}
 	}
 	

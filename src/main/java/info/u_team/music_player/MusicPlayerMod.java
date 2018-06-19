@@ -33,6 +33,7 @@ public class MusicPlayerMod extends USubMod {
 	
 	public Config config;
 	
+	@Override
 	@EventHandler
 	public void preinit(FMLPreInitializationEvent event) {
 		if (FMLLaunchHandler.side() == Side.SERVER) {
@@ -63,6 +64,7 @@ public class MusicPlayerMod extends USubMod {
 		connector.preinit(event);
 	}
 	
+	@Override
 	@EventHandler
 	public void init(FMLInitializationEvent event) {
 		if (disabled) {
@@ -72,6 +74,7 @@ public class MusicPlayerMod extends USubMod {
 		connector.init(event);
 	}
 	
+	@Override
 	@EventHandler
 	public void postinit(FMLPostInitializationEvent event) {
 		if (disabled) {
