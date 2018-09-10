@@ -1,0 +1,93 @@
+buildscript {
+    
+	apply from: "https://raw.githubusercontent.com/HyCraftHD/Blank-Forge-Project/master/build.methods"
+	setup()
+		
+	repositories {
+        jcenter()
+        maven { url = "http://files.minecraftforge.net/maven" }
+    }
+    dependencies {
+        classpath "net.minecraftforge.gradle:ForgeGradle:${config.forge.gradle}"
+    }
+}
+
+apply from: "https://raw.githubusercontent.com/HyCraftHD/Blank-Forge-Project/master/build.methods"
+setup()
+info()
+
+apply plugin: "net.minecraftforge.gradle.forge"
+
+repositories {
+	jcenter()    
+	maven { url = "https://raw.githubusercontent.com/HyCraftHD/Basic-Lava-Musicplayer/master/maven" }
+}
+
+version = "${config.mod.version}"
+archivesBaseName = "${config.mod.filename}-${config.forge.mcversion}"
+
+sourceCompatibility = targetCompatibility = "1.8"
+
+compileJava {
+    sourceCompatibility = targetCompatibility = "1.8"
+}
+
+minecraft {
+    version = config.forge.version
+    runDir = "run"
+    mappings = config.forge.mapping
+    makeObfSourceJar = false
+}
+
+jar {
+	classifier = ""
+
+    from "LICENSE"
+       
+    manifest.mainAttributes(
+       	"Implementation-Title": config.mod.name,
+    	"Implementation-Version": project.version,
+		"Built-On": minecraft.version
+	)
+}
+
+task deobfJar(type: Jar) {
+	classifier = "dev"
+
+    from sourceSets.main.output
+    from "LICENSE"
+        
+    manifest.mainAttributes(
+       	"Implementation-Title": config.mod.name,
+    	"Implementation-Version": project.version,
+		"Built-On": minecraft.version
+	)
+}
+
+artifacts {
+    archives deobfJar
+    archives jar
+}
+
+sourceSets {
+   	main {
+		java
+		resources
+   	}
+}
+
+dependencies {
+	compile "net.hycrafthd:basiclavamusicplayer:1.0.0"
+	compile files("../dev/music_player-indev.jar")
+}
+
+task copyJars {
+	doLast {
+		copy {
+            from "build/libs/"
+            into "../impl-builds"
+        }
+    }
+} 
+
+build.dependsOn copyJars
