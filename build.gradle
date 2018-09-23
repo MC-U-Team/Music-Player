@@ -1,0 +1,222 @@
+buildscript {
+    
+	apply from: "https://raw.githubusercontent.com/HyCraftHD/Blank-Forge-Project/master/build.methods"
+	setup()
+		
+	repositories {
+        jcenter()
+        maven { url = "http://files.minecraftforge.net/maven" }
+        maven { url = "https://plugins.gradle.org/m2/" }
+    }
+    dependencies {
+        classpath "net.minecraftforge.gradle:ForgeGradle:${config.forge.gradle}"
+        classpath "gradle.plugin.com.matthewprenger:CurseGradle:1.1.0"
+    }
+}
+
+apply from: "https://raw.githubusercontent.com/HyCraftHD/Blank-Forge-Project/master/build.methods"
+apply from: "https://raw.githubusercontent.com/HyCraftHD/Blank-Forge-Project/master/git.methods"
+setup()
+info()
+
+apply plugin: "net.minecraftforge.gradle.forge"
+apply plugin: "com.matthewprenger.cursegradle"
+apply plugin: "maven"
+
+repositories {
+	maven { url = "https://repo.u-team.info" }
+}
+
+getBuildNumber()
+
+group = "info.u-team"
+archivesBaseName = "${config.mod.filename}-${config.forge.mcversion}"
+version = "${config.mod.version}.${config.buildnumber}" + getAppendix();
+
+def getAppendix() {
+	if("${config.mod.snapshot}".toBoolean()) {
+		return "-SNAPSHOT"
+	} else {
+		return ""
+	}
+}
+
+sourceCompatibility = targetCompatibility = "1.8"
+
+compileJava {
+    sourceCompatibility = targetCompatibility = "1.8"
+}
+
+minecraft {
+    version = config.forge.version
+    runDir = "run"
+    mappings = config.forge.mapping
+    makeObfSourceJar = false
+	
+	replace '${version}', project.version
+	replace '${mcversion}', project.minecraft.version
+	replaceIn "info/u_team/music_player/MusicPlayerConstants.java"
+}
+
+def normalManifest = {
+	attributes(
+		"Implementation-Title": config.mod.name,
+    	"Implementation-Version": project.version,
+		"Built-On": minecraft.version
+	)
+}
+
+jar {
+	classifier = ""
+
+    from "LICENSE"
+    
+    manifest normalManifest
+}
+
+task deobfJar(type: Jar) {
+	classifier = "dev"
+
+    from sourceSets.main.output
+    from "LICENSE"
+            
+    manifest normalManifest
+}
+
+task sourcesJar(type: Jar) {
+    classifier = "sources"
+    
+    from sourceSets.main.allJava
+    from "LICENSE"
+}
+
+task docJar(type: Jar) {
+    classifier = "javadoc"
+    
+    from javadoc
+    from "LICENSE"
+    
+    tasks.withType(Javadoc) {
+		options.addStringOption('Xdoclint:none', '-quiet')
+		options.addStringOption('encoding', 'UTF-8')
+		options.addStringOption('charSet', 'UTF-8')
+	}
+}
+
+artifacts {
+    archives deobfJar
+    archives sourcesJar
+    archives docJar
+    archives jar
+}
+
+sourceSets {
+   	main {
+		java
+		resources
+   	}
+}
+
+dependencies {
+	compile "info.u-team:u_team_core-${minecraft.version}:${config.uteamcore.version}:dev"
+	compile project(":musicplayer-lavaplayer-api")
+}
+
+processResources {
+    inputs.property "version", project.version
+    inputs.property "mcversion", project.minecraft.version
+
+    from(sourceSets.main.resources.srcDirs) {
+        include "mcmod.info"               
+        expand "version":project.version, "mcversion":project.minecraft.version
+    }
+    from(sourceSets.main.resources.srcDirs) {
+        exclude "mcmod.info"
+    }
+}
+
+compileJava {
+    options.encoding = "UTF-8"
+    options.compilerArgs << "-Xlint:unchecked" << "-Xlint:deprecation"
+}
+
+curseforge {
+	apiKey = project.getProperty("token")
+	
+	tasks.curseforge.dependsOn build
+	
+  	project {
+    	id = config.curse.id
+    	releaseType = config.curse.type
+
+		relations {
+      		requiredDependency "u-team-core"
+    	}
+		
+    	mainArtifact(jar) {
+      		displayName = "${config.curse.display}-${minecraft.version}-${version}"
+    	}
+    	
+    	addArtifact(deobfJar) {
+    		displayName = "${config.curse.display}-${minecraft.version}-${version}-dev"
+    		changelog = "Mappings: " + config.forge.mapping
+    	}
+  	}
+}
+
+uploadArchives {
+
+	tasks.uploadArchives.dependsOn build
+
+	repositories {
+		mavenDeployer {
+			if (project.hasProperty("mavenpass")) {
+				repository(url: "https://repo.u-team.info") {
+					authentication(userName: "maven", password: project.getProperty("mavenpass"))
+				}
+			}
+			pom {
+				groupId = project.group
+				artifactId = project.archivesBaseName
+				version = project.version
+				project {
+					name project.archivesBaseName
+					packaging "jar"
+					description "Music-Player"
+					url "https://github.com/MC-U-Team/Music-Player"
+					scm {
+						url "https://github.com/MC-U-Team/Music-Player"
+						connection "scm:git:git://github.com/MC-U-Team/Music-Player.git"
+						developerConnection "scm:git:git@github.com:MC-U-Team/Music-Player.git"
+					}
+					issueManagement {
+						system "github"
+						url "https://github.com/MC-U-Team/Music-Player/issues"
+					}
+					licenses {
+						license {
+							name "Apache License 2.0"
+							url "https://github.com/MC-U-Team/Music-Player/blob/1.12.2/LICENSE"
+							distribution "repo"
+						}
+					}
+
+					developers {
+						developer {
+							name "HyCraftHD"
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+task uploadBoth {
+	tasks.uploadBoth.dependsOn uploadArchives
+	tasks.uploadBoth.dependsOn "curseforge${config.curse.id}"
+	tasks.uploadBoth.dependsOn setBuildNumber
+	doLast {
+		println "Published both"
+	}
+}
