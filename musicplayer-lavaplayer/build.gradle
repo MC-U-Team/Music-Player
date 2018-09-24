@@ -4,6 +4,17 @@ repositories {
 	jcenter()
 }
 
+sourceSets {
+   	main {
+		java
+		resources
+   	}
+   	test {
+   		java
+   		resources
+   	}
+}
+
 dependencies {
 	compile "com.sedmelluq:lavaplayer:1.3.7"
 	compile project(":musicplayer-lavaplayer-api")
