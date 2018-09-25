@@ -28,7 +28,7 @@ public class AudioTrackListImpl implements IAudioTrackList {
 	
 	@Override
 	public IAudioTrack getSelectedTrack() {
-		return new AudioTrackImpl(playlist.getSelectedTrack());
+		return playlist.getSelectedTrack() != null ? new AudioTrackImpl(playlist.getSelectedTrack()) : null;
 	}
 	
 }

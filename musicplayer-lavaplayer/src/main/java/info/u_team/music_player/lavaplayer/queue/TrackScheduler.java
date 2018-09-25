@@ -103,7 +103,7 @@ public class TrackScheduler extends AudioEventAdapter implements ITrackScheduler
 	
 	@Override
 	public IAudioTrack getCurrentTrack() {
-		return new AudioTrackImpl(audioplayer.getPlayingTrack());
+		return audioplayer.getPlayingTrack() != null ? new AudioTrackImpl(audioplayer.getPlayingTrack()): null;
 	}
 	
 	public void setRepeat(boolean repeat) {

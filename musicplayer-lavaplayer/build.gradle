@@ -4,6 +4,13 @@ repositories {
 	jcenter()
 }
 
+jar {
+	into ("dependencies") {
+		from configurations.runtime		
+		exclude "musicplayer-lavaplayer-api.jar"	
+	}
+}
+
 sourceSets {
    	main {
 		java

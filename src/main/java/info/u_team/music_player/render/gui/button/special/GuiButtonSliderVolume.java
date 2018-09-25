@@ -5,6 +5,8 @@ import info.u_team.music_player.config.ClientConfig;
 import info.u_team.music_player.lavaplayer.api.IMusicPlayer;
 import info.u_team.music_player.render.gui.button.GuiButtonSilder;
 import net.minecraft.client.resources.I18n;
+import net.minecraftforge.common.config.ConfigManager;
+import net.minecraftforge.common.config.Config.Type;
 import net.minecraftforge.fml.client.config.GuiSlider;
 
 public class GuiButtonSliderVolume extends GuiButtonSilder {
@@ -16,6 +18,7 @@ public class GuiButtonSliderVolume extends GuiButtonSilder {
 			public void onChangeSliderValue(GuiSlider slider) {
 				musicplayer.setVolume(slider.getValueInt());
 				ClientConfig.settings.music_volume = slider.getValueInt();
+				ConfigManager.sync(MusicPlayerConstants.MODID, Type.INSTANCE);
 			}
 		});
 	}

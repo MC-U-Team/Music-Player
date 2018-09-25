@@ -13,14 +13,14 @@ import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.InputEvent.KeyInputEvent;
 
-public class MusicPlayerEventHandler {
+public class EventHandlerMusicPlayer {
 	
 	private IMusicPlayer musicplayer;
 	
 	private RenderOverlayMusicPlayer overlayrender;
 	private GuiMenuButtonAddition guibuttons;
 	
-	public MusicPlayerEventHandler(IMusicPlayer musicplayer) {
+	public EventHandlerMusicPlayer(IMusicPlayer musicplayer) {
 		this.musicplayer = musicplayer;
 		
 		overlayrender = new RenderOverlayMusicPlayer(musicplayer);

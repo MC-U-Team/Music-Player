@@ -14,7 +14,7 @@ public class AudioTrackImpl implements IAudioTrack {
 	
 	@Override
 	public IAudioTrackInfo getInfo() {
-		return new AudioTrackInfoImpl(track.getInfo());
+		return track.getInfo() != null ? new AudioTrackInfoImpl(track.getInfo()) : null;
 	}
 	
 	@Override
