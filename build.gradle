@@ -70,6 +70,7 @@ jar {
 	classifier = ""
 
     from "LICENSE"
+    from "LICENSE-DEPENDENCIES"
     
     jar.dependsOn ":musicplayer-lavaplayer-api:build"
     jar.dependsOn ":musicplayer-lavaplayer:build"
@@ -88,6 +89,7 @@ task deobfJar(type: Jar) {
 
     from sourceSets.main.output
     from "LICENSE"
+    from "LICENSE-DEPENDENCIES"
     
     jar.dependsOn ":musicplayer-lavaplayer-api:build"
     jar.dependsOn ":musicplayer-lavaplayer:build"
