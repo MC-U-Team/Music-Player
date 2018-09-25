@@ -19,10 +19,21 @@ public class DependencyManager {
 	
 	private static URL player;
 	
+	private static File cache;
+	
 	public static void init() {
+		cleanCache();
 		findPlayer();
-		loadClasses();
 		loadDependencies();
+	}
+	
+	private static void cleanCache() {
+		cache = new File("musicplayer/dep_cache");
+		cache.mkdirs();
+		try {
+			FileUtils.cleanDirectory(cache);
+		} catch (IOException ex) {
+		}
 	}
 	
 	private static void findPlayer() {
@@ -34,16 +45,19 @@ public class DependencyManager {
 					throw new FileNotFoundException("The playfile " + playerfile + " could not be found.");
 				}
 				player = playerfile.toURI().toURL();
+				return;
 			} catch (Exception ex) {
-				MusicPlayerConstants.LOGGER.error("This is in dev environment. Could not find musicplayer and musicplayer-api. Did you forgot to build the project first?", ex);
+				MusicPlayerConstants.LOGGER.error("This is in dev environment. Could not find musicplayer and musicplayer-api. Did you forgot to build the project first?. Trying injar lookup");
 			}
-		} else {
-			player = DependencyManager.class.getResource("/dependencies/musicplayer-lavaplayer.jar");
 		}
-	}
-	
-	private static void loadClasses() {
-		classloader.addURL(player);
+		URL url = DependencyManager.class.getResource("/dependencies/musicplayer-lavaplayer.jar");
+		try {
+			File playerfile = new File(cache, "musicplayer-lavaplayer.jar");
+			FileUtils.copyURLToFile(url, playerfile);
+			player = playerfile.toURI().toURL();
+		} catch (IOException ex) {
+			MusicPlayerConstants.LOGGER.error("Could not copy musicplayer-lavaplayer.jar file", ex);
+		}
 	}
 	
 	private static void loadDependencies() {
@@ -58,9 +72,7 @@ public class DependencyManager {
 			}
 			stream.close();
 			
-			File cache = new File("musicplayer/dep_cache");
-			cache.mkdirs();
-			FileUtils.cleanDirectory(cache);
+			classloader.addURL(player);
 			
 			dependencylist.forEach(name -> {
 				URL url = classloader.getResource(name);

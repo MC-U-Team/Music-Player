@@ -1,17 +1,17 @@
-musicplayer:key.open=Öffne den Music Spieler
+musicplayer:key.open=Ã–ffne den Music Spieler
 musicplayer:keycategory=Musik Spieler
 
-musicplayer:button.volume=Lautstärke
+musicplayer:button.volume=LautstÃ¤rke
 musicplayer:button.toggle=Schalte die Musikanzeige aus oder an
 musicplayer:button.search=Suche
 
 musicplayer:gui.queue.empty=Warteschlange ist leer
-musicplayer:gui.queue.null=Musikstück ist null
+musicplayer:gui.queue.null=MusikstÃ¼ck ist null
 
 musicplayer:gui.queue.author=Autor
 musicplayer:gui.queue.title=Titel
 musicplayer:gui.queue.uri=Uri
-musicplayer:gui.queue.length=Länge
+musicplayer:gui.queue.length=LÃ¤nge
 musicplayer:gui.queue.position=Position
 
 musicplayer:overlay.playing.position.undefined=nicht definiert
