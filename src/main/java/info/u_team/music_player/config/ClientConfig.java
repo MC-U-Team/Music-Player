@@ -4,9 +4,7 @@ import static info.u_team.music_player.MusicPlayerConstants.MODID;
 
 import net.minecraftforge.common.config.Config;
 import net.minecraftforge.common.config.Config.*;
-import net.minecraftforge.fml.relauncher.*;
 
-@SideOnly(Side.CLIENT)
 @Config(modid = MODID, category = "")
 public class ClientConfig {
 	

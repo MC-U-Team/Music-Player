@@ -19,7 +19,7 @@ public class EventHandlerConfigChange {
 	}
 	
 	@SubscribeEvent
-	public void onConfigChangedEvent(OnConfigChangedEvent event) {
+	public void on(OnConfigChangedEvent event) {
 		if (event.getModID().equals(MusicPlayerConstants.MODID)) {
 			ConfigManager.sync(MusicPlayerConstants.MODID, Type.INSTANCE);
 			musicplayer.setVolume(ClientConfig.settings.music_volume);
