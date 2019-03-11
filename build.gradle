@@ -1,30 +1,37 @@
 buildscript {
-    
-	apply from: "https://raw.githubusercontent.com/HyCraftHD/Blank-Forge-Project/master/build.methods"
-	setup()
-		
-	repositories {
+    repositories {
+        maven { url = "https://files.minecraftforge.net/maven" }
+		maven { url = "https://plugins.gradle.org/m2/" }
         jcenter()
-        maven { url = "http://files.minecraftforge.net/maven" }
-        maven { url = "https://plugins.gradle.org/m2/" }
+        mavenCentral()
     }
     dependencies {
-        classpath "net.minecraftforge.gradle:ForgeGradle:${config.forge.gradle}"
-        classpath "gradle.plugin.com.matthewprenger:CurseGradle:1.1.0"
+        classpath group: "net.minecraftforge.gradle", name: "ForgeGradle", version: "3.+", changing: true
+		classpath "gradle.plugin.com.matthewprenger:CurseGradle:1.1.2"
     }
 }
 
-apply from: "https://raw.githubusercontent.com/HyCraftHD/Blank-Forge-Project/master/build.methods"
 apply from: "https://raw.githubusercontent.com/HyCraftHD/Blank-Forge-Project/master/git.methods"
-setup()
-info()
 
-apply plugin: "net.minecraftforge.gradle.forge"
+apply plugin: "net.minecraftforge.gradle"
+apply plugin: "eclipse"
 apply plugin: "com.matthewprenger.cursegradle"
 apply plugin: "maven"
 
 repositories {
-	maven { url = "https://repo.u-team.info" }
+    maven { url = "https://repo.u-team.info" }
+}
+
+loadConfig()
+
+def loadConfig() {
+	ext.buildProps = file "build.properties"
+
+	buildProps.withReader {
+		def prop = new Properties()
+		prop.load(it)
+		ext.config = new ConfigSlurper().parse prop
+	}
 }
 
 getBuildNumber()
@@ -43,26 +50,38 @@ def getAppendix() {
 
 sourceCompatibility = targetCompatibility = "1.8"
 
-compileJava {
-    sourceCompatibility = targetCompatibility = "1.8"
-}
-
 minecraft {
-    version = config.forge.version
-    runDir = "run"
-    mappings = config.forge.mapping
-    makeObfSourceJar = false
-	
-	replace '${version}', project.version
-	replace '${mcversion}', project.minecraft.version
-	replaceIn "info/u_team/music_player/MusicPlayerConstants.java"
+    mappings channel: config.forge.mapping_channel, version: config.forge.mapping
+    runs {
+        client = {
+            workingDirectory project.file("run/client").canonicalPath
+            mods {
+                usefulbackpacks {
+                    source sourceSets.main
+				}
+			}
+        }
+        server = {
+            workingDirectory project.file("run/server").canonicalPath
+            mods {
+                usefulbackpacks {
+                    source sourceSets.main
+				}
+			}
+        }
+    }
 }
 
 def normalManifest = {
 	attributes(
+		"Specification-Title": config.mod.name,
+        "Specification-Vendor": "Team UTeam",
+        "Specification-Version": "25.0",
+		"Built-On": config.forge.mcversion,
 		"Implementation-Title": config.mod.name,
     	"Implementation-Version": project.version,
-		"Built-On": minecraft.version
+		"Implementation-Vendor": "Team UTeam",
+        "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
 	)
 }
 
@@ -70,9 +89,9 @@ jar {
 	classifier = ""
 
     from "LICENSE"
-    from "LICENSE-DEPENDENCIES"
-    
-    jar.dependsOn ":musicplayer-lavaplayer-api:build"
+	from "LICENSE-DEPENDENCIES"
+	
+	jar.dependsOn ":musicplayer-lavaplayer-api:build"
     jar.dependsOn ":musicplayer-lavaplayer:build"
 	    
 	from "musicplayer-lavaplayer-api/build/classes/java/main"
@@ -80,8 +99,8 @@ jar {
     into ("dependencies") {
 		from "musicplayer-lavaplayer/build/libs/musicplayer-lavaplayer.jar"	
 	}
-    
-    manifest normalManifest
+       
+   	manifest normalManifest
 }
 
 task deobfJar(type: Jar) {
@@ -89,9 +108,9 @@ task deobfJar(type: Jar) {
 
     from sourceSets.main.output
     from "LICENSE"
-    from "LICENSE-DEPENDENCIES"
-    
-    jar.dependsOn ":musicplayer-lavaplayer-api:build"
+	from "LICENSE-DEPENDENCIES"
+	
+	jar.dependsOn ":musicplayer-lavaplayer-api:build"
     jar.dependsOn ":musicplayer-lavaplayer:build"
 	    
 	from "musicplayer-lavaplayer-api/build/classes/java/main"
@@ -99,7 +118,7 @@ task deobfJar(type: Jar) {
     into ("dependencies") {
 		from "musicplayer-lavaplayer/build/libs/musicplayer-lavaplayer.jar"	
 	}
-                
+        
     manifest normalManifest
 }
 
@@ -131,33 +150,20 @@ artifacts {
 }
 
 sourceSets {
-   	main {
+	main {
 		java
 		resources
-   	}
+	}
 }
 
 dependencies {
-	compile "info.u-team:u_team_core-${minecraft.version}:${config.uteamcore.version}:dev"
+    minecraft "net.minecraftforge:forge:$config.forge.version"
+	compile "info.u-team:u_team_core-${config.forge.mcversion}:${config.uteamcore.version}:dev"
 	compile project(":musicplayer-lavaplayer-api")
-}
-
-processResources {
-    inputs.property "version", project.version
-    inputs.property "mcversion", project.minecraft.version
-
-    from(sourceSets.main.resources.srcDirs) {
-        include "mcmod.info"               
-        expand "version":project.version, "mcversion":project.minecraft.version
-    }
-    from(sourceSets.main.resources.srcDirs) {
-        exclude "mcmod.info"
-    }
 }
 
 compileJava {
     options.encoding = "UTF-8"
-    options.compilerArgs << "-Xlint:unchecked" << "-Xlint:deprecation"
 }
 
 curseforge {
@@ -169,16 +175,22 @@ curseforge {
     	id = config.curse.id
     	releaseType = config.curse.type
 
+		addGameVersion config.forge.mcversion
+		
+		options {
+		    forgeGradleIntegration = false
+		}
+		
 		relations {
       		requiredDependency "u-team-core"
     	}
-		
+
     	mainArtifact(jar) {
-      		displayName = "${config.curse.display}-${minecraft.version}-${version}"
+      		displayName = "${config.curse.display}-${config.forge.mcversion}-${project.version}"
     	}
     	
     	addArtifact(deobfJar) {
-    		displayName = "${config.curse.display}-${minecraft.version}-${version}-dev"
+    		displayName = "${config.curse.display}-${config.forge.mcversion}-${project.version}-dev"
     		changelog = "Mappings: " + config.forge.mapping
     	}
   	}
@@ -233,6 +245,7 @@ uploadArchives {
 }
 
 task uploadBoth {
+	tasks.uploadBoth.dependsOn build
 	tasks.uploadBoth.dependsOn uploadArchives
 	tasks.uploadBoth.dependsOn "curseforge${config.curse.id}"
 	tasks.uploadBoth.dependsOn setBuildNumber

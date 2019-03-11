@@ -1,0 +1,56 @@
+modLoader="javafml"
+loaderVersion="[25,)"
+issueTrackerURL="https://github.com/MC-U-Team/Music-Player/issues"
+displayURL="https://u-team.info/mods/musicplayer"
+logoFile="logo.png"
+credits="Team U-Team"
+authors="HyCraftHD"
+
+[[mods]]
+	modId="musicplayer"
+	version="${file.jarVersion}"
+	displayName="Music Player"
+	updateJSONURL="https://api.u-team.info/update/musicplayer.json"
+	description='''
+	Play every youtube video, livestream and more with this player! We use lava player to ensure this diversity.
+	
+	§lSources:§A
+	  - YouTube
+	  - SoundCloud
+	  - Bandcamp
+	  - Vimeo
+	  - Twitch streams
+	  - Local files
+	  - HTTP URLs
+	  
+	§lFile formats:§A
+	  - MP3
+	  - FLAC
+	  - WAV
+	  - Matroska/WebM (AAC, Opus or Vorbis codecs)
+	  - MP4/M4A (AAC codec)
+	  - OGG streams (Opus, Vorbis and FLAC codecs)
+	  - AAC streams
+	  - Stream playlists (M3U and PLS)	
+	'''
+	
+	[[dependencies.musicplayer]]
+	    modId="forge"
+	    mandatory=true
+	    versionRange="[25.0.76,)"
+	    ordering="NONE"
+	    side="BOTH"
+	
+	[[dependencies.musicplayer]]
+	    modId="minecraft"
+	    mandatory=true
+	    versionRange="[1.13.2]"
+	    ordering="NONE"
+	    side="BOTH"
+	    
+	[[dependencies.musicplayer]]
+	    modId="uteamcore"
+	    mandatory=true
+	    versionRange="[2.3.2.102,)"
+	    ordering="NONE"
+	    side="BOTH"
