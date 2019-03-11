@@ -1,16 +1,19 @@
 package info.u_team.music_player.proxy;
 
-import net.minecraftforge.fml.common.event.*;
+import info.u_team.u_team_core.api.IModProxy;
 
-public class CommonProxy {
+public class CommonProxy implements IModProxy {
 	
-	public void preinit(FMLPreInitializationEvent event) {
+	@Override
+	public void construct() {
 	}
 	
-	public void init(FMLInitializationEvent event) {
+	@Override
+	public void setup() {
 	}
 	
-	public void postinit(FMLPostInitializationEvent event) {
+	@Override
+	public void complete() {
 	}
 	
 }

@@ -1,33 +1,23 @@
 package info.u_team.music_player.proxy;
 
-import info.u_team.music_player.config.ClientConfig;
-import info.u_team.music_player.dependency.DependencyManager;
-import info.u_team.music_player.event.*;
-import info.u_team.music_player.key.MusicPlayerKeys;
-import info.u_team.music_player.lavaplayer.api.IMusicPlayer;
-import info.u_team.u_team_core.registry.CommonRegistry;
-import net.minecraftforge.fml.common.event.*;
+import info.u_team.u_team_core.api.IModProxy;
+import net.minecraftforge.api.distmarker.*;
 
-public class ClientProxy extends CommonProxy {
+@OnlyIn(Dist.CLIENT)
+public class ClientProxy extends CommonProxy implements IModProxy {
 	
-	private IMusicPlayer musicplayer;
-	
-	public void preinit(FMLPreInitializationEvent event) {
-		super.preinit(event);
-		DependencyManager.init();
-		musicplayer = DependencyManager.getMusicPlayer();
+	@Override
+	public void construct() {
+		super.construct();
 	}
 	
-	public void init(FMLInitializationEvent event) {
-		super.init(event);
-		MusicPlayerKeys.init();
-		CommonRegistry.registerEventHandler(new EventHandlerMusicPlayer(musicplayer), new EventHandlerConfigChange(musicplayer));
-		musicplayer.setVolume(ClientConfig.settings.music_volume);
+	@Override
+	public void setup() {
+		super.setup();
 	}
 	
-	public void postinit(FMLPostInitializationEvent event) {
-		super.postinit(event);
-		musicplayer.startAudioOutput();
+	@Override
+	public void complete() {
+		super.complete();
 	}
-	
 }

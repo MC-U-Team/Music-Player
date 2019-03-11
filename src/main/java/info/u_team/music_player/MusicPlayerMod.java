@@ -1,38 +1,33 @@
 package info.u_team.music_player;
 
-import static info.u_team.music_player.MusicPlayerConstants.*;
+import info.u_team.music_player.proxy.*;
+import info.u_team.u_team_core.api.IModProxy;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.DistExecutor;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.event.lifecycle.*;
+import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
-import info.u_team.music_player.proxy.CommonProxy;
-import net.minecraftforge.fml.common.*;
-import net.minecraftforge.fml.common.Mod.*;
-import net.minecraftforge.fml.common.event.*;
-
-@Mod(modid = MODID, name = NAME, version = VERSION, acceptedMinecraftVersions = MCVERSION, dependencies = DEPENDENCIES, updateJSON = UPDATEURL, clientSideOnly = true)
+@Mod(MusicPlayerMod.modid)
 public class MusicPlayerMod {
 	
-	@Instance
-	private static MusicPlayerMod instance;
+	public static final String modid = "musicplayer";
 	
-	public static MusicPlayerMod getInstance() {
-		return instance;
+	public static final IModProxy proxy = DistExecutor.runForDist(() -> ClientProxy::new, () -> CommonProxy::new);
+	
+	public MusicPlayerMod() {
+		FMLJavaModLoadingContext.get().getModEventBus().register(this);
+		proxy.construct();
 	}
 	
-	@SidedProxy(serverSide = COMMONPROXY, clientSide = CLIENTPROXY)
-	private static CommonProxy proxy;
-	
-	@EventHandler
-	public void preinit(FMLPreInitializationEvent event) {
-		proxy.preinit(event);
+	@SubscribeEvent
+	public void setup(FMLCommonSetupEvent event) {
+		proxy.setup();
 	}
 	
-	@EventHandler
-	public void init(FMLInitializationEvent event) {
-		proxy.init(event);
-	}
-	
-	@EventHandler
-	public void postinit(FMLPostInitializationEvent event) {
-		proxy.postinit(event);
+	@SubscribeEvent
+	public void ready(FMLLoadCompleteEvent event) {
+		proxy.complete();
 	}
 	
 }

@@ -1,6 +1,6 @@
 {
     "pack": {
-        "description": "musicplayer",
-        "pack_format": 3
+        "description": "Music Player",
+        "pack_format": 4
     }
 }
