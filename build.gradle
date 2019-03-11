@@ -56,7 +56,7 @@ minecraft {
         client = {
             workingDirectory project.file("run/client").canonicalPath
             mods {
-                usefulbackpacks {
+                musicplayer {
                     source sourceSets.main
 				}
 			}
@@ -64,7 +64,7 @@ minecraft {
         server = {
             workingDirectory project.file("run/server").canonicalPath
             mods {
-                usefulbackpacks {
+                musicplayer {
                     source sourceSets.main
 				}
 			}
