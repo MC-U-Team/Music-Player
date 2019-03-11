@@ -97,7 +97,8 @@ jar {
 	from "musicplayer-lavaplayer-api/build/classes/java/main"
 	
     into ("dependencies") {
-		from "musicplayer-lavaplayer/build/libs/musicplayer-lavaplayer.jar"	
+		from "musicplayer-lavaplayer/build/libs/musicplayer-lavaplayer.jar"
+		from "musicplayer-lavaplayer/build/dependencies"	
 	}
        
    	manifest normalManifest
@@ -117,6 +118,7 @@ task deobfJar(type: Jar) {
 	
     into ("dependencies") {
 		from "musicplayer-lavaplayer/build/libs/musicplayer-lavaplayer.jar"	
+		from "musicplayer-lavaplayer/build/dependencies"
 	}
         
     manifest normalManifest
