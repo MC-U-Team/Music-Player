@@ -47,7 +47,7 @@ public class DependencyManager {
 			}
 			logger.info("Finished copy of dependencies to cache");
 		} catch (Exception ex) {
-			logger.error("Could not copy dependencies to cache ", ex);
+			logger.error("Could not copy dependencies to cache", ex);
 		}
 	}
 	
@@ -71,11 +71,12 @@ public class DependencyManager {
 	}
 	
 	private static void loadDependencies() {
-		logger.info("Load dependencies into classloader.");
+		logger.info("Load dependencies into classloader");
 		try {
 			Files.walk(cache).filter(path -> path.toString().endsWith(".jar") && path.toFile().isFile()).forEach(path -> classloader.addFile(path.toFile()));
 		} catch (IOException ex) {
 			logger.error("Could not load file into classloader ", ex);
 		}
+		logger.info("Dependencies have sucessfully been loaded into classloader");
 	}
 }

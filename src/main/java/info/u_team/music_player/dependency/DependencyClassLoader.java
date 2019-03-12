@@ -35,7 +35,7 @@ public class DependencyClassLoader extends URLClassLoader {
 		try {
 			addURL(file.toURI().toURL());
 		} catch (MalformedURLException ex) {
-			logger.error("Could not add dependency file to classloader ", ex);
+			logger.error("Could not add dependency file to classloader", ex);
 		}
 	}
 }
