@@ -55,6 +55,9 @@ minecraft {
     runs {
         client = {
             workingDirectory project.file("run/client").canonicalPath
+            
+            property "musicplayer.dev", "\"${project.rootDir}\""
+            
             mods {
                 musicplayer {
                     source sourceSets.main
