@@ -24,20 +24,16 @@ public class DependencyManager {
 	}
 	
 	private static void setupCache() {
-		logger.info("Creating musicplayer cache");
+		cache = Paths.get(System.getProperty("java.io.tmpdir"), "musicplayer-dependency-cache");
+		logger.info("Creating musicplayer cache at " + cache);
+		
+		FileUtils.deleteQuietly(cache.toFile());
 		try {
-			cache = Files.createTempDirectory("musicplayer-dependency-cache");
+			Files.createDirectory(cache);
 		} catch (IOException ex) {
 			logger.error("Could not create music player cache", ex);
 		}
-		Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-			logger.info("Deleting musicplayer cache " + cache);
-			try {
-				FileUtils.deleteDirectory(cache.toFile());
-			} catch (IOException ex) {
-				logger.warn("Could not delete music player cache", ex);
-			}
-		}, "Remove Music Player Cache Path"));
+		
 	}
 	
 	private static void copyDependencies() {
@@ -65,7 +61,7 @@ public class DependencyManager {
 	private static void copyDependenciesFromJar() throws Exception {
 		logger.info("Search dependencies in jar");
 		
-		Files.walk(ModList.get().getModFileById(MusicPlayerMod.modid).getFile().findResource("/dependencies")).forEach(path -> {
+		Files.walk(ModList.get().getModFileById(MusicPlayerMod.modid).getFile().findResource("/dependencies")).filter(path -> path.toString().endsWith(".jar")).forEach(path -> {
 			try {
 				Files.copy(path, new File(cache.toFile(), path.getFileName().toString()).toPath(), StandardCopyOption.REPLACE_EXISTING);
 			} catch (IOException ex) {
@@ -77,7 +73,7 @@ public class DependencyManager {
 	private static void loadDependencies() {
 		logger.info("Load dependencies into classloader.");
 		try {
-			Files.walk(cache).filter(path -> path.toFile().isFile()).forEach(path -> classloader.addFile(path.toFile()));
+			Files.walk(cache).filter(path -> path.toString().endsWith(".jar") && path.toFile().isFile()).forEach(path -> classloader.addFile(path.toFile()));
 		} catch (IOException ex) {
 			logger.error("Could not load file into classloader ", ex);
 		}

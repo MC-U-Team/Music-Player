@@ -12,33 +12,7 @@ public class MusicPlayerManager {
 	public static IMusicPlayer player;
 	
 	public static void construct() {
-		logger.info(":::::::::::::::::::::::::::::::::::::");
 		generatePlayer();
-		System.out.println(player);
-		
-		player.startAudioOutput();
-		
-		player.registerEventHandler(new IMusicPlayerEvents() {
-			
-			public void onPlay(IAudioTrack track) {
-				System.out.println(track);
-			}
-			
-			public void onStop() {
-				System.out.println("STOP");
-			}
-			
-			public void onSearchSuccess(State state) {
-				System.out.println("SUCCESS");
-			}
-			
-			public void onSearchFailed(String error, Exception exeption) {
-				System.out.println(error);
-			}
-		});
-		
-		player.getTrackSearch().play("E-Rotic - King Kong");
-		player.setVolume(5);
 	}
 	
 	private static void generatePlayer() {
