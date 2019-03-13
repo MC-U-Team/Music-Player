@@ -13,6 +13,7 @@ public class MusicPlayerManager {
 	
 	public static void construct() {
 		generatePlayer();
+		player.startAudioOutput();
 	}
 	
 	private static void generatePlayer() {

@@ -39,6 +39,7 @@ public class AudioOutput extends Thread {
 	private MusicPlayer musicplayer;
 	
 	public AudioOutput(MusicPlayer musicplayer) {
+		super("Audio Player");
 		this.musicplayer = musicplayer;
 	}
 	
