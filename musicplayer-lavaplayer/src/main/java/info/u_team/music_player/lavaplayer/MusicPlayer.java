@@ -10,19 +10,20 @@ import com.sedmelluq.discord.lavaplayer.source.AudioSourceManagers;
 import info.u_team.music_player.lavaplayer.api.*;
 import info.u_team.music_player.lavaplayer.output.AudioOutput;
 import info.u_team.music_player.lavaplayer.queue.TrackScheduler;
-import info.u_team.music_player.lavaplayer.search.TrackSearch;
+import info.u_team.music_player.lavaplayer.search.*;
 
 public class MusicPlayer implements IMusicPlayer {
 	
-	private static ConcurrentLinkedQueue<IMusicPlayerEvents> eventhandler = new ConcurrentLinkedQueue<>();
+	private static final ConcurrentLinkedQueue<IMusicPlayerEvents> eventhandler = new ConcurrentLinkedQueue<>();
 	
-	private AudioPlayerManager audioplayermanager;
-	private AudioDataFormat audiodataformat;
-	private AudioPlayer audioplayer;
-	private AudioOutput audiooutput;
+	private final AudioPlayerManager audioplayermanager;
+	private final AudioDataFormat audiodataformat;
+	private final AudioPlayer audioplayer;
+	private final AudioOutput audiooutput;
 	
-	private TrackScheduler trackscheduler;
-	private TrackSearch tracksearch;
+	private final TrackScheduler trackscheduler;
+	private final TrackSearch tracksearch;
+	private final TrackDirectSearch trackdirectsearch;
 	
 	public MusicPlayer() {
 		audioplayermanager = new DefaultAudioPlayerManager();
@@ -32,6 +33,7 @@ public class MusicPlayer implements IMusicPlayer {
 		
 		trackscheduler = new TrackScheduler(audioplayer);
 		tracksearch = new TrackSearch(audioplayermanager, trackscheduler);
+		trackdirectsearch = new TrackDirectSearch(audioplayermanager, trackscheduler);
 		
 		setup();
 	}
@@ -62,22 +64,32 @@ public class MusicPlayer implements IMusicPlayer {
 		return audioplayer;
 	}
 	
+	@Override
 	public TrackScheduler getTrackScheduler() {
 		return trackscheduler;
 	}
 	
+	@Override
 	public TrackSearch getTrackSearch() {
 		return tracksearch;
 	}
 	
+	@Override
+	public TrackDirectSearch getTrackDirectSearch() {
+		return trackdirectsearch;
+	}
+	
+	@Override
 	public void startAudioOutput() {
 		audiooutput.start();
 	}
 	
+	@Override
 	public void setVolume(int volume) {
 		audioplayer.setVolume(volume);
 	}
 	
+	@Override
 	public int getVolume() {
 		return audioplayer.getVolume();
 	}

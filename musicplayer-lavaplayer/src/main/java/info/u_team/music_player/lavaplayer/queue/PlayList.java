@@ -6,7 +6,7 @@ import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 
 public class PlayList {
 	
-	private LinkedList<AudioTrack> tracks;
+	private final LinkedList<AudioTrack> tracks;
 	
 	public PlayList() {
 		tracks = new LinkedList<>();

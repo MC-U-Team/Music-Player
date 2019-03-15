@@ -6,7 +6,7 @@ import info.u_team.music_player.lavaplayer.api.IAudioTrackInfo;
 
 public class AudioTrackInfoImpl implements IAudioTrackInfo {
 	
-	private AudioTrackInfo info;
+	private final AudioTrackInfo info;
 	
 	public AudioTrackInfoImpl(AudioTrackInfo info) {
 		this.info = info;

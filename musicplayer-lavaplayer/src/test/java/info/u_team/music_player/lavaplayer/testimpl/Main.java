@@ -16,7 +16,6 @@ public class Main implements IMusicPlayerEvents {
 		musicplayer.startAudioOutput();
 		
 		new Thread(() -> {
-			@SuppressWarnings("resource")
 			Scanner scanner = new Scanner(System.in);
 			while (scanner.hasNext()) {
 				String line = scanner.nextLine();
@@ -24,10 +23,14 @@ public class Main implements IMusicPlayerEvents {
 					musicplayer.getTrackScheduler().setPaused(true);
 				} else if (line.startsWith("unpause")) {
 					musicplayer.getTrackScheduler().setPaused(false);
-				} else if (line.startsWith("play ")) {
+				} else if (line.startsWith("playsearch ")) {
 					musicplayer.getTrackSearch().play(line.substring(5));
-				} else if (line.startsWith("queue ")) {
+				} else if (line.startsWith("queuesearch ")) {
 					musicplayer.getTrackSearch().queue(line.substring(6));
+				} else if (line.startsWith("play ")) {
+					musicplayer.getTrackDirectSearch().play(line.substring(5));
+				} else if (line.startsWith("queue ")) {
+					musicplayer.getTrackDirectSearch().queue(line.substring(6));
 				} else if (line.startsWith("repeat")) {
 					musicplayer.getTrackScheduler().setRepeat(!musicplayer.getTrackScheduler().isRepeat());
 				} else if (line.startsWith("shuffle")) {
@@ -56,7 +59,8 @@ public class Main implements IMusicPlayerEvents {
 					musicplayer.getTrackScheduler().mix();
 				}
 			}
-		}).start();
+			scanner.close();
+		}, "Music player manager").start();
 		
 		musicplayer.registerEventHandler(this);
 		

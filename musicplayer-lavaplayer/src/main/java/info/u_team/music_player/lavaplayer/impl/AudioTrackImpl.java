@@ -6,7 +6,7 @@ import info.u_team.music_player.lavaplayer.api.*;
 
 public class AudioTrackImpl implements IAudioTrack {
 	
-	private AudioTrack track;
+	private final AudioTrack track;
 	
 	public AudioTrackImpl(AudioTrack track) {
 		this.track = track;

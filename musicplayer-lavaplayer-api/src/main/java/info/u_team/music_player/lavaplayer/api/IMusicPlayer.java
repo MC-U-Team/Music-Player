@@ -6,6 +6,8 @@ public interface IMusicPlayer {
 	
 	public ITrackSearch getTrackSearch();
 	
+	public ITrackSearch getTrackDirectSearch();
+	
 	public void startAudioOutput();
 	
 	public int getVolume();

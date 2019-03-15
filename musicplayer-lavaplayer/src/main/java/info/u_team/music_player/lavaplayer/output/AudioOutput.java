@@ -36,7 +36,7 @@ import info.u_team.music_player.lavaplayer.MusicPlayer;
 
 public class AudioOutput extends Thread {
 	
-	private MusicPlayer musicplayer;
+	private final MusicPlayer musicplayer;
 	
 	public AudioOutput(MusicPlayer musicplayer) {
 		super("Audio Player");

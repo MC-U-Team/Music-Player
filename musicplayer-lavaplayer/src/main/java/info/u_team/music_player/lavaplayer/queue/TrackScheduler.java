@@ -12,9 +12,9 @@ import info.u_team.music_player.lavaplayer.impl.AudioTrackImpl;
 
 public class TrackScheduler extends AudioEventAdapter implements ITrackScheduler {
 	
-	private AudioPlayer audioplayer;
+	private final AudioPlayer audioplayer;
 	
-	private PlayList playlist;
+	private final PlayList playlist;
 	
 	private boolean repeat, shuffle;
 	
@@ -58,12 +58,14 @@ public class TrackScheduler extends AudioEventAdapter implements ITrackScheduler
 		queue(track, false);
 	}
 	
+	@Override
 	public void stop() {
 		MusicPlayer.getEventHandler().forEach(event -> event.onStop());
 		playlist.clear();
 		audioplayer.stopTrack();
 	}
 	
+	@Override
 	public void skip() {
 		AudioTrack track = playlist.pollFirst();
 		if (track == null) {
@@ -73,6 +75,7 @@ public class TrackScheduler extends AudioEventAdapter implements ITrackScheduler
 		}
 	}
 	
+	@Override
 	public void shuffle() {
 		AudioTrack track = playlist.pollRandom();
 		if (track == null) {
@@ -82,6 +85,7 @@ public class TrackScheduler extends AudioEventAdapter implements ITrackScheduler
 		}
 	}
 	
+	@Override
 	public void mix() {
 		playlist.mix();
 	}
@@ -103,29 +107,35 @@ public class TrackScheduler extends AudioEventAdapter implements ITrackScheduler
 	
 	@Override
 	public IAudioTrack getCurrentTrack() {
-		return audioplayer.getPlayingTrack() != null ? new AudioTrackImpl(audioplayer.getPlayingTrack()): null;
+		return audioplayer.getPlayingTrack() != null ? new AudioTrackImpl(audioplayer.getPlayingTrack()) : null;
 	}
 	
+	@Override
 	public void setRepeat(boolean repeat) {
 		this.repeat = repeat;
 	}
 	
+	@Override
 	public void setShuffle(boolean shuffle) {
 		this.shuffle = shuffle;
 	}
 	
+	@Override
 	public boolean isRepeat() {
 		return repeat;
 	}
 	
+	@Override
 	public boolean isShuffle() {
 		return shuffle;
 	}
 	
+	@Override
 	public void setPaused(boolean pause) {
 		audioplayer.setPaused(pause);
 	}
 	
+	@Override
 	public boolean isPaused() {
 		return audioplayer.isPaused();
 	}

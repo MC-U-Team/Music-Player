@@ -8,7 +8,7 @@ import info.u_team.music_player.lavaplayer.api.*;
 
 public class AudioTrackListImpl implements IAudioTrackList {
 	
-	private AudioPlaylist playlist;
+	private final AudioPlaylist playlist;
 	
 	public AudioTrackListImpl(AudioPlaylist playlist) {
 		this.playlist = playlist;
