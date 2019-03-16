@@ -27,7 +27,6 @@ public class DependencyMusicPlayerClassLoader extends URLClassLoader {
 	
 	@Override
 	public void addURL(URL url) {
-		logger.info("Added url to classloader: " + url);
 		super.addURL(url);
 	}
 	
