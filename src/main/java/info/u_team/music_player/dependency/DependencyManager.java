@@ -1,6 +1,8 @@
 package info.u_team.music_player.dependency;
 
 import java.io.*;
+import java.lang.reflect.Method;
+import java.net.*;
 import java.nio.file.*;
 
 import org.apache.commons.io.FileUtils;
@@ -13,9 +15,11 @@ public class DependencyManager {
 	
 	private static final Logger logger = LogManager.getLogger();
 	
-	public static final DependencyClassLoader classloader = new DependencyClassLoader();
+	public static final DependencyMusicPlayerClassLoader musicplayerclassloader = new DependencyMusicPlayerClassLoader();
 	
 	private static Path cache;
+	
+	private static Path embeddependencies, musicplayerdependencies;
 	
 	public static void construct() {
 		setupCache();
@@ -25,11 +29,15 @@ public class DependencyManager {
 	
 	private static void setupCache() {
 		cache = Paths.get(System.getProperty("java.io.tmpdir"), "musicplayer-dependency-cache");
+		embeddependencies = cache.resolve("embed");
+		musicplayerdependencies = cache.resolve("musicplayer");
 		logger.info("Creating musicplayer cache at " + cache);
 		
 		FileUtils.deleteQuietly(cache.toFile());
 		try {
 			Files.createDirectory(cache);
+			Files.createDirectory(embeddependencies);
+			Files.createDirectory(musicplayerdependencies);
 		} catch (IOException ex) {
 			logger.error("Could not create music player cache", ex);
 		}
@@ -54,16 +62,24 @@ public class DependencyManager {
 	private static void copyDependenciesDev(String path) throws Exception {
 		logger.info("Search dependencies in dev");
 		
-		FileUtils.copyDirectory(Paths.get(path, "musicplayer-lavaplayer/build/libs").toFile(), cache.toFile());
-		FileUtils.copyDirectory(Paths.get(path, "musicplayer-lavaplayer/build/dependencies").toFile(), cache.toFile());
+		FileUtils.copyDirectory(Paths.get(path, "musicplayer-lavaplayer/build/libs").toFile(), musicplayerdependencies.toFile());
+		FileUtils.copyDirectory(Paths.get(path, "musicplayer-lavaplayer/build/dependencies").toFile(), musicplayerdependencies.toFile());
 	}
 	
 	private static void copyDependenciesFromJar() throws Exception {
 		logger.info("Search dependencies in jar");
 		
+		Files.walk(ModList.get().getModFileById(MusicPlayerMod.modid).getFile().findResource("/embed-dependencies")).filter(path -> path.toString().endsWith(".jar")).forEach(path -> {
+			try {
+				Files.copy(path, new File(embeddependencies.toFile(), path.getFileName().toString()).toPath(), StandardCopyOption.REPLACE_EXISTING);
+			} catch (IOException ex) {
+				throw new RuntimeException(ex);
+			}
+		});
+		
 		Files.walk(ModList.get().getModFileById(MusicPlayerMod.modid).getFile().findResource("/dependencies")).filter(path -> path.toString().endsWith(".jar")).forEach(path -> {
 			try {
-				Files.copy(path, new File(cache.toFile(), path.getFileName().toString()).toPath(), StandardCopyOption.REPLACE_EXISTING);
+				Files.copy(path, new File(musicplayerdependencies.toFile(), path.getFileName().toString()).toPath(), StandardCopyOption.REPLACE_EXISTING);
 			} catch (IOException ex) {
 				throw new RuntimeException(ex);
 			}
@@ -72,8 +88,24 @@ public class DependencyManager {
 	
 	private static void loadDependencies() {
 		logger.info("Load dependencies into classloader");
+		
 		try {
-			Files.walk(cache).filter(path -> path.toString().endsWith(".jar") && path.toFile().isFile()).forEach(path -> classloader.addFile(path.toFile()));
+			Files.walk(embeddependencies).filter(path -> path.toString().endsWith(".jar") && path.toFile().isFile()).forEach(path -> {
+				URLClassLoader systemloader = (URLClassLoader) ClassLoader.getSystemClassLoader();
+				try {
+					Method method = URLClassLoader.class.getDeclaredMethod("addURL", URL.class);
+					method.setAccessible(true);
+					method.invoke(systemloader, path.toUri().toURL());
+				} catch (Exception ex) {
+					throw new RuntimeException(ex);
+				}
+			});
+		} catch (Exception ex) {
+			logger.error("Could not load file into classloader ", ex);
+		}
+		
+		try {
+			Files.walk(musicplayerdependencies).filter(path -> path.toString().endsWith(".jar") && path.toFile().isFile()).forEach(path -> musicplayerclassloader.addFile(path.toFile()));
 		} catch (IOException ex) {
 			logger.error("Could not load file into classloader ", ex);
 		}

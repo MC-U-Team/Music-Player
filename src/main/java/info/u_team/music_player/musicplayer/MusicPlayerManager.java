@@ -18,7 +18,7 @@ public class MusicPlayerManager {
 	
 	private static void generatePlayer() {
 		try {
-			Class<?> clazz = Class.forName("info.u_team.music_player.lavaplayer.MusicPlayer", true, DependencyManager.classloader);
+			Class<?> clazz = Class.forName("info.u_team.music_player.lavaplayer.MusicPlayer", true, DependencyManager.musicplayerclassloader);
 			if (!IMusicPlayer.class.isAssignableFrom(clazz)) {
 				throw new IllegalAccessError("The class " + clazz + " does not implement IMusicPlayer! This should not happen?!");
 			}

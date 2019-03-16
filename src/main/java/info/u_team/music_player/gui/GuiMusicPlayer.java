@@ -1,6 +1,7 @@
 package info.u_team.music_player.gui;
 
 import org.lwjgl.glfw.GLFW;
+import org.lwjgl.util.tinyfd.TinyFileDialogs;
 
 import info.u_team.music_player.lavaplayer.api.*;
 import info.u_team.music_player.musicplayer.MusicPlayerManager;
@@ -52,10 +53,13 @@ public class GuiMusicPlayer extends GuiScreen implements IMusicPlayerEvents {
 	public boolean keyPressed(int keycode, int p_keyPressed_2_, int p_keyPressed_3_) {
 		System.out.println(searchfield.isFocused() + " -> " + searchfield.getVisible() + " -> ");
 		if (searchfield.isFocused() && keycode == GLFW.GLFW_KEY_ENTER) {
-			searchfield.setFocused(false);
-			MusicPlayerManager.player.getTrackSearch().play(searchfield.getText());
-			searchfield.setText("");
-			return false;
+			// searchfield.setFocused(false);
+			// MusicPlayerManager.player.getTrackSearch().play(searchfield.getText());
+			// searchfield.setText("");
+			// return false;
+			
+			String path = TinyFileDialogs.tinyfd_saveFileDialog("Save Project", null, null, null);
+			System.out.println(path);
 		}
 		return super.keyPressed(keycode, p_keyPressed_2_, p_keyPressed_3_);
 	}

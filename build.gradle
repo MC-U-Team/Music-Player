@@ -20,6 +20,7 @@ apply plugin: "maven"
 
 repositories {
     maven { url = "https://repo.u-team.info" }
+    mavenCentral()
 }
 
 loadConfig()
@@ -84,8 +85,13 @@ def normalManifest = {
 		"Implementation-Title": config.mod.name,
     	"Implementation-Version": project.version,
 		"Implementation-Vendor": "Team UTeam",
-        "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
+        "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
 	)
+}
+
+configurations {
+    embed
+    compile.extendsFrom(embed)
 }
 
 jar {
@@ -103,7 +109,11 @@ jar {
 		from "musicplayer-lavaplayer/build/libs/musicplayer-lavaplayer.jar"
 		from "musicplayer-lavaplayer/build/dependencies"	
 	}
-       
+	
+	into ("embed-dependencies") {
+		from configurations.embed		
+	}
+	
    	manifest normalManifest
 }
 
@@ -123,7 +133,11 @@ task deobfJar(type: Jar) {
 		from "musicplayer-lavaplayer/build/libs/musicplayer-lavaplayer.jar"	
 		from "musicplayer-lavaplayer/build/dependencies"
 	}
-        
+
+	into ("embed-dependencies") {
+		from configurations.embed		
+	}
+
     manifest normalManifest
 }
 
@@ -164,6 +178,18 @@ sourceSets {
 dependencies {
     minecraft "net.minecraftforge:forge:$config.forge.version"
 	compile "info.u-team:u_team_core-${config.forge.mcversion}:${config.uteamcore.version}:dev"
+	embed ("org.lwjgl:lwjgl-tinyfd:3.1.6") {
+		transitive=false
+	}
+	embed ("org.lwjgl:lwjgl-tinyfd:3.1.6:natives-linux") {
+		transitive=false
+	}
+	embed ("org.lwjgl:lwjgl-tinyfd:3.1.6:natives-macos") {
+		transitive=false
+	}
+	embed ("org.lwjgl:lwjgl-tinyfd:3.1.6:natives-windows") {
+		transitive=false
+	}
 	compile project(":musicplayer-lavaplayer-api")
 }
 

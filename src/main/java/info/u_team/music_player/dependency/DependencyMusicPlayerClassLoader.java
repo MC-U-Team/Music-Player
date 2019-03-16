@@ -5,11 +5,11 @@ import java.net.*;
 
 import org.apache.logging.log4j.*;
 
-public class DependencyClassLoader extends URLClassLoader {
+public class DependencyMusicPlayerClassLoader extends URLClassLoader {
 	
 	private static final Logger logger = LogManager.getLogger();
 	
-	DependencyClassLoader() {
+	DependencyMusicPlayerClassLoader() {
 		super(new URL[] {}, null);
 	}
 	
@@ -19,7 +19,7 @@ public class DependencyClassLoader extends URLClassLoader {
 			return super.loadClass(name);
 		} catch (ClassNotFoundException ex) {
 			if (name.startsWith("info.u_team.music_player.lavaplayer.api")) {
-				return DependencyClassLoader.class.getClassLoader().loadClass(name);
+				return DependencyMusicPlayerClassLoader.class.getClassLoader().loadClass(name);
 			}
 			throw ex;
 		}
