@@ -4,12 +4,14 @@ import java.io.*;
 import java.lang.reflect.Method;
 import java.net.*;
 import java.nio.file.*;
+import java.util.function.Consumer;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.*;
 
 import info.u_team.music_player.MusicPlayerMod;
 import net.minecraftforge.fml.ModList;
+import net.minecraftforge.fml.loading.moddiscovery.ModFile;
 
 public class DependencyManager {
 	
@@ -71,7 +73,9 @@ public class DependencyManager {
 	private static void copyDependenciesFromJar() throws Exception {
 		logger.info(setup, "Search dependencies in jar");
 		
-		Files.walk(ModList.get().getModFileById(MusicPlayerMod.modid).getFile().findResource("/embed-dependencies")).filter(path -> path.toString().endsWith(".jar")).forEach(path -> {
+		ModFile file = ModList.get().getModFileById(MusicPlayerMod.modid).getFile();
+		
+		Files.walk(file.findResource("/embed-dependencies")).filter(path -> path.toString().endsWith(".jar")).forEach(path -> {
 			try {
 				Files.copy(path, new File(embeddependencies.toFile(), path.getFileName().toString()).toPath(), StandardCopyOption.REPLACE_EXISTING);
 			} catch (IOException ex) {
@@ -79,7 +83,7 @@ public class DependencyManager {
 			}
 		});
 		
-		Files.walk(ModList.get().getModFileById(MusicPlayerMod.modid).getFile().findResource("/dependencies")).filter(path -> path.toString().endsWith(".jar")).forEach(path -> {
+		Files.walk(file.findResource("/dependencies")).filter(path -> path.toString().endsWith(".jar")).forEach(path -> {
 			try {
 				Files.copy(path, new File(musicplayerdependencies.toFile(), path.getFileName().toString()).toPath(), StandardCopyOption.REPLACE_EXISTING);
 			} catch (IOException ex) {
@@ -91,30 +95,39 @@ public class DependencyManager {
 	private static void loadDependencies() {
 		logger.info(load, "Load dependencies into classloaders");
 		
-		try {
-			Files.walk(embeddependencies).filter(path -> path.toString().endsWith(".jar") && path.toFile().isFile()).forEach(path -> {
-				URLClassLoader systemloader = (URLClassLoader) ClassLoader.getSystemClassLoader();
-				try {
-					Method method = URLClassLoader.class.getDeclaredMethod("addURL", URL.class);
-					method.setAccessible(true);
-					method.invoke(systemloader, path.toUri().toURL());
-				} catch (Exception ex) {
-					throw new RuntimeException(ex);
-				}
-				logger.info(load, "Added jar to system classloader: " + path);
-			});
-		} catch (Exception ex) {
-			logger.error(load, "Could not load file into system classloader ", ex);
-		}
+		// No need to check if the runtime is in eclipse because folder will be reset
+		// every start correctly
 		
 		try {
-			Files.walk(musicplayerdependencies).filter(path -> path.toString().endsWith(".jar") && path.toFile().isFile()).forEach(path -> {
-				musicplayerclassloader.addFile(path.toFile());
-				logger.info(load, "Added jar to musicplayer classloader: " + path);
+			URLClassLoader systemloader = (URLClassLoader) ClassLoader.getSystemClassLoader();
+			Method method = URLClassLoader.class.getDeclaredMethod("addURL", URL.class);
+			method.setAccessible(true);
+			
+			forEachJarFile(embeddependencies, file -> {
+				try {
+					method.invoke(systemloader, file.toUri().toURL());
+					logger.info(load, "Added jar to system classloader: " + file);
+				} catch (Exception ex) {
+					throw new RuntimeException("Method addURL on system classloader could not be invoked", ex);
+				}
 			});
-		} catch (IOException ex) {
-			logger.error(load, "Could not load file into musicplayer classloader ", ex);
+		} catch (Exception ex) {
+			logger.error(load, "Could not load embedded dependencies", ex);
 		}
+		
+		forEachJarFile(musicplayerdependencies, file -> {
+			musicplayerclassloader.addFile(file.toFile());
+			logger.info(load, "Added jar to musicplayer classloader: " + file);
+		});
+		
 		logger.info(load, "Dependencies have sucessfully been loaded into classloaders");
+	}
+	
+	private static void forEachJarFile(Path path, Consumer<Path> consumer) {
+		try {
+			Files.walk(path).filter(file -> file.toString().endsWith(".jar") && file.toFile().isFile()).forEach(consumer);
+		} catch (IOException ex) {
+			logger.error(load, "Could not jars into classpath from path " + path, ex);
+		}
 	}
 }
