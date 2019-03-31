@@ -73,23 +73,10 @@ public class DependencyManager {
 	private static void copyDependenciesFromJar() throws Exception {
 		logger.info(setup, "Search dependencies in jar");
 		
-		ModFile file = ModList.get().getModFileById(MusicPlayerMod.modid).getFile();
+		ModFile modfile = ModList.get().getModFileById(MusicPlayerMod.modid).getFile();
 		
-		Files.walk(file.findResource("/embed-dependencies")).filter(path -> path.toString().endsWith(".jar")).forEach(path -> {
-			try {
-				Files.copy(path, new File(embeddependencies.toFile(), path.getFileName().toString()).toPath(), StandardCopyOption.REPLACE_EXISTING);
-			} catch (IOException ex) {
-				throw new RuntimeException(ex);
-			}
-		});
-		
-		Files.walk(file.findResource("/dependencies")).filter(path -> path.toString().endsWith(".jar")).forEach(path -> {
-			try {
-				Files.copy(path, new File(musicplayerdependencies.toFile(), path.getFileName().toString()).toPath(), StandardCopyOption.REPLACE_EXISTING);
-			} catch (IOException ex) {
-				throw new RuntimeException(ex);
-			}
-		});
+		extractJarFilesFromZipFolder(modfile, "embed-dependencies", embeddependencies);
+		extractJarFilesFromZipFolder(modfile, "dependencies", musicplayerdependencies);
 	}
 	
 	private static void loadDependencies() {
@@ -121,6 +108,16 @@ public class DependencyManager {
 		});
 		
 		logger.info(load, "Dependencies have sucessfully been loaded into classloaders");
+	}
+	
+	private static void extractJarFilesFromZipFolder(ModFile modfile, String folder, Path path) throws IOException {
+		Files.walk(modfile.findResource("/" + folder)).filter(file -> file.toString().endsWith(".jar")).forEach(file -> {
+			try {
+				Files.copy(file, new File(path.toFile(), file.getFileName().toString()).toPath(), StandardCopyOption.REPLACE_EXISTING);
+			} catch (IOException ex) {
+				throw new RuntimeException(ex);
+			}
+		});
 	}
 	
 	private static void forEachJarFile(Path path, Consumer<Path> consumer) {
