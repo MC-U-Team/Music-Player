@@ -5,12 +5,12 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import com.sedmelluq.discord.lavaplayer.format.*;
 import com.sedmelluq.discord.lavaplayer.player.*;
 import com.sedmelluq.discord.lavaplayer.player.AudioConfiguration.ResamplingQuality;
-import com.sedmelluq.discord.lavaplayer.source.AudioSourceManagers;
 
 import info.u_team.music_player.lavaplayer.api.*;
 import info.u_team.music_player.lavaplayer.output.AudioOutput;
 import info.u_team.music_player.lavaplayer.queue.TrackScheduler;
 import info.u_team.music_player.lavaplayer.search.*;
+import info.u_team.music_player.lavaplayer.sources.AudioSources;
 
 public class MusicPlayer implements IMusicPlayer {
 	
@@ -23,6 +23,7 @@ public class MusicPlayer implements IMusicPlayer {
 	
 	private final TrackScheduler trackscheduler;
 	private final TrackSearch tracksearch;
+	private final TrackSearchOLD tracksearchOLD;
 	private final TrackDirectSearch trackdirectsearch;
 	
 	public MusicPlayer() {
@@ -32,7 +33,8 @@ public class MusicPlayer implements IMusicPlayer {
 		audiooutput = new AudioOutput(this);
 		
 		trackscheduler = new TrackScheduler(audioplayer);
-		tracksearch = new TrackSearch(audioplayermanager, trackscheduler);
+		tracksearch = new TrackSearch(audioplayermanager);
+		tracksearchOLD = new TrackSearchOLD(audioplayermanager, trackscheduler);
 		trackdirectsearch = new TrackDirectSearch(audioplayermanager, trackscheduler);
 		
 		setup();
@@ -46,8 +48,7 @@ public class MusicPlayer implements IMusicPlayer {
 		audioplayermanager.getConfiguration().setOpusEncodingQuality(10);
 		audioplayermanager.getConfiguration().setOutputFormat(audiodataformat);
 		
-		AudioSourceManagers.registerRemoteSources(audioplayermanager);
-		AudioSourceManagers.registerLocalSource(audioplayermanager);
+		AudioSources.registerSources(audioplayermanager);
 		
 		audioplayer.addListener(trackscheduler);
 	}
@@ -70,8 +71,13 @@ public class MusicPlayer implements IMusicPlayer {
 	}
 	
 	@Override
-	public TrackSearch getTrackSearch() {
+	public ITrackSearch getTrackSearch() {
 		return tracksearch;
+	}
+	
+	@Override
+	public TrackSearchOLD getTrackSearchOLD() {
+		return tracksearchOLD;
 	}
 	
 	@Override

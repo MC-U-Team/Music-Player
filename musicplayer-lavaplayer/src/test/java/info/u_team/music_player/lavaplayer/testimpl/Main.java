@@ -24,9 +24,9 @@ public class Main implements IMusicPlayerEvents {
 				} else if (line.startsWith("unpause")) {
 					musicplayer.getTrackScheduler().setPaused(false);
 				} else if (line.startsWith("playsearch ")) {
-					musicplayer.getTrackSearch().play(line.substring(5));
+					musicplayer.getTrackSearchOLD().play(line.substring(5));
 				} else if (line.startsWith("queuesearch ")) {
-					musicplayer.getTrackSearch().queue(line.substring(6));
+					musicplayer.getTrackSearchOLD().queue(line.substring(6));
 				} else if (line.startsWith("play ")) {
 					musicplayer.getTrackDirectSearch().play(line.substring(5));
 				} else if (line.startsWith("queue ")) {

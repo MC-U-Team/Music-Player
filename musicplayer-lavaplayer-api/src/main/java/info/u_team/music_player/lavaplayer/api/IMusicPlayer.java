@@ -4,9 +4,13 @@ public interface IMusicPlayer {
 	
 	public ITrackScheduler getTrackScheduler();
 	
-	public ITrackSearch getTrackSearch();
+	ITrackSearch getTrackSearch();
 	
-	public ITrackSearch getTrackDirectSearch();
+	@Deprecated
+	public ITrackSearchOLD getTrackSearchOLD();
+	
+	@Deprecated
+	public ITrackSearchOLD getTrackDirectSearch();
 	
 	public void startAudioOutput();
 	

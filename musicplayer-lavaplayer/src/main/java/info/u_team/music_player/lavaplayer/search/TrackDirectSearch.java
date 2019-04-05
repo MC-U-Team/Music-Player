@@ -4,7 +4,7 @@ import com.sedmelluq.discord.lavaplayer.player.AudioPlayerManager;
 
 import info.u_team.music_player.lavaplayer.queue.TrackScheduler;
 
-public class TrackDirectSearch extends TrackSearch {
+public class TrackDirectSearch extends TrackSearchOLD {
 	
 	public TrackDirectSearch(AudioPlayerManager audioplayermanager, TrackScheduler trackscheduler) {
 		super(audioplayermanager, trackscheduler);
