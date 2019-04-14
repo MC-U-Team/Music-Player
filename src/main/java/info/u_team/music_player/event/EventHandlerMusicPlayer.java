@@ -1,6 +1,5 @@
 package info.u_team.music_player.event;
 
-import info.u_team.music_player.gui.*;
 import info.u_team.music_player.gui.search.GuiMusicSearch;
 import info.u_team.music_player.init.MusicPlayerKeys;
 import net.minecraft.client.Minecraft;

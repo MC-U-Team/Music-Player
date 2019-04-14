@@ -1,0 +1,15 @@
+{
+	"providers": [
+		{
+			"type": "ttf",
+			"file": "musicplayer:roboto-medium.ttf",
+			"shift": [
+				0,
+				0.5
+			],
+			"size": 9.0,
+			"oversample": 10.0,
+			"skip": ""
+		}
+	]
+}

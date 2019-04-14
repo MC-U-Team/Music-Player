@@ -2,7 +2,7 @@ package info.u_team.music_player.proxy;
 
 import info.u_team.music_player.dependency.DependencyManager;
 import info.u_team.music_player.event.EventHandlerMusicPlayer;
-import info.u_team.music_player.init.MusicPlayerKeys;
+import info.u_team.music_player.init.*;
 import info.u_team.music_player.musicplayer.MusicPlayerManager;
 import info.u_team.u_team_core.api.IModProxy;
 import info.u_team.u_team_core.registry.util.CommonRegistry;
@@ -14,6 +14,7 @@ public class ClientProxy extends CommonProxy implements IModProxy {
 	@Override
 	public void construct() {
 		super.construct();
+		System.setProperty("http.agent", "Chrome");
 		DependencyManager.construct();
 		MusicPlayerManager.construct();
 		MusicPlayerKeys.construct();
@@ -28,5 +29,6 @@ public class ClientProxy extends CommonProxy implements IModProxy {
 	@Override
 	public void complete() {
 		super.complete();
+		MusicPlayerFonts.complete();
 	}
 }
