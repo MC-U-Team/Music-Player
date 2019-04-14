@@ -9,7 +9,9 @@ public class MusicPlayerFonts {
 	
 	public static FontRenderer roboto;
 	
-	public static void complete() {
+	public static void setup() {
+		System.out.println(Minecraft.getInstance());
+		System.out.println(Minecraft.getInstance().getFontResourceManager());
 		roboto = Minecraft.getInstance().getFontResourceManager().getFontRenderer(new ResourceLocation(MusicPlayerMod.modid, "roboto-medium"));
 	}
 }

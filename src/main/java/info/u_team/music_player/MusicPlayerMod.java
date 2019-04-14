@@ -2,7 +2,7 @@ package info.u_team.music_player;
 
 import info.u_team.music_player.proxy.*;
 import info.u_team.u_team_core.api.IModProxy;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.eventbus.api.*;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.*;
@@ -25,7 +25,7 @@ public class MusicPlayerMod {
 		proxy.setup();
 	}
 	
-	@SubscribeEvent
+	@SubscribeEvent(receiveCanceled = true, priority = EventPriority.HIGHEST)
 	public void ready(FMLLoadCompleteEvent event) {
 		proxy.complete();
 	}

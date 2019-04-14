@@ -11,7 +11,7 @@ public class MusicPlayerKeys {
 	
 	public static final KeyBinding open = new KeyBinding("Open", GLFW.GLFW_KEY_F8, "Music Player");
 	
-	public static void construct() {
+	public static void setup() {
 		ClientRegistry.registerKeybinding(open);
 	}
 	

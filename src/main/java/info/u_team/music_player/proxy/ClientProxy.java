@@ -17,18 +17,19 @@ public class ClientProxy extends CommonProxy implements IModProxy {
 		System.setProperty("http.agent", "Chrome");
 		DependencyManager.construct();
 		MusicPlayerManager.construct();
-		MusicPlayerKeys.construct();
 	}
 	
 	@Override
 	public void setup() {
 		super.setup();
 		CommonRegistry.registerEventHandler(EventHandlerMusicPlayer.class);
+		MusicPlayerKeys.setup();
 	}
 	
 	@Override
 	public void complete() {
 		super.complete();
-		MusicPlayerFonts.complete();
+		System.out.println("____________________WHY IS THIS NOT CALLED EVERYTIME???___________________________");
+		MusicPlayerFonts.setup();
 	}
 }

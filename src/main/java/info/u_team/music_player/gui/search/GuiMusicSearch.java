@@ -9,6 +9,7 @@ import info.u_team.music_player.musicplayer.MusicPlayerManager;
 import info.u_team.to_export_to_u_team_core.gui.GuiButtonExtImage;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.*;
+import net.minecraft.client.renderer.*;
 import net.minecraftforge.fml.client.config.GuiButtonExt;
 
 public class GuiMusicSearch extends GuiScreen {
@@ -26,6 +27,7 @@ public class GuiMusicSearch extends GuiScreen {
 	public GuiMusicSearch() {
 		tracks = new SearchList();
 		searchprovider = SearchProvider.YOUTUBE;
+		list = new GuiMusicSearchList(tracks, Minecraft.getInstance(), 0, 0, 0, 0, 20); // We need that this list persists even when rescaling because of some metadata
 	}
 	
 	@Override
@@ -65,8 +67,27 @@ public class GuiMusicSearch extends GuiScreen {
 		searchfield.setFocused(true);
 		children.add(searchfield);
 		
-		list = new GuiMusicSearchList(tracks, mc, width - 24, height, 160, height - 10, 20);
-		list.left = 12;
+		addButton(new GuiButtonExt(5, width - 110, 130, 100, 20, "Add all") {
+			
+			@Override
+			public void onClick(double mouseX, double mouseY) {
+				enabled = false;
+			}
+			
+			@Override
+			public void render(int mouseX, int mouseY, float partial) {
+				super.render(mouseX, mouseY, partial);
+				if (!enabled && hovered) {
+					drawHoveringText("You already added all songs", mouseX, mouseY);
+					RenderHelper.disableStandardItemLighting(); // Fix darker gui
+				}
+			}
+		});
+		
+		list.width = width - 24;
+		list.height = height;
+		list.top = 160;
+		list.bottom = height - 10;
 		list.right = width - 12;
 		children.add(list);
 		
