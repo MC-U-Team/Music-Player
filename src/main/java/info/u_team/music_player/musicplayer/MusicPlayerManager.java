@@ -11,6 +11,8 @@ public class MusicPlayerManager {
 	
 	public static IMusicPlayer player;
 	
+	public static final PlaylistManager playlistmanager = new PlaylistManager();
+	
 	public static void construct() {
 		generatePlayer();
 		player.startAudioOutput();
