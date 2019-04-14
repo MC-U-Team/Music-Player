@@ -1,4 +1,4 @@
-package info.u_team.music_player.musicplayer;
+package info.u_team.music_player.gui.search;
 
 import info.u_team.music_player.MusicPlayerMod;
 import net.minecraft.util.ResourceLocation;

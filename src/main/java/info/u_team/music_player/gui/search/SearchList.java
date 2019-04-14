@@ -1,8 +1,8 @@
 package info.u_team.music_player.gui.search;
 
-import java.util.*;
+import java.util.ArrayList;
 
-import info.u_team.music_player.lavaplayer.api.*;
+import info.u_team.music_player.lavaplayer.api.IAudioTrack;
 
 public class SearchList extends ArrayList<IAudioTrack> {
 	

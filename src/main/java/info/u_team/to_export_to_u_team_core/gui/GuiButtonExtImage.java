@@ -7,16 +7,16 @@ import net.minecraft.client.gui.Gui;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.client.config.*;
 
-public class GuiButtonImage extends GuiButtonExt {
+public class GuiButtonExtImage extends GuiButtonExt {
 	
 	protected ResourceLocation resource;
 	protected int color, hovercolor;
 	
-	public GuiButtonImage(int id, int x, int y, int width, int height, ResourceLocation resource) {
+	public GuiButtonExtImage(int id, int x, int y, int width, int height, ResourceLocation resource) {
 		this(id, x, y, width, height, resource, -1, -1);
 	}
 	
-	public GuiButtonImage(int id, int x, int y, int width, int height, ResourceLocation resource, int color, int hovercolor) {
+	public GuiButtonExtImage(int id, int x, int y, int width, int height, ResourceLocation resource, int color, int hovercolor) {
 		super(id, x, y, width, height, "");
 		this.resource = resource;
 		this.color = color;

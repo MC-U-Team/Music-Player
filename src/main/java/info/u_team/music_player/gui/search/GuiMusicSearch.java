@@ -5,8 +5,8 @@ import org.lwjgl.util.tinyfd.TinyFileDialogs;
 
 import com.google.common.base.Splitter;
 
-import info.u_team.music_player.gui.GuiButtonImage;
-import info.u_team.music_player.musicplayer.*;
+import info.u_team.music_player.musicplayer.MusicPlayerManager;
+import info.u_team.to_export_to_u_team_core.gui.GuiButtonExtImage;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.*;
 import net.minecraftforge.fml.client.config.GuiButtonExt;
@@ -51,7 +51,7 @@ public class GuiMusicSearch extends GuiScreen {
 			}
 		});
 		
-		addButton(new GuiButtonImage(3, 10, 98, 24, 24, searchprovider.getLogo()) {
+		addButton(new GuiButtonExtImage(3, 10, 98, 24, 24, searchprovider.getLogo()) {
 			
 			@Override
 			public void onClick(double mouseX, double mouseY) {

@@ -3,7 +3,7 @@ package info.u_team.music_player.musicplayer;
 import org.apache.logging.log4j.*;
 
 import info.u_team.music_player.dependency.DependencyManager;
-import info.u_team.music_player.lavaplayer.api.*;
+import info.u_team.music_player.lavaplayer.api.IMusicPlayer;
 
 public class MusicPlayerManager {
 	
