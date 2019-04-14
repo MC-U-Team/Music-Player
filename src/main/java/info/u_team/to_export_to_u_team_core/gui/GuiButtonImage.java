@@ -1,4 +1,4 @@
-package info.u_team.music_player.gui;
+package info.u_team.to_export_to_u_team_core.gui;
 
 import org.lwjgl.opengl.GL11;
 
