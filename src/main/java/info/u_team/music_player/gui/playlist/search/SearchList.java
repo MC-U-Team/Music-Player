@@ -1,4 +1,4 @@
-package info.u_team.music_player.gui.search;
+package info.u_team.music_player.gui.playlist.search;
 
 import java.util.ArrayList;
 

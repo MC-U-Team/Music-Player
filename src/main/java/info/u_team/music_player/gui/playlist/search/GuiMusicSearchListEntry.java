@@ -1,4 +1,4 @@
-package info.u_team.music_player.gui.search;
+package info.u_team.music_player.gui.playlist.search;
 
 import info.u_team.music_player.init.MusicPlayerFonts;
 import info.u_team.music_player.lavaplayer.api.IAudioTrack;

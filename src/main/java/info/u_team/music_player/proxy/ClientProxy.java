@@ -15,6 +15,7 @@ public class ClientProxy extends CommonProxy implements IModProxy {
 	public void construct() {
 		super.construct();
 		System.setProperty("http.agent", "Chrome");
+		MusicPlayerFiles.construct();
 		DependencyManager.construct();
 		MusicPlayerManager.construct();
 	}

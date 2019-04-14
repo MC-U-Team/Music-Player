@@ -10,6 +10,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.*;
 
 import info.u_team.music_player.MusicPlayerMod;
+import info.u_team.music_player.init.MusicPlayerFiles;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.loading.moddiscovery.ModFile;
 
@@ -21,8 +22,6 @@ public class DependencyManager {
 	
 	public static final DependencyMusicPlayerClassLoader musicplayerclassloader = new DependencyMusicPlayerClassLoader();
 	
-	private static Path cache;
-	
 	private static Path embeddependencies, musicplayerdependencies;
 	
 	public static void construct() {
@@ -32,14 +31,13 @@ public class DependencyManager {
 	}
 	
 	private static void setupCache() {
-		cache = Paths.get(System.getProperty("java.io.tmpdir"), "musicplayer-dependency-cache");
+		Path cache = MusicPlayerFiles.cache;
 		embeddependencies = cache.resolve("embed");
 		musicplayerdependencies = cache.resolve("musicplayer");
 		logger.info(setup, "Creating musicplayer cache at " + cache);
 		
 		FileUtils.deleteQuietly(cache.toFile());
 		try {
-			Files.createDirectory(cache);
 			Files.createDirectory(embeddependencies);
 			Files.createDirectory(musicplayerdependencies);
 		} catch (IOException ex) {

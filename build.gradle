@@ -178,6 +178,8 @@ sourceSets {
 dependencies {
     minecraft "net.minecraftforge:forge:$config.forge.version"
 	compile "info.u-team:u_team_core-${config.forge.mcversion}:${config.uteamcore.version}:dev"
+	compile project(":musicplayer-lavaplayer-api")
+	
 	embed ("org.lwjgl:lwjgl-tinyfd:3.1.6") {
 		transitive=false
 	}
@@ -190,7 +192,9 @@ dependencies {
 	embed ("org.lwjgl:lwjgl-tinyfd:3.1.6:natives-windows") {
 		transitive=false
 	}
-	compile project(":musicplayer-lavaplayer-api")
+	embed ("net.harawata:appdirs:1.0.3") {
+		transitive=false
+	}
 }
 
 compileJava {
