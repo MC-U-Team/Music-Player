@@ -9,4 +9,5 @@ public class GuiMusicPlayerList extends GuiListExtended<GuiMusicPlayerListEntry>
 		super(mc, widthIn, heightIn, topIn, bottomIn, slotHeightIn);
 	}
 	
+	
 }
