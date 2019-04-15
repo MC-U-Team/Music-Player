@@ -3,6 +3,7 @@ package info.u_team.music_player.init;
 import java.io.*;
 import java.nio.file.*;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.*;
 
 import net.harawata.appdirs.*;
@@ -19,10 +20,13 @@ public class MusicPlayerFiles {
 	public static final Path playlist = directory.resolve("playlist");
 	
 	public static void construct() {
+		FileUtils.deleteQuietly(cache.toFile());
 		try {
 			Files.createDirectories(directory);
 			Files.createDirectory(cache);
-			Files.createDirectory(playlist);
+			if (!Files.isDirectory(playlist)) {
+				Files.createDirectory(playlist);
+			}
 		} catch (IOException ex) {
 			logger.error("Could not create music player directories", ex);
 		}

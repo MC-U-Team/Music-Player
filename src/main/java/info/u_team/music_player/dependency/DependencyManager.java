@@ -36,10 +36,9 @@ public class DependencyManager {
 		musicplayerdependencies = cache.resolve("musicplayer");
 		logger.info(setup, "Creating musicplayer cache at " + cache);
 		
-		FileUtils.deleteQuietly(cache.toFile());
 		try {
-			Files.createDirectory(embeddependencies);
-			Files.createDirectory(musicplayerdependencies);
+			Files.createDirectories(embeddependencies);
+			Files.createDirectories(musicplayerdependencies);
 		} catch (IOException ex) {
 			logger.error(setup, "Could not create music player cache", ex);
 		}

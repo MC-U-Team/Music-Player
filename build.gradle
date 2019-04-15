@@ -180,6 +180,7 @@ dependencies {
 	compile "info.u-team:u_team_core-${config.forge.mcversion}:${config.uteamcore.version}:dev"
 	compile project(":musicplayer-lavaplayer-api")
 	
+	
 	embed ("org.lwjgl:lwjgl-tinyfd:3.1.6") {
 		transitive=false
 	}
@@ -192,7 +193,8 @@ dependencies {
 	embed ("org.lwjgl:lwjgl-tinyfd:3.1.6:natives-windows") {
 		transitive=false
 	}
-	embed ("net.harawata:appdirs:1.0.3") {
+	embed ("org.slf4j:slf4j-simple:1.7.26")
+	embed ("net.harawata:appdirs:1.0.0") {
 		transitive=false
 	}
 }

@@ -16,6 +16,7 @@ public class MusicPlayerManager {
 	public static void construct() {
 		generatePlayer();
 		player.startAudioOutput();
+		playlistmanager.loadFromFile();
 	}
 	
 	private static void generatePlayer() {
