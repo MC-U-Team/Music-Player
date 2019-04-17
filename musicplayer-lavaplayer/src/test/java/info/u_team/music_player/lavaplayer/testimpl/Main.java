@@ -23,14 +23,14 @@ public class Main implements IMusicPlayerEvents {
 					musicplayer.getTrackScheduler().setPaused(true);
 				} else if (line.startsWith("unpause")) {
 					musicplayer.getTrackScheduler().setPaused(false);
-				} else if (line.startsWith("playsearch ")) {
-					musicplayer.getTrackSearchOLD().play(line.substring(5));
-				} else if (line.startsWith("queuesearch ")) {
-					musicplayer.getTrackSearchOLD().queue(line.substring(6));
-				} else if (line.startsWith("play ")) {
-					musicplayer.getTrackDirectSearch().play(line.substring(5));
-				} else if (line.startsWith("queue ")) {
-					musicplayer.getTrackDirectSearch().queue(line.substring(6));
+//				} else if (line.startsWith("playsearch ")) {
+//					musicplayer.getTrackSearchOLD().play(line.substring(5));
+//				} else if (line.startsWith("queuesearch ")) {
+//					musicplayer.getTrackSearchOLD().queue(line.substring(6));
+//				} else if (line.startsWith("play ")) {
+//					musicplayer.getTrackDirectSearch().play(line.substring(5));
+//				} else if (line.startsWith("queue ")) {
+//					musicplayer.getTrackDirectSearch().queue(line.substring(6));
 				} else if (line.startsWith("repeat")) {
 					musicplayer.getTrackScheduler().setRepeat(!musicplayer.getTrackScheduler().isRepeat());
 				} else if (line.startsWith("shuffle")) {

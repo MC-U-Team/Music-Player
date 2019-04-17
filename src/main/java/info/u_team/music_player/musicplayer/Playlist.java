@@ -2,46 +2,67 @@ package info.u_team.music_player.musicplayer;
 
 import java.util.*;
 
-import info.u_team.music_player.lavaplayer.api.IAudioTrack;
+import info.u_team.music_player.lavaplayer.api.*;
 
 public class Playlist {
-	
-	private final List<String> tracks;
-	
+
+	private String name;
+
+	private final Set<String> tracks;
+
 	private transient boolean loaded;
-	private final transient List<IAudioTrack> loadedTracks;
-	
-	public Playlist(Collection<String> unloadedTracks) {
-		this.tracks = new ArrayList<>(unloadedTracks);
+	private final transient Map<String, LoadedTracks> loadedTracks;
+
+	public Playlist(String name) {
+		this.name = name;
+		tracks = new HashSet<>();
 		loaded = false;
-		loadedTracks = new ArrayList<>();
+		loadedTracks = new HashMap<>();
 	}
-	
+
 	public void load() {
 		if (!loaded) {
-			tracks.forEach((track) -> {
-				MusicPlayerManager.player.getTrackSearch().getTracks(track, result -> {
-					loadedTracks.addAll(result.getTracks());
-				});
-			});
+			ITrackSearch search = MusicPlayerManager.player.getTrackSearch();
+			tracks.forEach(track -> search.getTracks(track, LoadedTracks::new));
 			loaded = true;
 		}
 	}
-	
+
 	public void unload() {
 		if (loaded) {
 			loadedTracks.clear();
 			loaded = false;
 		}
 	}
-	
+
 	public boolean isLoaded() {
 		return loaded;
 	}
-	
+
 	public void add(IAudioTrack track) {
-		tracks.add(track.getInfo().getURI());
-		loadedTracks.add(track);
+		String uri = track.getInfo().getURI();
+		tracks.add(uri);
+//		loadedTracks.add(new LoadedTracks(uri, Arrays.asList(track)));
 	}
-	
+
+	public void add(IAudioTrackList tracklist) {
+		if (!tracklist.isSearch() && tracklist.hasUri()) {
+			String uri = tracklist.getUri();
+			tracks.add(uri);
+//			loadedTracks.add(new LoadedTracks(uri, tracklist.getTracks()));
+		}
+	}
+
+	public void remove(IAudioTrack track) {
+		tracks.remove(track.getInfo().getURI());
+		loadedTracks.remove(track);
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getName() {
+		return name;
+	}
 }

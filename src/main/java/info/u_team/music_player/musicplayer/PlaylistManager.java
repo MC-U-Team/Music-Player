@@ -11,20 +11,20 @@ import com.google.gson.*;
 import info.u_team.music_player.init.MusicPlayerFiles;
 
 public class PlaylistManager {
-	
+
 	private static final Logger logger = LogManager.getLogger();
-	
+
 	private final Gson gson;
-	
+
 	private final Path path;
-	
+
 	private Playlists playlists;
-	
+
 	public PlaylistManager() {
 		gson = new GsonBuilder().setPrettyPrinting().create();
 		path = MusicPlayerFiles.playlist.resolve("playlist.json");
 	}
-	
+
 	public void loadFromFile() {
 		try {
 			if (!Files.exists(path)) {
@@ -35,7 +35,7 @@ public class PlaylistManager {
 			logger.error("Could not ready playlist file at " + path, ex);
 		}
 	}
-	
+
 	public void writeToFile() {
 		try {
 			gson.toJson(playlists, Files.newBufferedWriter(path));
@@ -43,9 +43,16 @@ public class PlaylistManager {
 			logger.error("Could not write playlist file at " + path, ex);
 		}
 	}
-	
-	public List<Playlist> getPlaylists() {
-		return Collections.unmodifiableList(playlists.getPlaylists());
+
+	public Playlists getPlaylists() {
+		return playlists;
 	}
 	
+	public void createPlaylist() {
+		playlists = new Playlists();
+	}
+	/*
+	 * public List<Playlist> getPlaylists() { return
+	 * Collections.unmodifiableList(playlists.getPlaylists()); }
+	 */
 }

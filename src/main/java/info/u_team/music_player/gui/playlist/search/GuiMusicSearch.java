@@ -165,7 +165,7 @@ public class GuiMusicSearch extends GuiScreen {
 			if (searchresult.hasError()) {
 				System.out.println(searchresult.getErrorMessage());
 			} else {
-				searchresult.getTracks().forEach(tracks::add);
+				//searchresult.getTracks().forEach(tracks::add);
 			}
 		});
 	}

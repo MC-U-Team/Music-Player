@@ -10,7 +10,7 @@ import net.minecraftforge.api.distmarker.*;
 
 @OnlyIn(Dist.CLIENT)
 public class ClientProxy extends CommonProxy implements IModProxy {
-	
+
 	@Override
 	public void construct() {
 		super.construct();
@@ -18,15 +18,15 @@ public class ClientProxy extends CommonProxy implements IModProxy {
 		MusicPlayerFiles.construct();
 		DependencyManager.construct();
 		MusicPlayerManager.construct();
+		MusicPlayerKeys.setup();
 	}
-	
+
 	@Override
 	public void setup() {
 		super.setup();
 		CommonRegistry.registerEventHandler(EventHandlerMusicPlayer.class);
-		MusicPlayerKeys.setup();
 	}
-	
+
 	@Override
 	public void complete() {
 		super.complete();

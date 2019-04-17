@@ -1,17 +1,26 @@
 package info.u_team.music_player.musicplayer;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Playlists {
-	
-	private final List<Playlist> playlists;
-	
+
+	private List<Playlist> playlists;
+
 	public Playlists() {
 		playlists = new ArrayList<>();
 	}
-	
-	public List<Playlist> getPlaylists() {
-		return playlists;
+
+	public int size() {
+		return playlists.size();
+	}
+
+	public Playlist get(int index) {
+		return playlists.get(index);
 	}
 	
+	public void add(Playlist playlist) {
+		playlists.add(playlist);
+	}
+
 }
