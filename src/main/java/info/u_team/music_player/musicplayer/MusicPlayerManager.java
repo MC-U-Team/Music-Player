@@ -6,24 +6,36 @@ import info.u_team.music_player.dependency.DependencyManager;
 import info.u_team.music_player.lavaplayer.api.IMusicPlayer;
 
 public class MusicPlayerManager {
-
+	
 	private static final Logger logger = LogManager.getLogger();
-
+	
 	public static IMusicPlayer player;
-
+	
 	public static final PlaylistManager playlistmanager = new PlaylistManager();
-
+	
 	public static void construct() {
 		generatePlayer();
 		player.startAudioOutput();
 		playlistmanager.loadFromFile();
-
-		if (playlistmanager.getPlaylists() == null) {
-			playlistmanager.createPlaylist();
-		}
-
+		System.out.println("_______________________________________________________________________________________________");
+		System.out.println(playlistmanager.getPlaylists());
+		Playlists playlists = playlistmanager.getPlaylists();
+		
+		Playlist play1 = new Playlist("Test liste");
+		player.getTrackSearch().getTracks("https://www.youtube.com/watch?v=L6mLEVNvDMU", result -> result.getTrack());
+		player.getTrackSearch().getTracks("https://www.youtube.com/watch?v=GVPM63TAeLg", result -> result.getTrack());
+		
+		playlists.add(play1);
+		
+		Playlist play2 = new Playlist("ROFLLMAO");
+		player.getTrackSearch().getTracks("https://www.youtube.com/watch?v=HXBwmNkKfZo", result -> result.getTrack());
+		player.getTrackSearch().getTracks("https://www.youtube.com/watch?v=QsvLBp43r10", result -> result.getTrack());
+		
+		playlists.add(play2);
+		
+		playlistmanager.writeToFile();
 	}
-
+	
 	private static void generatePlayer() {
 		try {
 			Class<?> clazz = Class.forName("info.u_team.music_player.lavaplayer.MusicPlayer", true, DependencyManager.musicplayerclassloader);

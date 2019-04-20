@@ -8,16 +8,6 @@ public class GuiMusicScrollListPlaylists extends GuiScrollableList {
 		super(width, height, top, bottom, left, right, 50, listWidth, scrollbarPos);
 	}
 	
-	// @Override
-	// public int getListWidth() {
-	// return width - 20;
-	// }
-	//
-	// @Override
-	// protected int getScrollBarX() {
-	// return width + 5;
-	// }
-	
 	@Override
 	protected int getSize() {
 		return 20;
