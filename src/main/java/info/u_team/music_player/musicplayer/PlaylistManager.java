@@ -1,6 +1,6 @@
 package info.u_team.music_player.musicplayer;
 
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.*;
 
 import org.apache.logging.log4j.*;
@@ -27,11 +27,14 @@ public class PlaylistManager {
 	public void loadFromFile() {
 		try {
 			if (!Files.exists(path)) {
-				Files.createFile(path);
-			}
-			playlists = gson.fromJson(Files.newBufferedReader(path), Playlists.class);
-			if (playlists == null) {
 				playlists = new Playlists();
+				writeToFile();
+			} else {
+				try (BufferedReader reader = Files.newBufferedReader(path)) {
+					playlists = gson.fromJson(reader, Playlists.class);
+				} catch (IOException ex) {
+					throw ex;
+				}
 			}
 		} catch (IOException ex) {
 			logger.error("Could not ready playlist file at " + path, ex);
@@ -39,8 +42,8 @@ public class PlaylistManager {
 	}
 	
 	public void writeToFile() {
-		try {
-			gson.toJson(playlists, Files.newBufferedWriter(path));
+		try (BufferedWriter writer = Files.newBufferedWriter(path)) {
+			gson.toJson(playlists, writer);
 		} catch (IOException ex) {
 			logger.error("Could not write playlist file at " + path, ex);
 		}

@@ -20,10 +20,16 @@ public class Playlists {
 	
 	public void add(Playlist playlist) {
 		playlists.add(playlist);
+		save();
 	}
 	
 	public void remove(Playlist playlist) {
 		playlists.remove(playlist);
+		save();
+	}
+	
+	private void save() {
+		MusicPlayerManager.getPlaylistManager().writeToFile();
 	}
 	
 }

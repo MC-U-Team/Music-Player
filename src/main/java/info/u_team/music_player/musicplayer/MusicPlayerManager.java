@@ -9,31 +9,14 @@ public class MusicPlayerManager {
 	
 	private static final Logger logger = LogManager.getLogger();
 	
-	public static IMusicPlayer player;
+	private static IMusicPlayer player;
 	
-	public static final PlaylistManager playlistmanager = new PlaylistManager();
+	private static final PlaylistManager playlistmanager = new PlaylistManager();
 	
 	public static void construct() {
 		generatePlayer();
 		player.startAudioOutput();
 		playlistmanager.loadFromFile();
-		System.out.println("_______________________________________________________________________________________________");
-		System.out.println(playlistmanager.getPlaylists());
-		Playlists playlists = playlistmanager.getPlaylists();
-		
-		Playlist play1 = new Playlist("Test liste");
-		player.getTrackSearch().getTracks("https://www.youtube.com/watch?v=L6mLEVNvDMU", result -> result.getTrack());
-		player.getTrackSearch().getTracks("https://www.youtube.com/watch?v=GVPM63TAeLg", result -> result.getTrack());
-		
-		playlists.add(play1);
-		
-		Playlist play2 = new Playlist("ROFLLMAO");
-		player.getTrackSearch().getTracks("https://www.youtube.com/watch?v=HXBwmNkKfZo", result -> result.getTrack());
-		player.getTrackSearch().getTracks("https://www.youtube.com/watch?v=QsvLBp43r10", result -> result.getTrack());
-		
-		playlists.add(play2);
-		
-		playlistmanager.writeToFile();
 	}
 	
 	private static void generatePlayer() {
@@ -48,5 +31,15 @@ public class MusicPlayerManager {
 			logger.fatal("Cannot create music player instance. This is a serious bug and the mod will not work. Report to the mod authors", ex);
 			System.exit(0);
 		}
+	}
+	
+	
+	public static IMusicPlayer getPlayer() {
+		return player;
+	}
+	
+	
+	public static PlaylistManager getPlaylistManager() {
+		return playlistmanager;
 	}
 }

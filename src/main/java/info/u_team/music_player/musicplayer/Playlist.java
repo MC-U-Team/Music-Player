@@ -22,7 +22,7 @@ public class Playlist {
 	
 	public void load() {
 		if (!loaded) {
-			ITrackSearch search = MusicPlayerManager.player.getTrackSearch();
+			ITrackSearch search = MusicPlayerManager.getPlayer().getTrackSearch();
 			tracks.forEach(track -> search.getTracks(track, LoadedTracks::new));
 			loaded = true;
 		}
@@ -65,6 +65,10 @@ public class Playlist {
 	
 	public String getName() {
 		return name;
+	}
+	
+	public int getTrackSize() {
+		return tracks.size();
 	}
 	
 	@Override

@@ -161,11 +161,11 @@ public class GuiMusicSearch extends GuiScreen {
 	}
 	
 	private void loadTrack(String uri) {
-		MusicPlayerManager.player.getTrackSearch().getTracks(uri, searchresult -> {
+		MusicPlayerManager.getPlayer().getTrackSearch().getTracks(uri, searchresult -> {
 			if (searchresult.hasError()) {
 				System.out.println(searchresult.getErrorMessage());
 			} else {
-				//searchresult.getTracks().forEach(tracks::add);
+				// searchresult.getTracks().forEach(tracks::add);
 			}
 		});
 	}

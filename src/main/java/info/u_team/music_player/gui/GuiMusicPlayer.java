@@ -4,11 +4,15 @@ import net.minecraft.client.gui.GuiScreen;
 
 public class GuiMusicPlayer extends GuiScreen {
 	
-	private GuiMusicScrollListPlaylists playlists;
+	private final GuiMusicPlayerListPlaylists playlists;
+	
+	public GuiMusicPlayer() {
+		playlists = new GuiMusicPlayerListPlaylists();
+	}
 	
 	@Override
 	protected void initGui() {
-		playlists = new GuiMusicScrollListPlaylists(width - 24, height, 10, height - 10, 12, width - 12, 20, 5);
+		playlists.updateSettings(width - 24, height, 10, height - 10, 12, width - 12);
 		children.add(playlists);
 		super.initGui();
 	}
