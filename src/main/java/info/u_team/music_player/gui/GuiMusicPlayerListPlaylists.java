@@ -35,14 +35,19 @@ public class GuiMusicPlayerListPlaylists extends GuiScrollableList {
 		
 		private final Playlist playlist;
 		
+		private final GuiButtonExtImage playPlaylistButton;
 		private final GuiButtonExtImage openPlaylistButton;
 		private final GuiButtonExtImage deletePlaylistButton;
 		
 		public GuiMusicPlayerListPlaylistsEntry(Playlist playlist) {
 			this.playlist = playlist;
-			openPlaylistButton = new GuiButtonExtImage(0, 0, 20, 20, MusicPlayerResources.textureOpen, button -> {
-			});
-			deletePlaylistButton = new GuiButtonExtImage(0, 0, 20, 20, MusicPlayerResources.textureClear, button -> removePlaylist(this));
+			playPlaylistButton = addButton(new GuiButtonExtImage(0, 0, 20, 20, MusicPlayerResources.texturePlay, button -> {
+				System.out.println("PLAY");
+			}));
+			openPlaylistButton = addButton(new GuiButtonExtImage(0, 0, 20, 20, MusicPlayerResources.textureOpen, button -> {
+				System.out.println("OPEN");
+			}));
+			deletePlaylistButton = addButton(new GuiButtonExtImage(0, 0, 20, 20, MusicPlayerResources.textureClear, button -> removePlaylist(this)));
 		}
 		
 		@Override
@@ -51,45 +56,20 @@ public class GuiMusicPlayerListPlaylists extends GuiScrollableList {
 			if (name.isEmpty()) {
 				name = "\u00A7oNo name";
 			}
-			mc.fontRenderer.drawString(name, getX(), getY(), 0xFFF00F);
-			mc.fontRenderer.drawString(playlist.getTrackSize() + " Songs", getX() + 5, getY() + 25, 0xFFFFFF);
+			mc.fontRenderer.drawString(name, getX() + 5, getY() + 5, 0xFFF00F);
+			mc.fontRenderer.drawString(playlist.getTrackSize() + " Songs", getX() + 5, getY() + 30, 0xFFFFFF);
+			
+			playPlaylistButton.x = entryWidth - 80;
+			playPlaylistButton.y = getY() + 12;
+			playPlaylistButton.render(mouseX, mouseY, partialTicks);
 			
 			openPlaylistButton.x = entryWidth - 50;
-			openPlaylistButton.y = getY() + 20;
+			openPlaylistButton.y = getY() + 12;
 			openPlaylistButton.render(mouseX, mouseY, partialTicks);
 			
 			deletePlaylistButton.x = entryWidth - 20;
-			deletePlaylistButton.y = getY() + 20;
+			deletePlaylistButton.y = getY() + 12;
 			deletePlaylistButton.render(mouseX, mouseY, partialTicks);
 		}
-		
-		@Override
-		public boolean mouseClicked(double p_mouseClicked_1_, double p_mouseClicked_3_, int p_mouseClicked_5_) {
-			boolean flag = openPlaylistButton.mouseClicked(p_mouseClicked_1_, p_mouseClicked_3_, p_mouseClicked_5_);
-			if (!flag) {
-				return deletePlaylistButton.mouseClicked(p_mouseClicked_1_, p_mouseClicked_3_, p_mouseClicked_5_);
-			}
-			return true;
-		}
-		
-		@Override
-		public boolean mouseReleased(double p_mouseReleased_1_, double p_mouseReleased_3_, int p_mouseReleased_5_) {
-			boolean flag = openPlaylistButton.mouseReleased(p_mouseReleased_1_, p_mouseReleased_3_, p_mouseReleased_5_);
-			if (!flag) {
-				return deletePlaylistButton.mouseReleased(p_mouseReleased_1_, p_mouseReleased_3_, p_mouseReleased_5_);
-			}
-			return true;
-		}
-		
-		@Override
-		public boolean mouseDragged(double p_mouseDragged_1_, double p_mouseDragged_3_, int p_mouseDragged_5_, double p_mouseDragged_6_, double p_mouseDragged_8_) {
-			boolean flag = openPlaylistButton.mouseDragged(p_mouseDragged_1_, p_mouseDragged_3_, p_mouseDragged_5_, p_mouseDragged_6_, p_mouseDragged_8_);
-			if (!flag) {
-				return deletePlaylistButton.mouseDragged(p_mouseDragged_1_, p_mouseDragged_3_, p_mouseDragged_5_, p_mouseDragged_6_, p_mouseDragged_8_);
-			}
-			return true;
-		}
-		
 	}
-	
 }
