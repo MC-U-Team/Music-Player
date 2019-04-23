@@ -1,5 +1,7 @@
 package info.u_team.to_export_to_u_team_core.gui;
 
+import java.util.function.Consumer;
+
 import org.lwjgl.opengl.GL11;
 
 import net.minecraft.client.Minecraft;
@@ -7,17 +9,17 @@ import net.minecraft.client.gui.Gui;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.client.config.*;
 
-public class GuiButtonExtImage extends GuiButtonExt {
+public class GuiButtonExtImage extends GuiButtonClick {
 	
 	protected ResourceLocation resource;
 	protected int color, hovercolor;
 	
-	public GuiButtonExtImage(int id, int x, int y, int width, int height, ResourceLocation resource) {
-		this(id, x, y, width, height, resource, -1, -1);
+	public GuiButtonExtImage(int x, int y, int width, int height, ResourceLocation resource, Consumer<GuiButtonClick> consumer) {
+		this(x, y, width, height, resource, -1, -1, consumer);
 	}
 	
-	public GuiButtonExtImage(int id, int x, int y, int width, int height, ResourceLocation resource, int color, int hovercolor) {
-		super(id, x, y, width, height, "");
+	public GuiButtonExtImage(int x, int y, int width, int height, ResourceLocation resource, int color, int hovercolor, Consumer<GuiButtonClick> consumer) {
+		super(x, y, width, height, "", consumer);
 		this.resource = resource;
 		this.color = color;
 		this.hovercolor = hovercolor;

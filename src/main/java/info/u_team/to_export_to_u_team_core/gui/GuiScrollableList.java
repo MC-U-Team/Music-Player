@@ -1,16 +1,16 @@
 package info.u_team.to_export_to_u_team_core.gui;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiSlot;
-import net.minecraft.util.Util;
+import net.minecraft.client.gui.GuiListExtended;
 
-public abstract class GuiScrollableList extends GuiSlot {
+public abstract class GuiScrollableList extends GuiListExtended<GuiScrollableListEntry> {
 	
 	protected int listWidth;
 	protected int scrollbarPos;
 	
-	public GuiScrollableList(int slotHeight, int listWidth, int scrollbarPos) {
+	public GuiScrollableList(int width, int height, int top, int bottom, int left, int right, int slotHeight, int listWidth, int scrollbarPos) {
 		super(Minecraft.getInstance(), 0, 0, 0, 0, slotHeight);
+		updateSettings(width, height, top, bottom, left, right);
 		this.listWidth = listWidth;
 		this.scrollbarPos = scrollbarPos;
 	}
@@ -43,9 +43,8 @@ public abstract class GuiScrollableList extends GuiSlot {
 	protected void drawBackground() {
 	}
 	
-	public void setSelectedEntry(int index) {
-		selectedElement = index;
-		lastClicked = Util.milliTime();
+	protected final void removeEntry(GuiScrollableListEntry entry) {
+		getChildren().remove(entry);
 	}
 	
 }

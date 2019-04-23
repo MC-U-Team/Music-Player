@@ -2,7 +2,7 @@ package info.u_team.music_player.musicplayer;
 
 import java.util.*;
 
-public class Playlists {
+public class Playlists implements Iterable<Playlist> {
 	
 	private List<Playlist> playlists;
 	
@@ -30,6 +30,11 @@ public class Playlists {
 	
 	private void save() {
 		MusicPlayerManager.getPlaylistManager().writeToFile();
+	}
+	
+	@Override
+	public Iterator<Playlist> iterator() {
+		return playlists.iterator();
 	}
 	
 }

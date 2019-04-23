@@ -53,14 +53,10 @@ public class GuiMusicSearch extends GuiScreen {
 			}
 		});
 		
-		addButton(new GuiButtonExtImage(3, 10, 98, 24, 24, searchprovider.getLogo()) {
-			
-			@Override
-			public void onClick(double mouseX, double mouseY) {
-				searchprovider = SearchProvider.toggle(searchprovider);
-				setResource(searchprovider.getLogo());
-			}
-		});
+		addButton(new GuiButtonExtImage(10, 98, 24, 24, searchprovider.getLogo(), button -> {
+			searchprovider = SearchProvider.toggle(searchprovider);
+			((GuiButtonExtImage) button).setResource(searchprovider.getLogo());
+		}));
 		
 		searchfield = new GuiTextField(4, mc.fontRenderer, 40, 100, width - 50, 20);
 		searchfield.setMaxStringLength(1000);
