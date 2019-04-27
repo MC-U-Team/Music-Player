@@ -4,15 +4,16 @@ import java.util.*;
 import java.util.concurrent.LinkedBlockingQueue;
 
 import info.u_team.music_player.lavaplayer.api.*;
+import info.u_team.music_player.util.WrappedObject;
 
 public class Playlist {
 	
 	private String name;
 	
-	private final Set<String> tracks;
+	private final Set<WrappedObject<String>> tracks;
 	
 	private transient boolean loaded;
-	private final transient Map<String, LoadedTracks> loadedTracks;
+	private final transient Map<WrappedObject<String>, LoadedTracks> loadedTracks;
 	
 	private transient boolean playing;
 	
@@ -20,7 +21,7 @@ public class Playlist {
 	
 	public Playlist(String name) {
 		this.name = name;
-		tracks = new HashSet<>();
+		tracks = new LinkedHashSet<>();
 		loaded = false;
 		loadedTracks = new HashMap<>();
 		loadQueue = new LinkedBlockingQueue<>();
