@@ -36,8 +36,8 @@ public class Playlist {
 			// not removed, because of threaded loading. Also clear load queue
 			unload();
 			ITrackSearch search = MusicPlayerManager.getPlayer().getTrackSearch();
-			tracks.forEach(uri -> search.getTracks(uri, result -> {
-				LoadedTracks loadedTrack = new LoadedTracks(result);
+			tracks.forEach(uri -> search.getTracks(uri.get(), result -> {
+				LoadedTracks loadedTrack = new LoadedTracks(uri, result);
 				loadedTracks.put(uri, loadedTrack);
 				loadQueue.offer(loadedTrack); // Add all loaded elements to queue so we can use add them async to our gui list
 			}));
@@ -56,21 +56,21 @@ public class Playlist {
 	}
 	
 	public boolean add(IAudioTrack track) {
-		String uri = track.getInfo().getURI();
-		loadedTracks.put(uri, new LoadedTracks(track));
+		WrappedObject<String> uri = new WrappedObject<>(track.getInfo().getURI());
+		loadedTracks.put(uri, new LoadedTracks(uri, track));
 		return tracks.add(uri);
 	}
 	
-	public boolean add(IAudioTrackList tracklist) {
-		if (!tracklist.isSearch() && tracklist.hasUri()) {
-			String uri = tracklist.getUri();
-			loadedTracks.put(uri, new LoadedTracks(tracklist));
+	public boolean add(IAudioTrackList trackList) {
+		if (!trackList.isSearch() && trackList.hasUri()) {
+			WrappedObject<String> uri = new WrappedObject<>(trackList.getUri());
+			loadedTracks.put(uri, new LoadedTracks(uri, trackList));
 			return tracks.add(uri);
 		}
 		return false;
 	}
 	
-	public boolean remove(String uri) {
+	public boolean remove(WrappedObject<String> uri) {
 		loadedTracks.remove(uri);
 		return tracks.remove(uri);
 	}
@@ -97,37 +97,6 @@ public class Playlist {
 	
 	public Queue<LoadedTracks> getLoadQueue() {
 		return loadQueue;
-	}
-	
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((name == null) ? 0 : name.hashCode());
-		result = prime * result + ((tracks == null) ? 0 : tracks.hashCode());
-		return result;
-	}
-	
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Playlist other = (Playlist) obj;
-		if (name == null) {
-			if (other.name != null)
-				return false;
-		} else if (!name.equals(other.name))
-			return false;
-		if (tracks == null) {
-			if (other.tracks != null)
-				return false;
-		} else if (!tracks.equals(other.tracks))
-			return false;
-		return true;
 	}
 	
 }

@@ -18,7 +18,8 @@ import com.google.gson.annotations.SerializedName;
 public class WrappedObject<T> {
 	
 	/**
-	 * Set the gson default serialization to <code>o</code>.
+	 * Wrapped object <br>
+	 * Annotation sets the gson default serialization to <code>o</code>.
 	 */
 	@SerializedName(value = "o", alternate = { "object" })
 	private final T object;

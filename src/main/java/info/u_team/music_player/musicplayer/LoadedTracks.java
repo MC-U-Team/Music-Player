@@ -1,110 +1,67 @@
 package info.u_team.music_player.musicplayer;
 
-import java.util.*;
-
 import info.u_team.music_player.lavaplayer.api.*;
+import info.u_team.music_player.util.WrappedObject;
 
 public class LoadedTracks {
 	
-	private final String uri;
+	private final WrappedObject<String> uri;
 	
-	private String name;
+	private String errorMessage;
 	
-	private List<IAudioTrack> tracks;
+	private String title;
+	private IAudioTrack track;
+	private IAudioTrackList trackList;
 	
-	private final boolean error;
-	
-	public LoadedTracks(ISearchResult result) {
-		uri = result.getUri();
+	public LoadedTracks(WrappedObject<String> uri, ISearchResult result) {
+		this.uri = uri;
 		if (result.hasError()) {
-			name = result.getErrorMessage();
-			tracks = new ArrayList<>();
-			error = true;
+			this.errorMessage = result.getErrorMessage();
 		} else {
-			error = false;
-			if (result.isList()) {
-				init(result.getTrackList());
+			if (!result.isList()) {
+				track = result.getTrack();
+				title = track.getInfo().getTitle();
 			} else {
-				init(result.getTrack());
+				trackList = result.getTrackList();
+				title = trackList.getName();
 			}
 		}
 	}
 	
-	public LoadedTracks(IAudioTrack track) {
-		init(track);
-		uri = track.getInfo().getURI();
-		error = false;
+	public LoadedTracks(WrappedObject<String> uri, IAudioTrack track) {
+		this.uri = uri;
+		this.track = track;
+		title = track.getInfo().getTitle();
 	}
 	
-	public LoadedTracks(IAudioTrackList list) {
-		init(list);
-		uri = list.hasUri() ? list.getUri() : "No Uri";
-		error = false;
+	public LoadedTracks(WrappedObject<String> uri, IAudioTrackList trackList) {
+		this.uri = uri;
+		this.trackList = trackList;
+		title = trackList.getName();
 	}
 	
-	private void init(IAudioTrack track) {
-		name = track.getInfo().getTitle();
-		tracks = new ArrayList<>();
-		tracks.add(track);
-	}
-	
-	private void init(IAudioTrackList list) {
-		name = list.getName();
-		tracks = new ArrayList<>(list.getTracks());
-	}
-	
-	public String getUri() {
+	public WrappedObject<String> getUri() {
 		return uri;
 	}
 	
-	public String getName() {
-		return name;
-	}
-	
-	public List<IAudioTrack> getTracks() {
-		return tracks;
-	}
-	
 	public boolean hasError() {
-		return error;
+		return errorMessage != null;
 	}
 	
-	public int size() {
-		return tracks.size();
+	public String getErrorMessage() {
+		return errorMessage;
 	}
 	
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + (error ? 1231 : 1237);
-		result = prime * result + ((name == null) ? 0 : name.hashCode());
-		result = prime * result + ((tracks == null) ? 0 : tracks.hashCode());
-		return result;
+	public String getTitle() {
+		return title;
 	}
 	
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		LoadedTracks other = (LoadedTracks) obj;
-		if (error != other.error)
-			return false;
-		if (name == null) {
-			if (other.name != null)
-				return false;
-		} else if (!name.equals(other.name))
-			return false;
-		if (tracks == null) {
-			if (other.tracks != null)
-				return false;
-		} else if (!tracks.equals(other.tracks))
-			return false;
-		return true;
+	public IAudioTrack getTrack() {
+		return track;
+	}
+	
+	public IAudioTrackList getTrackList() {
+		return trackList;
 	}
 	
 }
