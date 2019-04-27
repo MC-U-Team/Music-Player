@@ -4,7 +4,7 @@ import info.u_team.music_player.init.MusicPlayerResources;
 import info.u_team.music_player.musicplayer.Playlist;
 import info.u_team.to_export_to_u_team_core.gui.*;
 
-class GuiMusicPlayerListPlaylistsEntry extends GuiScrollableListEntry<GuiMusicPlayerListPlaylistsEntry> {
+class GuiMusicPlayerListEntry extends GuiScrollableListEntry<GuiMusicPlayerListEntry> {
 	
 	private final Playlist playlist;
 	
@@ -12,7 +12,7 @@ class GuiMusicPlayerListPlaylistsEntry extends GuiScrollableListEntry<GuiMusicPl
 	private final GuiButtonClickImage openPlaylistButton;
 	private final GuiButtonClickImage deletePlaylistButton;
 	
-	public GuiMusicPlayerListPlaylistsEntry(GuiMusicPlayerListPlaylists gui, Playlist playlist) {
+	public GuiMusicPlayerListEntry(GuiMusicPlayerList gui, Playlist playlist) {
 		this.playlist = playlist;
 		
 		playPlaylistButton = addButton(new GuiButtonClickImageToggle(0, 0, 20, 20, MusicPlayerResources.texturePlay, MusicPlayerResources.textureStop));

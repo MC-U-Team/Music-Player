@@ -11,7 +11,7 @@ public class GuiMusicPlayer extends GuiScreen {
 	
 	private GuiTextField namePlaylistField;
 	
-	private GuiMusicPlayerListPlaylists playlistsList;
+	private GuiMusicPlayerList playlistsList;
 	
 	@Override
 	protected void initGui() {
@@ -30,7 +30,7 @@ public class GuiMusicPlayer extends GuiScreen {
 			namePlaylistField.setText("");
 		});
 		
-		playlistsList = new GuiMusicPlayerListPlaylists(width - 24, height, 50, height - 30, 12, width - 12);
+		playlistsList = new GuiMusicPlayerList(width - 24, height, 50, height - 30, 12, width - 12);
 		children.add(playlistsList);
 		super.initGui();
 	}
