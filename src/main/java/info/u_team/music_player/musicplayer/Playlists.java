@@ -2,6 +2,8 @@ package info.u_team.music_player.musicplayer;
 
 import java.util.*;
 
+import com.google.common.collect.Iterators;
+
 public class Playlists implements Iterable<Playlist> {
 	
 	private List<Playlist> playlists;
@@ -34,7 +36,7 @@ public class Playlists implements Iterable<Playlist> {
 	
 	@Override
 	public Iterator<Playlist> iterator() {
-		return playlists.iterator();
+		return Iterators.unmodifiableIterator(playlists.iterator());
 	}
 	
 }

@@ -2,18 +2,22 @@ package info.u_team.to_export_to_u_team_core.gui;
 
 import java.util.*;
 
-import net.minecraft.client.gui.*;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiListExtended.IGuiListEntry;
 
-public abstract class GuiScrollableListEntry extends IGuiListEntry<GuiScrollableListEntry> {
+public abstract class GuiScrollableListEntry<T extends GuiScrollableListEntry<T>> extends IGuiListEntry<T> {
+	
+	protected final Minecraft mc;
 	
 	private final List<GuiButton> buttons;
 	
 	public GuiScrollableListEntry() {
+		mc = Minecraft.getInstance();
 		buttons = new ArrayList<>();
 	}
 	
-	protected <T extends GuiButton> T addButton(T button) {
+	protected <B extends GuiButton> B addButton(B button) {
 		buttons.add(button);
 		return button;
 	}

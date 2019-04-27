@@ -3,7 +3,7 @@ package info.u_team.music_player.gui;
 import org.apache.commons.lang3.StringUtils;
 
 import info.u_team.music_player.init.MusicPlayerResources;
-import info.u_team.to_export_to_u_team_core.gui.GuiButtonExtImage;
+import info.u_team.to_export_to_u_team_core.gui.GuiButtonClickImage;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.*;
 
@@ -19,7 +19,8 @@ public class GuiMusicPlayer extends GuiScreen {
 		namePlaylistField.setMaxStringLength(500);
 		children.add(namePlaylistField);
 		
-		addButton(new GuiButtonExtImage(width - 41, 19, 22, 22, MusicPlayerResources.textureCreate, button -> {
+		GuiButtonClickImage addPlaylistButton = addButton(new GuiButtonClickImage(width - 41, 19, 22, 22, MusicPlayerResources.textureCreate));
+		addPlaylistButton.setClickAction(() -> {
 			String name = namePlaylistField.getText();
 			if (StringUtils.isBlank(name) || name.equals("Enter a name")) {
 				namePlaylistField.setText("Enter a name");
@@ -27,7 +28,7 @@ public class GuiMusicPlayer extends GuiScreen {
 			}
 			playlistsList.addPlaylist(name);
 			namePlaylistField.setText("");
-		}));
+		});
 		
 		playlistsList = new GuiMusicPlayerListPlaylists(width - 24, height, 50, height - 30, 12, width - 12);
 		children.add(playlistsList);

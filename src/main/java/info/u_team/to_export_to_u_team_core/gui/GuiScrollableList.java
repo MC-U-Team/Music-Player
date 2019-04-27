@@ -2,8 +2,9 @@ package info.u_team.to_export_to_u_team_core.gui;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiListExtended;
+import net.minecraft.client.gui.GuiListExtended.IGuiListEntry;
 
-public abstract class GuiScrollableList extends GuiListExtended<GuiScrollableListEntry> {
+public abstract class GuiScrollableList<T extends IGuiListEntry<T>> extends GuiListExtended<T> {
 	
 	protected int listWidth;
 	protected int scrollbarPos;
@@ -43,8 +44,7 @@ public abstract class GuiScrollableList extends GuiListExtended<GuiScrollableLis
 	protected void drawBackground() {
 	}
 	
-	protected final void removeEntry(GuiScrollableListEntry entry) {
+	protected final void removeEntry(T entry) {
 		getChildren().remove(entry);
 	}
-	
 }

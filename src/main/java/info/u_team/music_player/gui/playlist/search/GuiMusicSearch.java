@@ -6,7 +6,7 @@ import org.lwjgl.util.tinyfd.TinyFileDialogs;
 import com.google.common.base.Splitter;
 
 import info.u_team.music_player.musicplayer.MusicPlayerManager;
-import info.u_team.to_export_to_u_team_core.gui.GuiButtonExtImage;
+import info.u_team.to_export_to_u_team_core.gui.GuiButtonClickImage;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.*;
 import net.minecraft.client.renderer.*;
@@ -53,10 +53,10 @@ public class GuiMusicSearch extends GuiScreen {
 			}
 		});
 		
-		addButton(new GuiButtonExtImage(10, 98, 24, 24, searchprovider.getLogo(), button -> {
-			searchprovider = SearchProvider.toggle(searchprovider);
-			((GuiButtonExtImage) button).setResource(searchprovider.getLogo());
-		}));
+//		addButton(new GuiButtonClickImage(10, 98, 24, 24, searchprovider.getLogo(), button -> {
+//			searchprovider = SearchProvider.toggle(searchprovider);
+//			((GuiButtonClickImage) button).setResource(searchprovider.getLogo());
+//		}));
 		
 		searchfield = new GuiTextField(4, mc.fontRenderer, 40, 100, width - 50, 20);
 		searchfield.setMaxStringLength(1000);

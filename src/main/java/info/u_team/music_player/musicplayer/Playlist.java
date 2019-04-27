@@ -13,6 +13,8 @@ public class Playlist {
 	private transient boolean loaded;
 	private final transient Map<String, LoadedTracks> loadedTracks;
 	
+	private transient boolean playing;
+	
 	public Playlist(String name) {
 		this.name = name;
 		tracks = new HashSet<>();
@@ -69,6 +71,14 @@ public class Playlist {
 	
 	public int getTrackSize() {
 		return tracks.size();
+	}
+	
+	public void setPlaying(boolean playing) {
+		this.playing = playing;
+	}
+	
+	public boolean isPlaying() {
+		return playing;
 	}
 	
 	@Override
