@@ -1,5 +1,6 @@
 package info.u_team.music_player.gui;
 
+import info.u_team.music_player.gui.playlist.GuiMusicPlaylist;
 import info.u_team.music_player.init.MusicPlayerResources;
 import info.u_team.music_player.musicplayer.Playlist;
 import info.u_team.to_export_to_u_team_core.gui.*;
@@ -29,7 +30,7 @@ class GuiMusicPlayerListEntry extends GuiScrollableListEntry<GuiMusicPlayerListE
 		
 		openPlaylistButton = addButton(new GuiButtonClickImage(0, 0, 20, 20, MusicPlayerResources.textureOpen));
 		openPlaylistButton.setClickAction(() -> {
-			System.out.println("OPEN");
+			mc.displayGuiScreen(new GuiMusicPlaylist(playlist));
 		});
 		
 		deletePlaylistButton = addButton(new GuiButtonClickImage(0, 0, 20, 20, MusicPlayerResources.textureClear));

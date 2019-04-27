@@ -1,6 +1,7 @@
 package info.u_team.music_player.musicplayer;
 
 import java.util.*;
+import java.util.concurrent.LinkedBlockingQueue;
 
 import info.u_team.music_player.lavaplayer.api.*;
 
@@ -15,26 +16,38 @@ public class Playlist {
 	
 	private transient boolean playing;
 	
+	private transient Queue<LoadedTracks> loadQueue;
+	
 	public Playlist(String name) {
 		this.name = name;
 		tracks = new HashSet<>();
 		loaded = false;
 		loadedTracks = new HashMap<>();
+		loadQueue = new LinkedBlockingQueue<>();
 	}
 	
 	public void load() {
-		if (!loaded) {
-			ITrackSearch search = MusicPlayerManager.getPlayer().getTrackSearch();
-			tracks.forEach(track -> search.getTracks(track, LoadedTracks::new));
-			loaded = true;
+		if (loaded) {
+			return;
 		}
+		MusicPlayerManager.getExecutor().execute(() -> {
+			// Just to be sure the list is clear so we don't load tracks twice which were
+			// not removed, because of threaded loading. Also clear load queue
+			unload();
+			ITrackSearch search = MusicPlayerManager.getPlayer().getTrackSearch();
+			tracks.forEach(uri -> search.getTracks(uri, result -> {
+				LoadedTracks loadedTrack = new LoadedTracks(result);
+				loadedTracks.put(uri, loadedTrack);
+				loadQueue.offer(loadedTrack); // Add all loaded elements to queue so we can use add them async to our gui list
+			}));
+			loaded = true;
+		});
 	}
 	
 	public void unload() {
-		if (loaded) {
-			loadedTracks.clear();
-			loaded = false;
-		}
+		loadedTracks.clear();
+		loaded = false;
+		loadQueue.clear();
 	}
 	
 	public boolean isLoaded() {
@@ -79,6 +92,10 @@ public class Playlist {
 	
 	public boolean isPlaying() {
 		return playing;
+	}
+	
+	public Queue<LoadedTracks> getLoadQueue() {
+		return loadQueue;
 	}
 	
 	@Override
