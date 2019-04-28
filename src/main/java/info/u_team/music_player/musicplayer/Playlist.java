@@ -10,7 +10,7 @@ public class Playlist {
 	
 	private String name;
 	
-	private final Set<WrappedObject<String>> tracks;
+	private final Set<WrappedObject<String>> uris;
 	
 	private transient boolean loaded;
 	private final transient Map<WrappedObject<String>, LoadedTracks> loadedTracks;
@@ -21,7 +21,7 @@ public class Playlist {
 	
 	public Playlist(String name) {
 		this.name = name;
-		tracks = new LinkedHashSet<>();
+		uris = new LinkedHashSet<>();
 		loaded = false;
 		loadedTracks = new HashMap<>();
 		loadQueue = new LinkedBlockingQueue<>();
@@ -36,7 +36,7 @@ public class Playlist {
 			// not removed, because of threaded loading. Also clear load queue
 			unload();
 			ITrackSearch search = MusicPlayerManager.getPlayer().getTrackSearch();
-			tracks.forEach(uri -> search.getTracks(uri.get(), result -> {
+			uris.forEach(uri -> search.getTracks(uri.get(), result -> {
 				LoadedTracks loadedTrack = new LoadedTracks(uri, result);
 				loadedTracks.put(uri, loadedTrack);
 				loadQueue.offer(loadedTrack); // Add all loaded elements to queue so we can use add them async to our gui list
@@ -58,21 +58,21 @@ public class Playlist {
 	public boolean add(IAudioTrack track) {
 		WrappedObject<String> uri = new WrappedObject<>(track.getInfo().getURI());
 		loadedTracks.put(uri, new LoadedTracks(uri, track));
-		return tracks.add(uri);
+		return uris.add(uri);
 	}
 	
 	public boolean add(IAudioTrackList trackList) {
 		if (!trackList.isSearch() && trackList.hasUri()) {
 			WrappedObject<String> uri = new WrappedObject<>(trackList.getUri());
 			loadedTracks.put(uri, new LoadedTracks(uri, trackList));
-			return tracks.add(uri);
+			return uris.add(uri);
 		}
 		return false;
 	}
 	
 	public boolean remove(WrappedObject<String> uri) {
 		loadedTracks.remove(uri);
-		return tracks.remove(uri);
+		return uris.remove(uri);
 	}
 	
 	public void setName(String name) {
@@ -84,7 +84,7 @@ public class Playlist {
 	}
 	
 	public int getTrackSize() {
-		return tracks.size();
+		return uris.size();
 	}
 	
 	public void setPlaying(boolean playing) {

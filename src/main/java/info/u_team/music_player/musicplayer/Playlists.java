@@ -6,7 +6,7 @@ import com.google.common.collect.Iterators;
 
 public class Playlists implements Iterable<Playlist> {
 	
-	private List<Playlist> playlists;
+	private final List<Playlist> playlists;
 	
 	public Playlists() {
 		playlists = new ArrayList<>();

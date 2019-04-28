@@ -56,6 +56,14 @@ public class LoadedTracks {
 		return title;
 	}
 	
+	public boolean isTrack() {
+		return trackList == null && track != null;
+	}
+	
+	public boolean isTrackList() {
+		return trackList != null && track == null;
+	}
+	
 	public IAudioTrack getTrack() {
 		return track;
 	}
