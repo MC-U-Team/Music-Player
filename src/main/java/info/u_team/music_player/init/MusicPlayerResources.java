@@ -10,4 +10,7 @@ public class MusicPlayerResources {
 	public static final ResourceLocation textureClear = new ResourceLocation(MusicPlayerMod.modid, "textures/gui/clear.png");
 	public static final ResourceLocation texturePlay = new ResourceLocation(MusicPlayerMod.modid, "textures/gui/play.png");
 	public static final ResourceLocation textureStop = new ResourceLocation(MusicPlayerMod.modid, "textures/gui/stop.png");
+	public static final ResourceLocation textureAdd = new ResourceLocation(MusicPlayerMod.modid, "textures/gui/add.png");
+	public static final ResourceLocation textureUp = new ResourceLocation(MusicPlayerMod.modid, "textures/gui/up.png");
+	public static final ResourceLocation textureDown = new ResourceLocation(MusicPlayerMod.modid, "textures/gui/down.png");
 }

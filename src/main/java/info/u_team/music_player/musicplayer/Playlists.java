@@ -30,13 +30,13 @@ public class Playlists implements Iterable<Playlist> {
 		save();
 	}
 	
-	private void save() {
-		MusicPlayerManager.getPlaylistManager().writeToFile();
-	}
-	
 	@Override
 	public Iterator<Playlist> iterator() {
 		return Iterators.unmodifiableIterator(playlists.iterator());
+	}
+	
+	private void save() {
+		MusicPlayerManager.getPlaylistManager().writeToFile();
 	}
 	
 }

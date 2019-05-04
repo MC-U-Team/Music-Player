@@ -29,9 +29,7 @@ class GuiMusicPlayerListEntry extends GuiScrollableListEntry<GuiMusicPlayerListE
 		});
 		
 		openPlaylistButton = addButton(new GuiButtonClickImage(0, 0, 20, 20, MusicPlayerResources.textureOpen));
-		openPlaylistButton.setClickAction(() -> {
-			mc.displayGuiScreen(new GuiMusicPlaylist(playlist));
-		});
+		openPlaylistButton.setClickAction(() -> mc.displayGuiScreen(new GuiMusicPlaylist(playlist)));
 		
 		deletePlaylistButton = addButton(new GuiButtonClickImage(0, 0, 20, 20, MusicPlayerResources.textureClear));
 		deletePlaylistButton.setClickAction(() -> gui.removePlaylist(this));
@@ -44,7 +42,7 @@ class GuiMusicPlayerListEntry extends GuiScrollableListEntry<GuiMusicPlayerListE
 			name = "\u00A7oNo name";
 		}
 		mc.fontRenderer.drawString(name, getX() + 5, getY() + 5, playlist.isPlaying() ? 0x0083FF : 0xFFF00F);
-		mc.fontRenderer.drawString(playlist.getTrackSize() + " Songs", getX() + 5, getY() + 30, 0xFFFFFF);
+		mc.fontRenderer.drawString(playlist.getTrackSize() + " Entries", getX() + 5, getY() + 30, 0xFFFFFF);
 		
 		playPlaylistButton.x = entryWidth - 80;
 		playPlaylistButton.y = getY() + 12;

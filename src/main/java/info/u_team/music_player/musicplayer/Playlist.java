@@ -1,30 +1,43 @@
 package info.u_team.music_player.musicplayer;
 
 import java.util.*;
-import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ConcurrentLinkedQueue;
+
+import com.google.common.collect.LinkedHashMultimap;
 
 import info.u_team.music_player.lavaplayer.api.*;
 import info.u_team.music_player.util.WrappedObject;
 
 public class Playlist {
 	
-	private String name;
+	public String name;
 	
-	private final Set<WrappedObject<String>> uris;
+	public final List<WrappedObject<String>> uris;
 	
+	// Do not serialize the following fields
 	private transient boolean loaded;
-	private final transient Map<WrappedObject<String>, LoadedTracks> loadedTracks;
+	private transient final Map<WrappedObject<String>, LoadedTracks> loadedTracks;
 	
 	private transient boolean playing;
 	
-	private transient Queue<LoadedTracks> loadQueue;
+	private transient final Queue<LoadedTracks> loadQueue;
+	
+	/**
+	 * Should never be used. Only used for Gson deserialization to init these
+	 * transient fields. <a href=
+	 * "https://github.com/google/gson/issues/364">https://github.com/google/gson/issues/364</a>
+	 */
+	Playlist() {
+		uris = new ArrayList<>();
+		loadedTracks = new LinkedHashMap<>();
+		loadQueue = new ConcurrentLinkedQueue<>();
+	}
 	
 	public Playlist(String name) {
 		this.name = name;
-		uris = new LinkedHashSet<>();
-		loaded = false;
-		loadedTracks = new HashMap<>();
-		loadQueue = new LinkedBlockingQueue<>();
+		uris = new ArrayList<>();
+		loadedTracks = new LinkedHashMap<>();
+		loadQueue = new ConcurrentLinkedQueue<>();
 	}
 	
 	public void load() {
@@ -55,19 +68,21 @@ public class Playlist {
 		return loaded;
 	}
 	
-	public boolean add(IAudioTrack track) {
+	public WrappedObject<String> add(IAudioTrack track) {
 		WrappedObject<String> uri = new WrappedObject<>(track.getInfo().getURI());
 		loadedTracks.put(uri, new LoadedTracks(uri, track));
-		return uris.add(uri);
+		uris.add(uri);
+		return uri;
 	}
 	
-	public boolean add(IAudioTrackList trackList) {
+	public WrappedObject<String> add(IAudioTrackList trackList) {
 		if (!trackList.isSearch() && trackList.hasUri()) {
 			WrappedObject<String> uri = new WrappedObject<>(trackList.getUri());
 			loadedTracks.put(uri, new LoadedTracks(uri, trackList));
-			return uris.add(uri);
+			uris.add(uri);
+			return uri;
 		}
-		return false;
+		return null;
 	}
 	
 	public boolean remove(WrappedObject<String> uri) {
@@ -97,6 +112,39 @@ public class Playlist {
 	
 	public Queue<LoadedTracks> getLoadQueue() {
 		return loadQueue;
+	}
+	
+	public Collection<LoadedTracks> getLoadedTracks() {
+		return Collections.unmodifiableCollection(loadedTracks.values());
+	}
+	
+	/**
+	 * Move the uri in the list up or down.
+	 * 
+	 * @param uri
+	 *            - value for up, + for down
+	 * @param value
+	 * 
+	 * @return If move was successful
+	 */
+	public boolean move(WrappedObject<String> uri, int value) {
+		if (!loaded) {
+			return false;
+		}
+		int oldIndex = uris.indexOf(uri);
+		int newIndex = oldIndex + value;
+		if (newIndex >= 0 && newIndex < uris.size()) {
+			uris.remove(oldIndex);
+			uris.add(newIndex, uri);
+			
+			LinkedHashMultimap<String, String> map = LinkedHashMultimap.create();
+			map.put
+			
+			return true;
+			
+		} else {
+			return false;
+		}
 	}
 	
 }
