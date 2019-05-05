@@ -13,6 +13,16 @@ public class LoadedTracks {
 	private IAudioTrack track;
 	private IAudioTrackList trackList;
 	
+	/**
+	 * Dummy
+	 * 
+	 * @param uri
+	 */
+	public LoadedTracks(WrappedObject<String> uri) {
+		this.uri = uri;
+		errorMessage = "Not loaded yet";
+	}
+	
 	public LoadedTracks(WrappedObject<String> uri, ISearchResult result) {
 		this.uri = uri;
 		if (result.hasError()) {

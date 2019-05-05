@@ -38,15 +38,45 @@ abstract class GuiMusicPlaylistListEntry extends GuiScrollableListEntry<GuiMusic
 		mc.fontRenderer.drawString(duration, getX() + entryWidth - 135, getY() + 5, 0xFFFF00);
 	}
 	
+	static class Loading extends GuiMusicPlaylistListEntry {
+		
+		@Override
+		public void drawEntry(int entryWidth, int entryHeight, int mouseX, int mouseY, boolean mouseInList, float partialTicks) {
+			String text = "Loading tracks ...";
+			mc.fontRenderer.drawString(text, getX() + (entryWidth / 2) - (mc.fontRenderer.getStringWidth(text) / 2), getY() + 20, 0xFF0000);
+		}
+		
+	}
+	
 	private abstract static class Functions extends GuiMusicPlaylistListEntry {
+		
+		protected final Playlist playlist;
+		protected final WrappedObject<String> uri;
 		
 		protected final GuiButtonClickImage deleteTrackButton;
 		protected final GuiButtonClickImage upButton, downButton;
 		
-		private Functions() {
-			deleteTrackButton = new GuiButtonClickImage(0, 0, 20, 20, MusicPlayerResources.textureClear);
-			upButton = new GuiButtonClickImage(0, 0, 20, 10, MusicPlayerResources.textureUp);
-			downButton = new GuiButtonClickImage(0, 0, 20, 10, MusicPlayerResources.textureDown);
+		private Functions(GuiMusicPlaylistList guilist, Playlist playlist, WrappedObject<String> uri) {
+			this.playlist = playlist;
+			this.uri = uri;
+			deleteTrackButton = addButton(new GuiButtonClickImage(0, 0, 20, 20, MusicPlayerResources.textureClear));
+			upButton = addButton(new GuiButtonClickImage(0, 0, 20, 10, MusicPlayerResources.textureUp));
+			downButton = addButton(new GuiButtonClickImage(0, 0, 20, 10, MusicPlayerResources.textureDown));
+			
+			deleteTrackButton.setClickAction(() -> {
+				playlist.remove(uri);
+				guilist.updateAllEntries();
+			});
+			upButton.setClickAction(() -> {
+				playlist.move(uri, 1);
+				guilist.setSelectedEntryWhenMove(index - 1);
+				guilist.updateAllEntries();
+			});
+			downButton.setClickAction(() -> {
+				playlist.move(uri, -1);
+				guilist.setSelectedEntryWhenMove(index + 1);
+				guilist.updateAllEntries();
+			});
 		}
 		
 		@Override
@@ -73,11 +103,10 @@ abstract class GuiMusicPlaylistListEntry extends GuiScrollableListEntry<GuiMusic
 	
 	static class Error extends Functions {
 		
-		private final WrappedObject<String> uri;
 		private final String error;
 		
-		public Error(Playlist playlist, WrappedObject<String> uri, String error) {
-			this.uri = uri;
+		public Error(GuiMusicPlaylistList guilist, Playlist playlist, WrappedObject<String> uri, String error) {
+			super(guilist, playlist, uri);
 			this.error = error;
 		}
 		
@@ -92,11 +121,9 @@ abstract class GuiMusicPlaylistListEntry extends GuiScrollableListEntry<GuiMusic
 		
 		private final IAudioTrack track;
 		
-		public MusicTrack(Playlist playlist, WrappedObject<String> uri, IAudioTrack track) {
+		public MusicTrack(GuiMusicPlaylistList guilist, Playlist playlist, WrappedObject<String> uri, IAudioTrack track) {
+			super(guilist, playlist, uri);
 			this.track = track;
-//			upButton.setClickAction(() -> {
-//				playlist.
-//			});
 		}
 		
 		@Override
@@ -107,12 +134,11 @@ abstract class GuiMusicPlaylistListEntry extends GuiScrollableListEntry<GuiMusic
 	
 	static class PlaylistStart extends Functions {
 		
-		private final WrappedObject<String> uri;
 		private final String name;
 		private final List<PlaylistTrack> trackEntries;
 		
-		public PlaylistStart(Playlist playlist, WrappedObject<String> uri, String name) {
-			this.uri = uri;
+		public PlaylistStart(GuiMusicPlaylistList guilist, Playlist playlist, WrappedObject<String> uri, String name) {
+			super(guilist, playlist, uri);
 			this.name = name;
 			trackEntries = new ArrayList<>();
 		}

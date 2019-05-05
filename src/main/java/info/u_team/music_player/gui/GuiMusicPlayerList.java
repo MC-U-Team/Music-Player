@@ -11,13 +11,13 @@ public class GuiMusicPlayerList extends GuiScrollableList<GuiMusicPlayerListEntr
 		super(width, height, top, bottom, left, right, 50, 20, 5);
 		
 		playlists = MusicPlayerManager.getPlaylistManager().getPlaylists();
-		playlists.forEach(playlist -> addEntry(new GuiMusicPlayerListEntry(this, playlist)));
+		playlists.forEach(playlist -> addEntry(new GuiMusicPlayerListEntry(this, playlists, playlist)));
 	}
 	
 	public void addPlaylist(String name) {
-		Playlist playlist = new Playlist(name);
+		final Playlist playlist = new Playlist(name);
 		playlists.add(playlist);
-		addEntry(new GuiMusicPlayerListEntry(this, playlist));
+		addEntry(new GuiMusicPlayerListEntry(this, playlists, playlist));
 	}
 	
 	public void removePlaylist(GuiMusicPlayerListEntry entry) {

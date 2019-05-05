@@ -7,6 +7,7 @@ public class TestSearch {
 	
 	public static void main(String[] args) {
 		IMusicPlayer musicplayer = new MusicPlayer();
+		
 		musicplayer.getTrackSearch().getTracks("https://www.youtube.com/playlist?list=PLyseegEZ84-drkYTkLldkiIBPHRJd7Xgd", result -> {
 			System.out.println(result.hasError());
 			if (result.hasError())

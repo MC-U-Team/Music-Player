@@ -8,6 +8,8 @@ public class Playlists implements Iterable<Playlist> {
 	
 	private final List<Playlist> playlists;
 	
+	private transient Playlist playing;
+	
 	public Playlists() {
 		playlists = new ArrayList<>();
 	}
@@ -28,6 +30,14 @@ public class Playlists implements Iterable<Playlist> {
 	public void remove(Playlist playlist) {
 		playlists.remove(playlist);
 		save();
+	}
+	
+	public void setPlaying(Playlist playing) {
+		this.playing = playing;
+	}
+	
+	public Playlist getPlaying() {
+		return playing;
 	}
 	
 	@Override

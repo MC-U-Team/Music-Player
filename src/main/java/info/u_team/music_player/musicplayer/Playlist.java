@@ -1,13 +1,15 @@
 package info.u_team.music_player.musicplayer;
 
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import info.u_team.music_player.lavaplayer.api.*;
 import info.u_team.music_player.util.WrappedObject;
 
 /**
  * This class represents a playlist. This list can be serialized or deserialized. After a serialization the tracks must be loaded, because only the
- * uris are saved. {@link IAudioTrack} and {@link IAudioTrackList} can be added. Tracks can be removed. Tracks can be moved in the order.
+ * uris are saved. {@link IAudioTrack} and {@link IAudioTrackList} can be added. Tracks can be removed. Tracks can be moved in the order. Any changes
+ * to the serializable fields are saved
  * 
  * @author HyCraftHD
  *
@@ -48,6 +50,18 @@ public class Playlist {
 	 * {@link LoadedTracks}. This method is async.
 	 */
 	public void load() {
+		load(() -> {
+		});
+	}
+	
+	/**
+	 * Loads this playlist. This will go through all uris and search with {@link ITrackSearch} for the {@link IAudioTrack} and {@link IAudioTrackList} for
+	 * {@link LoadedTracks}. This method is async. This method calls the {@link Runnable#run()} method when everything is loaded.
+	 * 
+	 * @param runnable
+	 *            A runnable that should be executed when the playlist is loaded
+	 */
+	public void load(Runnable runnable) {
 		if (loaded) {
 			return;
 		}
@@ -56,15 +70,22 @@ public class Playlist {
 			
 			final ITrackSearch search = MusicPlayerManager.getPlayer().getTrackSearch();
 			
+			uris.forEach(uri -> loadedTracks.add(new LoadedTracks(uri))); // Add dummy elements
+			
+			AtomicInteger counterIfReady = new AtomicInteger();
+			
 			for (int index = 0; index < uris.size(); index++) {
 				final int immutableIndex = index; // Little workaround for using the index in closure
 				final WrappedObject<String> uri = uris.get(immutableIndex);
 				search.getTracks(uri.get(), result -> {
 					LoadedTracks loadedTrack = new LoadedTracks(uri, result);
-					loadedTracks.add(immutableIndex, loadedTrack);
+					loadedTracks.set(immutableIndex, loadedTrack);
+					if (counterIfReady.incrementAndGet() == loadedTracks.size()) { // Count up for every replaced track in loadedTracks. When its the last one it sets the loaded flag and runs the runnable
+						loaded = true;
+						runnable.run();
+					}
 				});
 			}
-			loaded = true;
 		});
 	}
 	
@@ -100,6 +121,7 @@ public class Playlist {
 		int index = uris.size();
 		uris.add(index, uri);
 		loadedTracks.add(index, new LoadedTracks(uri, track));
+		save();
 		return uri;
 	}
 	
@@ -120,6 +142,7 @@ public class Playlist {
 			int index = uris.size();
 			uris.add(index, uri);
 			loadedTracks.add(index, new LoadedTracks(uri, trackList));
+			save();
 			return uri;
 		}
 		return null;
@@ -140,6 +163,7 @@ public class Playlist {
 		if (index >= 0) {
 			uris.remove(index);
 			loadedTracks.remove(index);
+			save();
 			return true;
 		}
 		return false;
@@ -161,9 +185,10 @@ public class Playlist {
 		}
 		final int oldIndex = uris.indexOf(uri);
 		final int newIndex = oldIndex - value;
-		if (newIndex >= 0 && newIndex <= uris.size()) {
+		if (newIndex >= 0 && newIndex < uris.size()) {
 			uris.add(newIndex, uris.remove(oldIndex));
 			loadedTracks.add(newIndex, loadedTracks.remove(oldIndex));
+			save();
 			return true;
 		} else {
 			return false;
@@ -178,6 +203,7 @@ public class Playlist {
 	 */
 	public void setName(String name) {
 		this.name = name;
+		save();
 	}
 	
 	/**
@@ -205,5 +231,9 @@ public class Playlist {
 	 */
 	public Collection<LoadedTracks> getLoadedTracks() {
 		return Collections.unmodifiableCollection(loadedTracks);
+	}
+	
+	private void save() {
+		MusicPlayerManager.getPlaylistManager().writeToFile();
 	}
 }

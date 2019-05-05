@@ -19,7 +19,7 @@ public class GuiMusicPlayer extends GuiScreen {
 		namePlaylistField.setMaxStringLength(500);
 		children.add(namePlaylistField);
 		
-		GuiButtonClickImage addPlaylistButton = addButton(new GuiButtonClickImage(width - 41, 19, 22, 22, MusicPlayerResources.textureCreate));
+		final GuiButtonClickImage addPlaylistButton = addButton(new GuiButtonClickImage(width - 41, 19, 22, 22, MusicPlayerResources.textureCreate));
 		addPlaylistButton.setClickAction(() -> {
 			String name = namePlaylistField.getText();
 			if (StringUtils.isBlank(name) || name.equals("Enter a name")) {
@@ -37,7 +37,7 @@ public class GuiMusicPlayer extends GuiScreen {
 	
 	@Override
 	public void onResize(Minecraft minecraft, int width, int height) {
-		String text = namePlaylistField.getText();
+		final String text = namePlaylistField.getText();
 		this.setWorldAndResolution(minecraft, width, height);
 		namePlaylistField.setText(text);
 	}
