@@ -1,4 +1,4 @@
-package info.u_team.music_player.gui.playlist.search;
+package info.u_team.music_player.gui.playlist.searchOLD;
 
 import net.minecraftforge.fml.client.config.GuiButtonExt;
 
