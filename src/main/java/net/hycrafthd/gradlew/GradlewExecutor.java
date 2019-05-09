@@ -6,6 +6,7 @@ import java.util.*;
 
 import org.apache.commons.compress.archivers.zip.*;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.SystemUtils;
 
 public class GradlewExecutor {
 	
@@ -89,8 +90,11 @@ public class GradlewExecutor {
 	}
 	
 	private String getJavaExe() {
-		File javaexe = new File(System.getProperty("java.home"), "bin/java.exe");
+		File javaexe = new File(System.getProperty("java.home"), "bin/java" + getFileEndExe());
 		return javaexe.getPath();
 	}
-	
+
+	private String getFileEndExe() {
+		return SystemUtils.IS_OS_WINDOWS ? ".exe" : "";
+	}
 }
