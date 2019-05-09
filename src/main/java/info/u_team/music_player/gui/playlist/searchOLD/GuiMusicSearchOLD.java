@@ -12,7 +12,7 @@ import net.minecraft.client.gui.*;
 import net.minecraft.client.renderer.*;
 import net.minecraftforge.fml.client.config.GuiButtonExt;
 
-public class GuiMusicSearch extends GuiScreen {
+public class GuiMusicSearchOLD extends GuiScreen {
 	
 	private final SearchList tracks;
 	
@@ -24,7 +24,7 @@ public class GuiMusicSearch extends GuiScreen {
 	
 	private SearchProvider searchprovider;
 	
-	public GuiMusicSearch() {
+	public GuiMusicSearchOLD() {
 		tracks = new SearchList();
 		searchprovider = SearchProvider.YOUTUBE;
 		list = new GuiMusicSearchList(tracks, Minecraft.getInstance(), 0, 0, 0, 0, 20); // We need that this list persists even when rescaling because of some metadata
@@ -48,7 +48,7 @@ public class GuiMusicSearch extends GuiScreen {
 			public void onClick(double mouseX, double mouseY) {
 				String response = TinyFileDialogs.tinyfd_openFileDialog("Open files", null, null, "Music files", true);
 				if (response != null) {
-					Splitter.on('|').omitEmptyStrings().split(response).forEach(GuiMusicSearch.this::loadTrack);
+					Splitter.on('|').omitEmptyStrings().split(response).forEach(GuiMusicSearchOLD.this::loadTrack);
 				}
 			}
 		});
@@ -161,7 +161,7 @@ public class GuiMusicSearch extends GuiScreen {
 			if (searchresult.hasError()) {
 				System.out.println(searchresult.getErrorMessage());
 			} else {
-				// searchresult.getTracks().forEach(tracks::add);
+//				searchresult.getTracks().forEach(tracks::add);
 			}
 		});
 	}
