@@ -140,7 +140,7 @@ task copyJars {
 build.dependsOn copyJars
 
 curseforge {
-	apiKey = project.properties["token"]
+	apiKey = project.getProperty("token")
 	
 	tasks.curseforge.dependsOn build
 	tasks.curseforge.dependsOn setBuildNumber
@@ -163,7 +163,7 @@ curseforge {
 		addGameVersion "1.12.2"
 		
 		relations {
-      		requiredLibrary "u-team-core"
+      		requiredDependency "u-team-core"
     	}
 
     	mainArtifact(jar) {
