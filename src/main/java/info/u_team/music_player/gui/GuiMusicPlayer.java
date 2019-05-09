@@ -3,7 +3,7 @@ package info.u_team.music_player.gui;
 import org.apache.commons.lang3.StringUtils;
 
 import info.u_team.music_player.init.MusicPlayerResources;
-import info.u_team.to_export_to_u_team_core.gui.GuiButtonClickImage;
+import info.u_team.u_team_core.gui.elements.GuiButtonClickImage;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.*;
 

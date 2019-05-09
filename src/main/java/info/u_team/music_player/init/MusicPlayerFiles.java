@@ -1,6 +1,6 @@
 package info.u_team.music_player.init;
 
-import java.io.*;
+import java.io.IOException;
 import java.nio.file.*;
 
 import org.apache.commons.io.FileUtils;

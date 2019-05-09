@@ -3,7 +3,7 @@ package info.u_team.music_player.gui.playlist;
 import java.util.*;
 
 import info.u_team.music_player.musicplayer.*;
-import info.u_team.to_export_to_u_team_core.gui.GuiScrollableList;
+import info.u_team.u_team_core.gui.elements.GuiScrollableList;
 
 public class GuiMusicPlaylistList extends GuiScrollableList<GuiMusicPlaylistListEntry> {
 	

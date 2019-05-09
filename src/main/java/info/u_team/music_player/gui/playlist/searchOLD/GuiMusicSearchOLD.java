@@ -6,10 +6,9 @@ import org.lwjgl.util.tinyfd.TinyFileDialogs;
 import com.google.common.base.Splitter;
 
 import info.u_team.music_player.musicplayer.MusicPlayerManager;
-import info.u_team.to_export_to_u_team_core.gui.GuiButtonClickImage;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.*;
-import net.minecraft.client.renderer.*;
+import net.minecraft.client.renderer.RenderHelper;
 import net.minecraftforge.fml.client.config.GuiButtonExt;
 
 public class GuiMusicSearchOLD extends GuiScreen {
