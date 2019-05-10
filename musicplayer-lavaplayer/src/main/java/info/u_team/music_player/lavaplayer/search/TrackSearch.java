@@ -6,7 +6,7 @@ import com.sedmelluq.discord.lavaplayer.player.*;
 import com.sedmelluq.discord.lavaplayer.tools.FriendlyException;
 import com.sedmelluq.discord.lavaplayer.track.*;
 
-import info.u_team.music_player.lavaplayer.api.*;
+import info.u_team.music_player.lavaplayer.api.search.*;
 import info.u_team.music_player.lavaplayer.impl.*;
 
 public class TrackSearch implements ITrackSearch {

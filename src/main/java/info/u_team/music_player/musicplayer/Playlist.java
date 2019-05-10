@@ -1,9 +1,11 @@
 package info.u_team.music_player.musicplayer;
 
 import java.util.*;
+import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import info.u_team.music_player.lavaplayer.api.*;
+import info.u_team.music_player.lavaplayer.api.audio.*;
+import info.u_team.music_player.lavaplayer.api.search.ITrackSearch;
 import info.u_team.music_player.util.WrappedObject;
 
 /**
@@ -21,6 +23,7 @@ public class Playlist {
 	public final ArrayList<WrappedObject<String>> uris;
 	
 	// Should not be serialized or deserialized
+	private transient final Executor executor;
 	private transient boolean loaded;
 	private transient final ArrayList<LoadedTracks> loadedTracks;
 	
@@ -31,6 +34,7 @@ public class Playlist {
 	private Playlist() {
 		uris = new ArrayList<>();
 		loadedTracks = new ArrayList<>();
+		executor = Executors.newSingleThreadExecutor();
 	}
 	
 	/**
@@ -43,6 +47,7 @@ public class Playlist {
 		this.name = name;
 		uris = new ArrayList<>();
 		loadedTracks = new ArrayList<>();
+		executor = Executors.newSingleThreadExecutor();
 	}
 	
 	/**
@@ -65,7 +70,7 @@ public class Playlist {
 		if (loaded) {
 			return;
 		}
-		MusicPlayerManager.getExecutor().execute(() -> {
+		executor.execute(() -> {
 			unload(); // Unload everything before, because of the threaded executor this method might pass the check before
 			
 			final ITrackSearch search = MusicPlayerManager.getPlayer().getTrackSearch();

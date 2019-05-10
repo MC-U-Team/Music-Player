@@ -2,7 +2,7 @@ package info.u_team.music_player.gui.playlist;
 
 import java.util.List;
 
-import info.u_team.music_player.lavaplayer.api.IAudioTrack;
+import info.u_team.music_player.lavaplayer.api.audio.IAudioTrack;
 import info.u_team.music_player.musicplayer.*;
 import info.u_team.music_player.util.TimeUtil;
 

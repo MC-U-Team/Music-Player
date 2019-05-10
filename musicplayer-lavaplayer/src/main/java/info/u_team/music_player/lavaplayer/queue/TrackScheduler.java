@@ -8,6 +8,7 @@ import com.sedmelluq.discord.lavaplayer.track.*;
 
 import info.u_team.music_player.lavaplayer.MusicPlayer;
 import info.u_team.music_player.lavaplayer.api.*;
+import info.u_team.music_player.lavaplayer.api.audio.IAudioTrack;
 import info.u_team.music_player.lavaplayer.impl.AudioTrackImpl;
 
 public class TrackScheduler extends AudioEventAdapter implements ITrackScheduler {

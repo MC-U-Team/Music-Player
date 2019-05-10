@@ -41,15 +41,15 @@ abstract class GuiMusicPlaylistListEntryFunctions extends GuiMusicPlaylistListEn
 		super.drawEntry(entryWidth, entryHeight, mouseX, mouseY, mouseInList, partialTicks);
 		drawEntryExtended(entryWidth, entryHeight, mouseX, mouseY, mouseInList, partialTicks);
 		
-		deleteTrackButton.x = entryWidth - 20;
+		deleteTrackButton.x = entryWidth - 15;
 		deleteTrackButton.y = getY() + 8;
 		deleteTrackButton.render(mouseX, mouseY, partialTicks);
 		
-		upButton.x = entryWidth - 50;
+		upButton.x = entryWidth - 40;
 		upButton.y = getY() + 8;
 		upButton.render(mouseX, mouseY, partialTicks);
 		
-		downButton.x = entryWidth - 50;
+		downButton.x = entryWidth - 40;
 		downButton.y = getY() + 18;
 		downButton.render(mouseX, mouseY, partialTicks);
 	}

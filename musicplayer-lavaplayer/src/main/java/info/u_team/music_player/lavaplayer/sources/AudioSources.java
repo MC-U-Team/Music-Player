@@ -21,6 +21,7 @@ public class AudioSources {
 		audioplayermanager.registerSourceManager(new VimeoAudioSourceManager());
 		audioplayermanager.registerSourceManager(new TwitchStreamAudioSourceManager());
 		audioplayermanager.registerSourceManager(new BeamAudioSourceManager());
+		audioplayermanager.registerSourceManager(new VimeoAudioSourceManager());
 		audioplayermanager.registerSourceManager(new HttpAudioSourceManager());
 		audioplayermanager.registerSourceManager(new LocalAudioSourceManager());
 	}

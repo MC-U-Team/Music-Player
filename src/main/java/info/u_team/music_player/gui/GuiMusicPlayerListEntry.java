@@ -26,6 +26,8 @@ class GuiMusicPlayerListEntry extends GuiScrollableListEntry<GuiMusicPlayerListE
 			// Start playlist
 			if (play) {
 				playlists.setPlaying(playlist);
+			} else {
+				playlists.setPlaying(null);
 			}
 		});
 		
@@ -45,15 +47,15 @@ class GuiMusicPlayerListEntry extends GuiScrollableListEntry<GuiMusicPlayerListE
 		mc.fontRenderer.drawString(name, getX() + 5, getY() + 5, playlist.equals(playlists.getPlaying()) ? 0x0083FF : 0xFFF00F);
 		mc.fontRenderer.drawString(playlist.getEntrySize() + " Entries", getX() + 5, getY() + 30, 0xFFFFFF);
 		
-		playPlaylistButton.x = entryWidth - 80;
+		playPlaylistButton.x = entryWidth - 65;
 		playPlaylistButton.y = getY() + 12;
 		playPlaylistButton.render(mouseX, mouseY, partialTicks);
 		
-		openPlaylistButton.x = entryWidth - 50;
+		openPlaylistButton.x = entryWidth - 40;
 		openPlaylistButton.y = getY() + 12;
 		openPlaylistButton.render(mouseX, mouseY, partialTicks);
 		
-		deletePlaylistButton.x = entryWidth - 20;
+		deletePlaylistButton.x = entryWidth - 15;
 		deletePlaylistButton.y = getY() + 12;
 		deletePlaylistButton.render(mouseX, mouseY, partialTicks);
 	}

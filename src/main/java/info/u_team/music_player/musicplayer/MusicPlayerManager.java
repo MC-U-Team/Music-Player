@@ -1,7 +1,5 @@
 package info.u_team.music_player.musicplayer;
 
-import java.util.concurrent.*;
-
 import org.apache.logging.log4j.*;
 
 import info.u_team.music_player.dependency.DependencyManager;
@@ -10,8 +8,6 @@ import info.u_team.music_player.lavaplayer.api.IMusicPlayer;
 public class MusicPlayerManager {
 	
 	private static final Logger logger = LogManager.getLogger();
-	
-	private static final Executor executor = Executors.newSingleThreadExecutor();
 	
 	private static IMusicPlayer player;
 	
@@ -35,10 +31,6 @@ public class MusicPlayerManager {
 			logger.fatal("Cannot create music player instance. This is a serious bug and the mod will not work. Report to the mod authors", ex);
 			System.exit(0);
 		}
-	}
-	
-	public static Executor getExecutor() {
-		return executor;
 	}
 	
 	public static IMusicPlayer getPlayer() {

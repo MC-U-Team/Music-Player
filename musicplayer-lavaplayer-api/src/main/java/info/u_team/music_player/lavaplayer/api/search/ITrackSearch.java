@@ -1,4 +1,4 @@
-package info.u_team.music_player.lavaplayer.api;
+package info.u_team.music_player.lavaplayer.api.search;
 
 import java.util.function.Consumer;
 

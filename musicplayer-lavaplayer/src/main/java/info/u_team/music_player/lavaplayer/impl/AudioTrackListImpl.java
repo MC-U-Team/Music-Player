@@ -5,7 +5,7 @@ import java.util.stream.Collectors;
 
 import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
 
-import info.u_team.music_player.lavaplayer.api.*;
+import info.u_team.music_player.lavaplayer.api.audio.*;
 
 public class AudioTrackListImpl implements IAudioTrackList {
 	

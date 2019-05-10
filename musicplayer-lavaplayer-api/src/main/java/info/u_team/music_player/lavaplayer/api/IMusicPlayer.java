@@ -1,18 +1,17 @@
 package info.u_team.music_player.lavaplayer.api;
 
+import info.u_team.music_player.lavaplayer.api.queue.ITrackQueue;
+import info.u_team.music_player.lavaplayer.api.search.ITrackSearch;
+
 public interface IMusicPlayer {
-
-	public ITrackScheduler getTrackScheduler();
-
+	
+	void setTrackQueue(ITrackQueue queue);
+	
 	ITrackSearch getTrackSearch();
-
-	public void startAudioOutput();
-
-	public int getVolume();
-
-	public void setVolume(int volume);
-
-	public void registerEventHandler(IMusicPlayerEvents events);
-
-	public void unregisterEventHandler(IMusicPlayerEvents events);
+	
+	void startAudioOutput();
+	
+	int getVolume();
+	
+	void setVolume(int volume);
 }

@@ -3,6 +3,7 @@ package info.u_team.music_player.gui.playlist.search;
 import java.util.List;
 
 import info.u_team.music_player.lavaplayer.api.*;
+import info.u_team.music_player.lavaplayer.api.audio.*;
 import info.u_team.music_player.musicplayer.Playlist;
 import info.u_team.music_player.util.TimeUtil;
 import net.minecraft.util.text.TextFormatting;

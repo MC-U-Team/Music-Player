@@ -1,6 +1,7 @@
 package info.u_team.music_player.lavaplayer.search;
 
-import info.u_team.music_player.lavaplayer.api.*;
+import info.u_team.music_player.lavaplayer.api.audio.*;
+import info.u_team.music_player.lavaplayer.api.search.ISearchResult;
 
 public class SearchResult implements ISearchResult {
 	

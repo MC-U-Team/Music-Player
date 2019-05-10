@@ -7,6 +7,7 @@ import com.sedmelluq.discord.lavaplayer.player.*;
 import com.sedmelluq.discord.lavaplayer.player.AudioConfiguration.ResamplingQuality;
 
 import info.u_team.music_player.lavaplayer.api.*;
+import info.u_team.music_player.lavaplayer.api.search.ITrackSearch;
 import info.u_team.music_player.lavaplayer.output.AudioOutput;
 import info.u_team.music_player.lavaplayer.queue.TrackScheduler;
 import info.u_team.music_player.lavaplayer.search.TrackSearch;

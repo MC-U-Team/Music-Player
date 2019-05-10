@@ -1,6 +1,8 @@
 package info.u_team.music_player.musicplayer;
 
 import info.u_team.music_player.lavaplayer.api.*;
+import info.u_team.music_player.lavaplayer.api.audio.*;
+import info.u_team.music_player.lavaplayer.api.search.ISearchResult;
 import info.u_team.music_player.util.WrappedObject;
 
 public class LoadedTracks {

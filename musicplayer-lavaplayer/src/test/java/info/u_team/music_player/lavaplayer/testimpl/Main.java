@@ -4,6 +4,7 @@ import java.util.Scanner;
 
 import info.u_team.music_player.lavaplayer.MusicPlayer;
 import info.u_team.music_player.lavaplayer.api.*;
+import info.u_team.music_player.lavaplayer.api.audio.*;
 
 public class Main implements IMusicPlayerEvents {
 	

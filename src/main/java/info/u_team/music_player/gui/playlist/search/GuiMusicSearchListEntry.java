@@ -2,7 +2,7 @@ package info.u_team.music_player.gui.playlist.search;
 
 import info.u_team.music_player.gui.util.GuiTrackUtils;
 import info.u_team.music_player.init.MusicPlayerResources;
-import info.u_team.music_player.lavaplayer.api.IAudioTrack;
+import info.u_team.music_player.lavaplayer.api.audio.IAudioTrack;
 import info.u_team.u_team_core.gui.elements.*;
 
 abstract class GuiMusicSearchListEntry extends GuiScrollableListEntry<GuiMusicSearchListEntry> {

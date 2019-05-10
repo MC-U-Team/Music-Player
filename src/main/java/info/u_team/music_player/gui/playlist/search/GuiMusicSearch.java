@@ -10,7 +10,7 @@ import org.lwjgl.util.tinyfd.TinyFileDialogs;
 
 import info.u_team.music_player.gui.playlist.GuiMusicPlaylist;
 import info.u_team.music_player.init.MusicPlayerResources;
-import info.u_team.music_player.lavaplayer.api.*;
+import info.u_team.music_player.lavaplayer.api.audio.*;
 import info.u_team.music_player.musicplayer.*;
 import info.u_team.u_team_core.gui.elements.*;
 import net.minecraft.client.Minecraft;
