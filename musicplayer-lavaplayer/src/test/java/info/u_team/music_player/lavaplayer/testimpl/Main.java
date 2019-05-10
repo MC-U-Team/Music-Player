@@ -56,20 +56,20 @@ public class Main {
 	
 	private class TrackQueue implements ITrackQueue {
 		
-		private final Iterator<IAudioTrack> iterator;
+		private final List<IAudioTrack> tracks;
 		
 		public TrackQueue(List<IAudioTrack> tracks) {
-			iterator = tracks.iterator();
+			this.tracks = tracks;
 		}
 		
 		@Override
 		public boolean hasNext() {
-			return iterator.hasNext();
+			return true;
 		}
 		
 		@Override
 		public IAudioTrack getNext() {
-			return iterator.next();
+			return tracks.get(new Random().nextInt(tracks.size()));
 		}
 		
 	}
