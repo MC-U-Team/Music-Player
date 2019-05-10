@@ -12,17 +12,17 @@ import com.sedmelluq.discord.lavaplayer.source.youtube.YoutubeAudioSourceManager
 
 public class AudioSources {
 	
-	public static void registerSources(AudioPlayerManager audioplayermanager) {
+	public static void registerSources(AudioPlayerManager audioPlayerManager) {
 		YoutubeAudioSourceManager youtube = new YoutubeAudioSourceManager(true);
 		youtube.setPlaylistPageCount(20);
-		audioplayermanager.registerSourceManager(youtube);
-		audioplayermanager.registerSourceManager(new SoundCloudAudioSourceManager());
-		audioplayermanager.registerSourceManager(new BandcampAudioSourceManager());
-		audioplayermanager.registerSourceManager(new VimeoAudioSourceManager());
-		audioplayermanager.registerSourceManager(new TwitchStreamAudioSourceManager());
-		audioplayermanager.registerSourceManager(new BeamAudioSourceManager());
-		audioplayermanager.registerSourceManager(new VimeoAudioSourceManager());
-		audioplayermanager.registerSourceManager(new HttpAudioSourceManager());
-		audioplayermanager.registerSourceManager(new LocalAudioSourceManager());
+		audioPlayerManager.registerSourceManager(youtube);
+		audioPlayerManager.registerSourceManager(new SoundCloudAudioSourceManager());
+		audioPlayerManager.registerSourceManager(new BandcampAudioSourceManager());
+		audioPlayerManager.registerSourceManager(new VimeoAudioSourceManager());
+		audioPlayerManager.registerSourceManager(new TwitchStreamAudioSourceManager());
+		audioPlayerManager.registerSourceManager(new BeamAudioSourceManager());
+		audioPlayerManager.registerSourceManager(new VimeoAudioSourceManager());
+		audioPlayerManager.registerSourceManager(new HttpAudioSourceManager());
+		audioPlayerManager.registerSourceManager(new LocalAudioSourceManager());
 	}
 }

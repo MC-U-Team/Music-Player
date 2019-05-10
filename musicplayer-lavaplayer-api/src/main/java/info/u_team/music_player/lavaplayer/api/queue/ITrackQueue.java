@@ -8,7 +8,4 @@ public interface ITrackQueue {
 	
 	IAudioTrack getNext();
 	
-	void setPaused(boolean value);
-	
-	boolean isPaused();
 }

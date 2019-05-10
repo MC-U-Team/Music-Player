@@ -7,7 +7,7 @@ public class SearchResult implements ISearchResult {
 	
 	private final String uri;
 	
-	private final IAudioTrackList tracklist;
+	private final IAudioTrackList trackList;
 	private final IAudioTrack track;
 	
 	private final Exception exception;
@@ -26,19 +26,19 @@ public class SearchResult implements ISearchResult {
 	
 	private SearchResult(String uri, IAudioTrackList tracklist, IAudioTrack track, Exception exception) {
 		this.uri = uri;
-		this.tracklist = tracklist;
+		this.trackList = tracklist;
 		this.track = track;
 		this.exception = exception;
 	}
 	
 	@Override
 	public boolean isList() {
-		return tracklist != null;
+		return trackList != null;
 	}
 	
 	@Override
 	public IAudioTrackList getTrackList() {
-		return tracklist;
+		return trackList;
 	}
 	
 	@Override

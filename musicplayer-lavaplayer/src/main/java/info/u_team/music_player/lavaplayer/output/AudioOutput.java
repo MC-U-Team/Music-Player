@@ -1,28 +1,20 @@
 /**
- * Thanks to VSETH-GECO for this amazing audio consumer class for lavaplayer (It
- * is kind of changed)
+ * Thanks to VSETH-GECO for this amazing audio consumer class for lavaplayer (It is kind of changed)
  * 
  * MIT License
  * 
  * Copyright (c) 2017 VSETH-GECO
  * 
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
+ * to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
+ * and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
  * 
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
+ * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
  * 
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+ * DEALINGS IN THE SOFTWARE.
  */
 
 package info.u_team.music_player.lavaplayer.output;
@@ -36,18 +28,18 @@ import info.u_team.music_player.lavaplayer.MusicPlayer;
 
 public class AudioOutput extends Thread {
 	
-	private final MusicPlayer musicplayer;
+	private final MusicPlayer musicPlayer;
 	
-	public AudioOutput(MusicPlayer musicplayer) {
+	public AudioOutput(MusicPlayer musicPlayer) {
 		super("Audio Player");
-		this.musicplayer = musicplayer;
+		this.musicPlayer = musicPlayer;
 	}
 	
 	@Override
 	public void run() {
 		try {
-			AudioPlayer player = musicplayer.getAudioPlayer();
-			AudioDataFormat dataformat = musicplayer.getAudioDataFormat();
+			AudioPlayer player = musicPlayer.getAudioPlayer();
+			AudioDataFormat dataformat = musicPlayer.getAudioDataFormat();
 			
 			AudioInputStream stream = AudioPlayerInputStream.createStream(player, dataformat, dataformat.frameDuration(), true);
 			

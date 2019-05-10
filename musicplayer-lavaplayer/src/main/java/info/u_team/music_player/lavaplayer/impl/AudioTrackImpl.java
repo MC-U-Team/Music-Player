@@ -35,4 +35,8 @@ public class AudioTrackImpl implements IAudioTrack {
 		return track.getDuration();
 	}
 	
+	public AudioTrack getImplTrack() {
+		return track;
+	}
+	
 }

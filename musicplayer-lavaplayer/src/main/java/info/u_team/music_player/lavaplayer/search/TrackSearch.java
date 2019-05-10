@@ -11,15 +11,15 @@ import info.u_team.music_player.lavaplayer.impl.*;
 
 public class TrackSearch implements ITrackSearch {
 	
-	private final AudioPlayerManager audioplayermanager;
+	private final AudioPlayerManager audioPlayerManager;
 	
 	public TrackSearch(AudioPlayerManager audioplayermanager) {
-		this.audioplayermanager = audioplayermanager;
+		this.audioPlayerManager = audioplayermanager;
 	}
 	
 	@Override
 	public void getTracks(String uri, Consumer<ISearchResult> consumer) {
-		audioplayermanager.loadItem(uri, new AudioLoadResultHandler() {
+		audioPlayerManager.loadItem(uri, new AudioLoadResultHandler() {
 			
 			@Override
 			public void trackLoaded(AudioTrack track) {

@@ -10,7 +10,7 @@ import info.u_team.music_player.lavaplayer.api.audio.*;
 public class AudioTrackListImpl implements IAudioTrackList {
 	
 	private final String uri;
-	private final AudioPlaylist playlist;
+	private final AudioPlaylist playList;
 	
 	private final List<IAudioTrack> tracks;
 	
@@ -20,16 +20,16 @@ public class AudioTrackListImpl implements IAudioTrackList {
 		this(null, playlist);
 	}
 	
-	public AudioTrackListImpl(String uri, AudioPlaylist playlist) {
+	public AudioTrackListImpl(String uri, AudioPlaylist playList) {
 		this.uri = uri;
-		this.playlist = playlist;
-		tracks = playlist.getTracks().stream().filter(track -> track != null).map(AudioTrackImpl::new).collect(Collectors.toList());
-		selectedTrack = playlist.getSelectedTrack() != null ? new AudioTrackImpl(playlist.getSelectedTrack()) : null;
+		this.playList = playList;
+		tracks = playList.getTracks().stream().filter(track -> track != null).map(AudioTrackImpl::new).collect(Collectors.toList());
+		selectedTrack = playList.getSelectedTrack() != null ? new AudioTrackImpl(playList.getSelectedTrack()) : null;
 	}
 	
 	@Override
 	public String getName() {
-		return playlist.getName();
+		return playList.getName();
 	}
 	
 	@Override
@@ -44,7 +44,7 @@ public class AudioTrackListImpl implements IAudioTrackList {
 	
 	@Override
 	public boolean isSearch() {
-		return playlist.isSearchResult();
+		return playList.isSearchResult();
 	}
 	
 	@Override
