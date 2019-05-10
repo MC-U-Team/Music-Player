@@ -8,6 +8,8 @@ import java.util.stream.Collectors;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.util.tinyfd.TinyFileDialogs;
 
+import info.u_team.music_player.gui.playlist.GuiMusicPlaylist;
+import info.u_team.music_player.init.MusicPlayerResources;
 import info.u_team.music_player.lavaplayer.api.*;
 import info.u_team.music_player.musicplayer.*;
 import info.u_team.u_team_core.gui.elements.*;
@@ -38,6 +40,8 @@ public class GuiMusicSearch extends GuiScreen {
 	
 	@Override
 	protected void initGui() {
+		final GuiButtonClick backButton = addButton(new GuiButtonClickImage(1, 1, 15, 15, MusicPlayerResources.textureBack));
+		backButton.setClickAction(() -> mc.displayGuiScreen(new GuiMusicPlaylist(playlist)));
 		
 		urlField = new GuiTextField(-1, mc.fontRenderer, 10, 35, width / 2 - 10, 20) {
 			

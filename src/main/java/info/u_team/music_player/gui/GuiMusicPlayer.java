@@ -3,7 +3,7 @@ package info.u_team.music_player.gui;
 import org.apache.commons.lang3.StringUtils;
 
 import info.u_team.music_player.init.MusicPlayerResources;
-import info.u_team.u_team_core.gui.elements.GuiButtonClickImage;
+import info.u_team.u_team_core.gui.elements.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.*;
 
@@ -15,6 +15,9 @@ public class GuiMusicPlayer extends GuiScreen {
 	
 	@Override
 	protected void initGui() {
+		final GuiButtonClick backButton = addButton(new GuiButtonClickImage(1, 1, 15, 15, MusicPlayerResources.textureBack));
+		backButton.setClickAction(() -> mc.displayGuiScreen(null));
+		
 		namePlaylistField = new GuiTextField(-1, mc.fontRenderer, 100, 20, width - 150, 20);
 		namePlaylistField.setMaxStringLength(500);
 		children.add(namePlaylistField);
