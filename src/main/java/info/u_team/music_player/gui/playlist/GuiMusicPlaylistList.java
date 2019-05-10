@@ -27,13 +27,9 @@ public class GuiMusicPlaylistList extends GuiScrollableList<GuiMusicPlaylistList
 		} else if (tracks.isTrack()) { // Add track gui element
 			list.add(new GuiMusicPlaylistListEntryMusicTrack(this, playlist, tracks.getUri(), tracks.getTrack()));
 		} else { // Add playlist start element and all track sub elements
-			GuiMusicPlaylistListEntryPlaylistStart start = new GuiMusicPlaylistListEntryPlaylistStart(this, playlist, tracks.getUri(), tracks.getTitle());
+			GuiMusicPlaylistListEntryPlaylistStart start = new GuiMusicPlaylistListEntryPlaylistStart(this, playlist, tracks);
 			list.add(start);
-			tracks.getTrackList().getTracks().forEach(track -> {
-				GuiMusicPlaylistListEntryPlaylistTrack trackentry = new GuiMusicPlaylistListEntryPlaylistTrack(start, track);
-				start.addEntry(trackentry);
-				list.add(trackentry);
-			});
+			tracks.getTrackList().getTracks().forEach(track -> list.add(new GuiMusicPlaylistListEntryPlaylistTrack(start, track)));
 		}
 		list.forEach(this::addEntry);
 	}

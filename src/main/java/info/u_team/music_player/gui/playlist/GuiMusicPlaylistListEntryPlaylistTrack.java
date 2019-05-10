@@ -16,4 +16,8 @@ public class GuiMusicPlaylistListEntryPlaylistTrack extends GuiMusicPlaylistList
 	public void drawEntry(int entryWidth, int entryHeight, int mouseX, int mouseY, boolean mouseInList, float partialTicks) {
 		addTrackInfo(track, entryWidth, 15, 0x42F4F1);
 	}
+	
+	public IAudioTrack getTrack() {
+		return track;
+	}
 }

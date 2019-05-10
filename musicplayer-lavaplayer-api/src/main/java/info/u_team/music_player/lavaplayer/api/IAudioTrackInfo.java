@@ -12,4 +12,8 @@ public interface IAudioTrackInfo {
 	
 	public boolean isStream();
 	
+	public String getFixedTitle();
+	
+	public String getFixedAuthor();
+	
 }

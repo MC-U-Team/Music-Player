@@ -1,6 +1,6 @@
 package info.u_team.music_player.gui.playlist;
 
-import info.u_team.music_player.gui.playlist.searchOLD.GuiMusicSearchOLD;
+import info.u_team.music_player.gui.playlist.search.GuiMusicSearch;
 import info.u_team.music_player.init.MusicPlayerResources;
 import info.u_team.music_player.musicplayer.Playlist;
 import info.u_team.u_team_core.gui.elements.GuiButtonClickImage;
@@ -10,7 +10,7 @@ public class GuiMusicPlaylist extends GuiScreen {
 	
 	private final Playlist playlist;
 	
-	private GuiMusicPlaylistList trackList;
+	private final GuiMusicPlaylistList trackList;
 	
 	public GuiMusicPlaylist(Playlist playlist) {
 		this.playlist = playlist;
@@ -25,7 +25,7 @@ public class GuiMusicPlaylist extends GuiScreen {
 				System.out.println("Has finished");
 				if (mc.currentScreen == this) {
 					System.out.println("Added all tracks");
-					trackList.addAllEntries();
+					mc.addScheduledTask(() -> trackList.addAllEntries());
 				}
 			});
 		}
@@ -34,7 +34,7 @@ public class GuiMusicPlaylist extends GuiScreen {
 	@Override
 	protected void initGui() {
 		final GuiButtonClickImage addTracksButton = addButton(new GuiButtonClickImage(width - 41, 19, 22, 22, MusicPlayerResources.textureAdd));
-		addTracksButton.setClickAction(() -> mc.displayGuiScreen(new GuiMusicSearchOLD()));
+		addTracksButton.setClickAction(() -> mc.displayGuiScreen(new GuiMusicSearch(playlist)));
 		
 		trackList.updateSettings(width - 24, height, 50, height - 30, 12, width - 12);
 		trackList.addAllEntries();

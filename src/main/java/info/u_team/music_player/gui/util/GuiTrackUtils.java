@@ -22,8 +22,8 @@ public class GuiTrackUtils {
 		
 		IAudioTrackInfo info = track.getInfo();
 		
-		String title = trimToWith(info.getTitle(), textSize);
-		String author = trimToWith(info.getAuthor(), textSize);
+		String title = trimToWith(info.getFixedTitle(), textSize);
+		String author = trimToWith(info.getFixedAuthor(), textSize);
 		
 		String duration;
 		if (info.isStream()) {
