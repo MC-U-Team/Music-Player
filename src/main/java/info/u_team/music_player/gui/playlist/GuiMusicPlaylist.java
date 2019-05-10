@@ -12,20 +12,24 @@ public class GuiMusicPlaylist extends GuiScreen {
 	
 	private final GuiMusicPlaylistList trackList;
 	
+	private GuiButtonClickImage addTracksButton;
+	
 	public GuiMusicPlaylist(Playlist playlist) {
 		this.playlist = playlist;
-		
-		System.out.println("OPEN gui");
-		playlist.unload();
 		
 		trackList = new GuiMusicPlaylistList(playlist);
 		
 		if (!playlist.isLoaded()) {
 			playlist.load(() -> {
-				System.out.println("Has finished");
-				if (mc.currentScreen == this) {
-					System.out.println("Added all tracks");
-					mc.addScheduledTask(() -> trackList.addAllEntries());
+				if (mc.currentScreen == this) { // Check if gui is still open
+					mc.addScheduledTask(() -> {
+						if (mc.currentScreen == this) { // Recheck gui because this is async on the main thread.
+							trackList.addAllEntries();
+							if (addTracksButton != null) {
+								addTracksButton.enabled = true;
+							}
+						}
+					});
 				}
 			});
 		}
@@ -33,8 +37,12 @@ public class GuiMusicPlaylist extends GuiScreen {
 	
 	@Override
 	protected void initGui() {
-		final GuiButtonClickImage addTracksButton = addButton(new GuiButtonClickImage(width - 41, 19, 22, 22, MusicPlayerResources.textureAdd));
+		addTracksButton = addButton(new GuiButtonClickImage(width - 41, 19, 22, 22, MusicPlayerResources.textureAdd));
 		addTracksButton.setClickAction(() -> mc.displayGuiScreen(new GuiMusicSearch(playlist)));
+		
+		if (!playlist.isLoaded()) {
+			addTracksButton.enabled = false;
+		}
 		
 		trackList.updateSettings(width - 24, height, 50, height - 30, 12, width - 12);
 		trackList.addAllEntries();
