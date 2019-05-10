@@ -13,6 +13,7 @@ public class MusicPlayerResources {
 	public static final ResourceLocation textureAdd = new ResourceLocation(MusicPlayerMod.modid, "textures/gui/add.png");
 	public static final ResourceLocation textureUp = new ResourceLocation(MusicPlayerMod.modid, "textures/gui/up.png");
 	public static final ResourceLocation textureDown = new ResourceLocation(MusicPlayerMod.modid, "textures/gui/down.png");
+	public static final ResourceLocation textureBack = new ResourceLocation(MusicPlayerMod.modid, "textures/gui/back.png");
 	
 	public static final ResourceLocation textureSocialYoutube = new ResourceLocation(MusicPlayerMod.modid, "textures/gui/socialmedia/youtube-logo.png");
 	public static final ResourceLocation textureSocialSoundcloud = new ResourceLocation(MusicPlayerMod.modid, "textures/gui/socialmedia/soundcloud-logo.png");
