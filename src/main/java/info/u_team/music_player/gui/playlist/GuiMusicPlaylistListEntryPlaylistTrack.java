@@ -10,9 +10,7 @@ public class GuiMusicPlaylistListEntryPlaylistTrack extends GuiMusicPlaylistList
 	private final IAudioTrack track;
 	
 	public GuiMusicPlaylistListEntryPlaylistTrack(GuiMusicPlaylistListEntryPlaylistStart start, Playlists playlists, Playlist playlist, LoadedTracks loadedTrack, IAudioTrack track) {
-		super(playlists, playlist, loadedTrack, track, play -> {
-			start.getPlayTrackButton().toggle(play);
-		});
+		super(playlists, playlist, loadedTrack, track);
 		this.start = start;
 		this.track = track;
 	}
@@ -20,7 +18,7 @@ public class GuiMusicPlaylistListEntryPlaylistTrack extends GuiMusicPlaylistList
 	@Override
 	public void drawEntry(int entryWidth, int entryHeight, int mouseX, int mouseY, boolean mouseInList, float partialTicks) {
 		super.drawEntry(entryWidth, entryHeight, mouseX, mouseY, mouseInList, partialTicks);
-		addTrackInfo(track, entryWidth, 15, isPlaying() ? 0x33e872 : 0x42F4F1);
+		addTrackInfo(track, entryWidth, 15, isPlaying() ? 0xe02626 : 0x42F4F1);
 	}
 	
 	public GuiMusicPlaylistListEntryPlaylistStart getStart() {

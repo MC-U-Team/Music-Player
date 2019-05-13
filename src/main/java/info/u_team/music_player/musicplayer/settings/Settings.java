@@ -47,6 +47,10 @@ public class Settings {
 		return repeat == Repeat.NO;
 	}
 	
+	public boolean isRepeat() {
+		return repeat == Repeat.SINGLE;
+	}
+	
 	private void save() {
 		MusicPlayerManager.getSettingsManager().writeToFile();
 	}

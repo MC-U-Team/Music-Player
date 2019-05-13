@@ -1,6 +1,6 @@
 package info.u_team.music_player.gui.playlist;
 
-import java.util.List;
+import java.util.*;
 
 import info.u_team.music_player.lavaplayer.api.audio.IAudioTrack;
 import info.u_team.music_player.musicplayer.playlist.*;
@@ -11,17 +11,10 @@ public class GuiMusicPlaylistListEntryPlaylistStart extends GuiMusicPlaylistList
 	private final String name;
 	private final String duration;
 	
+	private final List<GuiMusicPlaylistListEntryPlaylistTrack> entries;
+	
 	public GuiMusicPlaylistListEntryPlaylistStart(GuiMusicPlaylistList guilist, Playlists playlists, Playlist playlist, LoadedTracks loadedTracks) {
-		super(guilist, playlists, playlist, loadedTracks, loadedTracks.getFirstTrack(), play -> {
-			guilist.getChildren().stream() //
-					.filter(entry -> entry instanceof GuiMusicPlaylistListEntryPlaylistTrack) //
-					.map(entry -> (GuiMusicPlaylistListEntryPlaylistTrack) entry) //
-					.filter(entry -> entry.getTrack() == loadedTracks.getFirstTrack()) //
-					.findFirst() //
-					.ifPresent(entry -> {
-						entry.getPlayTrackButton().toggle(play);
-					});
-		});
+		super(guilist, playlists, playlist, loadedTracks, loadedTracks.getFirstTrack());
 		name = loadedTracks.getTitle();
 		
 		final List<IAudioTrack> tracks = loadedTracks.getTrackList().getTracks();
@@ -31,11 +24,22 @@ public class GuiMusicPlaylistListEntryPlaylistStart extends GuiMusicPlaylistList
 		} else {
 			duration = "undefined";
 		}
+		
+		entries = new ArrayList<>();
 	}
 	
 	@Override
 	public void drawEntryExtended(int entryWidth, int entryHeight, int mouseX, int mouseY, boolean mouseInList, float partialTicks) {
 		mc.fontRenderer.drawString(name, getX() + 5, getY() + 15, 0xF4E242);
 		mc.fontRenderer.drawString(duration, getX() + entryWidth - 135, getY() + 5, 0xFFFF00);
+	}
+	
+	public void addEntry(GuiMusicPlaylistListEntryPlaylistTrack entry) {
+		entries.add(entry);
+	}
+	
+	@Override
+	protected boolean isPlaying() {
+		return entries.stream().anyMatch(entry -> entry.getStart() == this && entry.getTrack() == getCurrentlyPlaying());
 	}
 }

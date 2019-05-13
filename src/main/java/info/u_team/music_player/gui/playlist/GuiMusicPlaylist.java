@@ -64,6 +64,7 @@ public class GuiMusicPlaylist extends GuiScreen {
 	@Override
 	public void tick() {
 		controls.tick();
+		trackList.tick();
 	}
 	
 	@Override

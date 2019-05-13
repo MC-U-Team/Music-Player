@@ -31,7 +31,11 @@ public class GuiMusicPlaylistList extends GuiScrollableList<GuiMusicPlaylistList
 		} else { // Add playlist start element and all track sub elements
 			GuiMusicPlaylistListEntryPlaylistStart start = new GuiMusicPlaylistListEntryPlaylistStart(this, playlists, playlist, loadedTracks);
 			list.add(start);
-			loadedTracks.getTrackList().getTracks().forEach(track -> list.add(new GuiMusicPlaylistListEntryPlaylistTrack(start, playlists, playlist, loadedTracks, track)));
+			loadedTracks.getTrackList().getTracks().forEach(track -> {
+				GuiMusicPlaylistListEntryPlaylistTrack entry = new GuiMusicPlaylistListEntryPlaylistTrack(start, playlists, playlist, loadedTracks, track);
+				start.addEntry(entry);
+				list.add(entry);
+			});
 		}
 		list.forEach(this::addEntry);
 	}
@@ -76,6 +80,10 @@ public class GuiMusicPlaylistList extends GuiScrollableList<GuiMusicPlaylistList
 		} else {
 			canSelectNext = true;
 		}
+	}
+	
+	public void tick() {
+		getChildren().forEach(GuiMusicPlaylistListEntry::tick);
 	}
 	
 }

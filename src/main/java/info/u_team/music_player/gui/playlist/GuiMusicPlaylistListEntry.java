@@ -9,4 +9,7 @@ public abstract class GuiMusicPlaylistListEntry extends GuiScrollableListEntry<G
 	protected void addTrackInfo(IAudioTrack track, int entryWidth, int leftMargin, int titleColor) {
 		GuiTrackUtils.addTrackInfo(track, getX(), getY(), entryWidth, leftMargin, titleColor);
 	}
+	
+	protected void tick() {
+	}
 }

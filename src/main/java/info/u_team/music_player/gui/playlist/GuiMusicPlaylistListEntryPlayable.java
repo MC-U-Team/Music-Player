@@ -1,7 +1,5 @@
 package info.u_team.music_player.gui.playlist;
 
-import java.util.function.*;
-
 import info.u_team.music_player.init.MusicPlayerResources;
 import info.u_team.music_player.lavaplayer.api.audio.IAudioTrack;
 import info.u_team.music_player.lavaplayer.api.queue.ITrackManager;
@@ -17,11 +15,6 @@ public abstract class GuiMusicPlaylistListEntryPlayable extends GuiMusicPlaylist
 	protected final GuiButtonClickImageToggle playTrackButton;
 	
 	GuiMusicPlaylistListEntryPlayable(Playlists playlists, Playlist playlist, LoadedTracks loadedTrack, IAudioTrack track) {
-		this(playlists, playlist, loadedTrack, track, play -> {
-		});
-	}
-	
-	GuiMusicPlaylistListEntryPlayable(Playlists playlists, Playlist playlist, LoadedTracks loadedTrack, IAudioTrack track, Consumer<Boolean> callback) {
 		this.track = track;
 		manager = MusicPlayerManager.getPlayer().getTrackManager();
 		
@@ -34,7 +27,6 @@ public abstract class GuiMusicPlaylistListEntryPlayable extends GuiMusicPlaylist
 			
 			playTrackButton.toggle(track == currentlyPlaying);
 			playTrackButton.setToggleClickAction((play) -> {
-				getList().getChildren().stream().filter(entry -> entry instanceof GuiMusicPlaylistListEntryPlayable).filter(entry -> entry != this).map(entry -> (GuiMusicPlaylistListEntryPlayable) entry).forEach(entry -> entry.playTrackButton.toggle(false));
 				if (play) {
 					if (manager.isPaused() && currentlyPlaying == track) {
 						manager.setPaused(false);
@@ -47,7 +39,6 @@ public abstract class GuiMusicPlaylistListEntryPlayable extends GuiMusicPlaylist
 				} else {
 					manager.setPaused(true);
 				}
-				callback.accept(play);
 			});
 		}
 	}
@@ -59,11 +50,20 @@ public abstract class GuiMusicPlaylistListEntryPlayable extends GuiMusicPlaylist
 		playTrackButton.render(mouseX, mouseY, partialTicks);
 	}
 	
-	private IAudioTrack getCurrentlyPlaying() {
+	@Override
+	protected void tick() {
+		if (isPlaying()) {
+			playTrackButton.toggle(!manager.isPaused());
+		} else {
+			playTrackButton.toggle(false);
+		}
+	}
+	
+	protected IAudioTrack getCurrentlyPlaying() {
 		return manager.getCurrentTrack() == null ? null : manager.getCurrentTrack().getOriginalTrack();
 	}
 	
-	protected final boolean isPlaying() {
+	protected boolean isPlaying() {
 		return getCurrentlyPlaying() == track;
 	}
 	

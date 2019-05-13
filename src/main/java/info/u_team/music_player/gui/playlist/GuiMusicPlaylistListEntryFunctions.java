@@ -1,7 +1,5 @@
 package info.u_team.music_player.gui.playlist;
 
-import java.util.function.*;
-
 import info.u_team.music_player.init.MusicPlayerResources;
 import info.u_team.music_player.lavaplayer.api.audio.IAudioTrack;
 import info.u_team.music_player.musicplayer.playlist.*;
@@ -17,12 +15,7 @@ abstract class GuiMusicPlaylistListEntryFunctions extends GuiMusicPlaylistListEn
 	protected final GuiButtonClickImage upButton, downButton;
 	
 	GuiMusicPlaylistListEntryFunctions(GuiMusicPlaylistList guilist, Playlists playlists, Playlist playlist, LoadedTracks loadedTrack, IAudioTrack track) {
-		this(guilist, playlists, playlist, loadedTrack, track, play -> {
-		});
-	}
-	
-	GuiMusicPlaylistListEntryFunctions(GuiMusicPlaylistList guilist, Playlists playlists, Playlist playlist, LoadedTracks loadedTrack, IAudioTrack track, Consumer<Boolean> callback) {
-		super(playlists, playlist, loadedTrack, track, callback);
+		super(playlists, playlist, loadedTrack, track);
 		this.playlist = playlist;
 		this.uri = loadedTrack.getUri();
 		deleteTrackButton = addButton(new GuiButtonClickImage(0, 0, 20, 20, MusicPlayerResources.textureClear));

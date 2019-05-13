@@ -267,6 +267,9 @@ public class Playlist implements ITrackQueue {
 			first = false;
 			return true;
 		} else if (!settings.isShuffle()) {
+			if (settings.isRepeat()) {
+				return true;
+			}
 			final Pair<LoadedTracks, IAudioTrack> pair = getOtherTrack(nextLoadedTrack, next, Skip.FORWARD);
 			if (pair.getLeft() == null || pair.getRight() == null) {
 				if (settings.isFinite()) {
@@ -313,12 +316,23 @@ public class Playlist implements ITrackQueue {
 		return next;
 	}
 	
+	/**
+	 * Returns a pair of calculated songs. This pair is either on after the current song if {@link Skip} is {@link Skip#FORWARD} or one behind.
+	 * 
+	 * @param loadedTrack
+	 *            The currently loaded track {@link LoadedTracks}
+	 * @param track
+	 *            The currently playing {@link IAudioTrack}
+	 * @param skip
+	 *            In which direction we wanna skip
+	 * @return Pair of {@link LoadedTracks} and {@link IAudioTrack}. Can't be null, but elements can be null.
+	 */
 	private Pair<LoadedTracks, IAudioTrack> getOtherTrack(LoadedTracks loadedTrack, IAudioTrack track, Skip skip) {
 		LoadedTracks nextLoadedTrack = loadedTrack;
 		IAudioTrack nextTrack = loadedTrack.getOtherTrack(track, skip);
 		if (nextTrack == null) {
 			final int newIndex = loadedTracks.indexOf(loadedTrack) + skip.getValue();
-			if (newIndex < loadedTracks.size()) {
+			if (newIndex >= 0 && newIndex < loadedTracks.size()) {
 				nextLoadedTrack = loadedTracks.get(newIndex);
 				nextTrack = skip == Skip.FORWARD ? nextLoadedTrack.getFirstTrack() : nextLoadedTrack.getLastTrack();
 			} else {
@@ -363,6 +377,36 @@ public class Playlist implements ITrackQueue {
 		} else {
 			return Pair.of(loadedTrack, loadedTrack.getFirstTrack());
 		}
+	}
+	
+	/**
+	 * Skip the current song in the {@link Skip} direction
+	 * 
+	 * @param skip
+	 *            Should be skipped forward or backward
+	 * @return If skip was executed
+	 */
+	public boolean skip(Skip skip) {
+		final Settings settings = MusicPlayerManager.getSettingsManager().getSettings();
+		if (!settings.isShuffle()) {
+			Pair<LoadedTracks, IAudioTrack> pair = getOtherTrack(nextLoadedTrack, next, skip);
+			LoadedTracks loadedTrack = pair.getLeft();
+			IAudioTrack track = pair.getRight();
+			if (loadedTrack == null || track == null) {
+				if (!settings.isFinite()) {
+					nextLoadedTrack = loadedTracks.get(0);
+					if (nextLoadedTrack != null) {
+						next = nextLoadedTrack.getFirstTrack();
+					}
+				}
+			}
+			if (loadedTrack != null && track != null) {
+				setPlayable(loadedTrack, track);
+				return true;
+			}
+			return false;
+		}
+		return true;
 	}
 	
 }

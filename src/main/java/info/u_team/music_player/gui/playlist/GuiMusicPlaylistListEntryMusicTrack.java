@@ -14,6 +14,6 @@ public class GuiMusicPlaylistListEntryMusicTrack extends GuiMusicPlaylistListEnt
 	
 	@Override
 	public void drawEntryExtended(int entryWidth, int entryHeight, int mouseX, int mouseY, boolean mouseInList, float partialTicks) {
-		addTrackInfo(track, entryWidth, 5, isPlaying() ? 0x33e872 : 0x419BF4);
+		addTrackInfo(track, entryWidth, 5, isPlaying() ? 0xe02626 : 0x419BF4);
 	}
 }
