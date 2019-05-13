@@ -267,7 +267,7 @@ public class Playlist implements ITrackQueue {
 			first = false;
 			return true;
 		} else if (!settings.isShuffle()) {
-			if (settings.isRepeat()) {
+			if (settings.isSingleRepeat()) {
 				return true;
 			}
 			final Pair<LoadedTracks, IAudioTrack> pair = getOtherTrack(nextLoadedTrack, next, Skip.FORWARD);

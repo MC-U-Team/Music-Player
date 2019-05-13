@@ -47,7 +47,7 @@ public class Settings {
 		return repeat == Repeat.NO;
 	}
 	
-	public boolean isRepeat() {
+	public boolean isSingleRepeat() {
 		return repeat == Repeat.SINGLE;
 	}
 	

@@ -17,6 +17,9 @@ public class MusicPlayerResources {
 	public static final ResourceLocation textureBack = new ResourceLocation(MusicPlayerMod.modid, "textures/gui/back.png");
 	public static final ResourceLocation textureSkipForward = new ResourceLocation(MusicPlayerMod.modid, "textures/gui/skip-forward.png");
 	public static final ResourceLocation textureSkipBack = new ResourceLocation(MusicPlayerMod.modid, "textures/gui/skip-back.png");
+	public static final ResourceLocation textureShuffle = new ResourceLocation(MusicPlayerMod.modid, "textures/gui/shuffle.png");
+	public static final ResourceLocation textureRepeat = new ResourceLocation(MusicPlayerMod.modid, "textures/gui/repeat.png");
+	public static final ResourceLocation textureRepeatSingle = new ResourceLocation(MusicPlayerMod.modid, "textures/gui/repeat-single.png");
 	
 	public static final ResourceLocation textureSocialYoutube = new ResourceLocation(MusicPlayerMod.modid, "textures/gui/socialmedia/youtube-logo.png");
 	public static final ResourceLocation textureSocialSoundcloud = new ResourceLocation(MusicPlayerMod.modid, "textures/gui/socialmedia/soundcloud-logo.png");
