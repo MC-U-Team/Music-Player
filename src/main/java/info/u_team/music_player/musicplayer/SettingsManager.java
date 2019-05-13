@@ -5,12 +5,12 @@ import java.nio.file.*;
 
 import org.apache.logging.log4j.*;
 
-import com.google.gson.*;
+import com.google.gson.Gson;
 
 import info.u_team.music_player.init.MusicPlayerFiles;
-import info.u_team.music_player.musicplayer.playlist.Playlists;
+import info.u_team.music_player.musicplayer.settings.Settings;
 
-public class PlaylistManager implements IGsonLoadable {
+public class SettingsManager implements IGsonLoadable {
 	
 	private final Logger logger = LogManager.getLogger();
 	
@@ -18,22 +18,21 @@ public class PlaylistManager implements IGsonLoadable {
 	
 	private final Path path;
 	
-	private Playlists playlists;
+	private Settings settings;
 	
-	public PlaylistManager(Gson gson) {
+	public SettingsManager(Gson gson) {
 		this.gson = gson;
-		path = MusicPlayerFiles.playlist.resolve("playlist.json");
+		path = MusicPlayerFiles.playlist.resolve("settings.json");
 	}
 	
-	@Override
 	public void loadFromFile() {
 		try {
 			if (!Files.exists(path)) {
-				playlists = new Playlists();
+				settings = new Settings();
 				writeToFile();
 			} else {
 				try (BufferedReader reader = Files.newBufferedReader(path)) {
-					playlists = gson.fromJson(reader, Playlists.class);
+					settings = gson.fromJson(reader, Settings.class);
 				} catch (IOException ex) {
 					throw ex;
 				}
@@ -43,16 +42,16 @@ public class PlaylistManager implements IGsonLoadable {
 		}
 	}
 	
-	@Override
 	public void writeToFile() {
 		try (BufferedWriter writer = Files.newBufferedWriter(path)) {
-			gson.toJson(playlists, writer);
+			gson.toJson(settings, writer);
 		} catch (IOException ex) {
 			logger.error("Could not write playlist file at " + path, ex);
 		}
 	}
 	
-	public Playlists getPlaylists() {
-		return playlists;
+	public Settings getSettings() {
+		return settings;
 	}
+	
 }

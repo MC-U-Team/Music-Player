@@ -50,7 +50,7 @@ public class TrackManager extends AudioEventAdapter implements ITrackManager {
 			stop();
 			return;
 		}
-		if (queue.hasNext()) {
+		if (queue.calculateNext() && queue.getNext() != null) {
 			audioPlayer.startTrack(queue.getNext(), false);
 		} else {
 			stop();

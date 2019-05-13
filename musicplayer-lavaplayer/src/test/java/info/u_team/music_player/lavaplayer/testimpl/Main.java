@@ -63,7 +63,7 @@ public class Main {
 		}
 		
 		@Override
-		public boolean hasNext() {
+		public boolean calculateNext() {
 			return true;
 		}
 		

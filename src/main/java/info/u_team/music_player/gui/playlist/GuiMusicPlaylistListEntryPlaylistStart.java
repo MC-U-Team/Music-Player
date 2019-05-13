@@ -4,6 +4,7 @@ import java.util.List;
 
 import info.u_team.music_player.lavaplayer.api.audio.IAudioTrack;
 import info.u_team.music_player.musicplayer.*;
+import info.u_team.music_player.musicplayer.playlist.*;
 import info.u_team.music_player.util.TimeUtil;
 
 public class GuiMusicPlaylistListEntryPlaylistStart extends GuiMusicPlaylistListEntryFunctions {

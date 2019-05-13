@@ -1,7 +1,7 @@
 package info.u_team.music_player.gui.playlist;
 
 import info.u_team.music_player.init.MusicPlayerResources;
-import info.u_team.music_player.musicplayer.Playlist;
+import info.u_team.music_player.musicplayer.playlist.Playlist;
 import info.u_team.music_player.util.WrappedObject;
 import info.u_team.u_team_core.gui.elements.GuiButtonClickImage;
 

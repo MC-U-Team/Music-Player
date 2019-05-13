@@ -2,6 +2,8 @@ package info.u_team.music_player.musicplayer;
 
 import org.apache.logging.log4j.*;
 
+import com.google.gson.*;
+
 import info.u_team.music_player.dependency.DependencyManager;
 import info.u_team.music_player.lavaplayer.api.IMusicPlayer;
 
@@ -11,12 +13,16 @@ public class MusicPlayerManager {
 	
 	private static IMusicPlayer player;
 	
-	private static final PlaylistManager playlistmanager = new PlaylistManager();
+	private static final Gson gson = new GsonBuilder().setPrettyPrinting().create();
+	
+	private static final PlaylistManager playlistManager = new PlaylistManager(gson);
+	private static final SettingsManager settingsManager = new SettingsManager(gson);
 	
 	public static void construct() {
 		generatePlayer();
 		player.startAudioOutput();
-		playlistmanager.loadFromFile();
+		playlistManager.loadFromFile();
+		settingsManager.loadFromFile();
 	}
 	
 	private static void generatePlayer() {
@@ -38,6 +44,10 @@ public class MusicPlayerManager {
 	}
 	
 	public static PlaylistManager getPlaylistManager() {
-		return playlistmanager;
+		return playlistManager;
+	}
+	
+	public static SettingsManager getSettingsManager() {
+		return settingsManager;
 	}
 }

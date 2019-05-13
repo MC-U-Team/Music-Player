@@ -3,7 +3,7 @@ package info.u_team.music_player.gui.playlist;
 import info.u_team.music_player.gui.GuiMusicPlayer;
 import info.u_team.music_player.gui.playlist.search.GuiMusicSearch;
 import info.u_team.music_player.init.MusicPlayerResources;
-import info.u_team.music_player.musicplayer.Playlist;
+import info.u_team.music_player.musicplayer.playlist.Playlist;
 import info.u_team.u_team_core.gui.elements.*;
 import net.minecraft.client.gui.GuiScreen;
 

@@ -1,7 +1,7 @@
 package info.u_team.music_player.gui.playlist.search;
 
 import info.u_team.music_player.lavaplayer.api.audio.IAudioTrack;
-import info.u_team.music_player.musicplayer.Playlist;
+import info.u_team.music_player.musicplayer.playlist.Playlist;
 import net.minecraft.util.text.TextFormatting;
 
 public class GuiMusicSearchListEntryMusicTrack extends GuiMusicSearchListEntry {

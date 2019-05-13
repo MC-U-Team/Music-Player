@@ -1,11 +1,16 @@
-package info.u_team.music_player.musicplayer;
+package info.u_team.music_player.musicplayer.playlist;
 
 import java.util.*;
 import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import org.apache.commons.lang3.tuple.Pair;
+
 import info.u_team.music_player.lavaplayer.api.audio.*;
+import info.u_team.music_player.lavaplayer.api.queue.ITrackQueue;
 import info.u_team.music_player.lavaplayer.api.search.ITrackSearch;
+import info.u_team.music_player.musicplayer.MusicPlayerManager;
+import info.u_team.music_player.musicplayer.settings.Settings;
 import info.u_team.music_player.util.WrappedObject;
 
 /**
@@ -16,7 +21,7 @@ import info.u_team.music_player.util.WrappedObject;
  * @author HyCraftHD
  *
  */
-public class Playlist {
+public class Playlist implements ITrackQueue {
 	
 	// Used in gson serialization and deserialization
 	public String name;
@@ -241,4 +246,103 @@ public class Playlist {
 	private void save() {
 		MusicPlayerManager.getPlaylistManager().writeToFile();
 	}
+	
+	// -------------------------------------------------------------------------------------------------
+	// Start of implementation for playing this playlist. Nothing here is serializable.
+	// -------------------------------------------------------------------------------------------------
+	
+	private transient LoadedTracks nextLoadedTrack;
+	private transient IAudioTrack next;
+	
+	private transient Random random;
+	
+	@Override
+	public boolean calculateNext() {
+		final Settings settings = MusicPlayerManager.getSettingsManager().getSettings();
+		if (nextLoadedTrack == null || next == null) {
+			return false;
+		} else if (!settings.isShuffle()) {
+			final Pair<LoadedTracks, IAudioTrack> pair = getOtherTrack(nextLoadedTrack, next, Skip.FORWARD);
+			if (pair.getLeft() == null || pair.getRight() == null) {
+				if (settings.isFinite()) {
+					return false;
+				} else {
+					nextLoadedTrack = loadedTracks.get(0);
+					if (nextLoadedTrack != null) {
+						next = nextLoadedTrack.getFirstTrack();
+						if (next != null) {
+							return true;
+						}
+					}
+					return false;
+				}
+			} else {
+				nextLoadedTrack = pair.getLeft();
+				next = pair.getRight();
+				return true;
+			}
+		} else {
+			List<Pair<LoadedTracks, IAudioTrack>> shuffleEntries = new ArrayList<>();
+			loadedTracks.forEach(loadedTrack -> {
+				if (loadedTrack.isTrack()) {
+					shuffleEntries.add(Pair.of(loadedTrack, loadedTrack.getTrack()));
+				} else {
+					loadedTrack.getTrackList().getTracks().forEach(track -> {
+						shuffleEntries.add(Pair.of(loadedTrack, track));
+					});
+				}
+			});
+			if (random == null) {
+				random = new Random();
+			}
+			Collections.shuffle(shuffleEntries, random);
+			Pair<LoadedTracks, IAudioTrack> pair = shuffleEntries.get(new Random().nextInt(shuffleEntries.size()));
+			nextLoadedTrack = pair.getLeft();
+			next = pair.getRight();
+			return true;
+		}
+	}
+	
+	@Override
+	public IAudioTrack getNext() {
+		return next;
+	}
+	
+	private Pair<LoadedTracks, IAudioTrack> getOtherTrack(LoadedTracks loadedTrack, IAudioTrack track, Skip skip) {
+		LoadedTracks nextLoadedTrack = loadedTrack;
+		IAudioTrack nextTrack = loadedTrack.getOtherTrack(track, skip);
+		if (nextTrack == null) {
+			final int newIndex = loadedTracks.indexOf(loadedTrack) + skip.getValue();
+			if (newIndex < loadedTracks.size()) {
+				nextLoadedTrack = loadedTracks.get(newIndex);
+				nextTrack = skip == Skip.FORWARD ? nextLoadedTrack.getFirstTrack() : nextLoadedTrack.getLastTrack();
+			} else {
+				nextLoadedTrack = null;
+			}
+		}
+		return Pair.of(nextLoadedTrack, nextTrack);
+	}
+	
+	/**
+	 * Sets the start {@link LoadedTracks} with the contained {@link IAudioTrack}
+	 * 
+	 * @param loadedTrack
+	 *            {@link LoadedTracks} which must be in this playlist
+	 * @param track
+	 *            {@link IAudioTrack} which must be in the passed loadedTrack
+	 * 
+	 */
+	public void setPlayable(LoadedTracks loadedTrack, IAudioTrack track) {
+		nextLoadedTrack = loadedTrack;
+		next = track;
+	}
+	
+	/**
+	 * Sets the next track to null. So the queue if playing will then be stopped.
+	 */
+	public void setStopable() {
+		nextLoadedTrack = null;
+		next = null;
+	}
+	
 }

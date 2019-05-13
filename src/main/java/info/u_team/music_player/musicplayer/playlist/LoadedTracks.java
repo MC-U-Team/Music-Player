@@ -1,6 +1,7 @@
-package info.u_team.music_player.musicplayer;
+package info.u_team.music_player.musicplayer.playlist;
 
-import info.u_team.music_player.lavaplayer.api.*;
+import java.util.*;
+
 import info.u_team.music_player.lavaplayer.api.audio.*;
 import info.u_team.music_player.lavaplayer.api.search.ISearchResult;
 import info.u_team.music_player.util.WrappedObject;
@@ -84,4 +85,25 @@ public class LoadedTracks {
 		return trackList;
 	}
 	
+	public IAudioTrack getFirstTrack() {
+		return isTrack() ? track : trackList.getTracks().get(0);
+	}
+	
+	public IAudioTrack getLastTrack() {
+		List<IAudioTrack> list = trackList.getTracks();
+		return isTrack() ? track : list.get(list.size() - 1);
+	}
+	
+	public IAudioTrack getOtherTrack(IAudioTrack track, Skip skip) {
+		if (isTrack()) {
+			return null;
+		}
+		List<IAudioTrack> list = trackList.getTracks();
+		int index = list.indexOf(track);
+		int newIndex = index + skip.getValue();
+		if (index >= 0 && newIndex < list.size()) {
+			return list.get(newIndex);
+		}
+		return null;
+	}
 }

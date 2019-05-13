@@ -3,6 +3,7 @@ package info.u_team.music_player.gui;
 import info.u_team.music_player.gui.playlist.GuiMusicPlaylist;
 import info.u_team.music_player.init.MusicPlayerResources;
 import info.u_team.music_player.musicplayer.*;
+import info.u_team.music_player.musicplayer.playlist.*;
 import info.u_team.u_team_core.gui.elements.*;
 
 class GuiMusicPlayerListEntry extends GuiScrollableListEntry<GuiMusicPlayerListEntry> {

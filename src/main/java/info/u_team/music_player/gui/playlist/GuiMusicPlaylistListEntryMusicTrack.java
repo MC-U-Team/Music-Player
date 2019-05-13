@@ -1,7 +1,7 @@
 package info.u_team.music_player.gui.playlist;
 
 import info.u_team.music_player.lavaplayer.api.audio.IAudioTrack;
-import info.u_team.music_player.musicplayer.Playlist;
+import info.u_team.music_player.musicplayer.playlist.Playlist;
 import info.u_team.music_player.util.WrappedObject;
 
 public class GuiMusicPlaylistListEntryMusicTrack extends GuiMusicPlaylistListEntryFunctions {

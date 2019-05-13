@@ -1,8 +1,10 @@
-package info.u_team.music_player.musicplayer;
+package info.u_team.music_player.musicplayer.playlist;
 
 import java.util.*;
 
 import com.google.common.collect.Iterators;
+
+import info.u_team.music_player.musicplayer.MusicPlayerManager;
 
 public class Playlists implements Iterable<Playlist> {
 	
