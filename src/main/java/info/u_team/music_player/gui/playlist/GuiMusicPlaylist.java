@@ -55,7 +55,7 @@ public class GuiMusicPlaylist extends GuiScreen {
 		trackList.addAllEntries();
 		children.add(trackList);
 		
-		controls = new GuiControls(trackList, width / 2 - 150, 5);
+		controls = new GuiControls(width / 2 - 150, 5);
 		children.add(controls);
 		
 		super.initGui();

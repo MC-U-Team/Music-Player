@@ -23,12 +23,10 @@ public abstract class GuiMusicPlaylistListEntryPlayable extends GuiMusicPlaylist
 		if (loadedTrack.hasError() || track == null) {
 			playTrackButton.visible = false;
 		} else {
-			IAudioTrack currentlyPlaying = getCurrentlyPlaying();
-			
-			playTrackButton.toggle(track == currentlyPlaying);
+			playTrackButton.toggle(track == getCurrentlyPlaying());
 			playTrackButton.setToggleClickAction((play) -> {
 				if (play) {
-					if (manager.isPaused() && currentlyPlaying == track) {
+					if (manager.isPaused() && getCurrentlyPlaying() == track) {
 						manager.setPaused(false);
 					} else {
 						playlists.setPlaying(playlist);

@@ -1,4 +1,4 @@
-package info.u_team.music_player.gui.playing;
+package info.u_team.to_u_team_core.export;
 
 import info.u_team.u_team_core.gui.elements.GuiButtonClickImage;
 import net.minecraft.util.ResourceLocation;
