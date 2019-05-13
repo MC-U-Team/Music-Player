@@ -90,8 +90,7 @@ public class LoadedTracks {
 	}
 	
 	public IAudioTrack getLastTrack() {
-		List<IAudioTrack> list = trackList.getTracks();
-		return isTrack() ? track : list.get(list.size() - 1);
+		return isTrack() ? track : trackList.getTracks().get(trackList.getTracks().size() - 1);
 	}
 	
 	public IAudioTrack getOtherTrack(IAudioTrack track, Skip skip) {
