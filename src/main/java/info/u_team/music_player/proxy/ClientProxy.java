@@ -3,7 +3,7 @@ package info.u_team.music_player.proxy;
 import info.u_team.music_player.dependency.DependencyManager;
 import info.u_team.music_player.event.EventHandlerMusicPlayer;
 import info.u_team.music_player.init.*;
-import info.u_team.music_player.musicplayer.*;
+import info.u_team.music_player.musicplayer.MusicPlayerManager;
 import info.u_team.music_player.musicplayer.playlist.Playlist;
 import info.u_team.music_player.util.WrappedObject;
 import info.u_team.u_team_core.api.IModProxy;

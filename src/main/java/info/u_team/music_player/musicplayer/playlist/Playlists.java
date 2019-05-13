@@ -10,6 +10,7 @@ public class Playlists implements Iterable<Playlist> {
 	
 	private final List<Playlist> playlists;
 	
+	private transient boolean locked;
 	private transient Playlist playing;
 	
 	public Playlists() {
@@ -32,6 +33,18 @@ public class Playlists implements Iterable<Playlist> {
 	public void remove(Playlist playlist) {
 		playlists.remove(playlist);
 		save();
+	}
+	
+	public void setPlayingLock() {
+		locked = true;
+	}
+	
+	public void removePlayingLock() {
+		locked = false;
+	}
+	
+	public boolean isPlayingLock() {
+		return locked;
 	}
 	
 	public void setPlaying(Playlist playing) {

@@ -1,7 +1,10 @@
 package info.u_team.music_player.gui.playlist;
 
+import java.util.function.*;
+
 import info.u_team.music_player.init.MusicPlayerResources;
-import info.u_team.music_player.musicplayer.playlist.Playlist;
+import info.u_team.music_player.lavaplayer.api.audio.IAudioTrack;
+import info.u_team.music_player.musicplayer.playlist.*;
 import info.u_team.music_player.util.WrappedObject;
 import info.u_team.u_team_core.gui.elements.GuiButtonClickImage;
 
@@ -13,9 +16,15 @@ abstract class GuiMusicPlaylistListEntryFunctions extends GuiMusicPlaylistListEn
 	protected final GuiButtonClickImage deleteTrackButton;
 	protected final GuiButtonClickImage upButton, downButton;
 	
-	GuiMusicPlaylistListEntryFunctions(GuiMusicPlaylistList guilist, Playlist playlist, WrappedObject<String> uri) {
+	GuiMusicPlaylistListEntryFunctions(GuiMusicPlaylistList guilist, Playlists playlists, Playlist playlist, LoadedTracks loadedTrack, IAudioTrack track) {
+		this(guilist, playlists, playlist, loadedTrack, track, play -> {
+		});
+	}
+	
+	GuiMusicPlaylistListEntryFunctions(GuiMusicPlaylistList guilist, Playlists playlists, Playlist playlist, LoadedTracks loadedTrack, IAudioTrack track, Consumer<Boolean> callback) {
+		super(playlists, playlist, loadedTrack, track, callback);
 		this.playlist = playlist;
-		this.uri = uri;
+		this.uri = loadedTrack.getUri();
 		deleteTrackButton = addButton(new GuiButtonClickImage(0, 0, 20, 20, MusicPlayerResources.textureClear));
 		upButton = addButton(new GuiButtonClickImage(0, 0, 20, 10, MusicPlayerResources.textureUp));
 		downButton = addButton(new GuiButtonClickImage(0, 0, 20, 10, MusicPlayerResources.textureDown));

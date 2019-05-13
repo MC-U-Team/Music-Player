@@ -3,7 +3,6 @@ package info.u_team.music_player.gui.playlist;
 import java.util.List;
 
 import info.u_team.music_player.lavaplayer.api.audio.IAudioTrack;
-import info.u_team.music_player.musicplayer.*;
 import info.u_team.music_player.musicplayer.playlist.*;
 import info.u_team.music_player.util.TimeUtil;
 
@@ -12,8 +11,17 @@ public class GuiMusicPlaylistListEntryPlaylistStart extends GuiMusicPlaylistList
 	private final String name;
 	private final String duration;
 	
-	public GuiMusicPlaylistListEntryPlaylistStart(GuiMusicPlaylistList guilist, Playlist playlist, LoadedTracks loadedTracks) {
-		super(guilist, playlist, loadedTracks.getUri());
+	public GuiMusicPlaylistListEntryPlaylistStart(GuiMusicPlaylistList guilist, Playlists playlists, Playlist playlist, LoadedTracks loadedTracks) {
+		super(guilist, playlists, playlist, loadedTracks, loadedTracks.getFirstTrack(), play -> {
+			guilist.getChildren().stream() //
+					.filter(entry -> entry instanceof GuiMusicPlaylistListEntryPlaylistTrack) //
+					.map(entry -> (GuiMusicPlaylistListEntryPlaylistTrack) entry) //
+					.filter(entry -> entry.getTrack() == loadedTracks.getFirstTrack()) //
+					.findFirst() //
+					.ifPresent(entry -> {
+						entry.getPlayTrackButton().toggle(play);
+					});
+		});
 		name = loadedTracks.getTitle();
 		
 		final List<IAudioTrack> tracks = loadedTracks.getTrackList().getTracks();

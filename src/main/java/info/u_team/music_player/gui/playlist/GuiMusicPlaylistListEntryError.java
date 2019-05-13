@@ -1,14 +1,13 @@
 package info.u_team.music_player.gui.playlist;
 
-import info.u_team.music_player.musicplayer.playlist.Playlist;
-import info.u_team.music_player.util.WrappedObject;
+import info.u_team.music_player.musicplayer.playlist.*;
 
 public class GuiMusicPlaylistListEntryError extends GuiMusicPlaylistListEntryFunctions {
 	
 	private final String error;
 	
-	public GuiMusicPlaylistListEntryError(GuiMusicPlaylistList guilist, Playlist playlist, WrappedObject<String> uri, String error) {
-		super(guilist, playlist, uri);
+	public GuiMusicPlaylistListEntryError(GuiMusicPlaylistList guilist, Playlists playlists, Playlist playlist, LoadedTracks loadedTrack, String error) {
+		super(guilist, playlists, playlist, loadedTrack, null);
 		this.error = error;
 	}
 	

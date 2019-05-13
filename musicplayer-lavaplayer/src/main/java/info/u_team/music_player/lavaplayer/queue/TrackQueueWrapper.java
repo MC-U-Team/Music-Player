@@ -23,7 +23,9 @@ public class TrackQueueWrapper {
 		if (track == null) {
 			return null;
 		} else {
-			return ((AudioTrackImpl) track).getImplTrack().makeClone(); // We know this cast must work because this interface is only implemented by AudioTrackImpl. Still not the best.
+			AudioTrack audiotrack = ((AudioTrackImpl) track).getImplTrack().makeClone(); // We know this cast must work because this interface is only implemented by AudioTrackImpl. Still not the best.
+			audiotrack.setUserData(track);
+			return audiotrack;
 		}
 	}
 	

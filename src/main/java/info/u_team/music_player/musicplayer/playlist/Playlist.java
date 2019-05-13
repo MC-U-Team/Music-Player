@@ -254,6 +254,8 @@ public class Playlist implements ITrackQueue {
 	private transient LoadedTracks nextLoadedTrack;
 	private transient IAudioTrack next;
 	
+	private transient boolean first;
+	
 	private transient Random random;
 	
 	@Override
@@ -261,6 +263,9 @@ public class Playlist implements ITrackQueue {
 		final Settings settings = MusicPlayerManager.getSettingsManager().getSettings();
 		if (nextLoadedTrack == null || next == null) {
 			return false;
+		} else if (first) {
+			first = false;
+			return true;
 		} else if (!settings.isShuffle()) {
 			final Pair<LoadedTracks, IAudioTrack> pair = getOtherTrack(nextLoadedTrack, next, Skip.FORWARD);
 			if (pair.getLeft() == null || pair.getRight() == null) {
@@ -335,6 +340,7 @@ public class Playlist implements ITrackQueue {
 	public void setPlayable(LoadedTracks loadedTrack, IAudioTrack track) {
 		nextLoadedTrack = loadedTrack;
 		next = track;
+		first = true;
 	}
 	
 	/**
@@ -343,6 +349,20 @@ public class Playlist implements ITrackQueue {
 	public void setStopable() {
 		nextLoadedTrack = null;
 		next = null;
+	}
+	
+	/**
+	 * Gets the first track {@link Pair} with {@link LoadedTracks} and {@link IAudioTrack} in this playlist. Might be null if there are no tracks.
+	 * 
+	 * @return {@link Pair} with {@link LoadedTracks} as key and {@link IAudioTrack} as value
+	 */
+	public Pair<LoadedTracks, IAudioTrack> getFirstTrack() {
+		LoadedTracks loadedTrack = loadedTracks.get(0);
+		if (loadedTrack == null) {
+			return null;
+		} else {
+			return Pair.of(loadedTrack, loadedTrack.getFirstTrack());
+		}
 	}
 	
 }

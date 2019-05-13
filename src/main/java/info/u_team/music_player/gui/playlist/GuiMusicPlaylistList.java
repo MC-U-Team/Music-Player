@@ -2,7 +2,7 @@ package info.u_team.music_player.gui.playlist;
 
 import java.util.*;
 
-import info.u_team.music_player.musicplayer.*;
+import info.u_team.music_player.musicplayer.MusicPlayerManager;
 import info.u_team.music_player.musicplayer.playlist.*;
 import info.u_team.u_team_core.gui.elements.GuiScrollableList;
 
@@ -21,16 +21,17 @@ public class GuiMusicPlaylistList extends GuiScrollableList<GuiMusicPlaylistList
 		addEntry(new GuiMusicPlaylistListEntryLoading());
 	}
 	
-	private void addLoadedTrackToGui(LoadedTracks tracks) {
-		List<GuiMusicPlaylistListEntry> list = new ArrayList<>();
-		if (tracks.hasError()) {// Add error gui element
-			list.add(new GuiMusicPlaylistListEntryError(this, playlist, tracks.getUri(), tracks.getErrorMessage()));
-		} else if (tracks.isTrack()) { // Add track gui element
-			list.add(new GuiMusicPlaylistListEntryMusicTrack(this, playlist, tracks.getUri(), tracks.getTrack()));
+	private void addLoadedTrackToGui(LoadedTracks loadedTracks) {
+		final Playlists playlists = MusicPlayerManager.getPlaylistManager().getPlaylists();
+		final List<GuiMusicPlaylistListEntry> list = new ArrayList<>();
+		if (loadedTracks.hasError()) {// Add error gui element
+			list.add(new GuiMusicPlaylistListEntryError(this, playlists, playlist, loadedTracks, loadedTracks.getErrorMessage()));
+		} else if (loadedTracks.isTrack()) { // Add track gui element
+			list.add(new GuiMusicPlaylistListEntryMusicTrack(this, playlists, playlist, loadedTracks));
 		} else { // Add playlist start element and all track sub elements
-			GuiMusicPlaylistListEntryPlaylistStart start = new GuiMusicPlaylistListEntryPlaylistStart(this, playlist, tracks);
+			GuiMusicPlaylistListEntryPlaylistStart start = new GuiMusicPlaylistListEntryPlaylistStart(this, playlists, playlist, loadedTracks);
 			list.add(start);
-			tracks.getTrackList().getTracks().forEach(track -> list.add(new GuiMusicPlaylistListEntryPlaylistTrack(start, track)));
+			loadedTracks.getTrackList().getTracks().forEach(track -> list.add(new GuiMusicPlaylistListEntryPlaylistTrack(start, playlists, playlist, loadedTracks, track)));
 		}
 		list.forEach(this::addEntry);
 	}

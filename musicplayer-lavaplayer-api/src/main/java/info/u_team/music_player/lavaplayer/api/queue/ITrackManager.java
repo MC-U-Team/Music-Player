@@ -1,6 +1,6 @@
 package info.u_team.music_player.lavaplayer.api.queue;
 
-import info.u_team.music_player.lavaplayer.api.audio.IAudioTrack;
+import info.u_team.music_player.lavaplayer.api.audio.*;
 
 public interface ITrackManager {
 	
@@ -16,6 +16,5 @@ public interface ITrackManager {
 	
 	boolean isPaused();
 	
-	IAudioTrack getCurrentTrack();
-	
+	IPlayingTrack getCurrentTrack();
 }

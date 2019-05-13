@@ -1,6 +1,6 @@
 package info.u_team.music_player.musicplayer.playlist;
 
-import java.util.*;
+import java.util.List;
 
 import info.u_team.music_player.lavaplayer.api.audio.*;
 import info.u_team.music_player.lavaplayer.api.search.ISearchResult;

@@ -4,15 +4,15 @@ import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import com.sedmelluq.discord.lavaplayer.player.event.AudioEventAdapter;
 import com.sedmelluq.discord.lavaplayer.track.*;
 
-import info.u_team.music_player.lavaplayer.api.audio.IAudioTrack;
+import info.u_team.music_player.lavaplayer.api.audio.IPlayingTrack;
 import info.u_team.music_player.lavaplayer.api.queue.*;
-import info.u_team.music_player.lavaplayer.impl.AudioTrackImpl;
+import info.u_team.music_player.lavaplayer.impl.PlayingTrackImpl;
 
 public class TrackManager extends AudioEventAdapter implements ITrackManager {
 	
 	private final AudioPlayer audioPlayer;
 	
-	private TrackQueueWrapper queue;
+	private TrackQueueWrapper queueWrapper;
 	
 	public TrackManager(AudioPlayer audioPlayer) {
 		this.audioPlayer = audioPlayer;
@@ -36,22 +36,25 @@ public class TrackManager extends AudioEventAdapter implements ITrackManager {
 	public void stop() {
 		setPaused(false);
 		audioPlayer.stopTrack();
-		queue = null;
+		queueWrapper = null;
 	}
 	
 	@Override
 	public void setTrackQueue(ITrackQueue queue) {
-		this.queue = new TrackQueueWrapper(queue);
+		if (queue == null) {
+			queueWrapper = null;
+		}
+		queueWrapper = new TrackQueueWrapper(queue);
 	}
 	
 	@Override
 	public void skip() {
-		if (queue == null) {
+		if (queueWrapper == null) {
 			stop();
 			return;
 		}
-		if (queue.calculateNext() && queue.getNext() != null) {
-			audioPlayer.startTrack(queue.getNext(), false);
+		if (queueWrapper.calculateNext() && queueWrapper.getNext() != null) {
+			audioPlayer.startTrack(queueWrapper.getNext(), false);
 		} else {
 			stop();
 		}
@@ -68,7 +71,7 @@ public class TrackManager extends AudioEventAdapter implements ITrackManager {
 	}
 	
 	@Override
-	public IAudioTrack getCurrentTrack() {
-		return audioPlayer.getPlayingTrack() == null ? null : new AudioTrackImpl(audioPlayer.getPlayingTrack());
+	public IPlayingTrack getCurrentTrack() {
+		return audioPlayer.getPlayingTrack() == null ? null : new PlayingTrackImpl(audioPlayer.getPlayingTrack());
 	}
 }

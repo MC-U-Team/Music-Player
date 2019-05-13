@@ -5,7 +5,7 @@ import java.nio.file.*;
 
 import org.apache.logging.log4j.*;
 
-import com.google.gson.*;
+import com.google.gson.Gson;
 
 import info.u_team.music_player.init.MusicPlayerFiles;
 import info.u_team.music_player.musicplayer.playlist.Playlists;

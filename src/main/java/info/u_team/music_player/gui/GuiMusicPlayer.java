@@ -33,7 +33,7 @@ public class GuiMusicPlayer extends GuiScreen {
 			namePlaylistField.setText("");
 		});
 		
-		playlistsList = new GuiMusicPlayerList(width - 24, height, 50, height - 30, 12, width - 12);
+		playlistsList = new GuiMusicPlayerList(width - 24, height, 50, height - 10, 12, width - 12);
 		children.add(playlistsList);
 		super.initGui();
 	}
@@ -57,6 +57,10 @@ public class GuiMusicPlayer extends GuiScreen {
 		mc.fontRenderer.drawString("Add playlist", 20, 25, 0xFFFFFF);
 		namePlaylistField.drawTextField(mouseX, mouseY, partialTicks);
 		super.render(mouseX, mouseY, partialTicks);
+	}
+	
+	public GuiMusicPlayerList getPlaylistsList() {
+		return playlistsList;
 	}
 	
 }
