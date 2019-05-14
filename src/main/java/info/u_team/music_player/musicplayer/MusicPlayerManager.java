@@ -23,6 +23,8 @@ public class MusicPlayerManager {
 		player.startAudioOutput();
 		playlistManager.loadFromFile();
 		settingsManager.loadFromFile();
+		
+		player.setVolume(settingsManager.getSettings().getVolume());
 	}
 	
 	private static void generatePlayer() {

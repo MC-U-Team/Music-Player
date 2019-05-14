@@ -2,6 +2,7 @@ package info.u_team.music_player.gui.playing;
 
 import java.util.*;
 
+import info.u_team.music_player.gui.util.GuiTrackUtils;
 import info.u_team.music_player.init.MusicPlayerResources;
 import info.u_team.music_player.lavaplayer.api.audio.IAudioTrack;
 import info.u_team.music_player.lavaplayer.api.queue.ITrackManager;
@@ -10,12 +11,14 @@ import info.u_team.music_player.musicplayer.playlist.*;
 import info.u_team.music_player.musicplayer.settings.*;
 import info.u_team.to_u_team_core.export.GuiButtonClickImageActivated;
 import info.u_team.u_team_core.gui.elements.*;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.*;
+import net.minecraftforge.fml.client.config.GuiSlider;
 
 public class GuiControls extends GuiEventHandler {
 	
 	private final int middleX;
-	private final int x, y;
+	private final int x, y, width;
 	
 	private final List<GuiButton> buttons;
 	private final List<IGuiEventListener> children;
@@ -26,11 +29,11 @@ public class GuiControls extends GuiEventHandler {
 	
 	private final GuiMusicProgressBar songProgress;
 	
-	// With 300, Height 40
-	public GuiControls(int x, int y) {
-		this.middleX = x + 150;
-		this.x = x;
+	public GuiControls(int y, int width) {
+		this.middleX = width / 2;
+		this.x = middleX - 150;
 		this.y = y;
+		this.width = width;
 		
 		buttons = new ArrayList<>();
 		children = new ArrayList<>();
@@ -108,6 +111,15 @@ public class GuiControls extends GuiEventHandler {
 		songProgress = new GuiMusicProgressBar(manager, middleX - 80, y + 35, 160, 5);
 		children.add(songProgress);
 		
+		// Volume
+		final boolean isTooSmall = (width - 130) < (x + 230);
+		
+		addButton(new GuiSlider(-1, isTooSmall ? x + 230 : width - 130, y + 5, isTooSmall ? 40 : 70, 20, "Volume: ", "%", 0, 100, settings.getVolume(), false, true, slider -> {
+			settings.setVolume(slider.getValueInt());
+			MusicPlayerManager.getPlayer().setVolume(settings.getVolume());
+		}));
+		
+		// Add all buttons to children
 		buttons.forEach(children::add);
 	}
 	
@@ -129,19 +141,31 @@ public class GuiControls extends GuiEventHandler {
 		buttons.forEach(button -> button.render(mouseX, mouseY, partialTicks));
 		songProgress.render(mouseX, mouseY, partialTicks);
 		
-		//
-		// final IAudioTrack track = manager.getCurrentTrack();
-		// if (track != null) {
-		// double progress = (double) track.getPosition() / track.getDuration();
-		// // Progressbar
-		//
-		// drawRect(middleX - 80, y + 30, middleX + 80, y + 35, 0xFF555555);
-		// drawRect(middleX - 80, y + 30, (int) (middleX - 80 + (progress * 160)), y + 35, 0xFF3e9100);
-		// }
+		final FontRenderer fontRenderer = Minecraft.getInstance().fontRenderer;
+		final IAudioTrack track = manager.getCurrentTrack();
+		if (track != null) {
+			String title = GuiTrackUtils.trimToWith(track.getInfo().getFixedTitle(), x + 20);
+			fontRenderer.drawString(title, 30, y + 8, 0xcc401a);
+			
+			String author = GuiTrackUtils.trimToWith(track.getInfo().getFixedAuthor(), x + 20);
+			fontRenderer.drawString(author, 30, y + 20, 0xf4aa42);
+		}
 	}
 	
 	private <B extends GuiButton> B addButton(B button) {
 		buttons.add(button);
 		return button;
+	}
+	
+	public int getX() {
+		return x;
+	}
+	
+	public int getY() {
+		return y;
+	}
+	
+	public int getWidth() {
+		return width;
 	}
 }

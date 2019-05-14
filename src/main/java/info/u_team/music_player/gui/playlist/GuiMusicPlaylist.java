@@ -44,7 +44,7 @@ public class GuiMusicPlaylist extends GuiScreen {
 		final GuiButtonClick backButton = addButton(new GuiButtonClickImage(1, 1, 15, 15, MusicPlayerResources.textureBack));
 		backButton.setClickAction(() -> mc.displayGuiScreen(new GuiMusicPlayer()));
 		
-		addTracksButton = addButton(new GuiButtonClickImage(width - 41, 19, 22, 22, MusicPlayerResources.textureAdd));
+		addTracksButton = addButton(new GuiButtonClickImage(width - 35, 20, 22, 22, MusicPlayerResources.textureAdd));
 		addTracksButton.setClickAction(() -> mc.displayGuiScreen(new GuiMusicSearch(playlist)));
 		
 		if (!playlist.isLoaded()) {
@@ -55,7 +55,7 @@ public class GuiMusicPlaylist extends GuiScreen {
 		trackList.addAllEntries();
 		children.add(trackList);
 		
-		controls = new GuiControls(width / 2 - 150, 5);
+		controls = new GuiControls(5, width);
 		children.add(controls);
 		
 		super.initGui();
