@@ -2,6 +2,7 @@ package info.u_team.music_player.gui.playlist.search;
 
 import java.util.List;
 
+import info.u_team.music_player.gui.util.GuiTrackUtils;
 import info.u_team.music_player.lavaplayer.api.audio.*;
 import info.u_team.music_player.musicplayer.playlist.Playlist;
 import info.u_team.music_player.util.TimeUtil;
@@ -41,5 +42,16 @@ public class GuiMusicSearchListEntryPlaylist extends GuiMusicSearchListEntry {
 	
 	public IAudioTrackList getTrackList() {
 		return trackList;
+	}
+	
+	@Override
+	public boolean mouseClicked(double mouseX, double mouseY, int button) {
+		if (button == 2) {
+			final String uri = trackList.getUri();
+			if (GuiTrackUtils.openURI(uri)) {
+				return true;
+			}
+		}
+		return super.mouseClicked(mouseX, mouseY, button);
 	}
 }

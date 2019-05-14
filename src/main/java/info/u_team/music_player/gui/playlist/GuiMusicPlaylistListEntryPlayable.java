@@ -1,5 +1,6 @@
 package info.u_team.music_player.gui.playlist;
 
+import info.u_team.music_player.gui.util.GuiTrackUtils;
 import info.u_team.music_player.init.MusicPlayerResources;
 import info.u_team.music_player.lavaplayer.api.audio.IAudioTrack;
 import info.u_team.music_player.lavaplayer.api.queue.ITrackManager;
@@ -12,10 +13,13 @@ public abstract class GuiMusicPlaylistListEntryPlayable extends GuiMusicPlaylist
 	private final ITrackManager manager;
 	private final IAudioTrack track;
 	
+	private final LoadedTracks loadedTrack;
+	
 	protected final GuiButtonClickImageToggle playTrackButton;
 	
 	GuiMusicPlaylistListEntryPlayable(Playlists playlists, Playlist playlist, LoadedTracks loadedTrack, IAudioTrack track) {
 		this.track = track;
+		this.loadedTrack = loadedTrack;
 		manager = MusicPlayerManager.getPlayer().getTrackManager();
 		
 		playTrackButton = addButton(new GuiButtonClickImageToggle(0, 0, 20, 20, MusicPlayerResources.texturePlay, MusicPlayerResources.texturePause));
@@ -39,6 +43,17 @@ public abstract class GuiMusicPlaylistListEntryPlayable extends GuiMusicPlaylist
 				}
 			});
 		}
+	}
+	
+	@Override
+	public boolean mouseClicked(double mouseX, double mouseY, int button) {
+		if (button == 2) {
+			final String uri = this instanceof GuiMusicPlaylistListEntryPlaylistStart ? loadedTrack.getUri().get() : track.getInfo().getURI();
+			if (GuiTrackUtils.openURI(uri)) {
+				return true;
+			}
+		}
+		return super.mouseClicked(mouseX, mouseY, button);
 	}
 	
 	@Override

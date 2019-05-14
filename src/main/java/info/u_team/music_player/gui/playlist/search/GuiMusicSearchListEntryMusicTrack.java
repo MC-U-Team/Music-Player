@@ -1,5 +1,6 @@
 package info.u_team.music_player.gui.playlist.search;
 
+import info.u_team.music_player.gui.util.GuiTrackUtils;
 import info.u_team.music_player.lavaplayer.api.audio.IAudioTrack;
 import info.u_team.music_player.musicplayer.playlist.Playlist;
 import net.minecraft.util.text.TextFormatting;
@@ -30,6 +31,17 @@ public class GuiMusicSearchListEntryMusicTrack extends GuiMusicSearchListEntry {
 	
 	public IAudioTrack getTrack() {
 		return track;
+	}
+	
+	@Override
+	public boolean mouseClicked(double mouseX, double mouseY, int button) {
+		if (button == 2) {
+			final String uri = track.getInfo().getURI();
+			if (GuiTrackUtils.openURI(uri)) {
+				return true;
+			}
+		}
+		return super.mouseClicked(mouseX, mouseY, button);
 	}
 	
 }
