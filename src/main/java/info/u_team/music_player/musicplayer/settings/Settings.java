@@ -10,10 +10,15 @@ public class Settings {
 	
 	private boolean shuffle;
 	
+	private boolean showIngameOverlay;
+	private boolean showIngameMenueOverlay;
+	
 	public Settings() {
 		volume = 10;
 		repeat = Repeat.NO;
 		shuffle = false;
+		showIngameOverlay = true;
+		showIngameMenueOverlay = false;
 	}
 	
 	public int getVolume() {
@@ -40,6 +45,24 @@ public class Settings {
 	
 	public void setShuffle(boolean shuffle) {
 		this.shuffle = shuffle;
+		save();
+	}
+	
+	public boolean isShowIngameOverlay() {
+		return showIngameOverlay;
+	}
+	
+	public void setShowIngameOverlay(boolean showIngameOverlay) {
+		this.showIngameOverlay = showIngameOverlay;
+		save();
+	}
+	
+	public boolean isShowIngameMenueOverlay() {
+		return showIngameMenueOverlay;
+	}
+	
+	public void setShowIngameMenueOverlay(boolean showIngameMenueOverlay) {
+		this.showIngameMenueOverlay = showIngameMenueOverlay;
 		save();
 	}
 	

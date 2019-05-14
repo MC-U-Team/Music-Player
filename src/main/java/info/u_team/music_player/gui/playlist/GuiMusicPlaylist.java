@@ -75,4 +75,8 @@ public class GuiMusicPlaylist extends GuiScreen {
 		super.render(mouseX, mouseY, partialTicks);
 	}
 	
+	public GuiMusicPlaylistList getTrackList() {
+		return trackList;
+	}
+	
 }

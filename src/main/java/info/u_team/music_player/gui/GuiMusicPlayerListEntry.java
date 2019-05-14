@@ -55,6 +55,9 @@ class GuiMusicPlayerListEntry extends GuiScrollableListEntry<GuiMusicPlayerListE
 					final GuiMusicPlayer musicplayergui = (GuiMusicPlayer) mc.currentScreen;
 					final GuiMusicPlayerList newGui = musicplayergui.getPlaylistsList();
 					newGui.getChildren().forEach(entry -> entry.playPlaylistButton.enabled = true);
+				} else if (mc.currentScreen instanceof GuiMusicPlaylist) {
+					final GuiMusicPlaylist musicplaylistgui = (GuiMusicPlaylist) mc.currentScreen;
+					musicplaylistgui.getTrackList().updateAllEntries();
 				}
 			};
 			

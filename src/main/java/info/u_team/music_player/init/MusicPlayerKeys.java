@@ -2,8 +2,7 @@ package info.u_team.music_player.init;
 
 import org.lwjgl.glfw.GLFW;
 
-import info.u_team.music_player.event.EventHandlerMusicPlayer;
-import info.u_team.u_team_core.registry.util.*;
+import info.u_team.u_team_core.registry.util.ClientRegistry;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraftforge.api.distmarker.*;
 
@@ -14,6 +13,5 @@ public class MusicPlayerKeys {
 	
 	public static void construct() {
 		ClientRegistry.registerKeybinding(open);
-		CommonRegistry.registerEventHandler(EventHandlerMusicPlayer.class);
 	}
 }
