@@ -15,16 +15,16 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.*;
 
 public class EventHandlerMusicPlayer {
-	
+
 	private static final Settings settings = MusicPlayerManager.getSettingsManager().getSettings();
-	
+
 	@SubscribeEvent
 	public static void on(KeyInputEvent event) {
 		if (MusicPlayerKeys.open.isPressed()) {
 			Minecraft.getInstance().displayGuiScreen(new GuiMusicPlayer());
 		}
 	}
-	
+
 	@SubscribeEvent
 	public static void on(GuiScreenEvent.InitGuiEvent.Post event) {
 		final GuiScreen gui = event.getGui();
@@ -36,7 +36,7 @@ public class EventHandlerMusicPlayer {
 			}
 		}
 	}
-	
+
 	@SubscribeEvent
 	public static void on(GuiScreenEvent.DrawScreenEvent event) {
 		if (settings.isShowIngameMenueOverlay()) {
@@ -49,7 +49,7 @@ public class EventHandlerMusicPlayer {
 			}
 		}
 	}
-	
+
 	@SubscribeEvent
 	public static void on(ClientTickEvent event) {
 		if (settings.isShowIngameMenueOverlay()) {
