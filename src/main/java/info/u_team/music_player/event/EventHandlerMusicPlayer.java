@@ -4,9 +4,10 @@ import java.util.List;
 
 import info.u_team.music_player.gui.GuiMusicPlayer;
 import info.u_team.music_player.gui.playing.GuiControls;
-import info.u_team.music_player.init.MusicPlayerKeys;
+import info.u_team.music_player.init.*;
 import info.u_team.music_player.musicplayer.MusicPlayerManager;
 import info.u_team.music_player.musicplayer.settings.Settings;
+import info.u_team.u_team_core.gui.elements.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.*;
 import net.minecraftforge.client.event.*;
@@ -29,6 +30,9 @@ public class EventHandlerMusicPlayer {
 	public static void on(GuiScreenEvent.InitGuiEvent.Post event) {
 		final GuiScreen gui = event.getGui();
 		if (gui instanceof GuiIngameMenu) {
+			final GuiButtonClick backButton = new GuiButtonClickImage(gui.width - 16, 1, 15, 15, MusicPlayerResources.textureOpen);
+			backButton.setClickAction(() -> gui.mc.displayGuiScreen(new GuiMusicPlayer()));
+			event.addButton(backButton);
 			if (settings.isShowIngameMenueOverlay()) {
 				@SuppressWarnings("unchecked")
 				List<IGuiEventListener> list = (List<IGuiEventListener>) gui.getChildren();
