@@ -14,24 +14,22 @@ import info.u_team.music_player.musicplayer.settings.Settings;
 import info.u_team.music_player.util.WrappedObject;
 
 /**
- * This class represents a playlist. This list can be serialized or deserialized. After a serialization the tracks must be loaded, because only the
- * uris are saved. {@link IAudioTrack} and {@link IAudioTrackList} can be added. Tracks can be removed. Tracks can be moved in the order. Any changes
- * to the serializable fields are saved
+ * This class represents a playlist. This list can be serialized or deserialized. After a serialization the tracks must be loaded, because only the uris are saved. {@link IAudioTrack} and {@link IAudioTrackList} can be added. Tracks can be removed. Tracks can be moved in the order. Any changes to the serializable fields are saved
  * 
  * @author HyCraftHD
  *
  */
 public class Playlist implements ITrackQueue {
-	
+
 	// Used in gson serialization and deserialization
 	public String name;
 	public final ArrayList<WrappedObject<String>> uris;
-	
+
 	// Should not be serialized or deserialized
 	private transient final Executor executor;
 	private transient boolean loaded;
 	private transient final ArrayList<LoadedTracks> loadedTracks;
-	
+
 	/**
 	 * Only used for gson deserialization
 	 */
@@ -41,12 +39,11 @@ public class Playlist implements ITrackQueue {
 		loadedTracks = new ArrayList<>();
 		executor = Executors.newSingleThreadExecutor();
 	}
-	
+
 	/**
 	 * Create a new playlist object with a name
 	 * 
-	 * @param name
-	 *            The playlist's name
+	 * @param name The playlist's name
 	 */
 	public Playlist(String name) {
 		this.name = name;
@@ -54,22 +51,19 @@ public class Playlist implements ITrackQueue {
 		loadedTracks = new ArrayList<>();
 		executor = Executors.newSingleThreadExecutor();
 	}
-	
+
 	/**
-	 * Loads this playlist. This will go through all uris and search with {@link ITrackSearch} for the {@link IAudioTrack} and {@link IAudioTrackList} for
-	 * {@link LoadedTracks}. This method is async.
+	 * Loads this playlist. This will go through all uris and search with {@link ITrackSearch} for the {@link IAudioTrack} and {@link IAudioTrackList} for {@link LoadedTracks}. This method is async.
 	 */
 	public void load() {
 		load(() -> {
 		});
 	}
-	
+
 	/**
-	 * Loads this playlist. This will go through all uris and search with {@link ITrackSearch} for the {@link IAudioTrack} and {@link IAudioTrackList} for
-	 * {@link LoadedTracks}. This method is async. This method calls the {@link Runnable#run()} method when everything is loaded.
+	 * Loads this playlist. This will go through all uris and search with {@link ITrackSearch} for the {@link IAudioTrack} and {@link IAudioTrackList} for {@link LoadedTracks}. This method is async. This method calls the {@link Runnable#run()} method when everything is loaded and the playlist was not loaded before.
 	 * 
-	 * @param runnable
-	 *            A runnable that should be executed when the playlist is loaded
+	 * @param runnable A runnable that should be executed when the playlist is loaded
 	 */
 	public void load(Runnable runnable) {
 		if (loaded) {
@@ -77,13 +71,19 @@ public class Playlist implements ITrackQueue {
 		}
 		executor.execute(() -> {
 			unload(); // Unload everything before, because of the threaded executor this method might pass the check before
-			
+
+			if (uris.isEmpty()) {
+				loaded = true;
+				runnable.run();
+				return;
+			}
+
 			final ITrackSearch search = MusicPlayerManager.getPlayer().getTrackSearch();
-			
+
 			uris.forEach(uri -> loadedTracks.add(new LoadedTracks(uri))); // Add dummy elements
-			
+
 			AtomicInteger counterIfReady = new AtomicInteger();
-			
+
 			for (int index = 0; index < uris.size(); index++) {
 				final int immutableIndex = index; // Little workaround for using the index in closure
 				final WrappedObject<String> uri = uris.get(immutableIndex);
@@ -98,7 +98,7 @@ public class Playlist implements ITrackQueue {
 			}
 		});
 	}
-	
+
 	/**
 	 * Unloads this playlist and removes all loaded tracks.
 	 */
@@ -106,7 +106,7 @@ public class Playlist implements ITrackQueue {
 		loadedTracks.clear();
 		loaded = false;
 	}
-	
+
 	/**
 	 * Is this playlist loaded
 	 * 
@@ -115,12 +115,11 @@ public class Playlist implements ITrackQueue {
 	public boolean isLoaded() {
 		return loaded;
 	}
-	
+
 	/**
 	 * Adds an {@link IAudioTrack} to the uri list and the loaded tracks. This playlist must be loaded.
 	 * 
-	 * @param track
-	 *            The track that should be added
+	 * @param track The track that should be added
 	 * @return The {@link WrappedObject} with the uri as a string
 	 */
 	public WrappedObject<String> add(IAudioTrack track) {
@@ -134,13 +133,11 @@ public class Playlist implements ITrackQueue {
 		save();
 		return uri;
 	}
-	
+
 	/**
-	 * Adds an {@link IAudioTrackList} to the uri list and the loaded tracks if it has a valid uri and is not a search result. This playlist must be
-	 * loaded.
+	 * Adds an {@link IAudioTrackList} to the uri list and the loaded tracks if it has a valid uri and is not a search result. This playlist must be loaded.
 	 * 
-	 * @param trackList
-	 *            The tracklist that should be added
+	 * @param trackList The tracklist that should be added
 	 * @return The {@link WrappedObject} with the uri as a string
 	 */
 	public WrappedObject<String> add(IAudioTrackList trackList) {
@@ -157,12 +154,11 @@ public class Playlist implements ITrackQueue {
 		}
 		return null;
 	}
-	
+
 	/**
 	 * Removes an uri from the uri list and the loaded tracks. This playlist must be loaded.
 	 * 
-	 * @param uri
-	 *            The {@link WrappedObject} with the uri as a string
+	 * @param uri The {@link WrappedObject} with the uri as a string
 	 * @return If the uri was removed
 	 */
 	public boolean remove(WrappedObject<String> uri) {
@@ -178,14 +174,12 @@ public class Playlist implements ITrackQueue {
 		}
 		return false;
 	}
-	
+
 	/**
 	 * Move the uri and loaded track in the list up or down. This playlist must be loaded.
 	 * 
-	 * @param uri
-	 *            The {@link WrappedObject} with the uri as a string
-	 * @param value
-	 *            Positive value to move the uri up the value, and the other way around for a negative value
+	 * @param uri   The {@link WrappedObject} with the uri as a string
+	 * @param value Positive value to move the uri up the value, and the other way around for a negative value
 	 * 
 	 * @return If move was successful
 	 */
@@ -204,18 +198,17 @@ public class Playlist implements ITrackQueue {
 			return false;
 		}
 	}
-	
+
 	/**
 	 * Sets the name of this playlist
 	 * 
-	 * @param name
-	 *            Name
+	 * @param name Name
 	 */
 	public void setName(String name) {
 		this.name = name;
 		save();
 	}
-	
+
 	/**
 	 * Gets the name of this playlist
 	 * 
@@ -224,7 +217,7 @@ public class Playlist implements ITrackQueue {
 	public String getName() {
 		return name;
 	}
-	
+
 	/**
 	 * Gets the size of uri entries
 	 * 
@@ -233,7 +226,7 @@ public class Playlist implements ITrackQueue {
 	public int getEntrySize() {
 		return uris.size();
 	}
-	
+
 	/**
 	 * Gets a {@link Collection} of {@link LoadedTracks}. Should only be used if this playlist is already loaded. This collection is immutable
 	 * 
@@ -243,21 +236,30 @@ public class Playlist implements ITrackQueue {
 		return Collections.unmodifiableCollection(loadedTracks);
 	}
 	
+	/**
+	 * Returns true if the playlist is empty and don't contain any uris.
+	 * 
+	 * @return true if empty
+	 */
+	public boolean isEmpty() {
+		return uris.isEmpty();
+	}
+
 	private void save() {
 		MusicPlayerManager.getPlaylistManager().writeToFile();
 	}
-	
+
 	// -------------------------------------------------------------------------------------------------
 	// Start of implementation for playing this playlist. Nothing here is serializable.
 	// -------------------------------------------------------------------------------------------------
-	
+
 	private transient LoadedTracks nextLoadedTrack;
 	private transient IAudioTrack next;
-	
+
 	private transient boolean first;
-	
+
 	private transient Random random;
-	
+
 	@Override
 	public boolean calculateNext() {
 		final Settings settings = MusicPlayerManager.getSettingsManager().getSettings();
@@ -310,21 +312,18 @@ public class Playlist implements ITrackQueue {
 			return true;
 		}
 	}
-	
+
 	@Override
 	public IAudioTrack getNext() {
 		return next;
 	}
-	
+
 	/**
 	 * Returns a pair of calculated songs. This pair is either on after the current song if {@link Skip} is {@link Skip#FORWARD} or one behind.
 	 * 
-	 * @param loadedTrack
-	 *            The currently loaded track {@link LoadedTracks}
-	 * @param track
-	 *            The currently playing {@link IAudioTrack}
-	 * @param skip
-	 *            In which direction we wanna skip
+	 * @param loadedTrack The currently loaded track {@link LoadedTracks}
+	 * @param track       The currently playing {@link IAudioTrack}
+	 * @param skip        In which direction we wanna skip
 	 * @return Pair of {@link LoadedTracks} and {@link IAudioTrack}. Can't be null, but elements can be null.
 	 */
 	private Pair<LoadedTracks, IAudioTrack> getOtherTrack(LoadedTracks loadedTrack, IAudioTrack track, Skip skip) {
@@ -341,14 +340,12 @@ public class Playlist implements ITrackQueue {
 		}
 		return Pair.of(nextLoadedTrack, nextTrack);
 	}
-	
+
 	/**
 	 * Sets the start {@link LoadedTracks} with the contained {@link IAudioTrack}
 	 * 
-	 * @param loadedTrack
-	 *            {@link LoadedTracks} which must be in this playlist
-	 * @param track
-	 *            {@link IAudioTrack} which must be in the passed loadedTrack
+	 * @param loadedTrack {@link LoadedTracks} which must be in this playlist
+	 * @param track       {@link IAudioTrack} which must be in the passed loadedTrack
 	 * 
 	 */
 	public void setPlayable(LoadedTracks loadedTrack, IAudioTrack track) {
@@ -356,7 +353,7 @@ public class Playlist implements ITrackQueue {
 		next = track;
 		first = true;
 	}
-	
+
 	/**
 	 * Sets the next track to null. So the queue if playing will then be stopped.
 	 */
@@ -364,26 +361,28 @@ public class Playlist implements ITrackQueue {
 		nextLoadedTrack = null;
 		next = null;
 	}
-	
+
 	/**
 	 * Gets the first track {@link Pair} with {@link LoadedTracks} and {@link IAudioTrack} in this playlist. Might be null if there are no tracks.
 	 * 
 	 * @return {@link Pair} with {@link LoadedTracks} as key and {@link IAudioTrack} as value
 	 */
 	public Pair<LoadedTracks, IAudioTrack> getFirstTrack() {
-		LoadedTracks loadedTrack = loadedTracks.get(0);
+		if (loadedTracks.isEmpty()) {
+			return null;
+		}
+		final LoadedTracks loadedTrack = loadedTracks.get(0);
 		if (loadedTrack == null) {
 			return null;
 		} else {
 			return Pair.of(loadedTrack, loadedTrack.getFirstTrack());
 		}
 	}
-	
+
 	/**
 	 * Skip the current song in the {@link Skip} direction
 	 * 
-	 * @param skip
-	 *            Should be skipped forward or backward
+	 * @param skip Should be skipped forward or backward
 	 * @return If skip was executed
 	 */
 	public boolean skip(Skip skip) {
@@ -408,5 +407,4 @@ public class Playlist implements ITrackQueue {
 		}
 		return true;
 	}
-	
 }

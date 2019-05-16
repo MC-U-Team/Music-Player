@@ -11,20 +11,20 @@ import info.u_team.music_player.init.MusicPlayerFiles;
 import info.u_team.music_player.musicplayer.playlist.Playlists;
 
 public class PlaylistManager implements IGsonLoadable {
-	
+
 	private final Logger logger = LogManager.getLogger();
-	
+
 	private final Gson gson;
-	
+
 	private final Path path;
-	
+
 	private Playlists playlists;
-	
+
 	public PlaylistManager(Gson gson) {
 		this.gson = gson;
 		path = MusicPlayerFiles.playlist.resolve("playlist.json");
 	}
-	
+
 	@Override
 	public void loadFromFile() {
 		try {
@@ -34,6 +34,10 @@ public class PlaylistManager implements IGsonLoadable {
 			} else {
 				try (BufferedReader reader = Files.newBufferedReader(path)) {
 					playlists = gson.fromJson(reader, Playlists.class);
+					if (playlists == null) {
+						playlists = new Playlists();
+						writeToFile();
+					}
 				} catch (IOException ex) {
 					throw ex;
 				}
@@ -42,7 +46,7 @@ public class PlaylistManager implements IGsonLoadable {
 			logger.error("Could not ready playlist file at " + path, ex);
 		}
 	}
-	
+
 	@Override
 	public void writeToFile() {
 		try (BufferedWriter writer = Files.newBufferedWriter(path)) {
@@ -51,7 +55,7 @@ public class PlaylistManager implements IGsonLoadable {
 			logger.error("Could not write playlist file at " + path, ex);
 		}
 	}
-	
+
 	public Playlists getPlaylists() {
 		return playlists;
 	}
