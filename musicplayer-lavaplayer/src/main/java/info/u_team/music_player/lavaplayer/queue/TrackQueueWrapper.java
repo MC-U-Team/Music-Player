@@ -7,17 +7,17 @@ import info.u_team.music_player.lavaplayer.api.queue.ITrackQueue;
 import info.u_team.music_player.lavaplayer.impl.AudioTrackImpl;
 
 public class TrackQueueWrapper {
-	
+
 	private final ITrackQueue queue;
-	
+
 	public TrackQueueWrapper(ITrackQueue queue) {
 		this.queue = queue;
 	}
-	
+
 	public boolean calculateNext() {
 		return queue.calculateNext();
 	}
-	
+
 	public AudioTrack getNext() {
 		IAudioTrack track = queue.getNext();
 		if (track == null) {
@@ -28,5 +28,5 @@ public class TrackQueueWrapper {
 			return audiotrack;
 		}
 	}
-	
+
 }

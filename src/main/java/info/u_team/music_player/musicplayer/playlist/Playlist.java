@@ -14,7 +14,9 @@ import info.u_team.music_player.musicplayer.settings.Settings;
 import info.u_team.music_player.util.WrappedObject;
 
 /**
- * This class represents a playlist. This list can be serialized or deserialized. After a serialization the tracks must be loaded, because only the uris are saved. {@link IAudioTrack} and {@link IAudioTrackList} can be added. Tracks can be removed. Tracks can be moved in the order. Any changes to the serializable fields are saved
+ * This class represents a playlist. This list can be serialized or deserialized. After a serialization the tracks must
+ * be loaded, because only the uris are saved. {@link IAudioTrack} and {@link IAudioTrackList} can be added. Tracks can
+ * be removed. Tracks can be moved in the order. Any changes to the serializable fields are saved
  * 
  * @author HyCraftHD
  *
@@ -53,7 +55,8 @@ public class Playlist implements ITrackQueue {
 	}
 
 	/**
-	 * Loads this playlist. This will go through all uris and search with {@link ITrackSearch} for the {@link IAudioTrack} and {@link IAudioTrackList} for {@link LoadedTracks}. This method is async.
+	 * Loads this playlist. This will go through all uris and search with {@link ITrackSearch} for the {@link IAudioTrack}
+	 * and {@link IAudioTrackList} for {@link LoadedTracks}. This method is async.
 	 */
 	public void load() {
 		load(() -> {
@@ -61,7 +64,9 @@ public class Playlist implements ITrackQueue {
 	}
 
 	/**
-	 * Loads this playlist. This will go through all uris and search with {@link ITrackSearch} for the {@link IAudioTrack} and {@link IAudioTrackList} for {@link LoadedTracks}. This method is async. This method calls the {@link Runnable#run()} method when everything is loaded and the playlist was not loaded before.
+	 * Loads this playlist. This will go through all uris and search with {@link ITrackSearch} for the {@link IAudioTrack}
+	 * and {@link IAudioTrackList} for {@link LoadedTracks}. This method is async. This method calls the
+	 * {@link Runnable#run()} method when everything is loaded and the playlist was not loaded before.
 	 * 
 	 * @param runnable A runnable that should be executed when the playlist is loaded
 	 */
@@ -90,7 +95,8 @@ public class Playlist implements ITrackQueue {
 				search.getTracks(uri.get(), result -> {
 					LoadedTracks loadedTrack = new LoadedTracks(uri, result);
 					loadedTracks.set(immutableIndex, loadedTrack);
-					if (counterIfReady.incrementAndGet() == loadedTracks.size()) { // Count up for every replaced track in loadedTracks. When its the last one it sets the loaded flag and runs the runnable
+					if (counterIfReady.incrementAndGet() == loadedTracks.size()) { // Count up for every replaced track in loadedTracks. When its the last one it sets the loaded flag and runs the
+																					// runnable
 						loaded = true;
 						runnable.run();
 					}
@@ -135,7 +141,8 @@ public class Playlist implements ITrackQueue {
 	}
 
 	/**
-	 * Adds an {@link IAudioTrackList} to the uri list and the loaded tracks if it has a valid uri and is not a search result. This playlist must be loaded.
+	 * Adds an {@link IAudioTrackList} to the uri list and the loaded tracks if it has a valid uri and is not a search
+	 * result. This playlist must be loaded.
 	 * 
 	 * @param trackList The tracklist that should be added
 	 * @return The {@link WrappedObject} with the uri as a string
@@ -228,14 +235,15 @@ public class Playlist implements ITrackQueue {
 	}
 
 	/**
-	 * Gets a {@link Collection} of {@link LoadedTracks}. Should only be used if this playlist is already loaded. This collection is immutable
+	 * Gets a {@link Collection} of {@link LoadedTracks}. Should only be used if this playlist is already loaded. This
+	 * collection is immutable
 	 * 
 	 * @return Collection with all loaded tracks
 	 */
 	public Collection<LoadedTracks> getLoadedTracks() {
 		return Collections.unmodifiableCollection(loadedTracks);
 	}
-	
+
 	/**
 	 * Returns true if the playlist is empty and don't contain any uris.
 	 * 
@@ -319,7 +327,8 @@ public class Playlist implements ITrackQueue {
 	}
 
 	/**
-	 * Returns a pair of calculated songs. This pair is either on after the current song if {@link Skip} is {@link Skip#FORWARD} or one behind.
+	 * Returns a pair of calculated songs. This pair is either on after the current song if {@link Skip} is
+	 * {@link Skip#FORWARD} or one behind.
 	 * 
 	 * @param loadedTrack The currently loaded track {@link LoadedTracks}
 	 * @param track       The currently playing {@link IAudioTrack}
@@ -363,7 +372,8 @@ public class Playlist implements ITrackQueue {
 	}
 
 	/**
-	 * Gets the first track {@link Pair} with {@link LoadedTracks} and {@link IAudioTrack} in this playlist. Might be null if there are no tracks.
+	 * Gets the first track {@link Pair} with {@link LoadedTracks} and {@link IAudioTrack} in this playlist. Might be null
+	 * if there are no tracks.
 	 * 
 	 * @return {@link Pair} with {@link LoadedTracks} as key and {@link IAudioTrack} as value
 	 */

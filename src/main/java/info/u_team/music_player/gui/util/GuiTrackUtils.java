@@ -10,9 +10,9 @@ import net.minecraft.util.text.event.ClickEvent;
 import net.minecraft.util.text.event.ClickEvent.Action;
 
 public class GuiTrackUtils {
-	
+
 	private static final Minecraft mc = Minecraft.getInstance();
-	
+
 	public static String trimToWith(String string, int width) {
 		String newString = mc.fontRenderer.trimStringToWidth(string, width);
 		if (!newString.equals(string)) {
@@ -20,16 +20,16 @@ public class GuiTrackUtils {
 		}
 		return newString;
 	}
-	
+
 	public static void addTrackInfo(IAudioTrack track, int x, int y, int entryWidth, int leftMargin, int titleColor) {
-		
+
 		int textSize = entryWidth - 150 - leftMargin;
-		
+
 		IAudioTrackInfo info = track.getInfo();
-		
+
 		String title = trimToWith(info.getFixedTitle(), textSize);
 		String author = trimToWith(info.getFixedAuthor(), textSize);
-		
+
 		String duration;
 		if (info.isStream()) {
 			duration = "undefined";
@@ -40,7 +40,7 @@ public class GuiTrackUtils {
 		mc.fontRenderer.drawString(author, x + leftMargin + 4, y + 25, 0xD86D1C);
 		mc.fontRenderer.drawString(duration, x + entryWidth - 140, y + 15, 0xFFFF00);
 	}
-	
+
 	public static boolean openURI(String uri) {
 		final Style style = new Style();
 		try {
@@ -51,5 +51,5 @@ public class GuiTrackUtils {
 		}
 		return mc.currentScreen.handleComponentClick(new TextComponentString("").setStyle(style));
 	}
-	
+
 }

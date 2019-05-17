@@ -9,16 +9,16 @@ import org.apache.logging.log4j.*;
 import net.harawata.appdirs.*;
 
 public class MusicPlayerFiles {
-	
+
 	private static final Logger logger = LogManager.getLogger();
-	
+
 	private static final AppDirs appdirs = AppDirsFactory.getInstance();
-	
+
 	public static final Path directory = Paths.get(appdirs.getUserConfigDir("musicplayer", null, "mc-u-team", true));
-	
+
 	public static final Path cache = directory.resolve("cache");
 	public static final Path playlist = directory.resolve("playlist");
-	
+
 	public static void construct() {
 		FileUtils.deleteQuietly(cache.toFile());
 		try {

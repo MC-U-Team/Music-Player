@@ -27,30 +27,30 @@ import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import info.u_team.music_player.lavaplayer.MusicPlayer;
 
 public class AudioOutput extends Thread {
-	
+
 	private final MusicPlayer musicPlayer;
-	
+
 	public AudioOutput(MusicPlayer musicPlayer) {
 		super("Audio Player");
 		this.musicPlayer = musicPlayer;
 	}
-	
+
 	@Override
 	public void run() {
 		try {
 			AudioPlayer player = musicPlayer.getAudioPlayer();
 			AudioDataFormat dataformat = musicPlayer.getAudioDataFormat();
-			
+
 			AudioInputStream stream = AudioPlayerInputStream.createStream(player, dataformat, dataformat.frameDuration(), true);
-			
+
 			SourceDataLine.Info info = new DataLine.Info(SourceDataLine.class, stream.getFormat());
 			SourceDataLine output = (SourceDataLine) AudioSystem.getLine(info);
-			
+
 			int buffersize = dataformat.chunkSampleCount * dataformat.channelCount * 2;
-			
+
 			output.open(stream.getFormat(), buffersize * 5);
 			output.start();
-			
+
 			byte[] buffer = new byte[buffersize];
 			int chunkSize;
 			long frameDuration = dataformat.frameDuration();
