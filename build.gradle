@@ -180,7 +180,6 @@ dependencies {
 	compile "info.u-team:u_team_core-${config.forge.mcversion}:${config.uteamcore.version}:dev"
 	compile project(":musicplayer-lavaplayer-api")
 	
-	
 	internal ("org.lwjgl:lwjgl-tinyfd:3.1.6") {
 		transitive=false
 	}
