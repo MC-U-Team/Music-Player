@@ -90,8 +90,8 @@ def normalManifest = {
 }
 
 configurations {
-    embed
-    compile.extendsFrom(embed)
+    internal
+    compile.extendsFrom(internal)
 }
 
 jar {
@@ -105,13 +105,13 @@ jar {
 	    
 	from "musicplayer-lavaplayer-api/build/classes/java/main"
 	
-    into ("dependencies") {
+    into ("dependencies/musicplayer") {
 		from "musicplayer-lavaplayer/build/libs/musicplayer-lavaplayer.jar"
 		from "musicplayer-lavaplayer/build/dependencies"	
 	}
 	
-	into ("embed-dependencies") {
-		from configurations.embed		
+	into ("dependencies/internal") {
+		from configurations.internal		
 	}
 	
    	manifest normalManifest
@@ -129,13 +129,13 @@ task deobfJar(type: Jar) {
 	    
 	from "musicplayer-lavaplayer-api/build/classes/java/main"
 	
-    into ("dependencies") {
-		from "musicplayer-lavaplayer/build/libs/musicplayer-lavaplayer.jar"	
-		from "musicplayer-lavaplayer/build/dependencies"
+    into ("dependencies/musicplayer") {
+		from "musicplayer-lavaplayer/build/libs/musicplayer-lavaplayer.jar"
+		from "musicplayer-lavaplayer/build/dependencies"	
 	}
-
-	into ("embed-dependencies") {
-		from configurations.embed		
+	
+	into ("dependencies/internal") {
+		from configurations.internal		
 	}
 
     manifest normalManifest
@@ -181,20 +181,20 @@ dependencies {
 	compile project(":musicplayer-lavaplayer-api")
 	
 	
-	embed ("org.lwjgl:lwjgl-tinyfd:3.1.6") {
+	internal ("org.lwjgl:lwjgl-tinyfd:3.1.6") {
 		transitive=false
 	}
-	embed ("org.lwjgl:lwjgl-tinyfd:3.1.6:natives-linux") {
+	internal ("org.lwjgl:lwjgl-tinyfd:3.1.6:natives-linux") {
 		transitive=false
 	}
-	embed ("org.lwjgl:lwjgl-tinyfd:3.1.6:natives-macos") {
+	internal ("org.lwjgl:lwjgl-tinyfd:3.1.6:natives-macos") {
 		transitive=false
 	}
-	embed ("org.lwjgl:lwjgl-tinyfd:3.1.6:natives-windows") {
+	internal ("org.lwjgl:lwjgl-tinyfd:3.1.6:natives-windows") {
 		transitive=false
 	}
-	embed ("org.slf4j:slf4j-simple:1.7.26")
-	embed ("net.harawata:appdirs:1.0.0") {
+	internal ("org.slf4j:slf4j-simple:1.7.26")
+	internal ("net.harawata:appdirs:1.0.0") {
 		transitive=false
 	}
 }

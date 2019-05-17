@@ -1,127 +1,96 @@
 package info.u_team.music_player.dependency;
 
-import java.io.*;
-import java.lang.reflect.Method;
+import java.io.IOException;
+import java.lang.reflect.*;
 import java.net.*;
 import java.nio.file.*;
 import java.util.function.Consumer;
 
-import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.*;
 
 import info.u_team.music_player.MusicPlayerMod;
-import info.u_team.music_player.init.MusicPlayerFiles;
+import info.u_team.music_player.dependency.classloader.DependencyClassLoader;
+import info.u_team.music_player.dependency.url.UrlStreamHandlerMusicPlayer;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.loading.moddiscovery.ModFile;
 
 public class DependencyManager {
-	
+
 	private static final Logger logger = LogManager.getLogger();
-	private static final Marker setup = MarkerManager.getMarker("Setup");
 	private static final Marker load = MarkerManager.getMarker("Load");
-	
-	public static final DependencyMusicPlayerClassLoader musicplayerclassloader = new DependencyMusicPlayerClassLoader();
-	
-	private static Path embeddependencies, musicplayerdependencies;
-	
+
+	private static final DependencyClassLoader musicplayerclassloader = new DependencyClassLoader();
+
 	public static void construct() {
-		setupCache();
-		copyDependencies();
-		loadDependencies();
+		logger.info(load, "Load dependencies");
+
+		final String devPath = System.getProperty("musicplayer.dev");
+		if (devPath != null) {
+			Paths.get(devPath, "musicplayer-lavaplayer/build/libs").forEach(DependencyManager::addToMusicPlayerDependencies);
+			Paths.get(devPath, "musicplayer-lavaplayer/build/dependencies").forEach(DependencyManager::addToMusicPlayerDependencies);
+		} else {
+			setURLStreamHandlerFactory();
+			getJarFilesInJar("dependencies/internal", path -> addToInternalDependencies(createInternalURL(path)));
+			getJarFilesInJar("dependencies/musicplayer", path -> addToMusicPlayerDependencies(createInternalURL(path)));
+		}
+
+		logger.info(load, "Finished loading dependencies");
 	}
-	
-	private static void setupCache() {
-		Path cache = MusicPlayerFiles.cache;
-		embeddependencies = cache.resolve("embed");
-		musicplayerdependencies = cache.resolve("musicplayer");
-		logger.info(setup, "Creating musicplayer cache at " + cache);
-		
+
+	public static DependencyClassLoader getClassLoader() {
+		return musicplayerclassloader;
+	}
+
+	private static void getJarFilesInJar(String folder, Consumer<Path> consumer) {
+		final ModFile modfile = ModList.get().getModFileById(MusicPlayerMod.modid).getFile();
 		try {
-			Files.createDirectories(embeddependencies);
-			Files.createDirectories(musicplayerdependencies);
+			Files.walk(modfile.findResource("/" + folder)).filter(file -> file.toString().endsWith(".jar")).forEach(consumer);
 		} catch (IOException ex) {
-			logger.error(setup, "Could not create music player cache", ex);
-		}
-		
-	}
-	
-	private static void copyDependencies() {
-		logger.info(setup, "Try to copy dependencies to cache directory");
-		String path = System.getProperty("musicplayer.dev");
-		try {
-			if (path != null) {
-				copyDependenciesDev(path);
-			} else {
-				copyDependenciesFromJar();
-			}
-			logger.info(setup, "Finished copy of dependencies to cache");
-		} catch (Exception ex) {
-			logger.error(setup, "Could not copy dependencies to cache", ex);
+			logger.error(load, "When searching for jar files in jar an exception occured.", ex);
 		}
 	}
-	
-	private static void copyDependenciesDev(String path) throws Exception {
-		logger.info(setup, "Search dependencies in dev");
-		
-		FileUtils.copyDirectory(Paths.get(path, "musicplayer-lavaplayer/build/libs").toFile(), musicplayerdependencies.toFile());
-		FileUtils.copyDirectory(Paths.get(path, "musicplayer-lavaplayer/build/dependencies").toFile(), musicplayerdependencies.toFile());
-	}
-	
-	private static void copyDependenciesFromJar() throws Exception {
-		logger.info(setup, "Search dependencies in jar");
-		
-		ModFile modfile = ModList.get().getModFileById(MusicPlayerMod.modid).getFile();
-		
-		extractJarFilesFromZipFolder(modfile, "embed-dependencies", embeddependencies);
-		extractJarFilesFromZipFolder(modfile, "dependencies", musicplayerdependencies);
-	}
-	
-	private static void loadDependencies() {
-		logger.info(load, "Load dependencies into classloaders");
-		
-		// No need to check if the runtime is in eclipse because folder will be reset
-		// every start correctly
-		
+
+	private static URL createInternalURL(Path path) {
+		final String url = "musicplayer:" + path.toString().substring(1);
+		logger.debug("Load url" + url);
 		try {
-			URLClassLoader systemloader = (URLClassLoader) ClassLoader.getSystemClassLoader();
-			Method method = URLClassLoader.class.getDeclaredMethod("addURL", URL.class);
+			return new URL(url);
+		} catch (MalformedURLException ex) {
+			logger.error(load, "Could not create url from internal path", ex);
+		}
+		return null;
+	}
+
+	private static void addToMusicPlayerDependencies(URL url) {
+		musicplayerclassloader.addURL(url);
+	}
+
+	private static void addToMusicPlayerDependencies(Path path) {
+		musicplayerclassloader.addPath(path);
+	}
+
+	private static void addToInternalDependencies(URL url) {
+		try {
+			final URLClassLoader systemloader = (URLClassLoader) ClassLoader.getSystemClassLoader();
+			final Method method = URLClassLoader.class.getDeclaredMethod("addURL", URL.class);
 			method.setAccessible(true);
-			
-			forEachJarFile(embeddependencies, file -> {
-				try {
-					method.invoke(systemloader, file.toUri().toURL());
-					logger.info(load, "Added jar to system classloader: " + file);
-				} catch (Exception ex) {
-					throw new RuntimeException("Method addURL on system classloader could not be invoked", ex);
-				}
-			});
+			method.invoke(systemloader, url);
 		} catch (Exception ex) {
-			logger.error(load, "Could not load embedded dependencies", ex);
+			logger.error(load, "Method addURL on system classloader could not be invoked", ex);
 		}
-		
-		forEachJarFile(musicplayerdependencies, file -> {
-			musicplayerclassloader.addFile(file.toFile());
-			logger.info(load, "Added jar to musicplayer classloader: " + file);
-		});
-		
-		logger.info(load, "Dependencies have sucessfully been loaded into classloaders");
 	}
-	
-	private static void extractJarFilesFromZipFolder(ModFile modfile, String folder, Path path) throws IOException {
-		Files.walk(modfile.findResource("/" + folder)).filter(file -> file.toString().endsWith(".jar")).forEach(file -> {
-			try {
-				Files.copy(file, new File(path.toFile(), file.getFileName().toString()).toPath(), StandardCopyOption.REPLACE_EXISTING);
-			} catch (IOException ex) {
-				throw new RuntimeException(ex);
-			}
-		});
-	}
-	
-	private static void forEachJarFile(Path path, Consumer<Path> consumer) {
+
+	// Really hackary because we need to use reflections to modify this..
+	private static void setURLStreamHandlerFactory() {
 		try {
-			Files.walk(path).filter(file -> file.toString().endsWith(".jar") && file.toFile().isFile()).forEach(consumer);
-		} catch (IOException ex) {
-			logger.error(load, "Could not jars into classpath from path " + path, ex);
+			Field field = URL.class.getDeclaredField("factory");
+			field.setAccessible(true);
+
+			final URLStreamHandlerFactory factory = (URLStreamHandlerFactory) field.get(null);
+			URLStreamHandlerFactory newFactory = protocol -> "musicplayer".equals(protocol) ? new UrlStreamHandlerMusicPlayer() : factory.createURLStreamHandler(protocol);
+			field.set(null, newFactory);
+		} catch (Exception ex) {
+			logger.error(load, "Could not hack URL factory.", ex);
 		}
 	}
 }

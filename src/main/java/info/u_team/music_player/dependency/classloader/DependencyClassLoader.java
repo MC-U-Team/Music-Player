@@ -1,40 +1,40 @@
-package info.u_team.music_player.dependency;
+package info.u_team.music_player.dependency.classloader;
 
-import java.io.File;
 import java.net.*;
+import java.nio.file.Path;
 
 import org.apache.logging.log4j.*;
 
-public class DependencyMusicPlayerClassLoader extends URLClassLoader {
-	
+public class DependencyClassLoader extends URLClassLoader {
+
 	private static final Logger logger = LogManager.getLogger();
-	
-	DependencyMusicPlayerClassLoader() {
+
+	public DependencyClassLoader() {
 		super(new URL[] {}, null);
 	}
-	
+
 	@Override
 	public Class<?> loadClass(String name) throws ClassNotFoundException {
 		try {
 			return super.loadClass(name);
 		} catch (ClassNotFoundException ex) {
 			if (name.startsWith("info.u_team.music_player.lavaplayer.api")) {
-				return DependencyMusicPlayerClassLoader.class.getClassLoader().loadClass(name);
+				return getClass().getClassLoader().loadClass(name);
 			}
 			throw ex;
 		}
 	}
-	
+
 	@Override
 	public void addURL(URL url) {
 		super.addURL(url);
 	}
-	
-	public void addFile(File file) {
+
+	public void addPath(Path path) {
 		try {
-			addURL(file.toURI().toURL());
+			addURL(path.toUri().toURL());
 		} catch (MalformedURLException ex) {
-			logger.error("Could not add dependency file to classloader", ex);
+			logger.error("Could not add dependency path to classloader", ex);
 		}
 	}
 }

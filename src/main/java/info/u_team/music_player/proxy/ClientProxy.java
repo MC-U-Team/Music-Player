@@ -10,23 +10,23 @@ import net.minecraftforge.api.distmarker.*;
 
 @OnlyIn(Dist.CLIENT)
 public class ClientProxy extends CommonProxy implements IModProxy {
-	
+
 	@Override
 	public void construct() {
 		super.construct();
 		System.setProperty("http.agent", "Chrome");
-		MusicPlayerFiles.construct();
 		DependencyManager.construct();
+		MusicPlayerFiles.construct();
 		MusicPlayerManager.construct();
 		MusicPlayerKeys.construct();
 		CommonRegistry.registerEventHandler(EventHandlerMusicPlayer.class);
 	}
-	
+
 	@Override
 	public void setup() {
 		super.setup();
 	}
-	
+
 	@Override
 	public void complete() {
 		super.complete();
