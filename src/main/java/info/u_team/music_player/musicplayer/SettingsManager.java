@@ -22,7 +22,7 @@ public class SettingsManager implements IGsonLoadable {
 
 	public SettingsManager(Gson gson) {
 		this.gson = gson;
-		path = MusicPlayerFiles.playlist.resolve("settings.json");
+		path = MusicPlayerFiles.directory.resolve("settings.json");
 	}
 
 	public void loadFromFile() {
