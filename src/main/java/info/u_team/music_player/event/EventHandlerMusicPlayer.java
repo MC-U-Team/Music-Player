@@ -5,10 +5,9 @@ import java.util.List;
 import info.u_team.music_player.gui.GuiMusicPlayer;
 import info.u_team.music_player.gui.playing.GuiControls;
 import info.u_team.music_player.init.*;
-import info.u_team.music_player.lavaplayer.api.audio.IAudioTrack;
 import info.u_team.music_player.musicplayer.MusicPlayerManager;
 import info.u_team.music_player.musicplayer.settings.Settings;
-import info.u_team.to_u_team_core.export.ScrollingTextRender;
+import info.u_team.music_player.render.RenderOverlayMusicDisplay;
 import info.u_team.u_team_core.gui.elements.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.*;
@@ -31,18 +30,20 @@ public class EventHandlerMusicPlayer {
 		}
 	}
 	
-	private static ScrollingTextRender render = new ScrollingTextRender(() -> Minecraft.getInstance().fontRenderer, () -> {
-		final IAudioTrack track = MusicPlayerManager.getPlayer().getTrackManager().getCurrentTrack();
-		if (track != null) {
-			return track.getInfo().getFixedTitle();
-		}
-		return null;
-	});
+	private static RenderOverlayMusicDisplay overlayRender;
+	
+	// Render overlay
 	
 	@SubscribeEvent
 	public static void on(RenderGameOverlayEvent.Pre event) {
-		if (event.getType() == ElementType.TEXT) {
-			render.draw(10, 10);
+		final Minecraft mc = Minecraft.getInstance();
+		if (event.getType() == ElementType.TEXT && !mc.gameSettings.showDebugInfo && mc.currentScreen == null) {
+			if (settings.isShowIngameOverlay()) {
+				if (overlayRender == null) {
+					overlayRender = new RenderOverlayMusicDisplay();
+				}
+				overlayRender.draw(5, 5);
+			}
 		}
 	}
 	

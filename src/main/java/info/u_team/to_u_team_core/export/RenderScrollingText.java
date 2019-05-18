@@ -8,7 +8,7 @@ import net.minecraft.client.*;
 import net.minecraft.client.gui.*;
 import net.minecraft.util.math.MathHelper;
 
-public class ScrollingTextRender extends ScalingTextRender {
+public class RenderScrollingText extends RenderScalingText {
 	
 	protected int width;
 	protected float stepSize;
@@ -19,7 +19,7 @@ public class ScrollingTextRender extends ScalingTextRender {
 	protected long lastTime = 0;
 	protected State state = State.WAITING;
 	
-	public ScrollingTextRender(Supplier<FontRenderer> fontRenderSupplier, Supplier<String> textSupplier) {
+	public RenderScrollingText(Supplier<FontRenderer> fontRenderSupplier, Supplier<String> textSupplier) {
 		super(fontRenderSupplier, textSupplier);
 		width = 100;
 		stepSize = 1;
@@ -60,8 +60,14 @@ public class ScrollingTextRender extends ScalingTextRender {
 	}
 	
 	@Override
+	protected void updatedText() {
+		state = State.WAITING;
+		moveDifference = 0;
+		lastTime = 0;
+	}
+	
+	@Override
 	public void draw(float x, float y) {
-		
 		final Minecraft mc = Minecraft.getInstance();
 		final MainWindow window = mc.mainWindow;
 		
@@ -71,13 +77,13 @@ public class ScrollingTextRender extends ScalingTextRender {
 		final int nativeY = MathHelper.ceil(y * scaleFactor);
 		
 		final int nativeWidth = MathHelper.ceil(width * scaleFactor);
-		final int nativeHeight = MathHelper.ceil(fontRenderSupplier.get().FONT_HEIGHT * scaleFactor);
+		final int nativeHeight = MathHelper.ceil(fontRenderSupplier.get().FONT_HEIGHT * scale * scaleFactor);
 		
 		GL11.glPushMatrix();
 		GL11.glEnable(GL11.GL_SCISSOR_TEST);
 		
 		GL11.glScissor(nativeX, window.getHeight() - (nativeY + nativeHeight), nativeWidth, nativeHeight);
-//		Gui.drawRect(0, 0, window.getScaledWidth(), window.getScaledHeight(), 0xFF00FF00); // test scissor
+		// Gui.drawRect(0, 0, window.getScaledWidth(), window.getScaledHeight(), 0xFF00FF00); // test scissor
 		
 		super.draw(getMovingX(x), y);
 		

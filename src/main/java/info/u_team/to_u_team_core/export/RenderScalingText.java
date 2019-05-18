@@ -7,7 +7,7 @@ import org.lwjgl.opengl.GL11;
 
 import net.minecraft.client.gui.FontRenderer;
 
-public class ScalingTextRender {
+public class RenderScalingText {
 	
 	protected final Supplier<FontRenderer> fontRenderSupplier;
 	
@@ -20,7 +20,7 @@ public class ScalingTextRender {
 	protected boolean shadow;
 	protected float scale;
 	
-	public ScalingTextRender(Supplier<FontRenderer> fontRenderSupplier, Supplier<String> textSupplier) {
+	public RenderScalingText(Supplier<FontRenderer> fontRenderSupplier, Supplier<String> textSupplier) {
 		this.fontRenderSupplier = fontRenderSupplier;
 		this.textSupplier = textSupplier;
 		this.scale = 1;
@@ -67,7 +67,11 @@ public class ScalingTextRender {
 		if ((newText != null && !newText.equals(text)) || newText == null) {
 			this.text = newText;
 			this.textWidth = fontRenderSupplier.get().getStringWidth(newText);
+			updatedText();
 		}
+	}
+	
+	protected void updatedText() {
 	}
 	
 	public void draw(float x, float y) {
@@ -78,11 +82,12 @@ public class ScalingTextRender {
 	
 	protected void renderFont(float x, float y) {
 		GL11.glPushMatrix();
+		GL11.glTranslatef(x, y, 0);
 		GL11.glScalef(scale, scale, 0);
 		if (shadow) {
-			fontRenderSupplier.get().drawStringWithShadow(text, x, y, color);
+			fontRenderSupplier.get().drawStringWithShadow(text, 0, 0, color);
 		} else {
-			fontRenderSupplier.get().drawString(text, x, y, color);
+			fontRenderSupplier.get().drawString(text, 0, 0, color);
 		}
 		GL11.glPopMatrix();
 	}
