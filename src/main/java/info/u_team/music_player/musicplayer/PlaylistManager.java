@@ -24,7 +24,7 @@ public class PlaylistManager implements IGsonLoadable {
 	
 	public PlaylistManager(Gson gson) {
 		this.gson = gson;
-		path = MusicPlayerFiles.directory.resolve("playlist.json.gz");
+		path = MusicPlayerFiles.getDirectory().resolve("playlist.json.gz");
 	}
 	
 	@Override

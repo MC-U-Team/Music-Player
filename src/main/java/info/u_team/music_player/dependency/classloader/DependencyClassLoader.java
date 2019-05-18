@@ -6,13 +6,17 @@ import java.nio.file.Path;
 import org.apache.logging.log4j.*;
 
 public class DependencyClassLoader extends URLClassLoader {
-
+	
 	private static final Logger logger = LogManager.getLogger();
-
+	
+	static {
+		ClassLoader.registerAsParallelCapable();
+	}
+	
 	public DependencyClassLoader() {
 		super(new URL[] {}, null);
 	}
-
+	
 	@Override
 	public Class<?> loadClass(String name) throws ClassNotFoundException {
 		try {
@@ -24,12 +28,12 @@ public class DependencyClassLoader extends URLClassLoader {
 			throw ex;
 		}
 	}
-
+	
 	@Override
 	public void addURL(URL url) {
 		super.addURL(url);
 	}
-
+	
 	public void addPath(Path path) {
 		try {
 			addURL(path.toUri().toURL());

@@ -11,20 +11,20 @@ import info.u_team.music_player.init.MusicPlayerFiles;
 import info.u_team.music_player.musicplayer.settings.Settings;
 
 public class SettingsManager implements IGsonLoadable {
-
+	
 	private final Logger logger = LogManager.getLogger();
-
+	
 	private final Gson gson;
-
+	
 	private final Path path;
-
+	
 	private Settings settings;
-
+	
 	public SettingsManager(Gson gson) {
 		this.gson = gson;
-		path = MusicPlayerFiles.directory.resolve("settings.json");
+		path = MusicPlayerFiles.getDirectory().resolve("settings.json");
 	}
-
+	
 	public void loadFromFile() {
 		try {
 			if (!Files.exists(path)) {
@@ -45,7 +45,7 @@ public class SettingsManager implements IGsonLoadable {
 			logger.error("Could not ready playlist file at " + path, ex);
 		}
 	}
-
+	
 	public void writeToFile() {
 		try (BufferedWriter writer = Files.newBufferedWriter(path)) {
 			gson.toJson(settings, writer);
@@ -53,9 +53,9 @@ public class SettingsManager implements IGsonLoadable {
 			logger.error("Could not write playlist file at " + path, ex);
 		}
 	}
-
+	
 	public Settings getSettings() {
 		return settings;
 	}
-
+	
 }

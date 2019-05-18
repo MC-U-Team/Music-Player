@@ -18,7 +18,7 @@ public class MusicPlayerManager {
 	private static final PlaylistManager playlistManager = new PlaylistManager(gson);
 	private static final SettingsManager settingsManager = new SettingsManager(gson);
 
-	public static void construct() {
+	public static void setup() {
 		generatePlayer();
 		player.startAudioOutput();
 		playlistManager.loadFromFile();
