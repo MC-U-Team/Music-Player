@@ -1,5 +1,7 @@
 package info.u_team.music_player.gui.util;
 
+import static info.u_team.music_player.init.MusicPlayerLocalization.*;
+
 import java.net.URI;
 import java.util.function.Function;
 
@@ -56,7 +58,7 @@ public final class GuiTrackUtils {
 		} else {
 			final IAudioTrackInfo info = track.getInfo();
 			if (info.isStream()) {
-				return "undefined";
+				return getTranslation(gui_track_duration_undefined);
 			}
 			seconds = track.getDuration() / 1000;
 		}

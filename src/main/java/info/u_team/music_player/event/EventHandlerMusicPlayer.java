@@ -38,7 +38,9 @@ public class EventHandlerMusicPlayer {
 	
 	@SubscribeEvent
 	public void on(KeyboardKeyPressedEvent.Post event) {
-		event.setCanceled(handleKeyboard(true, event.getKeyCode(), event.getScanCode()));
+		if (settings.isKeyWorkInGui()) {
+			event.setCanceled(handleKeyboard(true, event.getKeyCode(), event.getScanCode()));
+		}
 	}
 	
 	private boolean handleKeyboard(boolean gui, int keyCode, int scanCode) {
@@ -84,7 +86,7 @@ public class EventHandlerMusicPlayer {
 	@SubscribeEvent
 	public void on(RenderGameOverlayEvent.Pre event) {
 		final Minecraft mc = Minecraft.getInstance();
-		if (event.getType() == ElementType.TEXT && !mc.gameSettings.showDebugInfo /* && mc.currentScreen == null */) {
+		if (event.getType() == ElementType.TEXT && !mc.gameSettings.showDebugInfo && mc.currentScreen == null) {
 			if (settings.isShowIngameOverlay()) {
 				if (overlayRender == null) {
 					overlayRender = new RenderOverlayMusicDisplay();

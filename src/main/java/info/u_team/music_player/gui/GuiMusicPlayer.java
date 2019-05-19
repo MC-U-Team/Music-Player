@@ -1,5 +1,7 @@
 package info.u_team.music_player.gui;
 
+import static info.u_team.music_player.init.MusicPlayerLocalization.*;
+
 import org.apache.commons.lang3.StringUtils;
 
 import info.u_team.music_player.gui.controls.GuiControls;
@@ -29,7 +31,7 @@ public class GuiMusicPlayer extends GuiScreen {
 		final GuiButtonClickImage addPlaylistButton = addButton(new GuiButtonClickImage(width - 41, 59, 22, 22, MusicPlayerResources.textureCreate));
 		addPlaylistButton.setClickAction(() -> {
 			String name = namePlaylistField.getText();
-			if (StringUtils.isBlank(name) || name.equals("Enter a name")) {
+			if (StringUtils.isBlank(name) || name.equals(getTranslation(gui_create_playlist_insert_name))) {
 				namePlaylistField.setText("Enter a name");
 				return;
 			}
@@ -66,7 +68,7 @@ public class GuiMusicPlayer extends GuiScreen {
 	public void render(int mouseX, int mouseY, float partialTicks) {
 		drawBackground(0);
 		playlistsList.drawScreen(mouseX, mouseY, partialTicks);
-		mc.fontRenderer.drawString("Add playlist", 20, 65, 0xFFFFFF);
+		mc.fontRenderer.drawString(getTranslation(gui_create_playlist_add_list), 20, 65, 0xFFFFFF);
 		namePlaylistField.drawTextField(mouseX, mouseY, partialTicks);
 		controls.drawScreen(mouseX, mouseY, partialTicks);
 		super.render(mouseX, mouseY, partialTicks);

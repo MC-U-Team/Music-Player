@@ -2,7 +2,6 @@ package info.u_team.music_player.config;
 
 import org.apache.commons.lang3.tuple.Pair;
 
-import info.u_team.music_player.MusicPlayerMod;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.common.ForgeConfigSpec.*;
 
@@ -25,7 +24,7 @@ public class ClientConfig {
 	
 	private ClientConfig(Builder builder) {
 		builder.comment("Client configuration settings").push("client");
-		internalPlaylists = builder.comment("Should we use instead of the global appdata dir a local dir in configs for storing and loading our playlist").translation(MusicPlayerMod.modid + ":configgui.internalPlaylists").worldRestart().define("internalPlaylists", false);
+		internalPlaylists = builder.comment("Should we use instead of the global appdata dir a local dir in configs for storing and loading our playlist").worldRestart().define("internalPlaylists", false);
 		builder.pop();
 	}
 	

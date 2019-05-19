@@ -1,5 +1,7 @@
 package info.u_team.music_player.gui.settings;
 
+import static info.u_team.music_player.init.MusicPlayerLocalization.*;
+
 import info.u_team.music_player.gui.controls.GuiControls;
 import info.u_team.music_player.init.MusicPlayerResources;
 import info.u_team.music_player.musicplayer.MusicPlayerManager;
@@ -26,31 +28,31 @@ public class GuiMusicPlayerSettings extends GuiScreen {
 		
 		final Settings settings = MusicPlayerManager.getSettingsManager().getSettings();
 		
-		final GuiButtonClickActivated toggleIngameDisplayButton = addButton(new GuiButtonClickActivated(12, 60, width / 2 - 24, 20, "Toggle ingame display", 0x80FF00FF));
+		final GuiButtonClickActivated toggleIngameDisplayButton = addButton(new GuiButtonClickActivated(12, 60, width / 2 - 24, 20, getTranslation(gui_settings_toggle_ingame_overlay), 0x80FF00FF));
 		toggleIngameDisplayButton.setActive(settings.isShowIngameOverlay());
 		toggleIngameDisplayButton.setClickAction(() -> {
 			settings.setShowIngameOverlay(!settings.isShowIngameOverlay());
 			toggleIngameDisplayButton.setActive(settings.isShowIngameOverlay());
 		});
 		
-		final GuiButtonClickActivated toggleIngameMenueDisplayButton = addButton(new GuiButtonClickActivated(width / 2 + 14, 60, width / 2 - 24, 20, "Toggle menue overlay", 0x80FF00FF));
+		final GuiButtonClickActivated toggleIngameMenueDisplayButton = addButton(new GuiButtonClickActivated(width / 2 + 14, 60, width / 2 - 24, 20, getTranslation(gui_settings_toggle_menue_overlay), 0x80FF00FF));
 		toggleIngameMenueDisplayButton.setActive(settings.isShowIngameMenueOverlay());
 		toggleIngameMenueDisplayButton.setClickAction(() -> {
 			settings.setShowIngameMenueOverlay(!settings.isShowIngameMenueOverlay());
 			toggleIngameMenueDisplayButton.setActive(settings.isShowIngameMenueOverlay());
 		});
 		
-		final GuiButtonClickActivated toggleKeyWorkInGuiButton = addButton(new GuiButtonClickActivated(12, 90, width / 2 - 24, 20, "Toggle key work in gui", 0x80FF00FF));
+		final GuiButtonClickActivated toggleKeyWorkInGuiButton = addButton(new GuiButtonClickActivated(12, 90, width / 2 - 24, 20, getTranslation(gui_settings_toggle_key_in_gui), 0x80FF00FF));
 		toggleKeyWorkInGuiButton.setActive(settings.isKeyWorkInGui());
 		toggleKeyWorkInGuiButton.setClickAction(() -> {
 			settings.setKeyWorkInGui(!settings.isKeyWorkInGui());
 			toggleKeyWorkInGuiButton.setActive(settings.isKeyWorkInGui());
 		});
 		
-		final GuiButtonClick ingameOverlayPositionButton = addButton(new GuiButtonClick(width / 2 + 14, 90, width / 2 - 24, 20, "Ingame overlay: " + settings.getIngameOverlayPosition().getName()));
+		final GuiButtonClick ingameOverlayPositionButton = addButton(new GuiButtonClick(width / 2 + 14, 90, width / 2 - 24, 20, getTranslation(gui_settings_position_overlay) + ": " + getTranslation(settings.getIngameOverlayPosition().getLocalization())));
 		ingameOverlayPositionButton.setClickAction(() -> {
 			settings.setIngameOverlayPosition(IngameOverlayPosition.forwardCycle(settings.getIngameOverlayPosition()));
-			ingameOverlayPositionButton.displayString = "Ingame overlay: " + settings.getIngameOverlayPosition().getName();
+			ingameOverlayPositionButton.displayString = getTranslation(gui_settings_position_overlay) + ": " + getTranslation(settings.getIngameOverlayPosition().getLocalization());
 		});
 		
 		controls = new GuiControls(this, 5, width);

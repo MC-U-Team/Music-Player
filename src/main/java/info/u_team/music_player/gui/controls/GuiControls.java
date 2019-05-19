@@ -1,5 +1,7 @@
 package info.u_team.music_player.gui.controls;
 
+import static info.u_team.music_player.init.MusicPlayerLocalization.*;
+
 import java.util.*;
 
 import info.u_team.music_player.gui.GuiMusicPlayer;
@@ -119,7 +121,7 @@ public class GuiControls extends GuiEventHandler {
 		
 		// Volume
 		final int volumeY = width - (70 + (isIngame ? 15 * 2 + 3 : (!isSettings ? 15 + 2 : 1)));
-		addButtonNonDisable(new GuiSliderBetterFont(-1, volumeY, 1, 70, 15, "Volume: ", "%", 0, 100, settings.getVolume(), false, true, 0.7F, slider -> {
+		addButtonNonDisable(new GuiSliderBetterFont(-1, volumeY, 1, 70, 15, getTranslation(gui_controls_volume) + ": ", "%", 0, 100, settings.getVolume(), false, true, 0.7F, slider -> {
 			settings.setVolume(slider.getValueInt());
 			MusicPlayerManager.getPlayer().setVolume(settings.getVolume());
 		}));

@@ -5,7 +5,7 @@ import java.util.function.Supplier;
 import org.lwjgl.opengl.GL11;
 
 import net.minecraft.client.*;
-import net.minecraft.client.gui.*;
+import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.util.math.MathHelper;
 
 public class RenderScrollingText extends RenderScalingText {
