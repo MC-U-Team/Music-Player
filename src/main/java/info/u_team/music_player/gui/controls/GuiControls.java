@@ -164,15 +164,15 @@ public class GuiControls extends GuiEventHandler {
 		buttons.forEach(button -> button.render(mouseX, mouseY, partialTicks));
 		songProgress.render(mouseX, mouseY, partialTicks);
 		
-		final int textRenderWidth = middleX - (2 * buttonSize + halfButtonSize + 10) - 35;
+		final int textRenderWidth = middleX - (2 * buttonSize + halfButtonSize + 10) - (small ? 15 : 35);
 		
 		titleRender.setWidth(textRenderWidth);
 		authorRender.setWidth(textRenderWidth);
 		
 		final int textRenderY = small ? y : y + 2;
 		
-		titleRender.draw(25, textRenderY);
-		authorRender.draw(25, textRenderY + 10);
+		titleRender.draw(small ? 10 : 25, textRenderY);
+		authorRender.draw(small ? 10 : 25, textRenderY + 10);
 	}
 	
 	private <B extends GuiButton> B addButton(B button) {
