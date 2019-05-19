@@ -80,8 +80,8 @@ public class RenderOverlayMusicDisplay {
 		Gui.drawRect(intX + 6, intY + 23, intX + 6 + (int) ((width - 12) * progress), intY + 26, 0xFF3e9100);
 		
 		// Draw strings
-		title.draw(x + 3, y + 3);
-		author.draw(x + 3, y + 13);
+		title.draw(x + 3, y + 2);
+		author.draw(x + 3, y + 12);
 		
 		position.draw(x + 6, y + 28);
 		duration.draw(x + width - 6 - duration.getTextWidth(), y + 28);

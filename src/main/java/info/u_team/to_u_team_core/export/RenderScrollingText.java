@@ -85,7 +85,7 @@ public class RenderScrollingText extends RenderScalingText {
 		GL11.glScissor(nativeX, window.getHeight() - (nativeY + nativeHeight), nativeWidth, nativeHeight);
 		// Gui.drawRect(0, 0, window.getScaledWidth(), window.getScaledHeight(), 0xFF00FF00); // test scissor
 		
-		super.draw(getMovingX(x), y);
+		super.draw(getMovingX(x), y + 2);
 		
 		GL11.glDisable(GL11.GL_SCISSOR_TEST);
 		GL11.glPopMatrix();
