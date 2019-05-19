@@ -4,11 +4,10 @@ import java.util.List;
 
 import info.u_team.music_player.gui.GuiMusicPlayer;
 import info.u_team.music_player.gui.playing.GuiControls;
-import info.u_team.music_player.init.*;
+import info.u_team.music_player.init.MusicPlayerKeys;
 import info.u_team.music_player.musicplayer.MusicPlayerManager;
 import info.u_team.music_player.musicplayer.settings.Settings;
 import info.u_team.music_player.render.RenderOverlayMusicDisplay;
-import info.u_team.u_team_core.gui.elements.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.*;
 import net.minecraftforge.client.event.*;
@@ -35,7 +34,7 @@ public class EventHandlerMusicPlayer {
 	@SubscribeEvent
 	public static void on(RenderGameOverlayEvent.Pre event) {
 		final Minecraft mc = Minecraft.getInstance();
-		if (event.getType() == ElementType.TEXT && !mc.gameSettings.showDebugInfo /* && mc.currentScreen == null */) {
+		if (event.getType() == ElementType.TEXT && !mc.gameSettings.showDebugInfo /*&& mc.currentScreen == null*/) {
 			final Settings settings = MusicPlayerManager.getSettingsManager().getSettings();
 			if (settings.isShowIngameOverlay()) {
 				if (overlayRender == null) {
@@ -52,15 +51,11 @@ public class EventHandlerMusicPlayer {
 	public static void on(GuiScreenEvent.InitGuiEvent.Post event) {
 		final GuiScreen gui = event.getGui();
 		if (gui instanceof GuiIngameMenu) {
-			final GuiButtonClick openButton = new GuiButtonClickImage(gui.width - 16, 1, 15, 15, MusicPlayerResources.textureOpen);
-			openButton.setClickAction(() -> gui.mc.displayGuiScreen(new GuiMusicPlayer()));
-			event.addButton(openButton);
-			
 			final Settings settings = MusicPlayerManager.getSettingsManager().getSettings();
 			if (settings.isShowIngameMenueOverlay()) {
 				@SuppressWarnings("unchecked")
 				List<IGuiEventListener> list = (List<IGuiEventListener>) gui.getChildren();
-				list.add(new GuiControls(gui, -3, gui.width));
+				list.add(new GuiControls(gui, 3, gui.width));
 			}
 		}
 	}

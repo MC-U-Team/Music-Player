@@ -7,6 +7,7 @@ import info.u_team.music_player.musicplayer.settings.Settings;
 import info.u_team.to_u_team_core.export.GuiButtonClickActivated;
 import info.u_team.u_team_core.gui.elements.*;
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.util.ResourceLocation;
 
 public class GuiMusicPlayerSettings extends GuiScreen {
 	
@@ -25,11 +26,19 @@ public class GuiMusicPlayerSettings extends GuiScreen {
 		
 		final Settings settings = MusicPlayerManager.getSettingsManager().getSettings();
 		// TODO
+		
 		final GuiButtonClickActivated toggleIngameDisplay = addButton(new GuiButtonClickActivated(12, 50, 200, 20, "Toggle ingame display", 0x80FF00FF));
 		toggleIngameDisplay.setActive(settings.isShowIngameOverlay());
 		toggleIngameDisplay.setClickAction(() -> {
 			settings.setShowIngameOverlay(!settings.isShowIngameOverlay());
 			toggleIngameDisplay.setActive(settings.isShowIngameOverlay());
+		});
+		
+		final GuiButtonClickActivated toggleIngameMenueDisplay = addButton(new GuiButtonClickActivated(250, 50, 200, 20, "Toggle menue overlay", 0x80FF00FF));
+		toggleIngameMenueDisplay.setActive(settings.isShowIngameMenueOverlay());
+		toggleIngameMenueDisplay.setClickAction(() -> {
+			settings.setShowIngameMenueOverlay(!settings.isShowIngameMenueOverlay());
+			toggleIngameMenueDisplay.setActive(settings.isShowIngameMenueOverlay());
 		});
 		
 		controls = new GuiControls(this, 5, width);

@@ -1,6 +1,7 @@
 package info.u_team.music_player.gui.util;
 
 import java.net.URI;
+import java.util.function.Function;
 
 import info.u_team.music_player.lavaplayer.api.audio.*;
 import info.u_team.music_player.util.TimeUtil;
@@ -9,7 +10,7 @@ import net.minecraft.util.text.*;
 import net.minecraft.util.text.event.ClickEvent;
 import net.minecraft.util.text.event.ClickEvent.Action;
 
-public class GuiTrackUtils {
+public final class GuiTrackUtils {
 	
 	private static final Minecraft mc = Minecraft.getInstance();
 	
@@ -63,6 +64,13 @@ public class GuiTrackUtils {
 	
 	public static String getFormattedPosition(IAudioTrack track) {
 		return TimeUtil.timeConversion(track == null ? 0 : track.getPosition() / 1000);
+	}
+	
+	public static <T> T getValueOfNullableTrack(IAudioTrack track, Function<IAudioTrack, T> function) {
+		if (track != null) {
+			return function.apply(track);
+		}
+		return null;
 	}
 	
 }

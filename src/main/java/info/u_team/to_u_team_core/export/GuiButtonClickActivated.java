@@ -3,6 +3,7 @@ package info.u_team.to_u_team_core.export;
 import org.lwjgl.opengl.GL11;
 
 import info.u_team.u_team_core.gui.elements.GuiButtonClick;
+import net.minecraft.client.renderer.GlStateManager;
 
 public class GuiButtonClickActivated extends GuiButtonClick {
 	
@@ -26,6 +27,7 @@ public class GuiButtonClickActivated extends GuiButtonClick {
 	@Override
 	public void render(int mouseX, int mouseY, float partial) {
 		if (active) {
+			GlStateManager.color4f(1F, 1F, 1F, 1F);
 			color(activeColor);
 		}
 		super.render(mouseX, mouseY, partial);
@@ -40,6 +42,7 @@ public class GuiButtonClickActivated extends GuiButtonClick {
 		float green = (color >> 16 & 255) / 255F;
 		float blue = (color >> 8 & 255) / 255F;
 		float alpha = (color & 255) / 255F;
+		
 		GL11.glColor4f(red, green, blue, alpha);
 	}
 }
