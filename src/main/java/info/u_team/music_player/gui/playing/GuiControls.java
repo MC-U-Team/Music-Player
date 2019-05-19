@@ -113,7 +113,6 @@ public class GuiControls extends GuiEventHandler {
 		
 		// Repeat button
 		final GuiButtonClickImageActivated repeatButton = addButton(new GuiButtonClickImageActivated(middleX + +buttonSize + halfButtonSize + 10, y, buttonSize, buttonSize, MusicPlayerResources.textureRepeat, 0x80FF00FF));
-		
 		final Runnable updateRepeatButton = () -> {
 			repeatButton.setActive(settings.getRepeat().isActive());
 			repeatButton.setResource(settings.getRepeat().getResource());
@@ -191,8 +190,10 @@ public class GuiControls extends GuiEventHandler {
 		titleRender.setWidth(textRenderWidth);
 		authorRender.setWidth(textRenderWidth);
 		
-		titleRender.draw(25, y + 2);
-		authorRender.draw(25, y + 12);
+		final int textRenderY = small ? y : y + 2;
+		
+		titleRender.draw(25, textRenderY);
+		authorRender.draw(25, textRenderY + 10);
 	}
 	
 	private <B extends GuiButton> B addButton(B button) {

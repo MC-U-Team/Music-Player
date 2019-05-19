@@ -70,7 +70,7 @@ public class GuiMusicPlaylist extends GuiScreen {
 	}
 	
 	@Override
-	public void onResize(Minecraft minecraft, int w, int h) {
+	public void onResize(Minecraft minecraft, int width, int height) {
 		final RenderScrollingText titleRender = controls.getTitleRender();
 		final RenderScrollingText authorRender = controls.getAuthorRender();
 		this.setWorldAndResolution(minecraft, width, height);

@@ -25,16 +25,15 @@ public class GuiMusicPlayerSettings extends GuiScreen {
 		backButton.setClickAction(() -> mc.displayGuiScreen(previousGui));
 		
 		final Settings settings = MusicPlayerManager.getSettingsManager().getSettings();
-		// TODO
 		
-		final GuiButtonClickActivated toggleIngameDisplay = addButton(new GuiButtonClickActivated(12, 50, 200, 20, "Toggle ingame display", 0x80FF00FF));
+		final GuiButtonClickActivated toggleIngameDisplay = addButton(new GuiButtonClickActivated(12, 60, width / 2 - 24, 20, "Toggle ingame display", 0x80FF00FF));
 		toggleIngameDisplay.setActive(settings.isShowIngameOverlay());
 		toggleIngameDisplay.setClickAction(() -> {
 			settings.setShowIngameOverlay(!settings.isShowIngameOverlay());
 			toggleIngameDisplay.setActive(settings.isShowIngameOverlay());
 		});
 		
-		final GuiButtonClickActivated toggleIngameMenueDisplay = addButton(new GuiButtonClickActivated(250, 50, 200, 20, "Toggle menue overlay", 0x80FF00FF));
+		final GuiButtonClickActivated toggleIngameMenueDisplay = addButton(new GuiButtonClickActivated(width / 2 + 14, 60, width / 2 - 24, 20, "Toggle menue overlay", 0x80FF00FF));
 		toggleIngameMenueDisplay.setActive(settings.isShowIngameMenueOverlay());
 		toggleIngameMenueDisplay.setClickAction(() -> {
 			settings.setShowIngameMenueOverlay(!settings.isShowIngameMenueOverlay());
@@ -52,7 +51,7 @@ public class GuiMusicPlayerSettings extends GuiScreen {
 	}
 	
 	@Override
-	public void onResize(Minecraft minecraft, int w, int h) {
+	public void onResize(Minecraft minecraft, int width, int height) {
 		final RenderScrollingText titleRender = controls.getTitleRender();
 		final RenderScrollingText authorRender = controls.getAuthorRender();
 		this.setWorldAndResolution(minecraft, width, height);

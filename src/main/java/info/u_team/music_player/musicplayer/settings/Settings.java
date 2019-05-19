@@ -12,6 +12,8 @@ public class Settings {
 
 	private boolean showIngameOverlay;
 	private boolean showIngameMenueOverlay;
+	
+	
 
 	public Settings() {
 		volume = 10;
