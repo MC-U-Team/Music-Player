@@ -15,6 +15,8 @@ public class Settings {
 	
 	private IngameOverlayPosition ingameOverlayPosition;
 	
+	private boolean keyWorkInGui;
+	
 	public Settings() {
 		volume = 10;
 		repeat = Repeat.NO;
@@ -22,6 +24,7 @@ public class Settings {
 		showIngameOverlay = true;
 		showIngameMenueOverlay = false;
 		ingameOverlayPosition = IngameOverlayPosition.DOWN_RIGHT;
+		keyWorkInGui = true;
 	}
 	
 	public int getVolume() {
@@ -75,6 +78,15 @@ public class Settings {
 	
 	public void setIngameOverlayPosition(IngameOverlayPosition ingameOverlayPosition) {
 		this.ingameOverlayPosition = ingameOverlayPosition;
+		save();
+	}
+	
+	public boolean isKeyWorkInGui() {
+		return keyWorkInGui;
+	}
+	
+	public void setKeyWorkInGui(boolean keyWorkInGui) {
+		this.keyWorkInGui = keyWorkInGui;
 		save();
 	}
 	

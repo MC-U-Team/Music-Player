@@ -40,7 +40,14 @@ public class GuiMusicPlayerSettings extends GuiScreen {
 			toggleIngameMenueDisplayButton.setActive(settings.isShowIngameMenueOverlay());
 		});
 		
-		final GuiButtonClick ingameOverlayPositionButton = addButton(new GuiButtonClick(12, 90, width / 2 - 24, 20, "Ingame overlay: " + settings.getIngameOverlayPosition().getName()));
+		final GuiButtonClickActivated toggleKeyWorkInGuiButton = addButton(new GuiButtonClickActivated(12, 90, width / 2 - 24, 20, "Toggle key work in gui", 0x80FF00FF));
+		toggleKeyWorkInGuiButton.setActive(settings.isKeyWorkInGui());
+		toggleKeyWorkInGuiButton.setClickAction(() -> {
+			settings.setKeyWorkInGui(!settings.isKeyWorkInGui());
+			toggleKeyWorkInGuiButton.setActive(settings.isKeyWorkInGui());
+		});
+		
+		final GuiButtonClick ingameOverlayPositionButton = addButton(new GuiButtonClick(width / 2 + 14, 90, width / 2 - 24, 20, "Ingame overlay: " + settings.getIngameOverlayPosition().getName()));
 		ingameOverlayPositionButton.setClickAction(() -> {
 			settings.setIngameOverlayPosition(IngameOverlayPosition.forwardCycle(settings.getIngameOverlayPosition()));
 			ingameOverlayPositionButton.displayString = "Ingame overlay: " + settings.getIngameOverlayPosition().getName();

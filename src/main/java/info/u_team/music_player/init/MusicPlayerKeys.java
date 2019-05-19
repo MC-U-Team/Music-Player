@@ -11,11 +11,11 @@ import net.minecraftforge.client.settings.*;
 @OnlyIn(Dist.CLIENT)
 public class MusicPlayerKeys {
 	
-	public static final KeyBinding open = new KeyBinding("Open", GLFW.GLFW_KEY_F8, "Music Player");
+	public static final KeyBinding open = new KeyBinding("key.musicplayer.open", GLFW.GLFW_KEY_F8, "key.musicplayer.category");
 	
-	public static final KeyBinding pause = new KeyBinding("Pause", KeyConflictContext.UNIVERSAL, KeyModifier.ALT, InputMappings.Type.KEYSYM, GLFW.GLFW_KEY_F10, "Music Player");
-	public static final KeyBinding skipForward = new KeyBinding("Skip forward", KeyConflictContext.UNIVERSAL, KeyModifier.ALT, InputMappings.Type.KEYSYM, GLFW.GLFW_KEY_F9, "Music Player");
-	public static final KeyBinding skipBack = new KeyBinding("Skip back", KeyConflictContext.UNIVERSAL, KeyModifier.ALT, InputMappings.Type.KEYSYM, GLFW.GLFW_KEY_F11, "Music Player");
+	public static final KeyBinding pause = new KeyBinding("key.musicplayer.pause", KeyConflictContext.UNIVERSAL, KeyModifier.ALT, InputMappings.Type.KEYSYM, GLFW.GLFW_KEY_KP_8, "key.musicplayer.category");
+	public static final KeyBinding skipForward = new KeyBinding("key.musicplayer.skip.forward", KeyConflictContext.UNIVERSAL, KeyModifier.ALT, InputMappings.Type.KEYSYM, GLFW.GLFW_KEY_KP_7, "key.musicplayer.category");
+	public static final KeyBinding skipBack = new KeyBinding("key.musicplayer.skip.back", KeyConflictContext.UNIVERSAL, KeyModifier.ALT, InputMappings.Type.KEYSYM, GLFW.GLFW_KEY_KP_9, "key.musicplayer.category");
 	
 	public static void construct() {
 		ClientRegistry.registerKeybinding(open);
