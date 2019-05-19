@@ -1,6 +1,6 @@
 package info.u_team.music_player.gui.settings;
 
-import info.u_team.music_player.gui.playing.GuiControls;
+import info.u_team.music_player.gui.controls.GuiControls;
 import info.u_team.music_player.init.MusicPlayerResources;
 import info.u_team.music_player.musicplayer.MusicPlayerManager;
 import info.u_team.music_player.musicplayer.settings.Settings;

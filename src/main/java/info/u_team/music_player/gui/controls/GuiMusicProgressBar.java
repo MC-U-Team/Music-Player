@@ -1,4 +1,4 @@
-package info.u_team.music_player.gui.playing;
+package info.u_team.music_player.gui.controls;
 
 import info.u_team.music_player.gui.util.GuiTrackUtils;
 import info.u_team.music_player.lavaplayer.api.audio.IAudioTrack;

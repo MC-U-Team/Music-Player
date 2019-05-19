@@ -1,4 +1,4 @@
-package info.u_team.music_player.gui.playing;
+package info.u_team.music_player.gui.controls;
 
 import java.util.*;
 

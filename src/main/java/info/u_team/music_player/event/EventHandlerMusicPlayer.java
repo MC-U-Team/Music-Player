@@ -3,7 +3,7 @@ package info.u_team.music_player.event;
 import java.util.List;
 
 import info.u_team.music_player.gui.GuiMusicPlayer;
-import info.u_team.music_player.gui.playing.GuiControls;
+import info.u_team.music_player.gui.controls.GuiControls;
 import info.u_team.music_player.init.MusicPlayerKeys;
 import info.u_team.music_player.musicplayer.settings.Settings;
 import info.u_team.music_player.render.RenderOverlayMusicDisplay;
