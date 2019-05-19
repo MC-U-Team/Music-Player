@@ -52,9 +52,10 @@ public class EventHandlerMusicPlayer {
 	public static void on(GuiScreenEvent.InitGuiEvent.Post event) {
 		final GuiScreen gui = event.getGui();
 		if (gui instanceof GuiIngameMenu) {
-			final GuiButtonClick backButton = new GuiButtonClickImage(gui.width - 16, 1, 15, 15, MusicPlayerResources.textureOpen);
-			backButton.setClickAction(() -> gui.mc.displayGuiScreen(new GuiMusicPlayer()));
-			event.addButton(backButton);
+			final GuiButtonClick openButton = new GuiButtonClickImage(gui.width - 16, 1, 15, 15, MusicPlayerResources.textureOpen);
+			openButton.setClickAction(() -> gui.mc.displayGuiScreen(new GuiMusicPlayer()));
+			event.addButton(openButton);
+			
 			final Settings settings = MusicPlayerManager.getSettingsManager().getSettings();
 			if (settings.isShowIngameMenueOverlay()) {
 				@SuppressWarnings("unchecked")
@@ -66,10 +67,10 @@ public class EventHandlerMusicPlayer {
 	
 	@SubscribeEvent
 	public static void on(GuiScreenEvent.DrawScreenEvent event) {
-		final Settings settings = MusicPlayerManager.getSettingsManager().getSettings();
-		if (settings.isShowIngameMenueOverlay()) {
-			final GuiScreen gui = event.getGui();
-			if (gui instanceof GuiIngameMenu) {
+		final GuiScreen gui = event.getGui();
+		if (gui instanceof GuiIngameMenu) {
+			final Settings settings = MusicPlayerManager.getSettingsManager().getSettings();
+			if (settings.isShowIngameMenueOverlay()) {
 				gui.getChildren().stream() //
 						.filter(element -> element instanceof GuiControls) //
 						.map(element -> ((GuiControls) element)).findAny() //
@@ -80,11 +81,11 @@ public class EventHandlerMusicPlayer {
 	
 	@SubscribeEvent
 	public static void on(ClientTickEvent event) {
-		final Settings settings = MusicPlayerManager.getSettingsManager().getSettings();
-		if (settings.isShowIngameMenueOverlay()) {
-			if (event.phase == Phase.END) {
-				final GuiScreen gui = Minecraft.getInstance().currentScreen;
-				if (gui instanceof GuiIngameMenu) {
+		if (event.phase == Phase.END) {
+			final GuiScreen gui = Minecraft.getInstance().currentScreen;
+			if (gui instanceof GuiIngameMenu) {
+				final Settings settings = MusicPlayerManager.getSettingsManager().getSettings();
+				if (settings.isShowIngameMenueOverlay()) {
 					gui.getChildren().stream() //
 							.filter(element -> element instanceof GuiControls) //
 							.map(element -> ((GuiControls) element)).findAny() //
