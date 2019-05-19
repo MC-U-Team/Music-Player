@@ -27,7 +27,7 @@ public class RenderOverlayMusicDisplay {
 	public RenderOverlayMusicDisplay() {
 		manager = MusicPlayerManager.getPlayer().getTrackManager();
 		
-		height = 40;
+		height = 35;
 		width = 120;
 		
 		final FontRenderer fontRender = Minecraft.getInstance().fontRenderer;
@@ -35,14 +35,14 @@ public class RenderOverlayMusicDisplay {
 		title = new RenderScrollingText(() -> fontRender, () -> getValueOfTrack(track -> track.getInfo().getFixedTitle()));
 		title.setStepSize(0.5F);
 		title.setColor(0xFFFF00);
-		title.setWidth(109);
+		title.setWidth(114);
 		title.setSpeedTime(35);
 		
 		author = new RenderScrollingText(() -> fontRender, () -> getValueOfTrack(track -> track.getInfo().getFixedAuthor()));
 		author.setStepSize(0.5F);
 		author.setColor(0xFFFF00);
 		author.setScale(0.75F);
-		author.setWidth(109);
+		author.setWidth(114);
 		author.setSpeedTime(35);
 		
 		position = new RenderScalingText(() -> fontRender, () -> getValueOfTrack(GuiTrackUtils::getFormattedPosition));
@@ -70,24 +70,21 @@ public class RenderOverlayMusicDisplay {
 		}
 		final int intX = MathHelper.ceil(x);
 		final int intY = MathHelper.ceil(y);
-		
 		// Background
-		Gui.drawRect(intX, intY, width, height, 0xFF212121);
+		Gui.drawRect(intX, intY, intX + width, intY + height, 0xFF212121);
 		
 		// Progressbar
 		final double progress = (double) track.getPosition() / track.getDuration();
 		
-		final int progressBarWidth = intX + width - 12;
-		
-		Gui.drawRect(intX + 6, intY + 23, progressBarWidth, intY + 26, 0xFF555555);
-		Gui.drawRect(intX + 6, intY + 23, (int) (intX + 6 + (progress * progressBarWidth)), intY + 26, 0xFF3e9100);
+		Gui.drawRect(intX + 6, intY + 23, intX + width - 6, intY + 26, 0xFF555555);
+		Gui.drawRect(intX + 6, intY + 23, intX + 6 + (int) ((width - 12) * progress), intY + 26, 0xFF3e9100);
 		
 		// Draw strings
 		title.draw(x + 3, y + 3);
 		author.draw(x + 3, y + 13);
 		
 		position.draw(x + 6, y + 28);
-		duration.draw(x + width - 12 - duration.getTextWidth(), y + 28);
+		duration.draw(x + width - 6 - duration.getTextWidth(), y + 28);
 	}
 	
 }

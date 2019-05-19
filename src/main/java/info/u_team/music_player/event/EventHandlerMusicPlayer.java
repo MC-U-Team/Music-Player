@@ -35,7 +35,7 @@ public class EventHandlerMusicPlayer {
 	@SubscribeEvent
 	public static void on(RenderGameOverlayEvent.Pre event) {
 		final Minecraft mc = Minecraft.getInstance();
-		if (event.getType() == ElementType.TEXT && !mc.gameSettings.showDebugInfo && mc.currentScreen == null) {
+		if (event.getType() == ElementType.TEXT && !mc.gameSettings.showDebugInfo /* && mc.currentScreen == null */) {
 			final Settings settings = MusicPlayerManager.getSettingsManager().getSettings();
 			if (settings.isShowIngameOverlay()) {
 				if (overlayRender == null) {
