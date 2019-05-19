@@ -7,6 +7,7 @@ import info.u_team.music_player.gui.playing.GuiControls;
 import info.u_team.music_player.init.MusicPlayerKeys;
 import info.u_team.music_player.musicplayer.settings.Settings;
 import info.u_team.music_player.render.RenderOverlayMusicDisplay;
+import info.u_team.to_u_team_core.export.RenderScrollingText;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.*;
 import net.minecraftforge.client.event.*;
@@ -51,14 +52,41 @@ public class EventHandlerMusicPlayer {
 	
 	// Used to add buttons and gui controls to main ingame gui
 	
+	private RenderScrollingText titleRender, authorRender;
+	
+	@SubscribeEvent
+	public void on(GuiScreenEvent.InitGuiEvent.Pre event) {
+		final GuiScreen gui = event.getGui();
+		if (gui instanceof GuiIngameMenu) {
+			if (settings.isShowIngameMenueOverlay()) {
+				gui.getChildren().stream() //
+						.filter(element -> element instanceof GuiControls) //
+						.map(element -> ((GuiControls) element)).findAny() //
+						.ifPresent(controls -> {
+							titleRender = controls.getTitleRender();
+							authorRender = controls.getAuthorRender();
+						});
+			}
+		}
+	}
+	
 	@SubscribeEvent
 	public void on(GuiScreenEvent.InitGuiEvent.Post event) {
 		final GuiScreen gui = event.getGui();
 		if (gui instanceof GuiIngameMenu) {
 			if (settings.isShowIngameMenueOverlay()) {
+				final GuiControls controls = new GuiControls(gui, 3, gui.width);
+				if (titleRender != null) {
+					controls.setTitleRender(titleRender);
+					titleRender = null;
+				}
+				if (authorRender != null) {
+					controls.setAuthorRender(authorRender);
+					authorRender = null;
+				}
 				@SuppressWarnings("unchecked")
 				List<IGuiEventListener> list = (List<IGuiEventListener>) gui.getChildren();
-				list.add(new GuiControls(gui, 3, gui.width));
+				list.add(controls);
 			}
 		}
 	}

@@ -21,6 +21,7 @@ public class GuiControls extends GuiEventHandler {
 	private final int middleX;
 	private final int y, width;
 	private final boolean small;
+	private final int buttonSize, halfButtonSize;
 	
 	private final List<GuiButton> buttons;
 	private final List<GuiButton> disableButtons;
@@ -32,8 +33,8 @@ public class GuiControls extends GuiEventHandler {
 	
 	private final GuiMusicProgressBar songProgress;
 	
-	private final RenderScrollingText title;
-	private final RenderScrollingText author;
+	private RenderScrollingText titleRender;
+	private RenderScrollingText authorRender;
 	
 	public GuiControls(GuiScreen gui, int y, int width) {
 		this.y = y;
@@ -52,8 +53,8 @@ public class GuiControls extends GuiEventHandler {
 		
 		small = isIngame;
 		
-		final int buttonSize = small ? 15 : 20;
-		final int halfButtonSize = buttonSize / 2;
+		buttonSize = small ? 15 : 20;
+		halfButtonSize = buttonSize / 2;
 		
 		// Play button
 		playButton = addButton(new GuiButtonClickImageToggle(middleX - halfButtonSize, y, buttonSize, buttonSize, MusicPlayerResources.texturePlay, MusicPlayerResources.texturePause));
@@ -149,18 +150,16 @@ public class GuiControls extends GuiEventHandler {
 		
 		// Render playing track
 		// Title and author
-		title = new RenderScrollingText(() -> mc.fontRenderer, () -> GuiTrackUtils.getValueOfPlayingTrack(track -> track.getInfo().getFixedTitle()));
-		title.setStepSize(0.5F);
-		title.setColor(0xFFFF00);
-		title.setWidth(114);
-		title.setSpeedTime(35);
+		titleRender = new RenderScrollingText(() -> mc.fontRenderer, () -> GuiTrackUtils.getValueOfPlayingTrack(track -> track.getInfo().getFixedTitle()));
+		titleRender.setStepSize(0.5F);
+		titleRender.setColor(0xFFFF00);
+		titleRender.setSpeedTime(35);
 		
-		author = new RenderScrollingText(() -> mc.fontRenderer, () -> GuiTrackUtils.getValueOfPlayingTrack(track -> track.getInfo().getFixedAuthor()));
-		author.setStepSize(0.5F);
-		author.setColor(0xFFFF00);
-		author.setScale(0.75F);
-		author.setWidth(114);
-		author.setSpeedTime(35);
+		authorRender = new RenderScrollingText(() -> mc.fontRenderer, () -> GuiTrackUtils.getValueOfPlayingTrack(track -> track.getInfo().getFixedAuthor()));
+		authorRender.setStepSize(0.5F);
+		authorRender.setColor(0xFFFF00);
+		authorRender.setScale(0.75F);
+		authorRender.setSpeedTime(35);
 		
 		// Disable all buttons first
 		disableButtons.forEach(button -> button.enabled = false);
@@ -187,8 +186,13 @@ public class GuiControls extends GuiEventHandler {
 		buttons.forEach(button -> button.render(mouseX, mouseY, partialTicks));
 		songProgress.render(mouseX, mouseY, partialTicks);
 		
-		title.draw(2 + 3, y + 2);
-		author.draw(2 + 3, y + 12);
+		final int textRenderWidth = middleX - (2 * buttonSize + halfButtonSize + 10) - 35;
+		
+		titleRender.setWidth(textRenderWidth);
+		authorRender.setWidth(textRenderWidth);
+		
+		titleRender.draw(25, y + 2);
+		authorRender.draw(25, y + 12);
 	}
 	
 	private <B extends GuiButton> B addButton(B button) {
@@ -208,5 +212,21 @@ public class GuiControls extends GuiEventHandler {
 	
 	public int getWidth() {
 		return width;
+	}
+	
+	public RenderScrollingText getTitleRender() {
+		return titleRender;
+	}
+	
+	public void setTitleRender(RenderScrollingText titleRender) {
+		this.titleRender = titleRender;
+	}
+	
+	public RenderScrollingText getAuthorRender() {
+		return authorRender;
+	}
+	
+	public void setAuthorRender(RenderScrollingText authorRender) {
+		this.authorRender = authorRender;
 	}
 }

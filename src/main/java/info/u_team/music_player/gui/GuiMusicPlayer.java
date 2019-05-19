@@ -4,6 +4,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import info.u_team.music_player.gui.playing.GuiControls;
 import info.u_team.music_player.init.MusicPlayerResources;
+import info.u_team.to_u_team_core.export.RenderScrollingText;
 import info.u_team.u_team_core.gui.elements.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.*;
@@ -47,8 +48,12 @@ public class GuiMusicPlayer extends GuiScreen {
 	@Override
 	public void onResize(Minecraft minecraft, int width, int height) {
 		final String text = namePlaylistField.getText();
+		final RenderScrollingText titleRender = controls.getTitleRender();
+		final RenderScrollingText authorRender = controls.getAuthorRender();
 		this.setWorldAndResolution(minecraft, width, height);
 		namePlaylistField.setText(text);
+		controls.setTitleRender(titleRender);
+		controls.setAuthorRender(authorRender);
 	}
 	
 	@Override

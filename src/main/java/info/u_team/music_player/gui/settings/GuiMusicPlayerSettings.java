@@ -4,10 +4,10 @@ import info.u_team.music_player.gui.playing.GuiControls;
 import info.u_team.music_player.init.MusicPlayerResources;
 import info.u_team.music_player.musicplayer.MusicPlayerManager;
 import info.u_team.music_player.musicplayer.settings.Settings;
-import info.u_team.to_u_team_core.export.GuiButtonClickActivated;
+import info.u_team.to_u_team_core.export.*;
 import info.u_team.u_team_core.gui.elements.*;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.util.ResourceLocation;
 
 public class GuiMusicPlayerSettings extends GuiScreen {
 	
@@ -49,6 +49,15 @@ public class GuiMusicPlayerSettings extends GuiScreen {
 	@Override
 	public void tick() {
 		controls.tick();
+	}
+	
+	@Override
+	public void onResize(Minecraft minecraft, int w, int h) {
+		final RenderScrollingText titleRender = controls.getTitleRender();
+		final RenderScrollingText authorRender = controls.getAuthorRender();
+		this.setWorldAndResolution(minecraft, width, height);
+		controls.setTitleRender(titleRender);
+		controls.setAuthorRender(authorRender);
 	}
 	
 	@Override
