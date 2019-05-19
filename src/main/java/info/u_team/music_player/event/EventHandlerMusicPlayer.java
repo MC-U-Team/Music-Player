@@ -5,10 +5,10 @@ import java.util.List;
 import info.u_team.music_player.gui.GuiMusicPlayer;
 import info.u_team.music_player.gui.controls.GuiControls;
 import info.u_team.music_player.init.MusicPlayerKeys;
-import info.u_team.music_player.musicplayer.settings.Settings;
+import info.u_team.music_player.musicplayer.settings.*;
 import info.u_team.music_player.render.RenderOverlayMusicDisplay;
 import info.u_team.to_u_team_core.export.RenderScrollingText;
-import net.minecraft.client.Minecraft;
+import net.minecraft.client.*;
 import net.minecraft.client.gui.*;
 import net.minecraftforge.client.event.*;
 import net.minecraftforge.client.event.InputEvent.KeyInputEvent;
@@ -45,7 +45,27 @@ public class EventHandlerMusicPlayer {
 				if (overlayRender == null) {
 					overlayRender = new RenderOverlayMusicDisplay();
 				}
-				overlayRender.draw(5, 5);
+				IngameOverlayPosition position = settings.getIngameOverlayPosition();
+				
+				final MainWindow window = mc.mainWindow;
+				final int width = window.getScaledWidth();
+				final int height = window.getScaledHeight();
+				
+				final int x;
+				if (position.isLeft()) {
+					x = 3;
+				} else {
+					x = width - 3 - overlayRender.getWidth();
+				}
+				
+				final int y;
+				if (position.isUp()) {
+					y = 3;
+				} else {
+					y = height - 3 - overlayRender.getHeight();
+				}
+				
+				overlayRender.draw(x, y);
 			}
 		}
 	}

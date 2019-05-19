@@ -64,7 +64,12 @@ public class RenderOverlayMusicDisplay {
 		Gui.drawRect(intX, intY, intX + width, intY + height, 0xFF212121);
 		
 		// Progressbar
-		final double progress = (double) track.getPosition() / track.getDuration();
+		final double progress;
+		if (track.getInfo().isStream()) {
+			progress = 0.5;
+		} else {
+			progress = (double) track.getPosition() / track.getDuration();
+		}
 		
 		Gui.drawRect(intX + 6, intY + 23, intX + width - 6, intY + 26, 0xFF555555);
 		Gui.drawRect(intX + 6, intY + 23, intX + 6 + (int) ((width - 12) * progress), intY + 26, 0xFF3e9100);
@@ -75,6 +80,14 @@ public class RenderOverlayMusicDisplay {
 		
 		position.draw(x + 6, y + 28);
 		duration.draw(x + width - 6 - duration.getTextWidth(), y + 28);
+	}
+	
+	public int getWidth() {
+		return width;
+	}
+	
+	public int getHeight() {
+		return height;
 	}
 	
 }

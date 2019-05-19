@@ -3,7 +3,7 @@ package info.u_team.music_player.gui.settings;
 import info.u_team.music_player.gui.controls.GuiControls;
 import info.u_team.music_player.init.MusicPlayerResources;
 import info.u_team.music_player.musicplayer.MusicPlayerManager;
-import info.u_team.music_player.musicplayer.settings.Settings;
+import info.u_team.music_player.musicplayer.settings.*;
 import info.u_team.to_u_team_core.export.*;
 import info.u_team.u_team_core.gui.elements.*;
 import net.minecraft.client.Minecraft;
@@ -26,18 +26,24 @@ public class GuiMusicPlayerSettings extends GuiScreen {
 		
 		final Settings settings = MusicPlayerManager.getSettingsManager().getSettings();
 		
-		final GuiButtonClickActivated toggleIngameDisplay = addButton(new GuiButtonClickActivated(12, 60, width / 2 - 24, 20, "Toggle ingame display", 0x80FF00FF));
-		toggleIngameDisplay.setActive(settings.isShowIngameOverlay());
-		toggleIngameDisplay.setClickAction(() -> {
+		final GuiButtonClickActivated toggleIngameDisplayButton = addButton(new GuiButtonClickActivated(12, 60, width / 2 - 24, 20, "Toggle ingame display", 0x80FF00FF));
+		toggleIngameDisplayButton.setActive(settings.isShowIngameOverlay());
+		toggleIngameDisplayButton.setClickAction(() -> {
 			settings.setShowIngameOverlay(!settings.isShowIngameOverlay());
-			toggleIngameDisplay.setActive(settings.isShowIngameOverlay());
+			toggleIngameDisplayButton.setActive(settings.isShowIngameOverlay());
 		});
 		
-		final GuiButtonClickActivated toggleIngameMenueDisplay = addButton(new GuiButtonClickActivated(width / 2 + 14, 60, width / 2 - 24, 20, "Toggle menue overlay", 0x80FF00FF));
-		toggleIngameMenueDisplay.setActive(settings.isShowIngameMenueOverlay());
-		toggleIngameMenueDisplay.setClickAction(() -> {
+		final GuiButtonClickActivated toggleIngameMenueDisplayButton = addButton(new GuiButtonClickActivated(width / 2 + 14, 60, width / 2 - 24, 20, "Toggle menue overlay", 0x80FF00FF));
+		toggleIngameMenueDisplayButton.setActive(settings.isShowIngameMenueOverlay());
+		toggleIngameMenueDisplayButton.setClickAction(() -> {
 			settings.setShowIngameMenueOverlay(!settings.isShowIngameMenueOverlay());
-			toggleIngameMenueDisplay.setActive(settings.isShowIngameMenueOverlay());
+			toggleIngameMenueDisplayButton.setActive(settings.isShowIngameMenueOverlay());
+		});
+		
+		final GuiButtonClick ingameOverlayPositionButton = addButton(new GuiButtonClick(12, 90, width / 2 - 24, 20, "Ingame overlay: " + settings.getIngameOverlayPosition().getName()));
+		ingameOverlayPositionButton.setClickAction(() -> {
+			settings.setIngameOverlayPosition(IngameOverlayPosition.forwardCycle(settings.getIngameOverlayPosition()));
+			ingameOverlayPositionButton.displayString = "Ingame overlay: " + settings.getIngameOverlayPosition().getName();
 		});
 		
 		controls = new GuiControls(this, 5, width);

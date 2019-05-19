@@ -37,6 +37,9 @@ public class GuiMusicProgressBar extends GuiProgressBar {
 		if (track == null) {
 			return 0;
 		}
+		if (track.getInfo().isStream()) {
+			return 0.5;
+		}
 		return (double) track.getPosition() / track.getDuration();
 	}
 	
