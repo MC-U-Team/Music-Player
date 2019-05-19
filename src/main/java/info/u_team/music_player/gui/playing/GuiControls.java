@@ -2,6 +2,7 @@ package info.u_team.music_player.gui.playing;
 
 import java.util.*;
 
+import info.u_team.music_player.gui.settings.GuiMusicPlayerSettings;
 import info.u_team.music_player.gui.util.GuiTrackUtils;
 import info.u_team.music_player.init.MusicPlayerResources;
 import info.u_team.music_player.lavaplayer.api.audio.IAudioTrack;
@@ -20,6 +21,7 @@ public class GuiControls extends GuiEventHandler {
 	private final int x, y, width;
 	
 	private final List<GuiButton> buttons;
+	private final List<GuiButton> disableButtons;
 	private final List<IGuiEventListener> children;
 	
 	private final ITrackManager manager;
@@ -28,25 +30,26 @@ public class GuiControls extends GuiEventHandler {
 	
 	private final GuiMusicProgressBar songProgress;
 	
-	public GuiControls(int y, int width) {
+	public GuiControls(GuiScreen gui, int y, int width) {
 		this.middleX = width / 2;
 		this.x = middleX - 150;
 		this.y = y;
 		this.width = width;
 		
 		buttons = new ArrayList<>();
+		disableButtons = new ArrayList<>();
 		children = new ArrayList<>();
 		manager = MusicPlayerManager.getPlayer().getTrackManager();
 		
 		// Play button
-		playButton = addButton(new GuiButtonClickImageToggle(x + 140, y + 5, 20, 20, MusicPlayerResources.texturePlay, MusicPlayerResources.texturePause));
+		playButton = addButton(new GuiButtonClickImageToggle(middleX - 10, y + 5, 20, 20, MusicPlayerResources.texturePlay, MusicPlayerResources.texturePause));
 		playButton.toggle(!manager.isPaused());
 		playButton.setToggleClickAction(play -> {
 			manager.setPaused(!play);
 		});
 		
 		// Skip buttons
-		final GuiButtonClickImage skipForwardButton = addButton(new GuiButtonClickImage(x + 170, y + 5, 20, 20, MusicPlayerResources.textureSkipForward));
+		final GuiButtonClickImage skipForwardButton = addButton(new GuiButtonClickImage(middleX + 20, y + 5, 20, 20, MusicPlayerResources.textureSkipForward));
 		skipForwardButton.setClickAction(() -> {
 			final Playlist playlist = MusicPlayerManager.getPlaylistManager().getPlaylists().getPlaying();
 			if (playlist != null) {
@@ -56,7 +59,7 @@ public class GuiControls extends GuiEventHandler {
 			}
 		});
 		
-		final GuiButtonClickImage skipBackButton = addButton(new GuiButtonClickImage(x + 110, y + 5, 20, 20, MusicPlayerResources.textureSkipBack));
+		final GuiButtonClickImage skipBackButton = addButton(new GuiButtonClickImage(middleX - 40, y + 5, 20, 20, MusicPlayerResources.textureSkipBack));
 		skipBackButton.setClickAction(() -> {
 			final IAudioTrack currentlyPlaying = manager.getCurrentTrack();
 			
@@ -80,7 +83,7 @@ public class GuiControls extends GuiEventHandler {
 		final Settings settings = MusicPlayerManager.getSettingsManager().getSettings();
 		
 		// Shuffle button
-		final GuiButtonClickImageActivated shuffleButton = addButton(new GuiButtonClickImageActivated(x + 80, y + 5, 20, 20, MusicPlayerResources.textureShuffle, 0x80FF00FF));
+		final GuiButtonClickImageActivated shuffleButton = addButton(new GuiButtonClickImageActivated(middleX - 70, y + 5, 20, 20, MusicPlayerResources.textureShuffle, 0x80FF00FF));
 		
 		final Runnable updateShuffleButton = () -> {
 			shuffleButton.setActive(settings.isShuffle());
@@ -93,7 +96,7 @@ public class GuiControls extends GuiEventHandler {
 		});
 		
 		// Repeat button
-		final GuiButtonClickImageActivated repeatButton = addButton(new GuiButtonClickImageActivated(x + 200, y + 5, 20, 20, MusicPlayerResources.textureRepeat, 0x80FF00FF));
+		final GuiButtonClickImageActivated repeatButton = addButton(new GuiButtonClickImageActivated(middleX + 50, y + 5, 20, 20, MusicPlayerResources.textureRepeat, 0x80FF00FF));
 		
 		final Runnable updateRepeatButton = () -> {
 			repeatButton.setActive(settings.getRepeat().isActive());
@@ -107,16 +110,20 @@ public class GuiControls extends GuiEventHandler {
 		});
 		
 		// Song progress
-		songProgress = new GuiMusicProgressBar(manager, middleX - 80, y + 35, 160, 5);
+		songProgress = new GuiMusicProgressBar(manager, middleX - 100, y + 35, 200, 5);
 		children.add(songProgress);
 		
 		// Volume
 		final boolean isTooSmall = (width - 115) < (x + 230);
 		
-		addButton(new GuiSlider(-1, isTooSmall ? x + 230 : width - 115, y + 5, isTooSmall ? 40 : 70, 20, "Volume: ", "%", 0, 100, settings.getVolume(), false, true, slider -> {
+		addButtonNonDisable(new GuiSlider(-1, isTooSmall ? x + 230 : width - 115, y + 5, isTooSmall ? 40 : 70, 20, "Volume: ", "%", 0, 100, settings.getVolume(), false, true, slider -> {
 			settings.setVolume(slider.getValueInt());
 			MusicPlayerManager.getPlayer().setVolume(settings.getVolume());
 		}));
+		
+		// Settings
+		final GuiButtonClickImage settingsButton = addButtonNonDisable(new GuiButtonClickImage(width - 30, y + 5, 20, 20, MusicPlayerResources.textureSettings));
+		settingsButton.setClickAction(() -> Minecraft.getInstance().displayGuiScreen(new GuiMusicPlayerSettings(gui)));
 		
 		// Add all buttons to children
 		buttons.forEach(children::add);
@@ -124,9 +131,9 @@ public class GuiControls extends GuiEventHandler {
 	
 	public void tick() {
 		if (manager.getCurrentTrack() == null) {
-			buttons.forEach(button -> button.enabled = false);
+			disableButtons.forEach(button -> button.enabled = false);
 		} else {
-			buttons.forEach(button -> button.enabled = true);
+			disableButtons.forEach(button -> button.enabled = true);
 		}
 		playButton.toggle(!manager.isPaused());
 	}
@@ -152,6 +159,12 @@ public class GuiControls extends GuiEventHandler {
 	}
 	
 	private <B extends GuiButton> B addButton(B button) {
+		buttons.add(button);
+		disableButtons.add(button);
+		return button;
+	}
+	
+	private <B extends GuiButton> B addButtonNonDisable(B button) {
 		buttons.add(button);
 		return button;
 	}

@@ -4,7 +4,7 @@ import info.u_team.music_player.MusicPlayerMod;
 import net.minecraft.util.ResourceLocation;
 
 public class MusicPlayerResources {
-
+	
 	public static final ResourceLocation textureCreate = createResource("create");
 	public static final ResourceLocation textureOpen = createResource("open");
 	public static final ResourceLocation textureClear = createResource("clear");
@@ -20,12 +20,13 @@ public class MusicPlayerResources {
 	public static final ResourceLocation textureShuffle = createResource("shuffle");
 	public static final ResourceLocation textureRepeat = createResource("repeat");
 	public static final ResourceLocation textureRepeatSingle = createResource("repeat-single");
-
+	public static final ResourceLocation textureSettings = createResource("settings");
+	
 	public static final ResourceLocation textureSocialYoutube = createResource("socialmedia/youtube-logo");
 	public static final ResourceLocation textureSocialSoundcloud = createResource("socialmedia/soundcloud-logo");
-
+	
 	private static ResourceLocation createResource(String name) {
 		return new ResourceLocation(MusicPlayerMod.modid, "textures/gui/" + name + ".png");
 	}
-
+	
 }

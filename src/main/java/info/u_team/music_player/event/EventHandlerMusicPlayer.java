@@ -19,8 +19,6 @@ import net.minecraftforge.fml.common.gameevent.TickEvent.*;
 
 public class EventHandlerMusicPlayer {
 	
-	private static final Settings settings = MusicPlayerManager.getSettingsManager().getSettings();
-	
 	// Used to listen to keyboard events
 	
 	@SubscribeEvent
@@ -38,6 +36,7 @@ public class EventHandlerMusicPlayer {
 	public static void on(RenderGameOverlayEvent.Pre event) {
 		final Minecraft mc = Minecraft.getInstance();
 		if (event.getType() == ElementType.TEXT && !mc.gameSettings.showDebugInfo && mc.currentScreen == null) {
+			final Settings settings = MusicPlayerManager.getSettingsManager().getSettings();
 			if (settings.isShowIngameOverlay()) {
 				if (overlayRender == null) {
 					overlayRender = new RenderOverlayMusicDisplay();
@@ -56,16 +55,18 @@ public class EventHandlerMusicPlayer {
 			final GuiButtonClick backButton = new GuiButtonClickImage(gui.width - 16, 1, 15, 15, MusicPlayerResources.textureOpen);
 			backButton.setClickAction(() -> gui.mc.displayGuiScreen(new GuiMusicPlayer()));
 			event.addButton(backButton);
+			final Settings settings = MusicPlayerManager.getSettingsManager().getSettings();
 			if (settings.isShowIngameMenueOverlay()) {
 				@SuppressWarnings("unchecked")
 				List<IGuiEventListener> list = (List<IGuiEventListener>) gui.getChildren();
-				list.add(new GuiControls(-3, gui.width));
+				list.add(new GuiControls(gui, -3, gui.width));
 			}
 		}
 	}
 	
 	@SubscribeEvent
 	public static void on(GuiScreenEvent.DrawScreenEvent event) {
+		final Settings settings = MusicPlayerManager.getSettingsManager().getSettings();
 		if (settings.isShowIngameMenueOverlay()) {
 			final GuiScreen gui = event.getGui();
 			if (gui instanceof GuiIngameMenu) {
@@ -79,6 +80,7 @@ public class EventHandlerMusicPlayer {
 	
 	@SubscribeEvent
 	public static void on(ClientTickEvent event) {
+		final Settings settings = MusicPlayerManager.getSettingsManager().getSettings();
 		if (settings.isShowIngameMenueOverlay()) {
 			if (event.phase == Phase.END) {
 				final GuiScreen gui = Minecraft.getInstance().currentScreen;
