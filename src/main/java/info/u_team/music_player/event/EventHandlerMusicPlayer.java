@@ -5,12 +5,17 @@ import java.util.List;
 import info.u_team.music_player.gui.GuiMusicPlayer;
 import info.u_team.music_player.gui.controls.GuiControls;
 import info.u_team.music_player.init.MusicPlayerKeys;
+import info.u_team.music_player.lavaplayer.api.queue.ITrackManager;
+import info.u_team.music_player.musicplayer.*;
 import info.u_team.music_player.musicplayer.settings.*;
 import info.u_team.music_player.render.RenderOverlayMusicDisplay;
 import info.u_team.to_u_team_core.export.RenderScrollingText;
 import net.minecraft.client.*;
 import net.minecraft.client.gui.*;
+import net.minecraft.client.settings.KeyBinding;
+import net.minecraft.client.util.InputMappings;
 import net.minecraftforge.client.event.*;
+import net.minecraftforge.client.event.GuiScreenEvent.KeyboardKeyPressedEvent;
 import net.minecraftforge.client.event.InputEvent.KeyInputEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -28,8 +33,47 @@ public class EventHandlerMusicPlayer {
 	
 	@SubscribeEvent
 	public void on(KeyInputEvent event) {
-		if (MusicPlayerKeys.open.isPressed()) {
-			Minecraft.getInstance().displayGuiScreen(new GuiMusicPlayer());
+		handleKeyboard(false, -1, -1);
+	}
+	
+	@SubscribeEvent
+	public void on(KeyboardKeyPressedEvent.Post event) {
+		event.setCanceled(handleKeyboard(true, event.getKeyCode(), event.getScanCode()));
+	}
+	
+	private boolean handleKeyboard(boolean gui, int keyCode, int scanCode) {
+		final boolean handled;
+		final ITrackManager manager = MusicPlayerManager.getPlayer().getTrackManager();
+		if (isKeyDown(MusicPlayerKeys.open, gui, keyCode, scanCode)) {
+			final Minecraft mc = Minecraft.getInstance();
+			if (!(mc.currentScreen instanceof GuiMusicPlayer)) {
+				mc.displayGuiScreen(new GuiMusicPlayer());
+			}
+			handled = true;
+		} else if (isKeyDown(MusicPlayerKeys.pause, gui, keyCode, scanCode)) {
+			if (manager.getCurrentTrack() != null) {
+				manager.setPaused(!manager.isPaused());
+			}
+			handled = true;
+		} else if (isKeyDown(MusicPlayerKeys.skipForward, gui, keyCode, scanCode)) {
+			if (manager.getCurrentTrack() != null) {
+				MusicPlayerUtils.skipForward();
+			}
+			handled = true;
+		} else if (isKeyDown(MusicPlayerKeys.skipBack, gui, keyCode, scanCode)) {
+			MusicPlayerUtils.skipBack();
+			handled = true;
+		} else {
+			handled = false;
+		}
+		return handled;
+	}
+	
+	private boolean isKeyDown(KeyBinding binding, boolean gui, int keyCode, int scanCode) {
+		if (gui) {
+			return binding.isActiveAndMatches(InputMappings.getInputByCode(keyCode, scanCode));
+		} else {
+			return binding.isPressed();
 		}
 	}
 	

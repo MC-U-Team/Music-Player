@@ -6,10 +6,8 @@ import info.u_team.music_player.gui.GuiMusicPlayer;
 import info.u_team.music_player.gui.settings.GuiMusicPlayerSettings;
 import info.u_team.music_player.gui.util.GuiTrackUtils;
 import info.u_team.music_player.init.MusicPlayerResources;
-import info.u_team.music_player.lavaplayer.api.audio.IAudioTrack;
 import info.u_team.music_player.lavaplayer.api.queue.ITrackManager;
-import info.u_team.music_player.musicplayer.MusicPlayerManager;
-import info.u_team.music_player.musicplayer.playlist.*;
+import info.u_team.music_player.musicplayer.*;
 import info.u_team.music_player.musicplayer.settings.*;
 import info.u_team.to_u_team_core.export.*;
 import info.u_team.u_team_core.gui.elements.*;
@@ -66,34 +64,13 @@ public class GuiControls extends GuiEventHandler {
 		// Skip forward
 		final GuiButtonClickImage skipForwardButton = addButton(new GuiButtonClickImage(middleX + halfButtonSize + 5, y, buttonSize, buttonSize, MusicPlayerResources.textureSkipForward));
 		skipForwardButton.setClickAction(() -> {
-			final Playlist playlist = MusicPlayerManager.getPlaylistManager().getPlaylists().getPlaying();
-			if (playlist != null) {
-				if (playlist.skip(Skip.FORWARD)) {
-					manager.skip();
-				}
-			}
+			MusicPlayerUtils.skipForward();
 		});
 		
 		// Skip back
 		final GuiButtonClickImage skipBackButton = addButton(new GuiButtonClickImage(middleX - (buttonSize + halfButtonSize + 5), y, buttonSize, buttonSize, MusicPlayerResources.textureSkipBack));
 		skipBackButton.setClickAction(() -> {
-			final IAudioTrack currentlyPlaying = manager.getCurrentTrack();
-			
-			long maxDuration = currentlyPlaying.getDuration() / 10;
-			if (maxDuration > 10000) {
-				maxDuration = 10000;
-			}
-			
-			if (currentlyPlaying.getPosition() > maxDuration && !currentlyPlaying.getInfo().isStream()) {
-				currentlyPlaying.setPosition(0);
-			} else {
-				final Playlist playlist = MusicPlayerManager.getPlaylistManager().getPlaylists().getPlaying();
-				if (playlist != null) {
-					if (playlist.skip(Skip.PREVIOUS)) {
-						manager.skip();
-					}
-				}
-			}
+			MusicPlayerUtils.skipBack();
 		});
 		
 		final Settings settings = MusicPlayerManager.getSettingsManager().getSettings();
