@@ -5,7 +5,6 @@ import java.util.List;
 import info.u_team.music_player.gui.GuiMusicPlayer;
 import info.u_team.music_player.gui.playing.GuiControls;
 import info.u_team.music_player.init.MusicPlayerKeys;
-import info.u_team.music_player.musicplayer.MusicPlayerManager;
 import info.u_team.music_player.musicplayer.settings.Settings;
 import info.u_team.music_player.render.RenderOverlayMusicDisplay;
 import net.minecraft.client.Minecraft;
@@ -18,24 +17,29 @@ import net.minecraftforge.fml.common.gameevent.TickEvent.*;
 
 public class EventHandlerMusicPlayer {
 	
+	private final Settings settings;
+	
+	public EventHandlerMusicPlayer(Settings settings) {
+		this.settings = settings;
+	}
+	
 	// Used to listen to keyboard events
 	
 	@SubscribeEvent
-	public static void on(KeyInputEvent event) {
+	public void on(KeyInputEvent event) {
 		if (MusicPlayerKeys.open.isPressed()) {
 			Minecraft.getInstance().displayGuiScreen(new GuiMusicPlayer());
 		}
 	}
 	
-	private static RenderOverlayMusicDisplay overlayRender;
+	private RenderOverlayMusicDisplay overlayRender;
 	
 	// Render overlay
 	
 	@SubscribeEvent
-	public static void on(RenderGameOverlayEvent.Pre event) {
+	public void on(RenderGameOverlayEvent.Pre event) {
 		final Minecraft mc = Minecraft.getInstance();
-		if (event.getType() == ElementType.TEXT && !mc.gameSettings.showDebugInfo /*&& mc.currentScreen == null*/) {
-			final Settings settings = MusicPlayerManager.getSettingsManager().getSettings();
+		if (event.getType() == ElementType.TEXT && !mc.gameSettings.showDebugInfo /* && mc.currentScreen == null */) {
 			if (settings.isShowIngameOverlay()) {
 				if (overlayRender == null) {
 					overlayRender = new RenderOverlayMusicDisplay();
@@ -48,10 +52,9 @@ public class EventHandlerMusicPlayer {
 	// Used to add buttons and gui controls to main ingame gui
 	
 	@SubscribeEvent
-	public static void on(GuiScreenEvent.InitGuiEvent.Post event) {
+	public void on(GuiScreenEvent.InitGuiEvent.Post event) {
 		final GuiScreen gui = event.getGui();
 		if (gui instanceof GuiIngameMenu) {
-			final Settings settings = MusicPlayerManager.getSettingsManager().getSettings();
 			if (settings.isShowIngameMenueOverlay()) {
 				@SuppressWarnings("unchecked")
 				List<IGuiEventListener> list = (List<IGuiEventListener>) gui.getChildren();
@@ -61,10 +64,9 @@ public class EventHandlerMusicPlayer {
 	}
 	
 	@SubscribeEvent
-	public static void on(GuiScreenEvent.DrawScreenEvent event) {
+	public void on(GuiScreenEvent.DrawScreenEvent event) {
 		final GuiScreen gui = event.getGui();
 		if (gui instanceof GuiIngameMenu) {
-			final Settings settings = MusicPlayerManager.getSettingsManager().getSettings();
 			if (settings.isShowIngameMenueOverlay()) {
 				gui.getChildren().stream() //
 						.filter(element -> element instanceof GuiControls) //
@@ -75,11 +77,10 @@ public class EventHandlerMusicPlayer {
 	}
 	
 	@SubscribeEvent
-	public static void on(ClientTickEvent event) {
+	public void on(ClientTickEvent event) {
 		if (event.phase == Phase.END) {
 			final GuiScreen gui = Minecraft.getInstance().currentScreen;
 			if (gui instanceof GuiIngameMenu) {
-				final Settings settings = MusicPlayerManager.getSettingsManager().getSettings();
 				if (settings.isShowIngameMenueOverlay()) {
 					gui.getChildren().stream() //
 							.filter(element -> element instanceof GuiControls) //

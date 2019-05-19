@@ -23,7 +23,6 @@ public class ClientProxy extends CommonProxy implements IModProxy {
 		
 		DependencyManager.construct();
 		MusicPlayerKeys.construct();
-		CommonRegistry.registerEventHandler(EventHandlerMusicPlayer.class);
 	}
 	
 	@Override
@@ -31,6 +30,7 @@ public class ClientProxy extends CommonProxy implements IModProxy {
 		super.setup();
 		MusicPlayerFiles.setup();
 		MusicPlayerManager.setup();
+		CommonRegistry.registerEventHandler(new EventHandlerMusicPlayer(MusicPlayerManager.getSettingsManager().getSettings()));
 	}
 	
 	@Override

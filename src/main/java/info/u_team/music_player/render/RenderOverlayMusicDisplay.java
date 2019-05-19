@@ -1,7 +1,5 @@
 package info.u_team.music_player.render;
 
-import java.util.function.Function;
-
 import info.u_team.music_player.gui.util.GuiTrackUtils;
 import info.u_team.music_player.lavaplayer.api.audio.IAudioTrack;
 import info.u_team.music_player.lavaplayer.api.queue.ITrackManager;
@@ -32,35 +30,27 @@ public class RenderOverlayMusicDisplay {
 		
 		final FontRenderer fontRender = Minecraft.getInstance().fontRenderer;
 		
-		title = new RenderScrollingText(() -> fontRender, () -> getValueOfTrack(track -> track.getInfo().getFixedTitle()));
+		title = new RenderScrollingText(() -> fontRender, () -> GuiTrackUtils.getValueOfPlayingTrack(track -> track.getInfo().getFixedTitle()));
 		title.setStepSize(0.5F);
 		title.setColor(0xFFFF00);
 		title.setWidth(114);
 		title.setSpeedTime(35);
 		
-		author = new RenderScrollingText(() -> fontRender, () -> getValueOfTrack(track -> track.getInfo().getFixedAuthor()));
+		author = new RenderScrollingText(() -> fontRender, () -> GuiTrackUtils.getValueOfPlayingTrack(track -> track.getInfo().getFixedAuthor()));
 		author.setStepSize(0.5F);
 		author.setColor(0xFFFF00);
 		author.setScale(0.75F);
 		author.setWidth(114);
 		author.setSpeedTime(35);
 		
-		position = new RenderScalingText(() -> fontRender, () -> getValueOfTrack(GuiTrackUtils::getFormattedPosition));
+		position = new RenderScalingText(() -> fontRender, () -> GuiTrackUtils.getValueOfPlayingTrack(GuiTrackUtils::getFormattedPosition));
 		position.setColor(0xFFFF00);
 		position.setScale(0.5F);
 		
-		duration = new RenderScalingText(() -> fontRender, () -> getValueOfTrack(GuiTrackUtils::getFormattedDuration));
+		duration = new RenderScalingText(() -> fontRender, () -> GuiTrackUtils.getValueOfPlayingTrack(GuiTrackUtils::getFormattedDuration));
 		duration.setColor(0xFFFF00);
 		duration.setScale(0.5F);
 		
-	}
-	
-	private String getValueOfTrack(Function<IAudioTrack, String> function) {
-		final IAudioTrack track = manager.getCurrentTrack();
-		if (track != null) {
-			return function.apply(track);
-		}
-		return null;
 	}
 	
 	public void draw(float x, float y) {

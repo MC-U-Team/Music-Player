@@ -4,13 +4,14 @@ import java.util.*;
 
 import info.u_team.music_player.gui.GuiMusicPlayer;
 import info.u_team.music_player.gui.settings.GuiMusicPlayerSettings;
+import info.u_team.music_player.gui.util.GuiTrackUtils;
 import info.u_team.music_player.init.MusicPlayerResources;
 import info.u_team.music_player.lavaplayer.api.audio.IAudioTrack;
 import info.u_team.music_player.lavaplayer.api.queue.ITrackManager;
 import info.u_team.music_player.musicplayer.MusicPlayerManager;
 import info.u_team.music_player.musicplayer.playlist.*;
 import info.u_team.music_player.musicplayer.settings.*;
-import info.u_team.to_u_team_core.export.GuiSliderBetterFont;
+import info.u_team.to_u_team_core.export.*;
 import info.u_team.u_team_core.gui.elements.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.*;
@@ -31,6 +32,9 @@ public class GuiControls extends GuiEventHandler {
 	
 	private final GuiMusicProgressBar songProgress;
 	
+	private final RenderScrollingText title;
+	private final RenderScrollingText author;
+	
 	public GuiControls(GuiScreen gui, int y, int width) {
 		this.y = y;
 		this.width = width;
@@ -40,6 +44,8 @@ public class GuiControls extends GuiEventHandler {
 		disableButtons = new ArrayList<>();
 		children = new ArrayList<>();
 		manager = MusicPlayerManager.getPlayer().getTrackManager();
+		
+		final Minecraft mc = Minecraft.getInstance();
 		
 		final boolean isSettings = gui instanceof GuiMusicPlayerSettings;
 		final boolean isIngame = gui instanceof GuiIngameMenu;
@@ -125,13 +131,13 @@ public class GuiControls extends GuiEventHandler {
 		// Open Settings
 		if (!isSettings) {
 			final GuiButtonClickImage settingsButton = addButtonNonDisable(new GuiButtonClickImage(width - (15 + 1), 1, 15, 15, MusicPlayerResources.textureSettings));
-			settingsButton.setClickAction(() -> Minecraft.getInstance().displayGuiScreen(new GuiMusicPlayerSettings(gui)));
+			settingsButton.setClickAction(() -> mc.displayGuiScreen(new GuiMusicPlayerSettings(gui)));
 		}
 		
 		// Open musicplayer gui
 		if (isIngame) {
 			final GuiButtonClickImage guiButton = addButtonNonDisable(new GuiButtonClickImage(width - (15 * 2 + 2), 1, 15, 15, MusicPlayerResources.textureOpen));
-			guiButton.setClickAction(() -> Minecraft.getInstance().displayGuiScreen(new GuiMusicPlayer()));
+			guiButton.setClickAction(() -> mc.displayGuiScreen(new GuiMusicPlayer()));
 		}
 		
 		// Volume
@@ -140,6 +146,21 @@ public class GuiControls extends GuiEventHandler {
 			settings.setVolume(slider.getValueInt());
 			MusicPlayerManager.getPlayer().setVolume(settings.getVolume());
 		}));
+		
+		// Render playing track
+		// Title and author
+		title = new RenderScrollingText(() -> mc.fontRenderer, () -> GuiTrackUtils.getValueOfPlayingTrack(track -> track.getInfo().getFixedTitle()));
+		title.setStepSize(0.5F);
+		title.setColor(0xFFFF00);
+		title.setWidth(114);
+		title.setSpeedTime(35);
+		
+		author = new RenderScrollingText(() -> mc.fontRenderer, () -> GuiTrackUtils.getValueOfPlayingTrack(track -> track.getInfo().getFixedAuthor()));
+		author.setStepSize(0.5F);
+		author.setColor(0xFFFF00);
+		author.setScale(0.75F);
+		author.setWidth(114);
+		author.setSpeedTime(35);
 		
 		// Disable all buttons first
 		disableButtons.forEach(button -> button.enabled = false);
@@ -165,6 +186,9 @@ public class GuiControls extends GuiEventHandler {
 	public void drawScreen(int mouseX, int mouseY, float partialTicks) {
 		buttons.forEach(button -> button.render(mouseX, mouseY, partialTicks));
 		songProgress.render(mouseX, mouseY, partialTicks);
+		
+		title.draw(2 + 3, y + 2);
+		author.draw(2 + 3, y + 12);
 	}
 	
 	private <B extends GuiButton> B addButton(B button) {

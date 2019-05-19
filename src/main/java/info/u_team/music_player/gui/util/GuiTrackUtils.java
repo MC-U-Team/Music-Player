@@ -4,6 +4,7 @@ import java.net.URI;
 import java.util.function.Function;
 
 import info.u_team.music_player.lavaplayer.api.audio.*;
+import info.u_team.music_player.musicplayer.MusicPlayerManager;
 import info.u_team.music_player.util.TimeUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.text.*;
@@ -64,6 +65,10 @@ public final class GuiTrackUtils {
 	
 	public static String getFormattedPosition(IAudioTrack track) {
 		return TimeUtil.timeConversion(track == null ? 0 : track.getPosition() / 1000);
+	}
+	
+	public static <T> T getValueOfPlayingTrack(Function<IAudioTrack, T> function) {
+		return getValueOfNullableTrack(MusicPlayerManager.getPlayer().getTrackManager().getCurrentTrack(), function);
 	}
 	
 	public static <T> T getValueOfNullableTrack(IAudioTrack track, Function<IAudioTrack, T> function) {
