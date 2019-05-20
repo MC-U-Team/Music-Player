@@ -1,0 +1,5 @@
+This is a little backport of the 1.13 gui system.
+Its only used to support musicplayer gui.
+Some classes are copyrighted by mojang and forge.
+All rights belong to those.
+This package is not licensed under apache2
