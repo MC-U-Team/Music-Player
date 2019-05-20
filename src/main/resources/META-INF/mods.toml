@@ -16,7 +16,7 @@ Play every youtube video, livestream and more with this player! We use lava play
 
 Learn more about lavaplayer here: https://github.com/sedmelluq/lavaplayer
 
-§lSources:§A
+Sources:
   - YouTube
   - SoundCloud
   - Bandcamp
@@ -25,7 +25,7 @@ Learn more about lavaplayer here: https://github.com/sedmelluq/lavaplayer
   - Local files
   - HTTP URLs
   
-§lFile formats:§A
+File formats:
   - MP3
   - FLAC
   - WAV
