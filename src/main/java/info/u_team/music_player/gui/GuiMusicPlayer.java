@@ -32,7 +32,7 @@ public class GuiMusicPlayer extends GuiScreen {
 		addPlaylistButton.setClickAction(() -> {
 			String name = namePlaylistField.getText();
 			if (StringUtils.isBlank(name) || name.equals(getTranslation(gui_create_playlist_insert_name))) {
-				namePlaylistField.setText("Enter a name");
+				namePlaylistField.setText(getTranslation(gui_create_playlist_insert_name));
 				return;
 			}
 			playlistsList.addPlaylist(name);
