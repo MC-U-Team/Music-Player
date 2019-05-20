@@ -60,9 +60,9 @@ minecraft {
     mappings = "${config.forge.mapping_channel}_${config.forge.mapping}"
     makeObfSourceJar = false
 	
-	//replace '${version}', project.version
-	//replace '${mcversion}', project.minecraft.version
-	//replaceIn "info/u_team/music_player/MusicPlayerConstants.java"
+	replace '${version}', project.version
+	replace '${mcversion}', project.minecraft.version
+	replaceIn "info/u_team/music_player/MusicPlayerMod.java"
 }
 
 def normalManifest = {
