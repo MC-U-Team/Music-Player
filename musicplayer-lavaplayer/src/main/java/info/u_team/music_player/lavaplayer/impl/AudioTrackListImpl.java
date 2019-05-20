@@ -1,34 +1,60 @@
 package info.u_team.music_player.lavaplayer.impl;
 
-import java.util.*;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
 
-import info.u_team.music_player.lavaplayer.api.*;
+import info.u_team.music_player.lavaplayer.api.audio.*;
 
 public class AudioTrackListImpl implements IAudioTrackList {
-	
-	private AudioPlaylist playlist;
-	
+
+	private final String uri;
+	private final AudioPlaylist playList;
+
+	private final List<IAudioTrack> tracks;
+
+	private final IAudioTrack selectedTrack;
+
 	public AudioTrackListImpl(AudioPlaylist playlist) {
-		this.playlist = playlist;
+		this(null, playlist);
 	}
-	
+
+	public AudioTrackListImpl(String uri, AudioPlaylist playList) {
+		this.uri = uri;
+		this.playList = playList;
+		tracks = playList.getTracks().stream().filter(track -> track != null).map(AudioTrackImpl::new).collect(Collectors.toList());
+		selectedTrack = playList.getSelectedTrack() != null ? new AudioTrackImpl(playList.getSelectedTrack()) : null;
+	}
+
 	@Override
 	public String getName() {
-		return playlist.getName();
+		return playList.getName();
 	}
-	
+
 	@Override
 	public List<IAudioTrack> getTracks() {
-		ArrayList<IAudioTrack> list = new ArrayList<>();
-		playlist.getTracks().forEach(track -> list.add(new AudioTrackImpl(track)));
-		return list;
+		return tracks;
 	}
-	
+
 	@Override
 	public IAudioTrack getSelectedTrack() {
-		return playlist.getSelectedTrack() != null ? new AudioTrackImpl(playlist.getSelectedTrack()) : null;
+		return selectedTrack;
 	}
-	
+
+	@Override
+	public boolean isSearch() {
+		return playList.isSearchResult();
+	}
+
+	@Override
+	public boolean hasUri() {
+		return uri != null && !uri.isEmpty();
+	}
+
+	@Override
+	public String getUri() {
+		return uri;
+	}
+
 }

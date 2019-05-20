@@ -1,98 +1,84 @@
 package info.u_team.music_player.lavaplayer;
 
-import java.util.concurrent.ConcurrentLinkedQueue;
-
 import com.sedmelluq.discord.lavaplayer.format.*;
 import com.sedmelluq.discord.lavaplayer.player.*;
 import com.sedmelluq.discord.lavaplayer.player.AudioConfiguration.ResamplingQuality;
-import com.sedmelluq.discord.lavaplayer.source.AudioSourceManagers;
 
-import info.u_team.music_player.lavaplayer.api.*;
+import info.u_team.music_player.lavaplayer.api.IMusicPlayer;
+import info.u_team.music_player.lavaplayer.api.queue.ITrackManager;
+import info.u_team.music_player.lavaplayer.api.search.ITrackSearch;
 import info.u_team.music_player.lavaplayer.output.AudioOutput;
-import info.u_team.music_player.lavaplayer.queue.TrackScheduler;
+import info.u_team.music_player.lavaplayer.queue.TrackManager;
 import info.u_team.music_player.lavaplayer.search.TrackSearch;
+import info.u_team.music_player.lavaplayer.sources.AudioSources;
 
 public class MusicPlayer implements IMusicPlayer {
-	
-	private static ConcurrentLinkedQueue<IMusicPlayerEvents> eventhandler = new ConcurrentLinkedQueue<>();
-	
-	private AudioPlayerManager audioplayermanager;
-	private AudioDataFormat audiodataformat;
-	private AudioPlayer audioplayer;
-	private AudioOutput audiooutput;
-	
-	private TrackScheduler trackscheduler;
-	private TrackSearch tracksearch;
-	
+
+	private final AudioPlayerManager audioPlayerManager;
+	private final AudioDataFormat audioDataFormat;
+	private final AudioPlayer audioPlazer;
+	private final AudioOutput audioOutput;
+
+	private final TrackSearch trackSearch;
+	private final TrackManager trackManager;
+
 	public MusicPlayer() {
-		audioplayermanager = new DefaultAudioPlayerManager();
-		audiodataformat = new Pcm16AudioDataFormat(2, 48000, 960, true);
-		audioplayer = audioplayermanager.createPlayer();
-		audiooutput = new AudioOutput(this);
-		
-		trackscheduler = new TrackScheduler(audioplayer);
-		tracksearch = new TrackSearch(audioplayermanager, trackscheduler);
-		
+		audioPlayerManager = new DefaultAudioPlayerManager();
+		audioDataFormat = new Pcm16AudioDataFormat(2, 48000, 960, true);
+		audioPlazer = audioPlayerManager.createPlayer();
+		audioOutput = new AudioOutput(this);
+
+		trackSearch = new TrackSearch(audioPlayerManager);
+		trackManager = new TrackManager(audioPlazer);
+
 		setup();
 	}
-	
+
 	private void setup() {
-		audioplayermanager.setFrameBufferDuration(1000);
-		audioplayermanager.setPlayerCleanupThreshold(Long.MAX_VALUE);
-		
-		audioplayermanager.getConfiguration().setResamplingQuality(ResamplingQuality.HIGH);
-		audioplayermanager.getConfiguration().setOpusEncodingQuality(10);
-		audioplayermanager.getConfiguration().setOutputFormat(audiodataformat);
-		
-		AudioSourceManagers.registerRemoteSources(audioplayermanager);
-		AudioSourceManagers.registerLocalSource(audioplayermanager);
-		
-		audioplayer.addListener(trackscheduler);
+		audioPlayerManager.setFrameBufferDuration(1000);
+		audioPlayerManager.setPlayerCleanupThreshold(Long.MAX_VALUE);
+
+		audioPlayerManager.getConfiguration().setResamplingQuality(ResamplingQuality.HIGH);
+		audioPlayerManager.getConfiguration().setOpusEncodingQuality(10);
+		audioPlayerManager.getConfiguration().setOutputFormat(audioDataFormat);
+
+		AudioSources.registerSources(audioPlayerManager);
 	}
-	
+
 	public AudioPlayerManager getAudioPlayerManager() {
-		return audioplayermanager;
+		return audioPlayerManager;
 	}
-	
+
 	public AudioDataFormat getAudioDataFormat() {
-		return audiodataformat;
+		return audioDataFormat;
 	}
-	
+
 	public AudioPlayer getAudioPlayer() {
-		return audioplayer;
+		return audioPlazer;
 	}
-	
-	public TrackScheduler getTrackScheduler() {
-		return trackscheduler;
+
+	@Override
+	public ITrackManager getTrackManager() {
+		return trackManager;
 	}
-	
-	public TrackSearch getTrackSearch() {
-		return tracksearch;
+
+	@Override
+	public ITrackSearch getTrackSearch() {
+		return trackSearch;
 	}
-	
+
+	@Override
 	public void startAudioOutput() {
-		audiooutput.start();
+		audioOutput.start();
 	}
-	
+
+	@Override
 	public void setVolume(int volume) {
-		audioplayer.setVolume(volume);
+		audioPlazer.setVolume(volume);
 	}
-	
+
+	@Override
 	public int getVolume() {
-		return audioplayer.getVolume();
-	}
-	
-	@Override
-	public void registerEventHandler(IMusicPlayerEvents events) {
-		eventhandler.add(events);
-	}
-	
-	@Override
-	public void unregisterEventHandler(IMusicPlayerEvents events) {
-		eventhandler.remove(events);
-	}
-	
-	public static ConcurrentLinkedQueue<IMusicPlayerEvents> getEventHandler() {
-		return eventhandler;
+		return audioPlazer.getVolume();
 	}
 }
