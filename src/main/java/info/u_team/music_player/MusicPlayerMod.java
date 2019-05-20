@@ -1,23 +1,21 @@
 package info.u_team.music_player;
 
-import static info.u_team.music_player.MusicPlayerConstants.*;
-
 import info.u_team.music_player.proxy.CommonProxy;
 import net.minecraftforge.fml.common.*;
-import net.minecraftforge.fml.common.Mod.*;
+import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.event.*;
 
-@Mod(modid = MODID, name = NAME, version = VERSION, acceptedMinecraftVersions = MCVERSION, dependencies = DEPENDENCIES, updateJSON = UPDATEURL, clientSideOnly = true)
+@Mod(modid = MusicPlayerMod.modid, name = MusicPlayerMod.name, version = MusicPlayerMod.version, acceptedMinecraftVersions = MusicPlayerMod.mcversion, dependencies = MusicPlayerMod.dependencies, updateJSON = MusicPlayerMod.updateurl, clientSideOnly = true)
 public class MusicPlayerMod {
 	
-	@Instance
-	private static MusicPlayerMod instance;
+	public static final String modid = "musicplayer";
+	public static final String name = "Music Player";
+	public static final String version = "${version}";
+	public static final String mcversion = "${mcversion}";
+	public static final String dependencies = "required:forge@[14.23.5.2768,);required-after:uteamcore@[2.2.4.94,);";
+	public static final String updateurl = "https://api.u-team.info/update/musicplayer.json";
 	
-	public static MusicPlayerMod getInstance() {
-		return instance;
-	}
-	
-	@SidedProxy(serverSide = COMMONPROXY, clientSide = CLIENTPROXY)
+	@SidedProxy(serverSide = "info.u_team.music_player.proxy.CommonProxy", clientSide = "info.u_team.music_player.proxy.ClientProxy")
 	private static CommonProxy proxy;
 	
 	@EventHandler

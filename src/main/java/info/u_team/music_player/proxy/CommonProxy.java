@@ -12,5 +12,4 @@ public class CommonProxy {
 	
 	public void postinit(FMLPostInitializationEvent event) {
 	}
-	
 }
