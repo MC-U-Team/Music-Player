@@ -8,7 +8,7 @@ import org.lwjgl.input.*;
 import com.google.common.collect.Lists;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.*;
+import net.minecraft.client.gui.GuiButton;
 
 public class GuiScreen1_13 extends GuiScreenInternal {
 	

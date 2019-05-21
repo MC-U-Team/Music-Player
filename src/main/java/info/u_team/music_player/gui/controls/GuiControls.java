@@ -15,7 +15,7 @@ import info.u_team.music_player.musicplayer.settings.*;
 import info.u_team.u_team_core.gui.elements.*;
 import info.u_team.u_team_core.gui.elements.backport.*;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.*;
+import net.minecraft.client.gui.GuiScreen;
 
 public class GuiControls extends GuiEventHandlerNew {
 	

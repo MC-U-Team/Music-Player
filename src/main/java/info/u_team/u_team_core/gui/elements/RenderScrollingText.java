@@ -4,7 +4,7 @@ import java.util.function.Supplier;
 
 import org.lwjgl.opengl.GL11;
 
-import net.minecraft.client.*;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.*;
 import net.minecraft.util.math.MathHelper;
 

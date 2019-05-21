@@ -5,7 +5,7 @@ import java.util.function.*;
 import info.u_team.u_team_core.gui.elements.backport.IGuiEventListener;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.*;
-import net.minecraft.client.gui.*;
+import net.minecraft.client.gui.Gui;
 import net.minecraft.init.SoundEvents;
 
 public class GuiProgressBar extends Gui implements IGuiEventListener {

@@ -9,7 +9,7 @@ import java.util.function.Consumer;
 import org.apache.logging.log4j.*;
 
 import info.u_team.music_player.dependency.classloader.DependencyClassLoader;
-import info.u_team.music_player.dependency.url.UrlStreamHandlerMusicPlayer;
+import info.u_team.music_player.dependency.url.URLStreamHandlerMusicPlayer;
 import net.minecraft.launchwrapper.LaunchClassLoader;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
 
@@ -28,7 +28,7 @@ public class DependencyManager {
 			getJarFilesInDev(Paths.get(devPath, "musicplayer-lavaplayer/build/libs"), DependencyManager::addToMusicPlayerDependencies);
 			getJarFilesInDev(Paths.get(devPath, "musicplayer-lavaplayer/build/dependencies"), DependencyManager::addToMusicPlayerDependencies);
 		} else {
-			URL.setURLStreamHandlerFactory(protocol -> "musicplayer".equals(protocol) ? new UrlStreamHandlerMusicPlayer() : null);
+			URL.setURLStreamHandlerFactory(protocol -> "musicplayer".equals(protocol) ? new URLStreamHandlerMusicPlayer() : null);
 			getJarFilesInJar("dependencies/internal", path -> addToInternalDependencies(createInternalURL(path)));
 			getJarFilesInJar("dependencies/musicplayer", path -> addToMusicPlayerDependencies(createInternalURL(path)));
 			fixSLF4JLogger();

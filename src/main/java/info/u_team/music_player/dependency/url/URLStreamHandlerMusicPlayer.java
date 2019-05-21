@@ -4,7 +4,7 @@ import java.io.*;
 import java.net.*;
 import java.util.Optional;
 
-public class UrlStreamHandlerMusicPlayer extends URLStreamHandler {
+public class URLStreamHandlerMusicPlayer extends URLStreamHandler {
 	
 	@Override
 	protected URLConnection openConnection(URL url) throws IOException {
