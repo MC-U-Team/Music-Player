@@ -3,6 +3,8 @@ package org.lwjgl.util.tinyfd;
 import java.io.*;
 import java.nio.file.*;
 
+import org.apache.logging.log4j.*;
+
 import com.sun.jna.*;
 
 import info.u_team.music_player.MusicPlayerMod;
@@ -35,21 +37,24 @@ import info.u_team.music_player.MusicPlayerMod;
  */
 public class TinyFileDialogs {
 	
+	static final Logger log = LogManager.getLogger();
+	
 	static {
-		System.out.println("********************************************TTTTTTTTTTTTTTTTTTTTTTTTTTTTTT*******************************************************");
-		System.out.println("********************************************TTTTTTTTTTTTTTTTTTTTTTTTTTTTTT*******************************************************");
-		System.out.println("********************************************TTTTTTTTTTTTTTTTTTTTTTTTTTTTTT*******************************************************");
-		System.out.println("********************************************TTTTTTTTTTTTTTTTTTTTTTTTTTTTTT*******************************************************");
-		System.out.println("********************************************TTTTTTTTTTTTTTTTTTTTTTTTTTTTTT*******************************************************");
-		System.out.println("********************************************TTTTTTTTTTTTTTTTTTTTTTTTTTTTTT*******************************************************");
-		System.out.println("********************************************TTTTTTTTTTTTTTTTTTTTTTTTTTTTTT*******************************************************");
-		System.out.println("********************************************TTTTTTTTTTTTTTTTTTTTTTTTTTTTTT*******************************************************");
-		System.out.println("********************************************TTTTTTTTTTTTTTTTTTTTTTTTTTTTTT*******************************************************");
-		System.out.println("********************************************TTTTTTTTTTTTTTTTTTTTTTTTTTTTTT*******************************************************");
-		System.out.println("********************************************TTTTTTTTTTTTTTTTTTTTTTTTTTTTTT*******************************************************");
-		System.out.println("********************************************TTTTTTTTTTTTTTTTTTTTTTTTTTTTTT*******************************************************");
-		System.out.println("********************************************TTTTTTTTTTTTTTTTTTTTTTTTTTTTTT*******************************************************");
-		System.out.println("********************************************TTTTTTTTTTTTTTTTTTTTTTTTTTTTTT*******************************************************");
+		
+		log.info("********************************************TTTTTTTTTTTTTTTTTTTTTTTTTTTTTT*******************************************************");
+		log.info("********************************************TTTTTTTTTTTTTTTTTTTTTTTTTTTTTT*******************************************************");
+		log.info("********************************************TTTTTTTTTTTTTTTTTTTTTTTTTTTTTT*******************************************************");
+		log.info("********************************************TTTTTTTTTTTTTTTTTTTTTTTTTTTTTT*******************************************************");
+		log.info("********************************************TTTTTTTTTTTTTTTTTTTTTTTTTTTTTT*******************************************************");
+		log.info("********************************************TTTTTTTTTTTTTTTTTTTTTTTTTTTTTT*******************************************************");
+		log.info("********************************************TTTTTTTTTTTTTTTTTTTTTTTTTTTTTT*******************************************************");
+		log.info("********************************************TTTTTTTTTTTTTTTTTTTTTTTTTTTTTT*******************************************************");
+		log.info("********************************************TTTTTTTTTTTTTTTTTTTTTTTTTTTTTT*******************************************************");
+		log.info("********************************************TTTTTTTTTTTTTTTTTTTTTTTTTTTTTT*******************************************************");
+		log.info("********************************************TTTTTTTTTTTTTTTTTTTTTTTTTTTTTT*******************************************************");
+		log.info("********************************************TTTTTTTTTTTTTTTTTTTTTTTTTTTTTT*******************************************************");
+		log.info("********************************************TTTTTTTTTTTTTTTTTTTTTTTTTTTTTT*******************************************************");
+		log.info("********************************************TTTTTTTTTTTTTTTTTTTTTTTTTTTTTT*******************************************************");
 		System.load(extractFile(getFileDependingOnSystem()).getAbsolutePath());
 	}
 	
@@ -69,7 +74,7 @@ public class TinyFileDialogs {
 	}
 	
 	private static File extractFile(String resource) {
-		System.out.println(resource);
+		log.info(resource);
 		try {
 			final Path path = Files.createTempFile(resource, null);
 			InputStream stream = MusicPlayerMod.class.getResourceAsStream("/" + resource);
