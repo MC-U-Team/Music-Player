@@ -1,5 +1,12 @@
 package info.u_team.music_player;
 
+import java.io.File;
+import java.nio.file.*;
+
+import org.lwjgl.util.tinyfd.TinyFileDialogs;
+
+import com.sun.jna.Platform;
+
 import info.u_team.music_player.proxy.CommonProxy;
 import net.minecraftforge.fml.common.*;
 import net.minecraftforge.fml.common.Mod.EventHandler;
@@ -18,8 +25,34 @@ public class MusicPlayerMod {
 	@SidedProxy(serverSide = "info.u_team.music_player.proxy.CommonProxy", clientSide = "info.u_team.music_player.proxy.ClientProxy")
 	private static CommonProxy proxy;
 	
+	private static String getFileDependingOnSystem() {
+		String name = "lwjgl_tinyfd";
+		if (Platform.isWindows()) {
+			if (!Platform.is64Bit()) {
+				name += "32";
+			}
+			name += ".dll";
+		} else if (Platform.isLinux() || Platform.isMac()) {
+			name = "lib" + name + (Platform.isMac() ? ".dylib" : ".so");
+		} else {
+			throw new UnsatisfiedLinkError("System no supported");
+		}
+		return name;
+	}
+	
+	private static File extractFile(String resource) {
+		try {
+			final Path path = Files.createTempFile(resource, null);
+			Files.copy(TinyFileDialogs.class.getResourceAsStream("/" + resource), path, StandardCopyOption.REPLACE_EXISTING);
+			return path.toFile();
+		} catch (Exception ex) {
+			throw new LinkageError("Error occured when extracting file", ex);
+		}
+	}
+	
 	@EventHandler
 	public void preinit(FMLPreInitializationEvent event) {
+		System.out.println(extractFile(getFileDependingOnSystem()).getAbsolutePath());
 		proxy.preinit(event);
 	}
 	
