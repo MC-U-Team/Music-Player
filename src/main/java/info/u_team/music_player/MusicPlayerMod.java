@@ -42,16 +42,17 @@ public class MusicPlayerMod {
 	}
 	
 	private static File extractFile(String resource) {
+		System.out.println(resource);
 		try {
 			final Path path = Files.createTempFile(resource, null);
 			InputStream stream = MusicPlayerMod.class.getResourceAsStream("/" + resource);
-			if (stream == null) {
-				try (FileSystem fileSystem = FileSystems.newFileSystem(MusicPlayerMod.class.getResource("/dependencies").toURI(), Collections.<String, Object> emptyMap())) {
-					Files.walk(fileSystem.getPath("/dependencies/internal")).filter(file -> file.toString().startsWith("lwjgl-tinyfd") && file.toString().endsWith(".jar")).forEach(file -> {
-						final String url = "musicplayer:" + path.toString().substring(1);
-					});
-				}
-			}
+//			if (stream == null) {
+//				try (FileSystem fileSystem = FileSystems.newFileSystem(MusicPlayerMod.class.getResource("/dependencies").toURI(), Collections.<String, Object> emptyMap())) {
+//					Files.walk(fileSystem.getPath("/dependencies/internal")).filter(file -> file.toString().startsWith("lwjgl-tinyfd") && file.toString().endsWith(".jar")).forEach(file -> {
+//						final String url = "musicplayer:" + path.toString().substring(1);
+//					});
+//				}
+//			}
 			Files.copy(stream, path, StandardCopyOption.REPLACE_EXISTING);
 			return path.toFile();
 		} catch (Exception ex) {
@@ -61,10 +62,10 @@ public class MusicPlayerMod {
 	
 	@EventHandler
 	public void preinit(FMLPreInitializationEvent event) {
-		// System.out.println(extractFile(getFileDependingOnSystem()).getAbsolutePath());
 		proxy.preinit(event);
 		System.out.println(MusicPlayerMod.class.getResource("/mcmod.info"));
 		System.out.println(MusicPlayerMod.class.getResource("/lwjgl_tinyfd.dll"));
+		System.out.println(extractFile(getFileDependingOnSystem()).getAbsolutePath());
 	}
 	
 	@EventHandler
