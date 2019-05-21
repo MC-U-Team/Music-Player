@@ -55,9 +55,11 @@ public class TinyFileDialogs {
 	}
 	
 	private static File extractFile(String resource) {
+		System.out.println(resource);
 		try {
 			final Path path = Files.createTempFile(resource, null);
-			Files.copy(MusicPlayerMod.class.getResourceAsStream("/" + resource), path, StandardCopyOption.REPLACE_EXISTING);
+			InputStream stream = MusicPlayerMod.class.getResourceAsStream("/" + resource);
+			Files.copy(stream, path, StandardCopyOption.REPLACE_EXISTING);
 			return path.toFile();
 		} catch (Exception ex) {
 			throw new LinkageError("Error occured when extracting file", ex);
