@@ -32,6 +32,7 @@ public class DependencyManager {
 			getJarFilesInJar("dependencies/internal", path -> addToInternalDependencies(createInternalURL(path)));
 			getJarFilesInJar("dependencies/musicplayer", path -> addToMusicPlayerDependencies(createInternalURL(path)));
 			fixSLF4JLogger();
+			fixTinyFDLoadLWJGL();
 		}
 		
 		logger.info(load, "Finished loading dependencies");
@@ -108,6 +109,27 @@ public class DependencyManager {
 			negativeResourceCache.remove(slf4jLoggerFactory);
 		} catch (Exception ex) {
 			logger.error(load, "Can't fix slf4j logger.", ex);
+		}
+	}
+	
+	/**
+	 * Really hackery. We remove the lwjgl pack from classloader exceptions, so it can load our class. Then we load our
+	 * class and reset the classloader exceptions.
+	 */
+	private static void fixTinyFDLoadLWJGL() {
+		try {
+			final String tinyFDClass = "org.lwjgl.util.tinyfd.TinyFileDialogs";
+			final String lwjglExclusion = "org.lwjgl.";
+			
+			final LaunchClassLoader launchClassLoader = (LaunchClassLoader) DependencyManager.class.getClassLoader();
+			
+			final Set<String> classLoaderExceptions = ReflectionHelper.getPrivateValue(LaunchClassLoader.class, launchClassLoader, "classLoaderExceptions");
+			
+			classLoaderExceptions.remove(lwjglExclusion);
+			launchClassLoader.loadClass(tinyFDClass);
+			classLoaderExceptions.add(lwjglExclusion);
+		} catch (Exception ex) {
+			logger.error(load, "Can't fix tinyfd load lwjgl", ex);
 		}
 	}
 }

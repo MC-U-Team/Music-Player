@@ -21,9 +21,6 @@ public class MusicPlayerMod {
 	@EventHandler
 	public void preinit(FMLPreInitializationEvent event) {
 		proxy.preinit(event);
-		System.out.println(MusicPlayerMod.class.getResource("/mcmod.info"));
-		System.out.println(MusicPlayerMod.class.getResource("/lwjgl_tinyfd.dll"));
-//		System.out.println(extractFile(getFileDependingOnSystem()).getAbsolutePath());
 	}
 	
 	@EventHandler
