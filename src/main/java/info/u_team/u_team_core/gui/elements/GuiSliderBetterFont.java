@@ -21,6 +21,7 @@ public class GuiSliderBetterFont extends GuiSliderNew {
 			this.hovered = mouseX >= this.x && mouseY >= this.y && mouseX < this.x + this.width && mouseY < this.y + this.height;
 			int k = this.getHoverState(this.hovered);
 			GuiUtils.drawContinuousTexturedBox(BUTTON_TEXTURES, this.x, this.y, 0, 46 + k * 20, this.width, this.height, 200, 20, 2, 3, 2, 2, this.zLevel);
+			mouseDragged(mc, mouseX, mouseY);
 			int color = 14737632;
 			
 			if (packedFGColour != 0) {

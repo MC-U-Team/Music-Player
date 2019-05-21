@@ -22,7 +22,6 @@ public class GuiButtonNew extends GuiButton implements IGuiEventListener {
 				return true;
 			}
 		}
-		
 		return false;
 	}
 	
@@ -31,6 +30,7 @@ public class GuiButtonNew extends GuiButton implements IGuiEventListener {
 	}
 	
 	public boolean mouseReleased(double p_mouseReleased_1_, double p_mouseReleased_3_, int p_mouseReleased_5_) {
+		mouseReleased((int) p_mouseReleased_1_, (int) p_mouseReleased_3_);
 		if (p_mouseReleased_5_ == 0) {
 			return true;
 		} else {
@@ -39,6 +39,7 @@ public class GuiButtonNew extends GuiButton implements IGuiEventListener {
 	}
 	
 	public boolean mouseDragged(double p_mouseDragged_1_, double p_mouseDragged_3_, int p_mouseDragged_5_, double p_mouseDragged_6_, double p_mouseDragged_8_) {
+		super.mouseDragged(Minecraft.getMinecraft(), (int) p_mouseDragged_1_, (int) p_mouseDragged_3_);
 		return false;
 	}
 }

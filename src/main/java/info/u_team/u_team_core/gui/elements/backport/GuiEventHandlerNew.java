@@ -45,7 +45,6 @@ public abstract class GuiEventHandlerNew extends Gui implements IGuiEventListene
 				if (p_mouseClicked_5_ == 0) {
 					this.setDragging(true);
 				}
-				
 				return true;
 			}
 		}

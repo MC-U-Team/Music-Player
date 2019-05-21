@@ -146,7 +146,7 @@ public class GuiControls extends GuiEventHandlerNew {
 		// Add all buttons to children
 		buttons.forEach(children::add);
 		
-		//Fix flickering buttons other stuff
+		// Fix flickering buttons other stuff
 		tick();
 	}
 	

@@ -53,13 +53,11 @@ public class GuiScreen1_13 extends GuiScreenInternal {
 	@Override
 	protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
 		super.mouseClicked((double) mouseX, (double) mouseY, mouseButton);
-		super.mouseClicked(mouseX, mouseY, mouseButton);
 	}
 	
 	@Override
 	protected void mouseReleased(int mouseX, int mouseY, int state) {
 		super.mouseReleased((double) mouseX, (double) mouseY, state);
-		super.mouseReleased(mouseX, mouseY, state);
 	}
 	
 	private int mouseX = -1, mouseY = -1;
