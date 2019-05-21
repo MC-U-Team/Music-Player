@@ -5,7 +5,7 @@ import static info.u_team.music_player.init.MusicPlayerLocalization.*;
 import java.io.IOException;
 import java.nio.file.*;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.stream.*;
 
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.util.tinyfd.TinyFileDialogs;
@@ -71,8 +71,8 @@ public class GuiMusicSearch extends GuiScreen {
 			String response = TinyFileDialogs.tinyfd_selectFolderDialog(getTranslation(gui_search_load_folder), System.getProperty("user.home"));
 			if (response != null) {
 				searchList.clear();
-				try {
-					Files.walk(Paths.get(response)).filter(path -> !Files.isDirectory(path)).forEach(path -> addTrack(path.toString()));
+				try (Stream<Path> stream = Files.list(Paths.get(response))) {
+					stream.filter(path -> !Files.isDirectory(path)).forEach(path -> addTrack(path.toString()));
 				} catch (IOException ex) {
 					setInformation(TextFormatting.RED + ex.getMessage(), 150);
 				}
