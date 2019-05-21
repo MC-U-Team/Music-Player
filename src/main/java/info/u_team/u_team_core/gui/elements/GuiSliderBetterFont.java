@@ -2,6 +2,7 @@ package info.u_team.u_team_core.gui.elements;
 
 import org.lwjgl.opengl.GL11;
 
+import info.u_team.u_team_core.gui.elements.backport.GuiSliderNew;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.fml.client.config.GuiUtils;

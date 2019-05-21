@@ -1,8 +1,7 @@
-package info.u_team.u_team_core.gui.elements;
+package info.u_team.u_team_core.gui.elements.backport;
 
 import javax.annotation.Nullable;
 
-import info.u_team.u_team_core.gui.elements.backport.GuiButtonExtNew;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraftforge.fml.client.config.GuiUtils;
