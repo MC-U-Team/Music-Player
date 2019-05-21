@@ -6,8 +6,8 @@ import org.apache.commons.lang3.StringUtils;
 
 import info.u_team.music_player.gui.controls.GuiControls;
 import info.u_team.music_player.init.MusicPlayerResources;
-import info.u_team.to_u_team_core.export.RenderScrollingText;
 import info.u_team.u_team_core.gui.elements.*;
+import info.u_team.u_team_core.gui.render.RenderScrollingText;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.*;
 

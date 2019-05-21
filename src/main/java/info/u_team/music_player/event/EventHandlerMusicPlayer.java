@@ -9,7 +9,7 @@ import info.u_team.music_player.lavaplayer.api.queue.ITrackManager;
 import info.u_team.music_player.musicplayer.*;
 import info.u_team.music_player.musicplayer.settings.*;
 import info.u_team.music_player.render.RenderOverlayMusicDisplay;
-import info.u_team.to_u_team_core.export.RenderScrollingText;
+import info.u_team.u_team_core.gui.render.RenderScrollingText;
 import net.minecraft.client.*;
 import net.minecraft.client.gui.*;
 import net.minecraft.client.settings.KeyBinding;
