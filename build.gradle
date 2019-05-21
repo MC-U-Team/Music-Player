@@ -221,10 +221,13 @@ curseforge {
 
     	mainArtifact(jar) {
       		displayName = "${config.curse.display}-${config.forge.mcversion}-${project.version}"
+      		changelogType = "html"
+      		changelog = "<a href=\"${config.curse.changelog}\">Changelog of ${project.version}</a>"
     	}
     	
     	addArtifact(deobfJar) {
     		displayName = "${config.curse.display}-${config.forge.mcversion}-${project.version}-dev"
+    		changelogType = "text"
     		changelog = "Mappings: " + config.forge.mapping
     	}
   	}
