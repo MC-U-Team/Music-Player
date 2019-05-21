@@ -1,12 +1,13 @@
 package info.u_team.music_player;
 
-import java.io.File;
+import java.io.*;
 import java.nio.file.*;
-
-import org.lwjgl.util.tinyfd.TinyFileDialogs;
+import java.nio.file.FileSystem;
+import java.util.Collections;
 
 import com.sun.jna.Platform;
 
+import info.u_team.music_player.dependency.DependencyManager;
 import info.u_team.music_player.proxy.CommonProxy;
 import net.minecraftforge.fml.common.*;
 import net.minecraftforge.fml.common.Mod.EventHandler;
@@ -43,7 +44,15 @@ public class MusicPlayerMod {
 	private static File extractFile(String resource) {
 		try {
 			final Path path = Files.createTempFile(resource, null);
-			Files.copy(MusicPlayerMod.class.getResourceAsStream("/" + resource), path, StandardCopyOption.REPLACE_EXISTING);
+			InputStream stream = MusicPlayerMod.class.getResourceAsStream("/" + resource);
+			if (stream == null) {
+				try (FileSystem fileSystem = FileSystems.newFileSystem(MusicPlayerMod.class.getResource("/dependencies").toURI(), Collections.<String, Object> emptyMap())) {
+					Files.walk(fileSystem.getPath("/dependencies/internal")).filter(file -> file.toString().startsWith("lwjgl-tinyfd") && file.toString().endsWith(".jar")).forEach(file -> {
+						final String url = "musicplayer:" + path.toString().substring(1);
+					});
+				}
+			}
+			Files.copy(stream, path, StandardCopyOption.REPLACE_EXISTING);
 			return path.toFile();
 		} catch (Exception ex) {
 			throw new LinkageError("Error occured when extracting file", ex);
@@ -52,8 +61,10 @@ public class MusicPlayerMod {
 	
 	@EventHandler
 	public void preinit(FMLPreInitializationEvent event) {
-		System.out.println(extractFile(getFileDependingOnSystem()).getAbsolutePath());
+		// System.out.println(extractFile(getFileDependingOnSystem()).getAbsolutePath());
 		proxy.preinit(event);
+		System.out.println(MusicPlayerMod.class.getResource("/mcmod.info"));
+		System.out.println(MusicPlayerMod.class.getResource("/lwjgl_tinyfd.dll"));
 	}
 	
 	@EventHandler
