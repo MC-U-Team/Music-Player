@@ -43,7 +43,7 @@ public class MusicPlayerMod {
 	private static File extractFile(String resource) {
 		try {
 			final Path path = Files.createTempFile(resource, null);
-			Files.copy(TinyFileDialogs.class.getResourceAsStream("/" + resource), path, StandardCopyOption.REPLACE_EXISTING);
+			Files.copy(MusicPlayerMod.class.getResourceAsStream("/" + resource), path, StandardCopyOption.REPLACE_EXISTING);
 			return path.toFile();
 		} catch (Exception ex) {
 			throw new LinkageError("Error occured when extracting file", ex);

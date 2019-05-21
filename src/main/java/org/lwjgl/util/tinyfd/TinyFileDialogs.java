@@ -5,6 +5,8 @@ import java.nio.file.*;
 
 import com.sun.jna.*;
 
+import info.u_team.music_player.MusicPlayerMod;
+
 /**
  * Backported basic java wrapper implementation for tinyfd for lwjgl 3.x. Can be used in lwjgl 2.9 for minecraft 1.12
  * for example. We need this package and file name because of the compiled JNI C file. We use JNA is this wrapper, so it
@@ -55,7 +57,7 @@ public class TinyFileDialogs {
 	private static File extractFile(String resource) {
 		try {
 			final Path path = Files.createTempFile(resource, null);
-			Files.copy(TinyFileDialogs.class.getResourceAsStream("/" + resource), path, StandardCopyOption.REPLACE_EXISTING);
+			Files.copy(MusicPlayerMod.class.getResourceAsStream("/" + resource), path, StandardCopyOption.REPLACE_EXISTING);
 			return path.toFile();
 		} catch (Exception ex) {
 			throw new LinkageError("Error occured when extracting file", ex);
