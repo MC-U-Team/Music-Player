@@ -60,6 +60,9 @@ public class RenderScalingText {
 	}
 	
 	public float getTextWidth() {
+		if (textWidth == 0) { // If text width has never been set
+			setText(textSupplier.get());
+		}
 		return textWidth * scale;
 	}
 	
