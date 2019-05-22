@@ -13,7 +13,7 @@ All notable changes to this project will be documented in this file.
 - Seeking of tracks is nwo available.
 - Hotkeys ingame and inguis (toggle in settings) can now skip and pause a song.
 - Shuffle, repeat playlist, repeat single songs is now available
-- Many other cool stuf :=)
+- Many other cool stuff :=)
 
 ### Changed
 - Changed everything
