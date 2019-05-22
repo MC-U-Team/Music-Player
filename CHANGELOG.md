@@ -10,7 +10,7 @@ All notable changes to this project will be documented in this file.
 - All instances use the same playlist file in appdirs. You can share you playlist with different minecraft instances.
 - Rewritten the classloader. Now dependencies don't need to be extracted.
 - Rewritten the whole gui system and renders.
-- Seeking of tracks is nwo available.
+- Seeking of tracks is now available.
 - Hotkeys ingame and inguis (toggle in settings) can now skip and pause a song.
 - Shuffle, repeat playlist, repeat single songs is now available
 - Many other cool stuff :=)
