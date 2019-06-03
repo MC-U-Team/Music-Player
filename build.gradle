@@ -245,21 +245,21 @@ uploadArchives {
 				project {
 					name project.archivesBaseName
 					packaging "jar"
-					description "Music-Player"
-					url "https://github.com/MC-U-Team/Music-Player"
+					description "${config.maven.github_name}"
+					url "https://github.com/MC-U-Team/${config.maven.github_name}"
 					scm {
-						url "https://github.com/MC-U-Team/Music-Player"
-						connection "scm:git:git://github.com/MC-U-Team/Music-Player.git"
-						developerConnection "scm:git:git@github.com:MC-U-Team/Music-Player.git"
+						url "https://github.com/MC-U-Team/${config.maven.github_name}"
+						connection "scm:git:git://github.com/MC-U-Team/${config.maven.github_name}.git"
+						developerConnection "scm:git:git@github.com:MC-U-Team/${config.maven.github_name}.git"
 					}
 					issueManagement {
 						system "github"
-						url "https://github.com/MC-U-Team/Music-Player/issues"
+						url "https://github.com/MC-U-Team/${config.maven.github_name}/issues"
 					}
 					licenses {
 						license {
 							name "Apache License 2.0"
-							url "https://github.com/MC-U-Team/Music-Player/blob/1.12.2/LICENSE"
+							url "https://github.com/MC-U-Team/${config.maven.github_name}/blob/1.12.2/LICENSE"
 							distribution "repo"
 						}
 					}
