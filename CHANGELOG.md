@@ -1,6 +1,12 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [1.13.2-2.0.0.10] - 2019-05-22
+### Changed
+- Changed required dependency versions
+- Forge now need to be at least: 2.0.219
+- UTeamCore need to be at least: 2.3.5.108
+
 ## [1.13.2-2.0.0.8] - 2019-05-22
 ### Added
 - Rewritten everything
