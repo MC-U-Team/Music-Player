@@ -3,7 +3,7 @@ loaderVersion="[25,)"
 issueTrackerURL="https://github.com/MC-U-Team/Music-Player/issues"
 displayURL="https://u-team.info/mods/musicplayer"
 logoFile="logo.png"
-credits="Thanks to sedmelluq for providing lavaplayer"
+credits="Thanks to sedmelluq for making lavaplayer"
 authors="HyCraftHD"
 
 [[mods]]
@@ -39,7 +39,7 @@ File formats:
 	[[dependencies.musicplayer]]
 	    modId="forge"
 	    mandatory=true
-	    versionRange="[25.0.76,)"
+	    versionRange="[25.0.219,)"
 	    ordering="NONE"
 	    side="BOTH"
 	
@@ -53,6 +53,6 @@ File formats:
 	[[dependencies.musicplayer]]
 	    modId="uteamcore"
 	    mandatory=true
-	    versionRange="[2.3.2.102,)"
+	    versionRange="[2.3.5.108,)"
 	    ordering="NONE"
 	    side="BOTH"
