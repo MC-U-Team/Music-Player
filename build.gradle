@@ -11,7 +11,11 @@ buildscript {
     }
 }
 
+apply from: "https://raw.githubusercontent.com/HyCraftHD/Blank-Forge-Project/master/build.methods"
 apply from: "https://raw.githubusercontent.com/HyCraftHD/Blank-Forge-Project/master/git.methods"
+
+setup()
+info()
 
 apply plugin: "net.minecraftforge.gradle"
 apply plugin: "eclipse"
@@ -21,18 +25,6 @@ apply plugin: "maven"
 repositories {
     maven { url = "https://repo.u-team.info" }
     mavenCentral()
-}
-
-loadConfig()
-
-def loadConfig() {
-	ext.buildProps = file "build.properties"
-
-	buildProps.withReader {
-		def prop = new Properties()
-		prop.load(it)
-		ext.config = new ConfigSlurper().parse prop
-	}
 }
 
 getBuildNumber()
@@ -230,7 +222,7 @@ curseforge {
     	addArtifact(deobfJar) {
     		displayName = "${config.curse.display}-${config.forge.mcversion}-${project.version}-dev"
     		changelogType = "text"
-    		changelog = "Mappings: " + config.forge.mapping
+    		changelog = "Mappings: ${config.forge.mapping_channel}_${config.forge.mapping}"
     	}
   	}
 }
