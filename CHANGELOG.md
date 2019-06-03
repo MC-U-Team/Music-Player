@@ -1,7 +1,7 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
-## [1.13.2-2.0.0.10] - 2019-05-22
+## [1.13.2-2.0.0.10] - 2019-06-03
 ### Changed
 - Changed required dependency versions
 - Forge now need to be at least: 2.0.219
