@@ -4,7 +4,7 @@ import static info.u_team.music_player.init.MusicPlayerLocalization.*;
 
 import org.lwjgl.glfw.GLFW;
 
-import info.u_team.u_team_core.registry.util.ClientRegistry;
+import info.u_team.u_team_core.util.registry.ClientRegistry;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.client.util.InputMappings;
 import net.minecraftforge.api.distmarker.*;
