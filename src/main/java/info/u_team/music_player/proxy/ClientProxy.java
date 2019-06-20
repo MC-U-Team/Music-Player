@@ -3,11 +3,13 @@ package info.u_team.music_player.proxy;
 import info.u_team.music_player.config.ClientConfig;
 import info.u_team.music_player.dependency.DependencyManager;
 import info.u_team.music_player.event.EventHandlerMusicPlayer;
-import info.u_team.music_player.init.*;
+import info.u_team.music_player.init.MusicPlayerFiles;
+import info.u_team.music_player.init.MusicPlayerKeys;
 import info.u_team.music_player.musicplayer.MusicPlayerManager;
 import info.u_team.u_team_core.api.IModProxy;
-import info.u_team.u_team_core.registry.util.CommonRegistry;
-import net.minecraftforge.api.distmarker.*;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.config.ModConfig.Type;
 
@@ -30,7 +32,7 @@ public class ClientProxy extends CommonProxy implements IModProxy {
 		super.setup();
 		MusicPlayerFiles.setup();
 		MusicPlayerManager.setup();
-		CommonRegistry.registerEventHandler(new EventHandlerMusicPlayer(MusicPlayerManager.getSettingsManager().getSettings()));
+		MinecraftForge.EVENT_BUS.register(new EventHandlerMusicPlayer(MusicPlayerManager.getSettingsManager().getSettings()));
 	}
 	
 	@Override
