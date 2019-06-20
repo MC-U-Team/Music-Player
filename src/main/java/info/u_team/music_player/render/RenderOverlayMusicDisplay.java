@@ -16,11 +16,11 @@ public class RenderOverlayMusicDisplay {
 	private int width;
 	private int height;
 	
-	private final RenderScrollingText title;
-	private final RenderScrollingText author;
+	private final ScrollingTextRender title;
+	private final ScrollingTextRender author;
 	
-	private final RenderScalingText position;
-	private final RenderScalingText duration;
+	private final ScalingTextRender position;
+	private final ScalingTextRender duration;
 	
 	public RenderOverlayMusicDisplay() {
 		manager = MusicPlayerManager.getPlayer().getTrackManager();
@@ -30,24 +30,24 @@ public class RenderOverlayMusicDisplay {
 		
 		final FontRenderer fontRender = Minecraft.getInstance().fontRenderer;
 		
-		title = new RenderScrollingText(() -> fontRender, () -> GuiTrackUtils.getValueOfPlayingTrack(track -> track.getInfo().getFixedTitle()));
+		title = new ScrollingTextRender(() -> fontRender, () -> GuiTrackUtils.getValueOfPlayingTrack(track -> track.getInfo().getFixedTitle()));
 		title.setStepSize(0.5F);
 		title.setColor(0xFFFF00);
 		title.setWidth(114);
 		title.setSpeedTime(35);
 		
-		author = new RenderScrollingText(() -> fontRender, () -> GuiTrackUtils.getValueOfPlayingTrack(track -> track.getInfo().getFixedAuthor()));
+		author = new ScrollingTextRender(() -> fontRender, () -> GuiTrackUtils.getValueOfPlayingTrack(track -> track.getInfo().getFixedAuthor()));
 		author.setStepSize(0.5F);
 		author.setColor(0xFFFF00);
 		author.setScale(0.75F);
 		author.setWidth(114);
 		author.setSpeedTime(35);
 		
-		position = new RenderScalingText(() -> fontRender, () -> GuiTrackUtils.getValueOfPlayingTrack(GuiTrackUtils::getFormattedPosition));
+		position = new ScalingTextRender(() -> fontRender, () -> GuiTrackUtils.getValueOfPlayingTrack(GuiTrackUtils::getFormattedPosition));
 		position.setColor(0xFFFF00);
 		position.setScale(0.5F);
 		
-		duration = new RenderScalingText(() -> fontRender, () -> GuiTrackUtils.getValueOfPlayingTrack(GuiTrackUtils::getFormattedDuration));
+		duration = new ScalingTextRender(() -> fontRender, () -> GuiTrackUtils.getValueOfPlayingTrack(GuiTrackUtils::getFormattedDuration));
 		duration.setColor(0xFFFF00);
 		duration.setScale(0.5F);
 		
@@ -61,7 +61,7 @@ public class RenderOverlayMusicDisplay {
 		final int intX = MathHelper.ceil(x);
 		final int intY = MathHelper.ceil(y);
 		// Background
-		Gui.drawRect(intX, intY, intX + width, intY + height, 0xFF212121);
+		AbstractGui.fill(intX, intY, intX + width, intY + height, 0xFF212121);
 		
 		// Progressbar
 		final double progress;
@@ -71,8 +71,8 @@ public class RenderOverlayMusicDisplay {
 			progress = (double) track.getPosition() / track.getDuration();
 		}
 		
-		Gui.drawRect(intX + 6, intY + 23, intX + width - 6, intY + 26, 0xFF555555);
-		Gui.drawRect(intX + 6, intY + 23, intX + 6 + (int) ((width - 12) * progress), intY + 26, 0xFF3e9100);
+		AbstractGui.fill(intX + 6, intY + 23, intX + width - 6, intY + 26, 0xFF555555);
+		AbstractGui.fill(intX + 6, intY + 23, intX + 6 + (int) ((width - 12) * progress), intY + 26, 0xFF3e9100);
 		
 		// Draw strings
 		title.draw(x + 3, y + 2);
