@@ -48,7 +48,7 @@ public final class GuiTrackUtils {
 		} catch (Exception ex) {
 			style.setClickEvent(new ClickEvent(Action.OPEN_FILE, uri));
 		}
-		return mc.currentScreen.handleComponentClick(new TextComponentString("").setStyle(style));
+		return mc.currentScreen.handleComponentClicked(new StringTextComponent("").setStyle(style));
 	}
 	
 	public static String getFormattedDuration(IAudioTrack track) {
