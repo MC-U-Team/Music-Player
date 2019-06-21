@@ -71,7 +71,7 @@ public class GuiMusicPlayer extends Screen {
 	
 	@Override
 	public void render(int mouseX, int mouseY, float partialTicks) {
-		renderBackground(0);
+		renderDirtBackground(0);
 		playlistsList.render(mouseX, mouseY, partialTicks);
 		font.drawString(getTranslation(gui_create_playlist_add_list), 20, 65, 0xFFFFFF);
 		namePlaylistField.render(mouseX, mouseY, partialTicks);
