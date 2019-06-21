@@ -53,6 +53,6 @@ File formats:
 	[[dependencies.musicplayer]]
 	    modId="uteamcore"
 	    mandatory=true
-	    versionRange="[2.5.2.113,)"
+	    versionRange="[2.5.2.113-SNAPSHOT,)"
 	    ordering="NONE"
 	    side="BOTH"
