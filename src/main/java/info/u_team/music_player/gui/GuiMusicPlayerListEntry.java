@@ -90,24 +90,24 @@ class GuiMusicPlayerListEntry extends GuiScrollableListEntry<GuiMusicPlayerListE
 	}
 	
 	@Override
-	public void drawEntry(int entryWidth, int entryHeight, int mouseX, int mouseY, boolean mouseInList, float partialTicks) {
+	public void render(int slotIndex, int entryY, int entryX, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float partialTicks) {
 		String name = playlist.getName();
 		if (name.isEmpty()) {
 			name = "\u00A7o" + getTranslation(gui_playlists_no_name);
 		}
-		mc.fontRenderer.drawString(name, getX() + 5, getY() + 5, playlist.equals(playlists.getPlaying()) ? 0x0083FF : 0xFFF00F);
-		mc.fontRenderer.drawString(playlist.getEntrySize() + " " + getTranslation(playlist.getEntrySize() > 1 ? gui_playlists_entries : gui_playlists_entry), getX() + 5, getY() + 30, 0xFFFFFF);
+		mc.fontRenderer.drawString(name, entryX + 5, entryY + 5, playlist.equals(playlists.getPlaying()) ? 0x0083FF : 0xFFF00F);
+		mc.fontRenderer.drawString(playlist.getEntrySize() + " " + getTranslation(playlist.getEntrySize() > 1 ? gui_playlists_entries : gui_playlists_entry), entryX + 5, entryY + 30, 0xFFFFFF);
 		
 		playPlaylistButton.x = entryWidth - 65;
-		playPlaylistButton.y = getY() + 12;
+		playPlaylistButton.y = entryY + 12;
 		playPlaylistButton.render(mouseX, mouseY, partialTicks);
 		
 		openPlaylistButton.x = entryWidth - 40;
-		openPlaylistButton.y = getY() + 12;
+		openPlaylistButton.y = entryY + 12;
 		openPlaylistButton.render(mouseX, mouseY, partialTicks);
 		
 		deletePlaylistButton.x = entryWidth - 15;
-		deletePlaylistButton.y = getY() + 12;
+		deletePlaylistButton.y = entryY + 12;
 		deletePlaylistButton.render(mouseX, mouseY, partialTicks);
 	}
 	

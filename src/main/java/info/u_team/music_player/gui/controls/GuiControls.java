@@ -11,6 +11,7 @@ import info.u_team.music_player.init.MusicPlayerResources;
 import info.u_team.music_player.lavaplayer.api.queue.ITrackManager;
 import info.u_team.music_player.musicplayer.*;
 import info.u_team.music_player.musicplayer.settings.*;
+import info.u_team.to_u_team_core.gui.GuiSliderBetterFont;
 import info.u_team.u_team_core.gui.elements.*;
 import info.u_team.u_team_core.gui.render.ScrollingTextRender;
 import net.minecraft.client.Minecraft;
@@ -123,7 +124,7 @@ public class GuiControls extends FocusableGui {
 		
 		// Volume
 		final int volumeY = width - (70 + (isIngame ? 15 * 2 + 3 : (!isSettings ? 15 + 2 : 1)));
-		addButtonNonDisable(new GuiSliderBetterFont(-1, volumeY, 1, 70, 15, getTranslation(gui_controls_volume) + ": ", "%", 0, 100, settings.getVolume(), false, true, 0.7F, slider -> {
+		addButtonNonDisable(new GuiSliderBetterFont(volumeY, 1, 70, 15, getTranslation(gui_controls_volume) + ": ", "%", 0, 100, settings.getVolume(), false, true, 0.7F, slider -> {
 			settings.setVolume(slider.getValueInt());
 			MusicPlayerManager.getPlayer().setVolume(settings.getVolume());
 		}));

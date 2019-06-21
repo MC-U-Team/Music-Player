@@ -36,10 +36,10 @@ public class GuiMusicSearchListEntryPlaylist extends GuiMusicSearchListEntry {
 	}
 	
 	@Override
-	public void drawEntry(int entryWidth, int entryHeight, int mouseX, int mouseY, boolean mouseInList, float partialTicks) {
-		super.drawEntry(entryWidth, entryHeight, mouseX, mouseY, mouseInList, partialTicks);
-		mc.fontRenderer.drawString(name, getX() + 5, getY() + 15, 0xF4E242);
-		mc.fontRenderer.drawString(duration, getX() + entryWidth - 135, getY() + 5, 0xFFFF00);
+	public void render(int slotIndex, int entryY, int entryX, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float partialTicks) {
+		super.render(slotIndex, entryY, entryX, entryWidth, entryHeight, mouseX, mouseY, hovered, partialTicks);
+		mc.fontRenderer.drawString(name, entryX + 5, entryY + 15, 0xF4E242);
+		mc.fontRenderer.drawString(duration, entryX + entryWidth - 135, entryY + 5, 0xFFFF00);
 	}
 	
 	public IAudioTrackList getTrackList() {

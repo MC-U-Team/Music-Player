@@ -1,6 +1,6 @@
 package info.u_team.music_player.gui.playlist.search;
 
-import info.u_team.u_team_core.gui.elements.GuiScrollableList;
+import info.u_team.to_u_team_core.gui.GuiScrollableList;
 
 public class GuiMusicSearchList extends GuiScrollableList<GuiMusicSearchListEntry> {
 

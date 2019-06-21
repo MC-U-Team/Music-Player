@@ -4,7 +4,7 @@ import java.util.*;
 
 import info.u_team.music_player.musicplayer.MusicPlayerManager;
 import info.u_team.music_player.musicplayer.playlist.*;
-import info.u_team.u_team_core.gui.elements.GuiScrollableList;
+import info.u_team.to_u_team_core.gui.GuiScrollableList;
 
 public class GuiMusicPlaylistList extends GuiScrollableList<GuiMusicPlaylistListEntry> {
 
@@ -61,29 +61,29 @@ public class GuiMusicPlaylistList extends GuiScrollableList<GuiMusicPlaylistList
 		addAllEntries();
 	}
 
-	@Override
-	protected boolean isSelected(int index) {
-		return index == selectedElement;
-	}
+//	@Override
+//	protected boolean isSelected(int index) {
+//		return index == selectedElement;
+//	}
 
 	public void setSelectedEntryWhenMove(int index) {
-		if (index >= 0 || index < getSize()) {
-			super.setSelectedEntry(index);
-			canSelectNext = false;
-		}
+//		if (index >= 0 || index < getSize()) {
+//			super.setSelectedEntry(index);
+//			canSelectNext = false;
+//		}
 	}
 
-	@Override
-	public void setSelectedEntry(int index) {
-		if (canSelectNext) {
-			super.setSelectedEntry(index);
-		} else {
-			canSelectNext = true;
-		}
-	}
+//	@Override
+//	public void setSelectedEntry(int index) {
+//		if (canSelectNext) {
+//			super.setSelectedEntry(index);
+//		} else {
+//			canSelectNext = true;
+//		}
+//	}
 
 	public void tick() {
-		getChildren().forEach(GuiMusicPlaylistListEntry::tick);
+		children().forEach(GuiMusicPlaylistListEntry::tick);
 	}
 
 }

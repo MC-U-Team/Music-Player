@@ -7,6 +7,7 @@ import org.apache.commons.lang3.StringUtils;
 import info.u_team.music_player.gui.controls.GuiControls;
 import info.u_team.music_player.init.MusicPlayerResources;
 import info.u_team.u_team_core.gui.elements.*;
+import info.u_team.u_team_core.gui.render.ScrollingTextRender;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.TextFieldWidget;
@@ -52,11 +53,11 @@ public class GuiMusicPlayer extends Screen {
 	}
 	
 	@Override
-	public void onResize(Minecraft minecraft, int width, int height) {
+	public void resize(Minecraft minecraft, int width, int height) {
 		final String text = namePlaylistField.getText();
-		final RenderScrollingText titleRender = controls.getTitleRender();
-		final RenderScrollingText authorRender = controls.getAuthorRender();
-		this.setWorldAndResolution(minecraft, width, height);
+		final ScrollingTextRender titleRender = controls.getTitleRender();
+		final ScrollingTextRender authorRender = controls.getAuthorRender();
+		this.init(minecraft, width, height);
 		namePlaylistField.setText(text);
 		controls.setTitleRender(titleRender);
 		controls.setAuthorRender(authorRender);
@@ -71,7 +72,7 @@ public class GuiMusicPlayer extends Screen {
 	@Override
 	public void render(int mouseX, int mouseY, float partialTicks) {
 		renderBackground(0);
-		playlistsList.drawScreen(mouseX, mouseY, partialTicks);
+		playlistsList.render(mouseX, mouseY, partialTicks);
 		font.drawString(getTranslation(gui_create_playlist_add_list), 20, 65, 0xFFFFFF);
 		namePlaylistField.render(mouseX, mouseY, partialTicks);
 		controls.drawScreen(mouseX, mouseY, partialTicks);

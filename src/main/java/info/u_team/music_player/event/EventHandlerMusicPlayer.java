@@ -9,9 +9,10 @@ import info.u_team.music_player.lavaplayer.api.queue.ITrackManager;
 import info.u_team.music_player.musicplayer.*;
 import info.u_team.music_player.musicplayer.settings.*;
 import info.u_team.music_player.render.RenderOverlayMusicDisplay;
-import info.u_team.u_team_core.gui.render.RenderScrollingText;
+import info.u_team.u_team_core.gui.render.ScrollingTextRender;
 import net.minecraft.client.*;
-import net.minecraft.client.gui.*;
+import net.minecraft.client.gui.IGuiEventListener;
+import net.minecraft.client.gui.screen.*;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.client.util.InputMappings;
 import net.minecraftforge.client.event.*;
@@ -118,14 +119,14 @@ public class EventHandlerMusicPlayer {
 	
 	// Used to add buttons and gui controls to main ingame gui
 	
-	private RenderScrollingText titleRender, authorRender;
+	private ScrollingTextRender titleRender, authorRender;
 	
 	@SubscribeEvent
 	public void on(GuiScreenEvent.InitGuiEvent.Pre event) {
-		final GuiScreen gui = event.getGui();
-		if (gui instanceof GuiIngameMenu) {
+		final Screen gui = event.getGui();
+		if (gui instanceof IngameMenuScreen) {
 			if (settings.isShowIngameMenueOverlay()) {
-				gui.getChildren().stream() //
+				gui.children().stream() //
 						.filter(element -> element instanceof GuiControls) //
 						.map(element -> ((GuiControls) element)).findAny() //
 						.ifPresent(controls -> {
@@ -138,8 +139,8 @@ public class EventHandlerMusicPlayer {
 	
 	@SubscribeEvent
 	public void on(GuiScreenEvent.InitGuiEvent.Post event) {
-		final GuiScreen gui = event.getGui();
-		if (gui instanceof GuiIngameMenu) {
+		final Screen gui = event.getGui();
+		if (gui instanceof IngameMenuScreen) {
 			if (settings.isShowIngameMenueOverlay()) {
 				final GuiControls controls = new GuiControls(gui, 3, gui.width);
 				if (titleRender != null) {
@@ -151,7 +152,7 @@ public class EventHandlerMusicPlayer {
 					authorRender = null;
 				}
 				@SuppressWarnings("unchecked")
-				List<IGuiEventListener> list = (List<IGuiEventListener>) gui.getChildren();
+				List<IGuiEventListener> list = (List<IGuiEventListener>) gui.children();
 				list.add(controls);
 			}
 		}
@@ -159,10 +160,10 @@ public class EventHandlerMusicPlayer {
 	
 	@SubscribeEvent
 	public void on(GuiScreenEvent.DrawScreenEvent event) {
-		final GuiScreen gui = event.getGui();
-		if (gui instanceof GuiIngameMenu) {
+		final Screen gui = event.getGui();
+		if (gui instanceof IngameMenuScreen) {
 			if (settings.isShowIngameMenueOverlay()) {
-				gui.getChildren().stream() //
+				gui.children().stream() //
 						.filter(element -> element instanceof GuiControls) //
 						.map(element -> ((GuiControls) element)).findAny() //
 						.ifPresent(controls -> controls.drawScreen(event.getMouseX(), event.getMouseY(), event.getRenderPartialTicks()));
@@ -173,10 +174,10 @@ public class EventHandlerMusicPlayer {
 	@SubscribeEvent
 	public void on(ClientTickEvent event) {
 		if (event.phase == Phase.END) {
-			final GuiScreen gui = Minecraft.getInstance().currentScreen;
-			if (gui instanceof GuiIngameMenu) {
+			final Screen gui = Minecraft.getInstance().currentScreen;
+			if (gui instanceof IngameMenuScreen) {
 				if (settings.isShowIngameMenueOverlay()) {
-					gui.getChildren().stream() //
+					gui.children().stream() //
 							.filter(element -> element instanceof GuiControls) //
 							.map(element -> ((GuiControls) element)).findAny() //
 							.ifPresent(GuiControls::tick);

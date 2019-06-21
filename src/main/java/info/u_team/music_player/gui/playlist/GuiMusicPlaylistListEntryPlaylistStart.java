@@ -31,9 +31,9 @@ public class GuiMusicPlaylistListEntryPlaylistStart extends GuiMusicPlaylistList
 	}
 	
 	@Override
-	public void drawEntryExtended(int entryWidth, int entryHeight, int mouseX, int mouseY, boolean mouseInList, float partialTicks) {
-		mc.fontRenderer.drawString(name, getX() + 5, getY() + 15, 0xF4E242);
-		mc.fontRenderer.drawString(duration, getX() + entryWidth - 140, getY() + 15, 0xFFFF00);
+	public void drawEntryExtended(int entryX, int entryY, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean mouseInList, float partialTicks) {
+		mc.fontRenderer.drawString(name, entryX + 5, entryY + 15, 0xF4E242);
+		mc.fontRenderer.drawString(duration, entryX + entryWidth - 140, entryY + 15, 0xFFFF00);
 	}
 	
 	public void addEntry(GuiMusicPlaylistListEntryPlaylistTrack entry) {

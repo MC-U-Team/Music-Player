@@ -6,9 +6,10 @@ import info.u_team.music_player.gui.playlist.search.GuiMusicSearch;
 import info.u_team.music_player.init.MusicPlayerResources;
 import info.u_team.music_player.musicplayer.playlist.Playlist;
 import info.u_team.u_team_core.gui.elements.*;
-import info.u_team.u_team_core.gui.render.RenderScrollingText;
+import info.u_team.u_team_core.gui.render.ScrollingTextRender;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.util.text.StringTextComponent;
 
 public class GuiMusicPlaylist extends Screen {
 	
@@ -21,6 +22,7 @@ public class GuiMusicPlaylist extends Screen {
 	private GuiControls controls;
 	
 	public GuiMusicPlaylist(Playlist playlist) {
+		super(new StringTextComponent("musicplaylist"));
 		this.playlist = playlist;
 		
 		trackList = new GuiMusicPlaylistList(playlist);
@@ -28,11 +30,11 @@ public class GuiMusicPlaylist extends Screen {
 		if (!playlist.isLoaded()) {
 			playlist.load(() -> {
 				if (minecraft.currentScreen == this) { // Check if gui is still open
-					minecraft.addScheduledTask(() -> {
-						if (mc.currentScreen == this) { // Recheck gui because this is async on the main thread.
+					minecraft.execute(() -> {
+						if (minecraft.currentScreen == this) { // Recheck gui because this is async on the main thread.
 							trackList.addAllEntries();
 							if (addTracksButton != null) {
-								addTracksButton.enabled = true;
+								addTracksButton.active = true;
 							}
 						}
 					});
@@ -42,15 +44,15 @@ public class GuiMusicPlaylist extends Screen {
 	}
 	
 	@Override
-	protected void initGui() {
+	protected void init() {
 		final GuiButtonClick backButton = addButton(new GuiButtonClickImage(1, 1, 15, 15, MusicPlayerResources.textureBack));
-		backButton.setClickAction(() -> mc.displayGuiScreen(new GuiMusicPlayer()));
+		backButton.setClickAction(() -> minecraft.displayGuiScreen(new GuiMusicPlayer()));
 		
 		addTracksButton = addButton(new GuiButtonClickImage(width - 35, 20, 22, 22, MusicPlayerResources.textureAdd));
-		addTracksButton.setClickAction(() -> mc.displayGuiScreen(new GuiMusicSearch(playlist)));
+		addTracksButton.setClickAction(() -> minecraft.displayGuiScreen(new GuiMusicSearch(playlist)));
 		
 		if (!playlist.isLoaded()) {
-			addTracksButton.enabled = false;
+			addTracksButton.active = false;
 		}
 		
 		trackList.updateSettings(width - 24, height, 50, height - 10, 12, width - 12);
@@ -59,8 +61,6 @@ public class GuiMusicPlaylist extends Screen {
 		
 		controls = new GuiControls(this, 5, width);
 		children.add(controls);
-		
-		super.initGui();
 	}
 	
 	@Override
@@ -70,18 +70,18 @@ public class GuiMusicPlaylist extends Screen {
 	}
 	
 	@Override
-	public void onResize(Minecraft minecraft, int width, int height) {
-		final RenderScrollingText titleRender = controls.getTitleRender();
-		final RenderScrollingText authorRender = controls.getAuthorRender();
-		this.setWorldAndResolution(minecraft, width, height);
+	public void resize(Minecraft minecraft, int width, int height) {
+		final ScrollingTextRender titleRender = controls.getTitleRender();
+		final ScrollingTextRender authorRender = controls.getAuthorRender();
+		this.init(minecraft, width, height);
 		controls.setTitleRender(titleRender);
 		controls.setAuthorRender(authorRender);
 	}
 	
 	@Override
 	public void render(int mouseX, int mouseY, float partialTicks) {
-		drawBackground(0);
-		trackList.drawScreen(mouseX, mouseY, partialTicks);
+		renderDirtBackground(0);
+		trackList.render(mouseX, mouseY, partialTicks);
 		controls.drawScreen(mouseX, mouseY, partialTicks);
 		super.render(mouseX, mouseY, partialTicks);
 	}

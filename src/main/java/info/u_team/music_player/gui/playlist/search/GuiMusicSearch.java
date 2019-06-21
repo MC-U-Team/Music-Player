@@ -17,15 +17,16 @@ import info.u_team.music_player.musicplayer.MusicPlayerManager;
 import info.u_team.music_player.musicplayer.playlist.Playlist;
 import info.u_team.u_team_core.gui.elements.*;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.*;
-import net.minecraft.util.text.TextFormatting;
+import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.gui.widget.TextFieldWidget;
+import net.minecraft.util.text.*;
 
-public class GuiMusicSearch extends GuiScreen {
+public class GuiMusicSearch extends Screen {
 	
 	private final Playlist playlist;
 	
-	private GuiTextField urlField;
-	private GuiTextField searchField;
+	private TextFieldWidget urlField;
+	private TextFieldWidget searchField;
 	
 	private final GuiMusicSearchList searchList;
 	
@@ -36,17 +37,18 @@ public class GuiMusicSearch extends GuiScreen {
 	private int maxTicksInformation;
 	
 	public GuiMusicSearch(Playlist playlist) {
+		super(new StringTextComponent("musicsearch"));
 		this.playlist = playlist;
 		searchList = new GuiMusicSearchList();
 		searchProvider = SearchProvider.YOUTUBE;
 	}
 	
 	@Override
-	protected void initGui() {
+	protected void init() {
 		final GuiButtonClick backButton = addButton(new GuiButtonClickImage(1, 1, 15, 15, MusicPlayerResources.textureBack));
-		backButton.setClickAction(() -> mc.displayGuiScreen(new GuiMusicPlaylist(playlist)));
+		backButton.setClickAction(() -> minecraft.displayGuiScreen(new GuiMusicPlaylist(playlist)));
 		
-		urlField = new GuiTextField(-1, mc.fontRenderer, 10, 35, width / 2 - 10, 20) {
+		urlField = new TextFieldWidget(font, 10, 35, width / 2 - 10, 20, null) {
 			
 			@Override
 			public boolean keyPressed(int key, int p_keyPressed_2_, int p_keyPressed_3_) {
@@ -85,7 +87,7 @@ public class GuiMusicSearch extends GuiScreen {
 			searchButton.setResource(searchProvider.getLogo());
 		});
 		
-		searchField = new GuiTextField(-1, mc.fontRenderer, 40, 78, width - 51, 20) {
+		searchField = new  TextFieldWidget(font, 40, 78, width - 51, 20, null) {
 			
 			@Override
 			public boolean keyPressed(int key, int p_keyPressed_2_, int p_keyPressed_3_) {
@@ -94,19 +96,19 @@ public class GuiMusicSearch extends GuiScreen {
 			}
 		};
 		searchField.setMaxStringLength(1000);
-		searchField.setFocused(true);
+		searchField.setFocused2(true);
 		setFocused(searchField);
 		children.add(searchField);
 		
 		final GuiButtonClick addAllButton = addButton(new GuiButtonClick(width - 110, 105, 100, 20, getTranslation(gui_search_add_all)));
 		addAllButton.setClickAction(() -> {
-			List<GuiMusicSearchListEntryPlaylist> list = searchList.getChildren().stream().filter(entry -> entry instanceof GuiMusicSearchListEntryPlaylist).map(entry -> (GuiMusicSearchListEntryPlaylist) entry).collect(Collectors.toList());
+			List<GuiMusicSearchListEntryPlaylist> list = searchList.children().stream().filter(entry -> entry instanceof GuiMusicSearchListEntryPlaylist).map(entry -> (GuiMusicSearchListEntryPlaylist) entry).collect(Collectors.toList());
 			if (list.size() > 0) {
 				list.forEach(entry -> {
 					playlist.add(entry.getTrackList());
 				});
 			} else {
-				searchList.getChildren().stream().filter(entry -> entry instanceof GuiMusicSearchListEntryMusicTrack).map(entry -> (GuiMusicSearchListEntryMusicTrack) entry).filter(entry -> !entry.isPlaylistEntry()).forEach(entry -> {
+				searchList.children().stream().filter(entry -> entry instanceof GuiMusicSearchListEntryMusicTrack).map(entry -> (GuiMusicSearchListEntryMusicTrack) entry).filter(entry -> !entry.isPlaylistEntry()).forEach(entry -> {
 					playlist.add(entry.getTrack());
 				});
 			}
@@ -115,27 +117,26 @@ public class GuiMusicSearch extends GuiScreen {
 		
 		searchList.updateSettings(width - 24, height, 130, height - 10, 12, width - 12);
 		children.add(searchList);
-		super.initGui();
 	}
 	
 	@Override
-	public void onResize(Minecraft minecraft, int width, int height) {
+	public void resize(Minecraft minecraft, int width, int height) {
 		final String urlFieldText = urlField.getText();
 		final boolean urlFieldFocus = urlField.isFocused() && getFocused() == urlField;
 		
 		final String searchFieldText = searchField.getText();
 		final boolean searchFieldFocus = searchField.isFocused() && getFocused() == searchField;
 		
-		setWorldAndResolution(minecraft, width, height);
+		init(minecraft, width, height);
 		
 		urlField.setText(urlFieldText);
-		urlField.setFocused(urlFieldFocus);
+		urlField.setFocused2(urlFieldFocus);
 		if (urlFieldFocus) {
 			setFocused(urlField);
 		}
 		
 		searchField.setText(searchFieldText);
-		searchField.setFocused(searchFieldFocus);
+		searchField.setFocused2(searchFieldFocus);
 		if (searchFieldFocus) {
 			setFocused(searchField);
 		}
@@ -151,20 +152,20 @@ public class GuiMusicSearch extends GuiScreen {
 	
 	@Override
 	public void render(int mouseX, int mouseY, float partialTicks) {
-		drawBackground(0);
-		searchList.drawScreen(mouseX, mouseY, partialTicks);
+		renderDirtBackground(0);
+		searchList.render(mouseX, mouseY, partialTicks);
 		
-		drawCenteredString(mc.fontRenderer, getTranslation(gui_search_header), width / 2, 5, 0xFFFFFF);
-		drawString(mc.fontRenderer, getTranslation(gui_search_search_uri), 10, 20, 0xFFFFFF);
-		drawString(mc.fontRenderer, getTranslation(gui_search_search_file), 10 + width / 2, 20, 0xFFFFFF);
-		drawString(mc.fontRenderer, getTranslation(gui_search_search_search), 10, 63, 0xFFFFFF);
+		drawCenteredString(minecraft.fontRenderer, getTranslation(gui_search_header), width / 2, 5, 0xFFFFFF);
+		drawString(minecraft.fontRenderer, getTranslation(gui_search_search_uri), 10, 20, 0xFFFFFF);
+		drawString(minecraft.fontRenderer, getTranslation(gui_search_search_file), 10 + width / 2, 20, 0xFFFFFF);
+		drawString(minecraft.fontRenderer, getTranslation(gui_search_search_search), 10, 63, 0xFFFFFF);
 		
 		if (information != null && informationTicks <= maxTicksInformation) {
-			drawString(mc.fontRenderer, information, 15, 110, 0xFFFFFF);
+			drawString(minecraft.fontRenderer, information, 15, 110, 0xFFFFFF);
 		}
 		
-		urlField.drawTextField(mouseX, mouseY, partialTicks);
-		searchField.drawTextField(mouseX, mouseY, partialTicks);
+		urlField.render(mouseX, mouseY, partialTicks);
+		searchField.render(mouseX, mouseY, partialTicks);
 		super.render(mouseX, mouseY, partialTicks);
 	}
 	
@@ -174,7 +175,7 @@ public class GuiMusicSearch extends GuiScreen {
 		informationTicks = 0;
 	}
 	
-	private void keyFromTextField(GuiTextField field, String text, int key) {
+	private void keyFromTextField(TextFieldWidget field, String text, int key) {
 		if (field.getVisible() && field.isFocused() && (key == GLFW.GLFW_KEY_ENTER || key == GLFW.GLFW_KEY_KP_ENTER)) {
 			searchList.clear();
 			addTrack(text);
@@ -184,7 +185,7 @@ public class GuiMusicSearch extends GuiScreen {
 	
 	private void addTrack(String uri) {
 		MusicPlayerManager.getPlayer().getTrackSearch().getTracks(uri, result -> {
-			mc.addScheduledTask(() -> {
+			minecraft.execute(() -> {
 				if (result.hasError()) {
 					setInformation(TextFormatting.RED + result.getErrorMessage(), 150);
 				} else if (result.isList()) {
