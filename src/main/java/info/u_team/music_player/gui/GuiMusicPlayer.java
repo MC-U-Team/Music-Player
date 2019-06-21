@@ -7,24 +7,29 @@ import org.apache.commons.lang3.StringUtils;
 import info.u_team.music_player.gui.controls.GuiControls;
 import info.u_team.music_player.init.MusicPlayerResources;
 import info.u_team.u_team_core.gui.elements.*;
-import info.u_team.u_team_core.gui.render.RenderScrollingText;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.*;
+import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.gui.widget.TextFieldWidget;
+import net.minecraft.util.text.StringTextComponent;
 
-public class GuiMusicPlayer extends GuiScreen {
+public class GuiMusicPlayer extends Screen {
 	
-	private GuiTextField namePlaylistField;
+	private TextFieldWidget namePlaylistField;
 	
 	private GuiMusicPlayerList playlistsList;
 	
 	private GuiControls controls;
 	
+	public GuiMusicPlayer() {
+		super(new StringTextComponent("musicplayer"));
+	}
+	
 	@Override
-	protected void initGui() {
+	protected void init() {
 		final GuiButtonClick backButton = addButton(new GuiButtonClickImage(1, 1, 15, 15, MusicPlayerResources.textureBack));
-		backButton.setClickAction(() -> mc.displayGuiScreen(null));
+		backButton.setClickAction(() -> minecraft.displayGuiScreen(null));
 		
-		namePlaylistField = new GuiTextField(-1, mc.fontRenderer, 100, 60, width - 150, 20);
+		namePlaylistField = new TextFieldWidget(font, 100, 60, width - 150, 20, null);
 		namePlaylistField.setMaxStringLength(500);
 		children.add(namePlaylistField);
 		
@@ -44,7 +49,6 @@ public class GuiMusicPlayer extends GuiScreen {
 		
 		controls = new GuiControls(this, 5, width);
 		children.add(controls);
-		super.initGui();
 	}
 	
 	@Override
@@ -66,10 +70,10 @@ public class GuiMusicPlayer extends GuiScreen {
 	
 	@Override
 	public void render(int mouseX, int mouseY, float partialTicks) {
-		drawBackground(0);
+		renderBackground(0);
 		playlistsList.drawScreen(mouseX, mouseY, partialTicks);
-		mc.fontRenderer.drawString(getTranslation(gui_create_playlist_add_list), 20, 65, 0xFFFFFF);
-		namePlaylistField.drawTextField(mouseX, mouseY, partialTicks);
+		font.drawString(getTranslation(gui_create_playlist_add_list), 20, 65, 0xFFFFFF);
+		namePlaylistField.render(mouseX, mouseY, partialTicks);
 		controls.drawScreen(mouseX, mouseY, partialTicks);
 		super.render(mouseX, mouseY, partialTicks);
 	}

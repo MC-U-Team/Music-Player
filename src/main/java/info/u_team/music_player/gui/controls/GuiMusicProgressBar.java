@@ -4,22 +4,22 @@ import info.u_team.music_player.gui.util.GuiTrackUtils;
 import info.u_team.music_player.lavaplayer.api.audio.IAudioTrack;
 import info.u_team.music_player.lavaplayer.api.queue.ITrackManager;
 import info.u_team.u_team_core.gui.elements.GuiProgressBar;
-import info.u_team.u_team_core.gui.render.RenderScalingText;
+import info.u_team.u_team_core.gui.render.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 
 public class GuiMusicProgressBar extends GuiProgressBar {
 	
-	private final RenderScalingText positionRender;
-	private final RenderScalingText durationRender;
+	private final ScalingTextRender positionRender;
+	private final ScalingTextRender durationRender;
 	
 	public GuiMusicProgressBar(ITrackManager manager, int x, int y, int width, int height, float scale) {
 		super(x, y, width, height, 0xFF555555, 0xFF3e9100, () -> getProgress(manager), (value) -> updateProgress(manager, value));
 		final FontRenderer fontRender = Minecraft.getInstance().fontRenderer;
-		positionRender = new RenderScalingText(() -> fontRender, () -> GuiTrackUtils.getFormattedPosition(manager.getCurrentTrack()));
+		positionRender = new ScalingTextRender(() -> fontRender, () -> GuiTrackUtils.getFormattedPosition(manager.getCurrentTrack()));
 		positionRender.setScale(scale);
 		positionRender.setColor(0xFFFF00);
-		durationRender = new RenderScalingText(() -> fontRender, () -> GuiTrackUtils.getFormattedDuration(manager.getCurrentTrack()));
+		durationRender = new ScalingTextRender(() -> fontRender, () -> GuiTrackUtils.getFormattedDuration(manager.getCurrentTrack()));
 		durationRender.setScale(scale);
 		durationRender.setColor(0xFFFF00);
 	}

@@ -2,7 +2,7 @@ package info.u_team.music_player.gui;
 
 import info.u_team.music_player.musicplayer.MusicPlayerManager;
 import info.u_team.music_player.musicplayer.playlist.*;
-import info.u_team.u_team_core.gui.elements.GuiScrollableList;
+import info.u_team.to_u_team_core.gui.GuiScrollableList;
 
 public class GuiMusicPlayerList extends GuiScrollableList<GuiMusicPlayerListEntry> {
 
@@ -29,10 +29,4 @@ public class GuiMusicPlayerList extends GuiScrollableList<GuiMusicPlayerListEntr
 	public Playlists getPlaylists() {
 		return playlists;
 	}
-
-	@Override
-	protected boolean isSelected(int index) {
-		return index == selectedElement;
-	}
-
 }

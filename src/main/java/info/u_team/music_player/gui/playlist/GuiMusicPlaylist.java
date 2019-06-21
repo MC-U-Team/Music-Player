@@ -8,9 +8,9 @@ import info.u_team.music_player.musicplayer.playlist.Playlist;
 import info.u_team.u_team_core.gui.elements.*;
 import info.u_team.u_team_core.gui.render.RenderScrollingText;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.gui.screen.Screen;
 
-public class GuiMusicPlaylist extends GuiScreen {
+public class GuiMusicPlaylist extends Screen {
 	
 	private final Playlist playlist;
 	
@@ -27,8 +27,8 @@ public class GuiMusicPlaylist extends GuiScreen {
 		
 		if (!playlist.isLoaded()) {
 			playlist.load(() -> {
-				if (mc.currentScreen == this) { // Check if gui is still open
-					mc.addScheduledTask(() -> {
+				if (minecraft.currentScreen == this) { // Check if gui is still open
+					minecraft.addScheduledTask(() -> {
 						if (mc.currentScreen == this) { // Recheck gui because this is async on the main thread.
 							trackList.addAllEntries();
 							if (addTracksButton != null) {

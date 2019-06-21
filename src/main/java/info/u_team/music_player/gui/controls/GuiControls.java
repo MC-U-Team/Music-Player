@@ -12,19 +12,21 @@ import info.u_team.music_player.lavaplayer.api.queue.ITrackManager;
 import info.u_team.music_player.musicplayer.*;
 import info.u_team.music_player.musicplayer.settings.*;
 import info.u_team.u_team_core.gui.elements.*;
-import info.u_team.u_team_core.gui.render.RenderScrollingText;
+import info.u_team.u_team_core.gui.render.ScrollingTextRender;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.*;
+import net.minecraft.client.gui.screen.*;
+import net.minecraft.client.gui.widget.Widget;
 
-public class GuiControls extends GuiEventHandler {
+public class GuiControls extends FocusableGui {
 	
 	private final int middleX;
 	private final int y, width;
 	private final boolean small;
 	private final int buttonSize, halfButtonSize;
 	
-	private final List<GuiButton> buttons;
-	private final List<GuiButton> disableButtons;
+	private final List<Widget> buttons;
+	private final List<Widget> disableButtons;
 	private final List<IGuiEventListener> children;
 	
 	private final ITrackManager manager;
@@ -33,10 +35,10 @@ public class GuiControls extends GuiEventHandler {
 	
 	private final GuiMusicProgressBar songProgress;
 	
-	private RenderScrollingText titleRender;
-	private RenderScrollingText authorRender;
+	private ScrollingTextRender titleRender;
+	private ScrollingTextRender authorRender;
 	
-	public GuiControls(GuiScreen gui, int y, int width) {
+	public GuiControls(Screen gui, int y, int width) {
 		this.y = y;
 		this.width = width;
 		middleX = width / 2;
@@ -49,7 +51,7 @@ public class GuiControls extends GuiEventHandler {
 		final Minecraft mc = Minecraft.getInstance();
 		
 		final boolean isSettings = gui instanceof GuiMusicPlayerSettings;
-		final boolean isIngame = gui instanceof GuiIngameMenu;
+		final boolean isIngame = gui instanceof IngameMenuScreen;
 		
 		small = isIngame;
 		
@@ -128,19 +130,19 @@ public class GuiControls extends GuiEventHandler {
 		
 		// Render playing track
 		// Title and author
-		titleRender = new RenderScrollingText(() -> mc.fontRenderer, () -> GuiTrackUtils.getValueOfPlayingTrack(track -> track.getInfo().getFixedTitle()));
+		titleRender = new ScrollingTextRender(() -> mc.fontRenderer, () -> GuiTrackUtils.getValueOfPlayingTrack(track -> track.getInfo().getFixedTitle()));
 		titleRender.setStepSize(0.5F);
 		titleRender.setColor(0xFFFF00);
 		titleRender.setSpeedTime(35);
 		
-		authorRender = new RenderScrollingText(() -> mc.fontRenderer, () -> GuiTrackUtils.getValueOfPlayingTrack(track -> track.getInfo().getFixedAuthor()));
+		authorRender = new ScrollingTextRender(() -> mc.fontRenderer, () -> GuiTrackUtils.getValueOfPlayingTrack(track -> track.getInfo().getFixedAuthor()));
 		authorRender.setStepSize(0.5F);
 		authorRender.setColor(0xFFFF00);
 		authorRender.setScale(0.75F);
 		authorRender.setSpeedTime(35);
 		
 		// Disable all buttons first
-		disableButtons.forEach(button -> button.enabled = false);
+		disableButtons.forEach(button -> button.active = false);
 		
 		// Add all buttons to children
 		buttons.forEach(children::add);
@@ -148,15 +150,15 @@ public class GuiControls extends GuiEventHandler {
 	
 	public void tick() {
 		if (manager.getCurrentTrack() == null) {
-			disableButtons.forEach(button -> button.enabled = false);
+			disableButtons.forEach(button -> button.active = false);
 		} else {
-			disableButtons.forEach(button -> button.enabled = true);
+			disableButtons.forEach(button -> button.active = true);
 		}
 		playButton.toggle(!manager.isPaused());
 	}
 	
 	@Override
-	protected List<? extends IGuiEventListener> getChildren() {
+	public List<? extends IGuiEventListener> children() {
 		return children;
 	}
 	
@@ -175,13 +177,13 @@ public class GuiControls extends GuiEventHandler {
 		authorRender.draw(small ? 10 : 25, textRenderY + 10);
 	}
 	
-	private <B extends GuiButton> B addButton(B button) {
+	private <B extends Widget> B addButton(B button) {
 		buttons.add(button);
 		disableButtons.add(button);
 		return button;
 	}
 	
-	private <B extends GuiButton> B addButtonNonDisable(B button) {
+	private <B extends Widget> B addButtonNonDisable(B button) {
 		buttons.add(button);
 		return button;
 	}
@@ -194,19 +196,19 @@ public class GuiControls extends GuiEventHandler {
 		return width;
 	}
 	
-	public RenderScrollingText getTitleRender() {
+	public ScrollingTextRender getTitleRender() {
 		return titleRender;
 	}
 	
-	public void setTitleRender(RenderScrollingText titleRender) {
+	public void setTitleRender(ScrollingTextRender titleRender) {
 		this.titleRender = titleRender;
 	}
 	
-	public RenderScrollingText getAuthorRender() {
+	public ScrollingTextRender getAuthorRender() {
 		return authorRender;
 	}
 	
-	public void setAuthorRender(RenderScrollingText authorRender) {
+	public void setAuthorRender(ScrollingTextRender authorRender) {
 		this.authorRender = authorRender;
 	}
 }

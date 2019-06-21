@@ -10,6 +10,7 @@ import info.u_team.music_player.lavaplayer.api.audio.IAudioTrack;
 import info.u_team.music_player.lavaplayer.api.queue.ITrackManager;
 import info.u_team.music_player.musicplayer.MusicPlayerManager;
 import info.u_team.music_player.musicplayer.playlist.*;
+import info.u_team.to_u_team_core.gui.GuiScrollableListEntry;
 import info.u_team.u_team_core.gui.elements.*;
 
 class GuiMusicPlayerListEntry extends GuiScrollableListEntry<GuiMusicPlayerListEntry> {
@@ -27,14 +28,14 @@ class GuiMusicPlayerListEntry extends GuiScrollableListEntry<GuiMusicPlayerListE
 		
 		playPlaylistButton = addButton(new GuiButtonClickImageToggle(0, 0, 20, 20, MusicPlayerResources.texturePlay, MusicPlayerResources.textureStop));
 		playPlaylistButton.toggle(playlist.equals(playlists.getPlaying()));
-		playPlaylistButton.enabled = !playlists.isPlayingLock();
+		playPlaylistButton.active = !playlists.isPlayingLock();
 		
 		playPlaylistButton.setToggleClickAction((play) -> {
 			if (playlists.isPlayingLock()) {
 				return;
 			}
 			playlists.setPlaying(null);
-			gui.getChildren().stream().filter(entry -> entry != this).forEach(entry -> entry.playPlaylistButton.toggle(false)); // Reset all playlist buttons except this one
+			gui.children().stream().filter(entry -> entry != this).forEach(entry -> entry.playPlaylistButton.toggle(false)); // Reset all playlist buttons except this one
 			
 			final Runnable runnable = () -> {
 				final ITrackManager manager = MusicPlayerManager.getPlayer().getTrackManager();
@@ -64,14 +65,14 @@ class GuiMusicPlayerListEntry extends GuiScrollableListEntry<GuiMusicPlayerListE
 				if (mc.currentScreen instanceof GuiMusicPlayer) {
 					final GuiMusicPlayer musicplayergui = (GuiMusicPlayer) mc.currentScreen;
 					final GuiMusicPlayerList newGui = musicplayergui.getPlaylistsList();
-					newGui.getChildren().forEach(entry -> entry.playPlaylistButton.enabled = true);
+					newGui.children().forEach(entry -> entry.playPlaylistButton.active = true);
 				} else if (mc.currentScreen instanceof GuiMusicPlaylist) {
 					final GuiMusicPlaylist musicplaylistgui = (GuiMusicPlaylist) mc.currentScreen;
 					musicplaylistgui.getTrackList().updateAllEntries();
 				}
 			};
 			
-			gui.getChildren().forEach(entry -> entry.playPlaylistButton.enabled = false);
+			gui.children().forEach(entry -> entry.playPlaylistButton.active = false);
 			playlists.setPlayingLock();
 			
 			if (!playlist.isLoaded()) {
