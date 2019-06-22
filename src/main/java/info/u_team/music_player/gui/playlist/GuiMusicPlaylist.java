@@ -29,9 +29,12 @@ public class GuiMusicPlaylist extends Screen {
 		
 		if (!playlist.isLoaded()) {
 			playlist.load(() -> {
+				System.out.println("LOAD: " + Thread.currentThread());
 				if (minecraft.currentScreen == this) { // Check if gui is still open
 					minecraft.execute(() -> {
+						System.out.println("EXEC: " + Thread.currentThread());
 						if (minecraft.currentScreen == this) { // Recheck gui because this is async on the main thread.
+							System.out.println("ADD ALL ENTRIES");
 							trackList.addAllEntries();
 							if (addTracksButton != null) {
 								addTracksButton.active = true;

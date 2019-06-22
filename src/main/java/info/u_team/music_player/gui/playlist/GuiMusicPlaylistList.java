@@ -12,12 +12,11 @@ public class GuiMusicPlaylistList extends ScrollableList<GuiMusicPlaylistListEnt
 	
 	private boolean tracksLoaded;
 	
-	private boolean canSelectNext;
+	private int selectIndex;
 	
 	public GuiMusicPlaylistList(Playlist playlist) {
 		super(0, 0, 0, 0, 0, 0, 40, 20, 5);
 		this.playlist = playlist;
-		canSelectNext = true;
 		addEntry(new GuiMusicPlaylistListEntryLoading());
 	}
 	
@@ -61,26 +60,25 @@ public class GuiMusicPlaylistList extends ScrollableList<GuiMusicPlaylistListEnt
 		addAllEntries();
 	}
 	
-	// @Override
-	// protected boolean isSelected(int index) {
-	// return index == selectedElement;
-	// }
-	
-	public void setSelectedEntryWhenMove(int index) {
-		// if (index >= 0 || index < getSize()) {
-		// super.setSelectedEntry(index);
-		// canSelectNext = false;
-		// }
+	public void setSelectedEntryWhenMove(GuiMusicPlaylistListEntry entry, int indexOffset) {
+		final int index = children().lastIndexOf(entry) + indexOffset;
+		if (index >= 0 && index < children().size()) {
+			selectIndex = index;
+		}
 	}
 	
-	// @Override
-	// public void setSelectedEntry(int index) {
-	// if (canSelectNext) {
-	// super.setSelectedEntry(index);
-	// } else {
-	// canSelectNext = true;
-	// }
-	// }
+	@Override
+	protected boolean isSelectedItem(int index) {
+		return index == selectIndex;
+	}
+	
+	@Override
+	public void setSelected(GuiMusicPlaylistListEntry entry) {
+		if (entry != null) {
+			selectIndex = children().indexOf(entry);
+		}
+		super.setSelected(entry);
+	}
 	
 	public void tick() {
 		children().forEach(GuiMusicPlaylistListEntry::tick);

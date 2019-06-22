@@ -149,6 +149,11 @@ public class GuiControls extends FocusableGui {
 		buttons.forEach(children::add);
 	}
 	
+	@Override
+	public boolean isMouseOver(double p_isMouseOver_1_, double p_isMouseOver_3_) {
+		return true; // Return always true here to mouseRelease is always called to our entry for gui slider
+	}
+	
 	public void tick() {
 		if (manager.getCurrentTrack() == null) {
 			disableButtons.forEach(button -> button.active = false);

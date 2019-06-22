@@ -28,12 +28,13 @@ abstract class GuiMusicPlaylistListEntryFunctions extends GuiMusicPlaylistListEn
 		});
 		upButton.setPressable(() -> {
 			playlist.move(uri, 1);
-//			guilist.setSelectedEntryWhenMove(index - 1);
+			
+			guilist.setSelectedEntryWhenMove(this, -1);
 			guilist.updateAllEntries();
 		});
 		downButton.setPressable(() -> {
 			playlist.move(uri, -1);
-//			guilist.setSelectedEntryWhenMove(index + 1);
+			guilist.setSelectedEntryWhenMove(this, 1);
 			guilist.updateAllEntries();
 		});
 	}
