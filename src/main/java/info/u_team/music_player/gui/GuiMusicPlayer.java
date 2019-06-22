@@ -29,7 +29,7 @@ public class GuiMusicPlayer extends Screen {
 	protected void init() {
 		addButton(new ImageButton(1, 1, 15, 15, MusicPlayerResources.textureBack, button -> minecraft.displayGuiScreen(null)));
 		
-		namePlaylistField = new TextFieldWidget(font, 100, 60, width - 150, 20, null);
+		namePlaylistField = new TextFieldWidget(font, 100, 60, width - 150, 20, "");
 		namePlaylistField.setMaxStringLength(500);
 		children.add(namePlaylistField);
 		

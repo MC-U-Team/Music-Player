@@ -1,11 +1,12 @@
 package info.u_team.music_player.gui.playlist.search;
 
+import info.u_team.music_player.gui.BetterScrollableListEntry;
 import info.u_team.music_player.gui.util.GuiTrackUtils;
 import info.u_team.music_player.init.MusicPlayerResources;
 import info.u_team.music_player.lavaplayer.api.audio.IAudioTrack;
-import info.u_team.u_team_core.gui.elements.*;
+import info.u_team.u_team_core.gui.elements.ImageButton;
 
-abstract class GuiMusicSearchListEntry extends ScrollableListEntry<GuiMusicSearchListEntry> {
+abstract class GuiMusicSearchListEntry extends BetterScrollableListEntry<GuiMusicSearchListEntry> {
 	
 	protected final ImageButton addTrackButton;
 	

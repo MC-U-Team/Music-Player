@@ -12,7 +12,7 @@ import info.u_team.music_player.musicplayer.MusicPlayerManager;
 import info.u_team.music_player.musicplayer.playlist.*;
 import info.u_team.u_team_core.gui.elements.*;
 
-class GuiMusicPlayerListEntry extends ScrollableListEntry<GuiMusicPlayerListEntry> {
+class GuiMusicPlayerListEntry extends BetterScrollableListEntry<GuiMusicPlayerListEntry> {
 	
 	private final Playlists playlists;
 	private final Playlist playlist;

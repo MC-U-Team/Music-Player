@@ -48,7 +48,7 @@ public class GuiMusicSearch extends Screen {
 		final ImageButton backButton = addButton(new ImageButton(1, 1, 15, 15, MusicPlayerResources.textureBack));
 		backButton.setPressable(() -> minecraft.displayGuiScreen(new GuiMusicPlaylist(playlist)));
 		
-		urlField = new TextFieldWidget(font, 10, 35, width / 2 - 10, 20, null) {
+		urlField = new TextFieldWidget(font, 10, 35, width / 2 - 10, 20, "") {
 			
 			@Override
 			public boolean keyPressed(int key, int p_keyPressed_2_, int p_keyPressed_3_) {
@@ -87,7 +87,7 @@ public class GuiMusicSearch extends Screen {
 			searchButton.setResource(searchProvider.getLogo());
 		});
 		
-		searchField = new TextFieldWidget(font, 40, 78, width - 51, 20, null) {
+		searchField = new TextFieldWidget(font, 40, 78, width - 51, 20, "") {
 			
 			@Override
 			public boolean keyPressed(int key, int p_keyPressed_2_, int p_keyPressed_3_) {
