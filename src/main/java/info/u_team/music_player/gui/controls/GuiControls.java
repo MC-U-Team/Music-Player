@@ -32,7 +32,7 @@ public class GuiControls extends FocusableGui {
 	
 	private final ITrackManager manager;
 	
-	private final GuiButtonClickImageToggle playButton;
+	private final ToggleImageButton playButton;
 	
 	private final GuiMusicProgressBar songProgress;
 	
@@ -60,48 +60,49 @@ public class GuiControls extends FocusableGui {
 		halfButtonSize = buttonSize / 2;
 		
 		// Play button
-		playButton = addButton(new GuiButtonClickImageToggle(middleX - halfButtonSize, y, buttonSize, buttonSize, MusicPlayerResources.texturePlay, MusicPlayerResources.texturePause));
+		playButton = addButton(new ToggleImageButton(middleX - halfButtonSize, y, buttonSize, buttonSize, MusicPlayerResources.texturePlay, MusicPlayerResources.texturePause));
 		playButton.toggle(!manager.isPaused());
-		playButton.setToggleClickAction(play -> {
+		playButton.setPressable(() -> {
+			final boolean play = playButton.isToggled();
 			manager.setPaused(!play);
 		});
 		
 		// Skip forward
-		final GuiButtonClickImage skipForwardButton = addButton(new GuiButtonClickImage(middleX + halfButtonSize + 5, y, buttonSize, buttonSize, MusicPlayerResources.textureSkipForward));
-		skipForwardButton.setClickAction(() -> {
+		final ImageButton skipForwardButton = addButton(new ImageButton(middleX + halfButtonSize + 5, y, buttonSize, buttonSize, MusicPlayerResources.textureSkipForward));
+		skipForwardButton.setPressable(() -> {
 			MusicPlayerUtils.skipForward();
 		});
 		
 		// Skip back
-		final GuiButtonClickImage skipBackButton = addButton(new GuiButtonClickImage(middleX - (buttonSize + halfButtonSize + 5), y, buttonSize, buttonSize, MusicPlayerResources.textureSkipBack));
-		skipBackButton.setClickAction(() -> {
+		final ImageButton skipBackButton = addButton(new ImageButton(middleX - (buttonSize + halfButtonSize + 5), y, buttonSize, buttonSize, MusicPlayerResources.textureSkipBack));
+		skipBackButton.setPressable(() -> {
 			MusicPlayerUtils.skipBack();
 		});
 		
 		final Settings settings = MusicPlayerManager.getSettingsManager().getSettings();
 		
 		// Shuffle button
-		final GuiButtonClickImageActivated shuffleButton = addButton(new GuiButtonClickImageActivated(middleX - (2 * buttonSize + halfButtonSize + 10), y, buttonSize, buttonSize, MusicPlayerResources.textureShuffle, 0x80FF00FF));
+		final ActiveImageButton shuffleButton = addButton(new ActiveImageButton(middleX - (2 * buttonSize + halfButtonSize + 10), y, buttonSize, buttonSize, MusicPlayerResources.textureShuffle, 0x80FF00FF));
 		
 		final Runnable updateShuffleButton = () -> {
 			shuffleButton.setActive(settings.isShuffle());
 		};
 		
 		updateShuffleButton.run();
-		shuffleButton.setClickAction(() -> {
+		shuffleButton.setPressable(() -> {
 			settings.setShuffle(!settings.isShuffle());
 			updateShuffleButton.run();
 		});
 		
 		// Repeat button
-		final GuiButtonClickImageActivated repeatButton = addButton(new GuiButtonClickImageActivated(middleX + +buttonSize + halfButtonSize + 10, y, buttonSize, buttonSize, MusicPlayerResources.textureRepeat, 0x80FF00FF));
+		final ActiveImageButton repeatButton = addButton(new ActiveImageButton(middleX + +buttonSize + halfButtonSize + 10, y, buttonSize, buttonSize, MusicPlayerResources.textureRepeat, 0x80FF00FF));
 		final Runnable updateRepeatButton = () -> {
 			repeatButton.setActive(settings.getRepeat().isActive());
 			repeatButton.setResource(settings.getRepeat().getResource());
 		};
 		
 		updateRepeatButton.run();
-		repeatButton.setClickAction(() -> {
+		repeatButton.setPressable(() -> {
 			settings.setRepeat(Repeat.forwardCycle(settings.getRepeat()));
 			updateRepeatButton.run();
 		});
@@ -112,14 +113,14 @@ public class GuiControls extends FocusableGui {
 		
 		// Open Settings
 		if (!isSettings) {
-			final GuiButtonClickImage settingsButton = addButtonNonDisable(new GuiButtonClickImage(width - (15 + 1), 1, 15, 15, MusicPlayerResources.textureSettings));
-			settingsButton.setClickAction(() -> mc.displayGuiScreen(new GuiMusicPlayerSettings(gui)));
+			final ImageButton settingsButton = addButtonNonDisable(new ImageButton(width - (15 + 1), 1, 15, 15, MusicPlayerResources.textureSettings));
+			settingsButton.setPressable(() -> mc.displayGuiScreen(new GuiMusicPlayerSettings(gui)));
 		}
 		
 		// Open musicplayer gui
 		if (isIngame) {
-			final GuiButtonClickImage guiButton = addButtonNonDisable(new GuiButtonClickImage(width - (15 * 2 + 2), 1, 15, 15, MusicPlayerResources.textureOpen));
-			guiButton.setClickAction(() -> mc.displayGuiScreen(new GuiMusicPlayer()));
+			final ImageButton guiButton = addButtonNonDisable(new ImageButton(width - (15 * 2 + 2), 1, 15, 15, MusicPlayerResources.textureOpen));
+			guiButton.setPressable(() -> mc.displayGuiScreen(new GuiMusicPlayer()));
 		}
 		
 		// Volume

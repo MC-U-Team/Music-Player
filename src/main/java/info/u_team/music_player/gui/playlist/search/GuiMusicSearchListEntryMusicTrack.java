@@ -15,7 +15,7 @@ public class GuiMusicSearchListEntryMusicTrack extends GuiMusicSearchListEntry {
 	public GuiMusicSearchListEntryMusicTrack(GuiMusicSearch gui, Playlist playlist, IAudioTrack track, boolean playlistEntry) {
 		this.track = track;
 		this.playlistEntry = playlistEntry;
-		addTrackButton.setClickAction(() -> {
+		addTrackButton.setPressable(() -> {
 			playlist.add(track);
 			gui.setInformation(TextFormatting.GREEN + getTranslation(gui_search_added), 150);
 		});

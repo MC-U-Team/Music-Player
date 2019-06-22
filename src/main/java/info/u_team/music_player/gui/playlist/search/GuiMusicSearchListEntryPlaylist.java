@@ -29,7 +29,7 @@ public class GuiMusicSearchListEntryPlaylist extends GuiMusicSearchListEntry {
 			duration = getTranslation(gui_track_duration_undefined);
 		}
 		
-		addTrackButton.setClickAction(() -> {
+		addTrackButton.setPressable(() -> {
 			playlist.add(trackList);
 			gui.setInformation(TextFormatting.GREEN + getTranslation(gui_search_added_list), 150);
 		});

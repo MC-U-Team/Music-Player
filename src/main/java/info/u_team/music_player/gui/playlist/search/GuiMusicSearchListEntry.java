@@ -4,14 +4,14 @@ import info.u_team.music_player.gui.util.GuiTrackUtils;
 import info.u_team.music_player.init.MusicPlayerResources;
 import info.u_team.music_player.lavaplayer.api.audio.IAudioTrack;
 import info.u_team.to_u_team_core.gui.GuiScrollableListEntry;
-import info.u_team.u_team_core.gui.elements.GuiButtonClickImage;
+import info.u_team.u_team_core.gui.elements.*;
 
 abstract class GuiMusicSearchListEntry extends GuiScrollableListEntry<GuiMusicSearchListEntry> {
 	
-	protected final GuiButtonClickImage addTrackButton;
+	protected final ImageButton addTrackButton;
 	
 	GuiMusicSearchListEntry() {
-		addTrackButton = addButton(new GuiButtonClickImage(0, 0, 20, 20, MusicPlayerResources.textureAdd));
+		addTrackButton = addButton(new ImageButton(0, 0, 20, 20, MusicPlayerResources.textureAdd));
 	}
 	
 	@Override

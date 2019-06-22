@@ -45,8 +45,8 @@ public class GuiMusicSearch extends Screen {
 	
 	@Override
 	protected void init() {
-		final GuiButtonClick backButton = addButton(new GuiButtonClickImage(1, 1, 15, 15, MusicPlayerResources.textureBack));
-		backButton.setClickAction(() -> minecraft.displayGuiScreen(new GuiMusicPlaylist(playlist)));
+		final ImageButton backButton = addButton(new ImageButton(1, 1, 15, 15, MusicPlayerResources.textureBack));
+		backButton.setPressable(() -> minecraft.displayGuiScreen(new GuiMusicPlaylist(playlist)));
 		
 		urlField = new TextFieldWidget(font, 10, 35, width / 2 - 10, 20, null) {
 			
@@ -59,8 +59,8 @@ public class GuiMusicSearch extends Screen {
 		urlField.setMaxStringLength(10000);
 		children.add(urlField);
 		
-		final GuiButtonClick openFileButton = addButton(new GuiButtonClick(width / 2 + 10, 34, width / 4 - 15, 22, getTranslation(gui_search_load_file)));
-		openFileButton.setClickAction(() -> {
+		final UButton openFileButton = addButton(new UButton(width / 2 + 10, 34, width / 4 - 15, 22, getTranslation(gui_search_load_file)));
+		openFileButton.setPressable(() -> {
 			String response = TinyFileDialogs.tinyfd_openFileDialog(getTranslation(gui_search_load_file), null, null, getTranslation(gui_search_music_files), false);
 			if (response != null) {
 				searchList.clear();
@@ -68,8 +68,8 @@ public class GuiMusicSearch extends Screen {
 			}
 		});
 		
-		final GuiButtonClick openFolderButton = addButton(new GuiButtonClick((int) (width * 0.75) + 5, 34, width / 4 - 15, 22, getTranslation(gui_search_load_folder)));
-		openFolderButton.setClickAction(() -> {
+		final UButton openFolderButton = addButton(new UButton((int) (width * 0.75) + 5, 34, width / 4 - 15, 22, getTranslation(gui_search_load_folder)));
+		openFolderButton.setPressable(() -> {
 			String response = TinyFileDialogs.tinyfd_selectFolderDialog(getTranslation(gui_search_load_folder), System.getProperty("user.home"));
 			if (response != null) {
 				searchList.clear();
@@ -81,13 +81,13 @@ public class GuiMusicSearch extends Screen {
 			}
 		});
 		
-		final GuiButtonClickImage searchButton = addButton(new GuiButtonClickImage(10, 76, 24, 24, searchProvider.getLogo()));
-		searchButton.setClickAction(() -> {
+		final ImageButton searchButton = addButton(new ImageButton(10, 76, 24, 24, searchProvider.getLogo()));
+		searchButton.setPressable(() -> {
 			searchProvider = SearchProvider.toggle(searchProvider);
 			searchButton.setResource(searchProvider.getLogo());
 		});
 		
-		searchField = new  TextFieldWidget(font, 40, 78, width - 51, 20, null) {
+		searchField = new TextFieldWidget(font, 40, 78, width - 51, 20, null) {
 			
 			@Override
 			public boolean keyPressed(int key, int p_keyPressed_2_, int p_keyPressed_3_) {
@@ -100,8 +100,8 @@ public class GuiMusicSearch extends Screen {
 		setFocused(searchField);
 		children.add(searchField);
 		
-		final GuiButtonClick addAllButton = addButton(new GuiButtonClick(width - 110, 105, 100, 20, getTranslation(gui_search_add_all)));
-		addAllButton.setClickAction(() -> {
+		final UButton addAllButton = addButton(new UButton(width - 110, 105, 100, 20, getTranslation(gui_search_add_all)));
+		addAllButton.setPressable(() -> {
 			List<GuiMusicSearchListEntryPlaylist> list = searchList.children().stream().filter(entry -> entry instanceof GuiMusicSearchListEntryPlaylist).map(entry -> (GuiMusicSearchListEntryPlaylist) entry).collect(Collectors.toList());
 			if (list.size() > 0) {
 				list.forEach(entry -> {

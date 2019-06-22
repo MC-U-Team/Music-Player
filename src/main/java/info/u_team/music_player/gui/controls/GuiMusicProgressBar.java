@@ -3,12 +3,12 @@ package info.u_team.music_player.gui.controls;
 import info.u_team.music_player.gui.util.GuiTrackUtils;
 import info.u_team.music_player.lavaplayer.api.audio.IAudioTrack;
 import info.u_team.music_player.lavaplayer.api.queue.ITrackManager;
-import info.u_team.u_team_core.gui.elements.GuiProgressBar;
-import info.u_team.u_team_core.gui.render.*;
+import info.u_team.u_team_core.gui.elements.ProgressBar;
+import info.u_team.u_team_core.gui.render.ScalingTextRender;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 
-public class GuiMusicProgressBar extends GuiProgressBar {
+public class GuiMusicProgressBar extends ProgressBar {
 	
 	private final ScalingTextRender positionRender;
 	private final ScalingTextRender durationRender;

@@ -4,34 +4,34 @@ import info.u_team.music_player.init.MusicPlayerResources;
 import info.u_team.music_player.lavaplayer.api.audio.IAudioTrack;
 import info.u_team.music_player.musicplayer.playlist.*;
 import info.u_team.music_player.util.WrappedObject;
-import info.u_team.u_team_core.gui.elements.GuiButtonClickImage;
+import info.u_team.u_team_core.gui.elements.*;
 
 abstract class GuiMusicPlaylistListEntryFunctions extends GuiMusicPlaylistListEntryPlayable {
 	
 	protected final Playlist playlist;
 	protected final WrappedObject<String> uri;
 	
-	protected final GuiButtonClickImage deleteTrackButton;
-	protected final GuiButtonClickImage upButton, downButton;
+	protected final ImageButton deleteTrackButton;
+	protected final ImageButton upButton, downButton;
 	
 	GuiMusicPlaylistListEntryFunctions(GuiMusicPlaylistList guilist, Playlists playlists, Playlist playlist, LoadedTracks loadedTrack, IAudioTrack track) {
 		super(playlists, playlist, loadedTrack, track);
 		this.playlist = playlist;
 		this.uri = loadedTrack.getUri();
-		deleteTrackButton = addButton(new GuiButtonClickImage(0, 0, 20, 20, MusicPlayerResources.textureClear));
-		upButton = addButton(new GuiButtonClickImage(0, 0, 20, 10, MusicPlayerResources.textureUp));
-		downButton = addButton(new GuiButtonClickImage(0, 0, 20, 10, MusicPlayerResources.textureDown));
+		deleteTrackButton = addButton(new ImageButton(0, 0, 20, 20, MusicPlayerResources.textureClear));
+		upButton = addButton(new ImageButton(0, 0, 20, 10, MusicPlayerResources.textureUp));
+		downButton = addButton(new ImageButton(0, 0, 20, 10, MusicPlayerResources.textureDown));
 		
-		deleteTrackButton.setClickAction(() -> {
+		deleteTrackButton.setPressable(() -> {
 			playlist.remove(uri);
 			guilist.updateAllEntries();
 		});
-		upButton.setClickAction(() -> {
+		upButton.setPressable(() -> {
 			playlist.move(uri, 1);
 //			guilist.setSelectedEntryWhenMove(index - 1);
 			guilist.updateAllEntries();
 		});
-		downButton.setClickAction(() -> {
+		downButton.setPressable(() -> {
 			playlist.move(uri, -1);
 //			guilist.setSelectedEntryWhenMove(index + 1);
 			guilist.updateAllEntries();

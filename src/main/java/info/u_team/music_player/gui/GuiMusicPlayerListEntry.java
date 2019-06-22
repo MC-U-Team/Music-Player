@@ -18,19 +18,20 @@ class GuiMusicPlayerListEntry extends GuiScrollableListEntry<GuiMusicPlayerListE
 	private final Playlists playlists;
 	private final Playlist playlist;
 	
-	private final GuiButtonClickImageToggle playPlaylistButton;
-	private final GuiButtonClickImage openPlaylistButton;
-	private final GuiButtonClickImage deletePlaylistButton;
+	private final ToggleImageButton playPlaylistButton;
+	private final ImageButton openPlaylistButton;
+	private final ImageButton deletePlaylistButton;
 	
 	public GuiMusicPlayerListEntry(GuiMusicPlayerList gui, Playlists playlists, Playlist playlist) {
 		this.playlists = playlists;
 		this.playlist = playlist;
 		
-		playPlaylistButton = addButton(new GuiButtonClickImageToggle(0, 0, 20, 20, MusicPlayerResources.texturePlay, MusicPlayerResources.textureStop));
+		playPlaylistButton = addButton(new ToggleImageButton(0, 0, 20, 20, MusicPlayerResources.texturePlay, MusicPlayerResources.textureStop));
 		playPlaylistButton.toggle(playlist.equals(playlists.getPlaying()));
 		playPlaylistButton.active = !playlists.isPlayingLock();
 		
-		playPlaylistButton.setToggleClickAction((play) -> {
+		playPlaylistButton.setPressable(() -> {
+			final boolean play = playPlaylistButton.isToggled();
 			if (playlists.isPlayingLock()) {
 				return;
 			}
@@ -82,11 +83,11 @@ class GuiMusicPlayerListEntry extends GuiScrollableListEntry<GuiMusicPlayerListE
 			}
 		});
 		
-		openPlaylistButton = addButton(new GuiButtonClickImage(0, 0, 20, 20, MusicPlayerResources.textureOpen));
-		openPlaylistButton.setClickAction(() -> mc.displayGuiScreen(new GuiMusicPlaylist(playlist)));
+		openPlaylistButton = addButton(new ImageButton(0, 0, 20, 20, MusicPlayerResources.textureOpen));
+		openPlaylistButton.setPressable(() -> mc.displayGuiScreen(new GuiMusicPlaylist(playlist)));
 		
-		deletePlaylistButton = addButton(new GuiButtonClickImage(0, 0, 20, 20, MusicPlayerResources.textureClear));
-		deletePlaylistButton.setClickAction(() -> gui.removePlaylist(this));
+		deletePlaylistButton = addButton(new ImageButton(0, 0, 20, 20, MusicPlayerResources.textureClear));
+		deletePlaylistButton.setPressable(() -> gui.removePlaylist(this));
 	}
 	
 	@Override

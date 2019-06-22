@@ -6,7 +6,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import info.u_team.music_player.gui.controls.GuiControls;
 import info.u_team.music_player.init.MusicPlayerResources;
-import info.u_team.u_team_core.gui.elements.*;
+import info.u_team.u_team_core.gui.elements.ImageButton;
 import info.u_team.u_team_core.gui.render.ScrollingTextRender;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.Screen;
@@ -27,15 +27,14 @@ public class GuiMusicPlayer extends Screen {
 	
 	@Override
 	protected void init() {
-		final GuiButtonClick backButton = addButton(new GuiButtonClickImage(1, 1, 15, 15, MusicPlayerResources.textureBack));
-		backButton.setClickAction(() -> minecraft.displayGuiScreen(null));
+		addButton(new ImageButton(1, 1, 15, 15, MusicPlayerResources.textureBack, button -> minecraft.displayGuiScreen(null)));
 		
 		namePlaylistField = new TextFieldWidget(font, 100, 60, width - 150, 20, null);
 		namePlaylistField.setMaxStringLength(500);
 		children.add(namePlaylistField);
 		
-		final GuiButtonClickImage addPlaylistButton = addButton(new GuiButtonClickImage(width - 41, 59, 22, 22, MusicPlayerResources.textureCreate));
-		addPlaylistButton.setClickAction(() -> {
+		final ImageButton addPlaylistButton = addButton(new ImageButton(width - 41, 59, 22, 22, MusicPlayerResources.textureCreate));
+		addPlaylistButton.setPressable(() -> {
 			String name = namePlaylistField.getText();
 			if (StringUtils.isBlank(name) || name.equals(getTranslation(gui_create_playlist_insert_name))) {
 				namePlaylistField.setText(getTranslation(gui_create_playlist_insert_name));
