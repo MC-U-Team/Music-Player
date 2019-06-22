@@ -10,10 +10,9 @@ import info.u_team.music_player.lavaplayer.api.audio.IAudioTrack;
 import info.u_team.music_player.lavaplayer.api.queue.ITrackManager;
 import info.u_team.music_player.musicplayer.MusicPlayerManager;
 import info.u_team.music_player.musicplayer.playlist.*;
-import info.u_team.to_u_team_core.gui.GuiScrollableListEntry;
 import info.u_team.u_team_core.gui.elements.*;
 
-class GuiMusicPlayerListEntry extends GuiScrollableListEntry<GuiMusicPlayerListEntry> {
+class GuiMusicPlayerListEntry extends ScrollableListEntry<GuiMusicPlayerListEntry> {
 	
 	private final Playlists playlists;
 	private final Playlist playlist;

@@ -4,7 +4,7 @@ import info.u_team.music_player.init.MusicPlayerResources;
 import info.u_team.music_player.lavaplayer.api.audio.IAudioTrack;
 import info.u_team.music_player.musicplayer.playlist.*;
 import info.u_team.music_player.util.WrappedObject;
-import info.u_team.u_team_core.gui.elements.*;
+import info.u_team.u_team_core.gui.elements.ImageButton;
 
 abstract class GuiMusicPlaylistListEntryFunctions extends GuiMusicPlaylistListEntryPlayable {
 	
