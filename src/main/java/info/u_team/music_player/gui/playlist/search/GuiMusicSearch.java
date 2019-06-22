@@ -55,6 +55,12 @@ public class GuiMusicSearch extends Screen {
 				keyFromTextField(this, getText(), key);
 				return super.keyPressed(key, p_keyPressed_2_, p_keyPressed_3_);
 			}
+			
+			@Override
+			public boolean changeFocus(boolean p_changeFocus_1_) {
+				System.out.println("CHANGEED FOR Url FIELD to " + p_changeFocus_1_);
+				return super.changeFocus(p_changeFocus_1_);
+			}
 		};
 		urlField.setMaxStringLength(10000);
 		children.add(urlField);
@@ -94,6 +100,13 @@ public class GuiMusicSearch extends Screen {
 				keyFromTextField(this, searchProvider.getPrefix() + getText(), key);
 				return super.keyPressed(key, p_keyPressed_2_, p_keyPressed_3_);
 			}
+			
+			@Override
+			public boolean changeFocus(boolean p_changeFocus_1_) {
+				System.out.println("CHANGEED FOR Search FIELD to " + p_changeFocus_1_);
+				return super.changeFocus(p_changeFocus_1_);
+			}
+			
 		};
 		searchField.setMaxStringLength(1000);
 		searchField.setFocused2(true);
@@ -167,6 +180,22 @@ public class GuiMusicSearch extends Screen {
 		urlField.render(mouseX, mouseY, partialTicks);
 		searchField.render(mouseX, mouseY, partialTicks);
 		super.render(mouseX, mouseY, partialTicks);
+	}
+	
+	@Override
+	public boolean mouseClicked(double p_mouseClicked_1_, double p_mouseClicked_3_, int p_mouseClicked_5_) {
+		if (urlField.mouseClicked(p_mouseClicked_1_, p_mouseClicked_3_, p_mouseClicked_5_)) {
+			setFocused(urlField);
+			urlField.setFocused2(true);
+			searchField.setFocused2(false);
+			return true;
+		} else if (searchField.mouseClicked(p_mouseClicked_1_, p_mouseClicked_3_, p_mouseClicked_5_)) {
+			setFocused(searchField);
+			searchField.setFocused2(true);
+			urlField.setFocused2(false);
+			return true;
+		}
+		return super.mouseClicked(p_mouseClicked_1_, p_mouseClicked_3_, p_mouseClicked_5_);
 	}
 	
 	public void setInformation(String information, int maxTicksInformation) {
