@@ -259,7 +259,7 @@ uploadArchives {
 					licenses {
 						license {
 							name "Apache License 2.0"
-							url "https://github.com/MC-U-Team/${config.maven.github_name}/blob/1.12.2/LICENSE"
+							url "https://github.com/MC-U-Team/${config.maven.github_name}/blob/${config.forge.mcversion}/LICENSE"
 							distribution "repo"
 						}
 					}
