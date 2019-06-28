@@ -72,7 +72,7 @@ def normalManifest = {
 	attributes(
 		"Specification-Title": config.mod.name,
         "Specification-Vendor": "Team UTeam",
-        "Specification-Version": "26.0",
+        "Specification-Version": "27.0",
 		"Built-On": config.forge.mcversion,
 		"Implementation-Title": config.mod.name,
     	"Implementation-Version": project.version,
