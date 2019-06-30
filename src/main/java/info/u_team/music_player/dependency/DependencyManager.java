@@ -1,7 +1,7 @@
 package info.u_team.music_player.dependency;
 
 import java.io.IOException;
-import java.lang.reflect.*;
+import java.lang.reflect.Method;
 import java.net.*;
 import java.nio.file.*;
 import java.util.function.Consumer;
@@ -9,7 +9,6 @@ import java.util.stream.Stream;
 
 import org.apache.logging.log4j.*;
 
-import cpw.mods.modlauncher.TransformingClassLoader;
 import info.u_team.music_player.MusicPlayerMod;
 import info.u_team.music_player.dependency.classloader.DependencyClassLoader;
 import net.minecraftforge.fml.ModList;
@@ -81,16 +80,10 @@ public class DependencyManager {
 
 	private static void addToInternalDependencies(URL url) {
 		try {
-			final ClassLoader classLoader = DependencyClassLoader.class.getClassLoader();
-			if (!(classLoader instanceof TransformingClassLoader)) {
-				throw new Exception("The classloader of this class is not the TransformingClassLoader. How?");
-			}
-			final Field field = TransformingClassLoader.class.getDeclaredField("delegatedClassLoader");
-			field.setAccessible(true);
-
+			final URLClassLoader systemClassLoader = (URLClassLoader) ClassLoader.getSystemClassLoader();
 			final Method method = URLClassLoader.class.getDeclaredMethod("addURL", URL.class);
 			method.setAccessible(true);
-			method.invoke(field.get(classLoader), url);
+			method.invoke(systemClassLoader, url);
 		} catch (Exception ex) {
 			logger.error(load, "Method addURL on system classloader could not be invoked", ex);
 		}
