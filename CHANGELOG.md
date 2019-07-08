@@ -1,17 +1,7 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
-## [1.12.2-2.0.0.9] - 2019-06-01
+## [1.8-2.0.0.16] - 2019-07-08
 ### Changed
-- Update to newest forge and uteamcore version
-
-## [1.12.2-2.0.0.7] - 2019-05-22
-### Added
-- Backported the 1.13.2 version (1.13.2-2.0.0.8)
-- See for changes [here](https://github.com/MC-U-Team/Music-Player/blob/1.13.2/CHANGELOG.md).
-
-### Changed
-- Changed everything
-
-### Removed
-- All old things
+- Backported the 1.12.2 version
+- See for changes [here](https://github.com/MC-U-Team/Music-Player/blob/1.12.2/CHANGELOG.md).
