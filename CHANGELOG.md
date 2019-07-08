@@ -6,3 +6,4 @@ All notable changes to this project will be documented in this file.
 - Backported the 1.12.2 version
 - See for changes [here](https://github.com/MC-U-Team/Music-Player/blob/1.12.2/CHANGELOG.md).
 - Close streams in dependencies correctly with try with resources
+- Fix UrlStreamHandler is already defined
