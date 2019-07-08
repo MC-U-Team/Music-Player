@@ -129,12 +129,12 @@ public class GuiControls extends GuiEventHandlerNew {
 		
 		// Render playing track
 		// Title and author
-		titleRender = new RenderScrollingText(() -> mc.fontRenderer, () -> GuiTrackUtils.getValueOfPlayingTrack(track -> track.getInfo().getFixedTitle()));
+		titleRender = new RenderScrollingText(() -> mc.fontRendererObj, () -> GuiTrackUtils.getValueOfPlayingTrack(track -> track.getInfo().getFixedTitle()));
 		titleRender.setStepSize(0.5F);
 		titleRender.setColor(0xFFFF00);
 		titleRender.setSpeedTime(35);
 		
-		authorRender = new RenderScrollingText(() -> mc.fontRenderer, () -> GuiTrackUtils.getValueOfPlayingTrack(track -> track.getInfo().getFixedAuthor()));
+		authorRender = new RenderScrollingText(() -> mc.fontRendererObj, () -> GuiTrackUtils.getValueOfPlayingTrack(track -> track.getInfo().getFixedAuthor()));
 		authorRender.setStepSize(0.5F);
 		authorRender.setColor(0xFFFF00);
 		authorRender.setScale(0.75F);
@@ -165,7 +165,7 @@ public class GuiControls extends GuiEventHandlerNew {
 	}
 	
 	public void drawScreen(int mouseX, int mouseY, float partialTicks) {
-		buttons.forEach(button -> button.drawButton(Minecraft.getMinecraft(), mouseX, mouseY, partialTicks));
+		buttons.forEach(button -> button.drawButton(Minecraft.getMinecraft(), mouseX, mouseY));
 		songProgress.render(mouseX, mouseY, partialTicks);
 		
 		final int textRenderWidth = middleX - (2 * buttonSize + halfButtonSize + 10) - (small ? 15 : 35);

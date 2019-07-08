@@ -18,7 +18,7 @@ import info.u_team.music_player.musicplayer.playlist.Playlist;
 import info.u_team.u_team_core.gui.elements.*;
 import info.u_team.u_team_core.gui.elements.backport.*;
 import net.minecraft.client.Minecraft;
-import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.EnumChatFormatting;
 
 public class GuiMusicSearch extends GuiScreen1_13 {
 	
@@ -46,7 +46,7 @@ public class GuiMusicSearch extends GuiScreen1_13 {
 		final GuiButtonClick backButton = addNewButton(new GuiButtonClickImage(1, 1, 15, 15, MusicPlayerResources.textureBack));
 		backButton.setClickAction(() -> mc.displayGuiScreen(new GuiMusicPlaylist(playlist)));
 		
-		urlField = new GuiTextFieldNew(-1, mc.fontRenderer, 10, 35, width / 2 - 10, 20) {
+		urlField = new GuiTextFieldNew(-1, mc.fontRendererObj, 10, 35, width / 2 - 10, 20) {
 			
 			@Override
 			public boolean keyPressed(int key, int p_keyPressed_2_, int p_keyPressed_3_) {
@@ -74,7 +74,7 @@ public class GuiMusicSearch extends GuiScreen1_13 {
 				try (Stream<Path> stream = Files.list(Paths.get(response))) {
 					stream.filter(path -> !Files.isDirectory(path)).forEach(path -> addTrack(path.toString()));
 				} catch (IOException ex) {
-					setInformation(TextFormatting.RED + ex.getMessage(), 150);
+					setInformation(EnumChatFormatting.RED + ex.getMessage(), 150);
 				}
 			}
 		});
@@ -85,7 +85,7 @@ public class GuiMusicSearch extends GuiScreen1_13 {
 			searchButton.setResource(searchProvider.getLogo());
 		});
 		
-		searchField = new GuiTextFieldNew(-1, mc.fontRenderer, 40, 78, width - 51, 20) {
+		searchField = new GuiTextFieldNew(-1, mc.fontRendererObj, 40, 78, width - 51, 20) {
 			
 			@Override
 			public boolean keyPressed(int key, int p_keyPressed_2_, int p_keyPressed_3_) {
@@ -110,7 +110,7 @@ public class GuiMusicSearch extends GuiScreen1_13 {
 					playlist.add(entry.getTrack());
 				});
 			}
-			setInformation(TextFormatting.GREEN + getTranslation(gui_search_added_all), 150);
+			setInformation(EnumChatFormatting.GREEN + getTranslation(gui_search_added_all), 150);
 		});
 		
 		searchList.updateSettings(width - 24, height, 130, height - 10, 12, width - 12);
@@ -154,13 +154,13 @@ public class GuiMusicSearch extends GuiScreen1_13 {
 		drawBackground(0);
 		searchList.drawScreen(mouseX, mouseY, partialTicks);
 		
-		drawCenteredString(mc.fontRenderer, getTranslation(gui_search_header), width / 2, 5, 0xFFFFFF);
-		drawString(mc.fontRenderer, getTranslation(gui_search_search_uri), 10, 20, 0xFFFFFF);
-		drawString(mc.fontRenderer, getTranslation(gui_search_search_file), 10 + width / 2, 20, 0xFFFFFF);
-		drawString(mc.fontRenderer, getTranslation(gui_search_search_search), 10, 63, 0xFFFFFF);
+		drawCenteredString(mc.fontRendererObj, getTranslation(gui_search_header), width / 2, 5, 0xFFFFFF);
+		drawString(mc.fontRendererObj, getTranslation(gui_search_search_uri), 10, 20, 0xFFFFFF);
+		drawString(mc.fontRendererObj, getTranslation(gui_search_search_file), 10 + width / 2, 20, 0xFFFFFF);
+		drawString(mc.fontRendererObj, getTranslation(gui_search_search_search), 10, 63, 0xFFFFFF);
 		
 		if (information != null && informationTicks <= maxTicksInformation) {
-			drawString(mc.fontRenderer, information, 15, 110, 0xFFFFFF);
+			drawString(mc.fontRendererObj, information, 15, 110, 0xFFFFFF);
 		}
 		
 		urlField.drawTextField(mouseX, mouseY, partialTicks);
@@ -186,7 +186,7 @@ public class GuiMusicSearch extends GuiScreen1_13 {
 		MusicPlayerManager.getPlayer().getTrackSearch().getTracks(uri, result -> {
 			mc.addScheduledTask(() -> {
 				if (result.hasError()) {
-					setInformation(TextFormatting.RED + result.getErrorMessage(), 150);
+					setInformation(EnumChatFormatting.RED + result.getErrorMessage(), 150);
 				} else if (result.isList()) {
 					final IAudioTrackList list = result.getTrackList();
 					if (!list.isSearch()) {

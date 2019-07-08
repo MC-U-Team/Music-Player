@@ -20,7 +20,7 @@ public class WrappedObject<T> {
 	 * Wrapped object <br>
 	 * Annotation sets the gson default serialization to <code>o</code>.
 	 */
-	@SerializedName(value = "o", alternate = { "object" })
+	@SerializedName(value = "o")
 	private final T object;
 
 	/**

@@ -5,7 +5,6 @@ import java.nio.file.*;
 import java.util.zip.*;
 
 import org.apache.logging.log4j.*;
-import org.jline.utils.InputStreamReader;
 
 import com.google.gson.Gson;
 

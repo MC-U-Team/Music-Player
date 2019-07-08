@@ -4,13 +4,9 @@ import java.util.function.*;
 
 import javax.annotation.Nullable;
 
-import com.google.common.base.Predicates;
-
 import net.minecraft.client.gui.*;
 import net.minecraft.client.renderer.*;
-import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.util.ChatAllowedCharacters;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.*;
 import net.minecraftforge.fml.relauncher.*;
 
 @SideOnly(Side.CLIENT)
@@ -46,7 +42,7 @@ public class GuiTextFieldNew extends Gui implements IGuiEventListener {
 	private String suggestion;
 	private BiConsumer<Integer, String> guiResponder;
 	/** Called to check if the text is valid */
-	private Predicate<String> validator = Predicates.alwaysTrue();
+	private Predicate<String> validator = s -> true;
 	private BiFunction<String, Integer, String> textFormatter = (p_195610_0_, p_195610_1_) -> {
 		return p_195610_0_;
 	};
@@ -273,7 +269,7 @@ public class GuiTextFieldNew extends Gui implements IGuiEventListener {
 	}
 	
 	public void func_212422_f(int p_212422_1_) {
-		this.cursorPosition = MathHelper.clamp(p_212422_1_, 0, this.text.length());
+		this.cursorPosition = MathHelper.clamp_int(p_212422_1_, 0, this.text.length());
 	}
 	
 	/**
@@ -420,7 +416,7 @@ public class GuiTextFieldNew extends Gui implements IGuiEventListener {
 			}
 			
 			if (this.isFocused && flag && p_mouseClicked_5_ == 0) {
-				int i = MathHelper.floor(p_mouseClicked_1_) - this.x;
+				int i = floor(p_mouseClicked_1_) - this.x;
 				if (this.enableBackgroundDrawing) {
 					i -= 4;
 				}
@@ -432,6 +428,11 @@ public class GuiTextFieldNew extends Gui implements IGuiEventListener {
 				return false;
 			}
 		}
+	}
+	
+	public static int floor(double value) {
+		int i = (int) value;
+		return value < (double) i ? i - 1 : i;
 	}
 	
 	public void drawTextField(int mouseX, int mouseY, float partialTicks) {
@@ -517,16 +518,16 @@ public class GuiTextFieldNew extends Gui implements IGuiEventListener {
 		}
 		
 		Tessellator tessellator = Tessellator.getInstance();
-		BufferBuilder bufferbuilder = tessellator.getBuffer();
+		WorldRenderer worldrenderer = tessellator.getWorldRenderer();
 		GlStateManager.color(0.0F, 0.0F, 255.0F, 255.0F);
 		GlStateManager.disableTexture2D();
 		GlStateManager.enableColorLogic();
-		GlStateManager.colorLogicOp(GlStateManager.LogicOp.OR_REVERSE);
-		bufferbuilder.begin(7, DefaultVertexFormats.POSITION);
-		bufferbuilder.pos((double) startX, (double) endY, 0.0D).endVertex();
-		bufferbuilder.pos((double) endX, (double) endY, 0.0D).endVertex();
-		bufferbuilder.pos((double) endX, (double) startY, 0.0D).endVertex();
-		bufferbuilder.pos((double) startX, (double) startY, 0.0D).endVertex();
+		GlStateManager.colorLogicOp(5387);
+		worldrenderer.startDrawingQuads();
+		worldrenderer.addVertex((double) startX, (double) endY, 0.0D);
+		worldrenderer.addVertex((double) endX, (double) endY, 0.0D);
+		worldrenderer.addVertex((double) endX, (double) startY, 0.0D);
+		worldrenderer.addVertex((double) startX, (double) startY, 0.0D);
 		tessellator.draw();
 		GlStateManager.disableColorLogic();
 		GlStateManager.enableTexture2D();
@@ -667,7 +668,7 @@ public class GuiTextFieldNew extends Gui implements IGuiEventListener {
 				this.lineScrollOffset -= this.lineScrollOffset - position;
 			}
 			
-			this.lineScrollOffset = MathHelper.clamp(this.lineScrollOffset, 0, i);
+			this.lineScrollOffset = MathHelper.clamp_int(this.lineScrollOffset, 0, i);
 		}
 		
 	}

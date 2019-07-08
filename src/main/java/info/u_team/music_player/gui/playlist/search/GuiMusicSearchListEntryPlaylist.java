@@ -8,7 +8,7 @@ import info.u_team.music_player.gui.util.GuiTrackUtils;
 import info.u_team.music_player.lavaplayer.api.audio.*;
 import info.u_team.music_player.musicplayer.playlist.Playlist;
 import info.u_team.music_player.util.TimeUtil;
-import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.EnumChatFormatting;
 
 public class GuiMusicSearchListEntryPlaylist extends GuiMusicSearchListEntry {
 	
@@ -31,15 +31,15 @@ public class GuiMusicSearchListEntryPlaylist extends GuiMusicSearchListEntry {
 		
 		addTrackButton.setClickAction(() -> {
 			playlist.add(trackList);
-			gui.setInformation(TextFormatting.GREEN + getTranslation(gui_search_added_list), 150);
+			gui.setInformation(EnumChatFormatting.GREEN + getTranslation(gui_search_added_list), 150);
 		});
 	}
 	
 	@Override
 	public void drawEntry(int entryWidth, int entryHeight, int mouseX, int mouseY, boolean mouseInList, float partialTicks) {
 		super.drawEntry(entryWidth, entryHeight, mouseX, mouseY, mouseInList, partialTicks);
-		mc.fontRenderer.drawString(name, getX() + 5, getY() + 15, 0xF4E242);
-		mc.fontRenderer.drawString(duration, getX() + entryWidth - 135, getY() + 5, 0xFFFF00);
+		mc.fontRendererObj.drawString(name, getX() + 5, getY() + 15, 0xF4E242);
+		mc.fontRendererObj.drawString(duration, getX() + entryWidth - 135, getY() + 5, 0xFFFF00);
 	}
 	
 	public IAudioTrackList getTrackList() {

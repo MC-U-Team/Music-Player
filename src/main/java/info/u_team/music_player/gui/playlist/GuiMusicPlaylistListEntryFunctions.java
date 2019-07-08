@@ -44,17 +44,17 @@ abstract class GuiMusicPlaylistListEntryFunctions extends GuiMusicPlaylistListEn
 		super.drawEntry(entryWidth, entryHeight, mouseX, mouseY, mouseInList, partialTicks);
 		drawEntryExtended(entryWidth, entryHeight, mouseX, mouseY, mouseInList, partialTicks);
 		
-		deleteTrackButton.x = entryWidth - 15;
-		deleteTrackButton.y = getY() + 8;
-		deleteTrackButton.drawButton(Minecraft.getMinecraft(), mouseX, mouseY, partialTicks);
+		deleteTrackButton.xPosition = entryWidth - 15;
+		deleteTrackButton.yPosition = getY() + 8;
+		deleteTrackButton.drawButton(Minecraft.getMinecraft(), mouseX, mouseY);
 		
-		upButton.x = entryWidth - 40;
-		upButton.y = getY() + 8;
-		upButton.drawButton(Minecraft.getMinecraft(), mouseX, mouseY, partialTicks);
+		upButton.xPosition = entryWidth - 40;
+		upButton.yPosition = getY() + 8;
+		upButton.drawButton(Minecraft.getMinecraft(), mouseX, mouseY);
 		
-		downButton.x = entryWidth - 40;
-		downButton.y = getY() + 18;
-		downButton.drawButton(Minecraft.getMinecraft(), mouseX, mouseY, partialTicks);
+		downButton.xPosition = entryWidth - 40;
+		downButton.yPosition = getY() + 18;
+		downButton.drawButton(Minecraft.getMinecraft(), mouseX, mouseY);
 	}
 	
 	public abstract void drawEntryExtended(int entryWidth, int entryHeight, int mouseX, int mouseY, boolean mouseInList, float partialTicks);

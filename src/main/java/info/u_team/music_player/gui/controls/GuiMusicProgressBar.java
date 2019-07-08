@@ -14,7 +14,7 @@ public class GuiMusicProgressBar extends GuiProgressBar {
 	
 	public GuiMusicProgressBar(ITrackManager manager, int x, int y, int width, int height, float scale) {
 		super(x, y, width, height, 0xFF555555, 0xFF3e9100, () -> getProgress(manager), (value) -> updateProgress(manager, value));
-		final FontRenderer fontRender = Minecraft.getMinecraft().fontRenderer;
+		final FontRenderer fontRender = Minecraft.getMinecraft().fontRendererObj;
 		positionRender = new RenderScalingText(() -> fontRender, () -> GuiTrackUtils.getFormattedPosition(manager.getCurrentTrack()));
 		positionRender.setScale(scale);
 		positionRender.setColor(0xFFFF00);

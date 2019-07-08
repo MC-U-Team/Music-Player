@@ -9,16 +9,16 @@ import info.u_team.music_player.lavaplayer.api.audio.*;
 import info.u_team.music_player.musicplayer.MusicPlayerManager;
 import info.u_team.music_player.util.TimeUtil;
 import net.minecraft.client.Minecraft;
-import net.minecraft.util.text.*;
-import net.minecraft.util.text.event.ClickEvent;
-import net.minecraft.util.text.event.ClickEvent.Action;
+import net.minecraft.event.ClickEvent;
+import net.minecraft.event.ClickEvent.Action;
+import net.minecraft.util.*;
 
 public final class GuiTrackUtils {
 	
 	private static final Minecraft mc = Minecraft.getMinecraft();
 	
 	public static String trimToWith(String string, int width) {
-		String newString = mc.fontRenderer.trimStringToWidth(string, width);
+		String newString = mc.fontRendererObj.trimStringToWidth(string, width);
 		if (!newString.equals(string)) {
 			newString += "...";
 		}
@@ -35,20 +35,20 @@ public final class GuiTrackUtils {
 		final String author = trimToWith(info.getFixedAuthor(), textSize);
 		final String duration = getFormattedDuration(track);
 		
-		mc.fontRenderer.drawString(title, x + leftMargin, y + 5, titleColor);
-		mc.fontRenderer.drawString(author, x + leftMargin + 4, y + 25, 0xD86D1C);
-		mc.fontRenderer.drawString(duration, x + entryWidth - 140, y + 15, 0xFFFF00);
+		mc.fontRendererObj.drawString(title, x + leftMargin, y + 5, titleColor);
+		mc.fontRendererObj.drawString(author, x + leftMargin + 4, y + 25, 0xD86D1C);
+		mc.fontRendererObj.drawString(duration, x + entryWidth - 140, y + 15, 0xFFFF00);
 	}
 	
 	public static boolean openURI(String uri) {
-		final Style style = new Style();
+		final ChatStyle style = new ChatStyle();
 		try {
 			new URI(uri);
-			style.setClickEvent(new ClickEvent(Action.OPEN_URL, uri));
+			style.setChatClickEvent(new ClickEvent(Action.OPEN_URL, uri));
 		} catch (Exception ex) {
-			style.setClickEvent(new ClickEvent(Action.OPEN_FILE, uri));
+			style.setChatClickEvent(new ClickEvent(Action.OPEN_FILE, uri));
 		}
-		return mc.currentScreen.handleComponentClick(new TextComponentString("").setStyle(style));
+		return mc.currentScreen.handleComponentClick(new ChatComponentText("").setChatStyle(style));
 	}
 	
 	public static String getFormattedDuration(IAudioTrack track) {

@@ -59,9 +59,9 @@ public abstract class GuiMusicPlaylistListEntryPlayable extends GuiMusicPlaylist
 	
 	@Override
 	public void drawEntry(int entryWidth, int entryHeight, int mouseX, int mouseY, boolean mouseInList, float partialTicks) {
-		playTrackButton.x = entryWidth - 65;
-		playTrackButton.y = getY() + 8;
-		playTrackButton.drawButton(Minecraft.getMinecraft(), mouseX, mouseY, partialTicks);
+		playTrackButton.xPosition = entryWidth - 65;
+		playTrackButton.yPosition = getY() + 8;
+		playTrackButton.drawButton(Minecraft.getMinecraft(), mouseX, mouseY);
 	}
 	
 	@Override

@@ -36,11 +36,11 @@ public class GuiButtonClickImage extends GuiButtonClick {
 	}
 	
 	@Override
-	public void drawButton(Minecraft mc, int mouseX, int mouseY, float partial) {
+	public void drawButton(Minecraft mc, int mouseX, int mouseY) {
 		if (visible) {
-			this.hovered = mouseX >= this.x && mouseY >= this.y && mouseX < this.x + this.width && mouseY < this.y + this.height;
+			this.hovered = mouseX >= this.xPosition && mouseY >= this.yPosition && mouseX < this.xPosition + this.width && mouseY < this.yPosition + this.height;
 			int k = this.getHoverState(this.hovered);
-			GuiUtils.drawContinuousTexturedBox(BUTTON_TEXTURES, this.x, this.y, 0, 46 + k * 20, this.width, this.height, 200, 20, 2, 3, 2, 2, this.zLevel);
+			GuiUtils.drawContinuousTexturedBox(buttonTextures, this.xPosition, this.yPosition, 0, 46 + k * 20, this.width, this.height, 200, 20, 2, 3, 2, 2, this.zLevel);
 			
 			if (hovered) {
 				color(hovercolor);
@@ -48,7 +48,7 @@ public class GuiButtonClickImage extends GuiButtonClick {
 				color(color);
 			}
 			mc.getTextureManager().bindTexture(resource);
-			Gui.drawScaledCustomSizeModalRect(x + 2, y + 2, 0, 0, 1, 1, width - 4, height - 4, 1, 1);
+			Gui.drawScaledCustomSizeModalRect(xPosition + 2, yPosition + 2, 0, 0, 1, 1, width - 4, height - 4, 1, 1);
 		}
 	}
 	

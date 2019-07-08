@@ -25,12 +25,12 @@ public class GuiButtonClickActivated extends GuiButtonClick {
 	}
 	
 	@Override
-	public void drawButton(Minecraft mc, int mouseX, int mouseY, float partial) {
+	public void drawButton(Minecraft mc, int mouseX, int mouseY) {
 		if (active) {
 			GlStateManager.color(1F, 1F, 1F, 1F);
 			color(activeColor);
 		}
-		super.drawButton(mc,mouseX, mouseY, partial);
+		super.drawButton(mc, mouseX, mouseY);
 	}
 	
 	protected void color(int color) {

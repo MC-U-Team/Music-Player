@@ -86,11 +86,11 @@ public class GuiSliderNew extends GuiButtonExtNew {
 	protected void mouseDragged(Minecraft par1Minecraft, int par2, int par3) {
 		if (this.visible) {
 			if (this.dragging) {
-				this.sliderValue = (par2 - (this.x + 4)) / (float) (this.width - 8);
+				this.sliderValue = (par2 - (this.xPosition + 4)) / (float) (this.width - 8);
 				updateSlider();
 			}
 			GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-			GuiUtils.drawContinuousTexturedBox(BUTTON_TEXTURES, this.x + (int) (this.sliderValue * (float) (this.width - 8)), this.y, 0, 66, 8, this.height, 200, 20, 2, 3, 2, 2, this.zLevel);
+			GuiUtils.drawContinuousTexturedBox(buttonTextures, this.xPosition + (int) (this.sliderValue * (float) (this.width - 8)), this.yPosition, 0, 66, 8, this.height, 200, 20, 2, 3, 2, 2, this.zLevel);
 		}
 	}
 	
@@ -103,7 +103,7 @@ public class GuiSliderNew extends GuiButtonExtNew {
 	@Override
 	public boolean mousePressed(Minecraft par1Minecraft, int par2, int par3) {
 		if (super.mousePressed(par1Minecraft, par2, par3)) {
-			this.sliderValue = (float) (par2 - (this.x + 4)) / (float) (this.width - 8);
+			this.sliderValue = (float) (par2 - (this.xPosition + 4)) / (float) (this.width - 8);
 			updateSlider();
 			this.dragging = true;
 			return true;

@@ -23,7 +23,7 @@ public class GuiMusicPlayer extends GuiScreen1_13 {
 		final GuiButtonClick backButton = addNewButton(new GuiButtonClickImage(1, 1, 15, 15, MusicPlayerResources.textureBack));
 		backButton.setClickAction(() -> mc.displayGuiScreen(null));
 		
-		namePlaylistField = new GuiTextFieldNew(-1, mc.fontRenderer, 100, 60, width - 150, 20);
+		namePlaylistField = new GuiTextFieldNew(-1, mc.fontRendererObj, 100, 60, width - 150, 20);
 		namePlaylistField.setMaxStringLength(500);
 		children.add(namePlaylistField);
 		
@@ -67,7 +67,7 @@ public class GuiMusicPlayer extends GuiScreen1_13 {
 	public void drawScreen(int mouseX, int mouseY, float partialTicks) {
 		drawBackground(0);
 		playlistsList.drawScreen(mouseX, mouseY, partialTicks);
-		mc.fontRenderer.drawString(getTranslation(gui_create_playlist_add_list), 20, 65, 0xFFFFFF);
+		mc.fontRendererObj.drawString(getTranslation(gui_create_playlist_add_list), 20, 65, 0xFFFFFF);
 		namePlaylistField.drawTextField(mouseX, mouseY, partialTicks);
 		controls.drawScreen(mouseX, mouseY, partialTicks);
 		super.drawScreen(mouseX, mouseY, partialTicks);

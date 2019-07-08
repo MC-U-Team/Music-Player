@@ -6,7 +6,7 @@ import org.lwjgl.opengl.GL11;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.*;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.MathHelper;
 
 public class RenderScrollingText extends RenderScalingText {
 	
@@ -69,15 +69,15 @@ public class RenderScrollingText extends RenderScalingText {
 	@Override
 	public void draw(float x, float y) {
 		final Minecraft mc = Minecraft.getMinecraft();
-		final ScaledResolution scaledresolution = new ScaledResolution(mc);
+		final ScaledResolution scaledresolution = new ScaledResolution(mc, mc.displayWidth, mc.displayHeight);
 		
 		final double scaleFactor = scaledresolution.getScaleFactor();
 		
-		final int nativeX = MathHelper.ceil(x * scaleFactor);
-		final int nativeY = MathHelper.ceil(y * scaleFactor);
+		final int nativeX = MathHelper.ceiling_double_int(x * scaleFactor);
+		final int nativeY = MathHelper.ceiling_double_int(y * scaleFactor);
 		
-		final int nativeWidth = MathHelper.ceil(width * scaleFactor);
-		final int nativeHeight = MathHelper.ceil((fontRenderSupplier.get().FONT_HEIGHT + 1) * scale * scaleFactor);
+		final int nativeWidth = MathHelper.ceiling_double_int(width * scaleFactor);
+		final int nativeHeight = MathHelper.ceiling_double_int((fontRenderSupplier.get().FONT_HEIGHT + 1) * scale * scaleFactor);
 		
 		GL11.glPushMatrix();
 		GL11.glEnable(GL11.GL_SCISSOR_TEST);

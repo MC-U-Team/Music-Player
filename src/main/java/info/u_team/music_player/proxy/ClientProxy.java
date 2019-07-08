@@ -4,7 +4,8 @@ import info.u_team.music_player.dependency.DependencyManager;
 import info.u_team.music_player.event.EventHandlerMusicPlayer;
 import info.u_team.music_player.init.*;
 import info.u_team.music_player.musicplayer.MusicPlayerManager;
-import info.u_team.u_team_core.registry.CommonRegistry;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.event.*;
 import net.minecraftforge.fml.relauncher.*;
 
@@ -25,7 +26,9 @@ public class ClientProxy extends CommonProxy {
 		super.init(event);
 		MusicPlayerFiles.setup();
 		MusicPlayerManager.setup();
-		CommonRegistry.registerEventHandler(new EventHandlerMusicPlayer(MusicPlayerManager.getSettingsManager().getSettings()));
+		final EventHandlerMusicPlayer handler = new EventHandlerMusicPlayer(MusicPlayerManager.getSettingsManager().getSettings());
+		FMLCommonHandler.instance().bus().register(handler);
+		MinecraftForge.EVENT_BUS.register(handler);
 	}
 	
 	@Override

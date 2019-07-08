@@ -95,20 +95,20 @@ class GuiMusicPlayerListEntry extends GuiScrollableListEntry<GuiMusicPlayerListE
 		if (name.isEmpty()) {
 			name = "\u00A7o" + getTranslation(gui_playlists_no_name);
 		}
-		mc.fontRenderer.drawString(name, getX() + 5, getY() + 5, playlist.equals(playlists.getPlaying()) ? 0x0083FF : 0xFFF00F);
-		mc.fontRenderer.drawString(playlist.getEntrySize() + " " + getTranslation(playlist.getEntrySize() > 1 ? gui_playlists_entries : gui_playlists_entry), getX() + 5, getY() + 30, 0xFFFFFF);
+		mc.fontRendererObj.drawString(name, getX() + 5, getY() + 5, playlist.equals(playlists.getPlaying()) ? 0x0083FF : 0xFFF00F);
+		mc.fontRendererObj.drawString(playlist.getEntrySize() + " " + getTranslation(playlist.getEntrySize() > 1 ? gui_playlists_entries : gui_playlists_entry), getX() + 5, getY() + 30, 0xFFFFFF);
 		
-		playPlaylistButton.x = entryWidth - 65;
-		playPlaylistButton.y = getY() + 12;
-		playPlaylistButton.drawButton(Minecraft.getMinecraft(), mouseX, mouseY, partialTicks);
+		playPlaylistButton.xPosition = entryWidth - 65;
+		playPlaylistButton.yPosition = getY() + 12;
+		playPlaylistButton.drawButton(Minecraft.getMinecraft(), mouseX, mouseY);
 		
-		openPlaylistButton.x = entryWidth - 40;
-		openPlaylistButton.y = getY() + 12;
-		openPlaylistButton.drawButton(Minecraft.getMinecraft(), mouseX, mouseY, partialTicks);
+		openPlaylistButton.xPosition = entryWidth - 40;
+		openPlaylistButton.yPosition = getY() + 12;
+		openPlaylistButton.drawButton(Minecraft.getMinecraft(), mouseX, mouseY);
 		
-		deletePlaylistButton.x = entryWidth - 15;
-		deletePlaylistButton.y = getY() + 12;
-		deletePlaylistButton.drawButton(Minecraft.getMinecraft(), mouseX, mouseY, partialTicks);
+		deletePlaylistButton.xPosition = entryWidth - 15;
+		deletePlaylistButton.yPosition = getY() + 12;
+		deletePlaylistButton.drawButton(Minecraft.getMinecraft(), mouseX, mouseY);
 	}
 	
 	public Playlist getPlaylist() {

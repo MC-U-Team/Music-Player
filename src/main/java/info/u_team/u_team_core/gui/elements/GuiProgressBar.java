@@ -6,7 +6,7 @@ import info.u_team.u_team_core.gui.elements.backport.IGuiEventListener;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.*;
 import net.minecraft.client.gui.Gui;
-import net.minecraft.init.SoundEvents;
+import net.minecraft.util.ResourceLocation;
 
 public class GuiProgressBar extends Gui implements IGuiEventListener {
 
@@ -68,7 +68,7 @@ public class GuiProgressBar extends Gui implements IGuiEventListener {
 	}
 
 	public void playPressSound(SoundHandler soundHandler) {
-		soundHandler.playSound(PositionedSoundRecord.getMasterRecord(SoundEvents.UI_BUTTON_CLICK, 1.0F));
+		soundHandler.playSound(PositionedSoundRecord.create(new ResourceLocation("gui.button.press"), 1.0F));
 	}
 
 	public void setProgressSupplier(Supplier<Double> progress) {

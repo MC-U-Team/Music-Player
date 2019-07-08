@@ -7,7 +7,6 @@ import info.u_team.music_player.musicplayer.MusicPlayerManager;
 import info.u_team.u_team_core.gui.elements.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.*;
-import net.minecraft.util.math.MathHelper;
 
 public class RenderOverlayMusicDisplay {
 	
@@ -28,7 +27,7 @@ public class RenderOverlayMusicDisplay {
 		height = 35;
 		width = 120;
 		
-		final FontRenderer fontRender = Minecraft.getMinecraft().fontRenderer;
+		final FontRenderer fontRender = Minecraft.getMinecraft().fontRendererObj;
 		
 		title = new RenderScrollingText(() -> fontRender, () -> GuiTrackUtils.getValueOfPlayingTrack(track -> track.getInfo().getFixedTitle()));
 		title.setStepSize(0.5F);
@@ -58,8 +57,8 @@ public class RenderOverlayMusicDisplay {
 		if (track == null) {
 			return;
 		}
-		final int intX = MathHelper.ceil(x);
-		final int intY = MathHelper.ceil(y);
+		final int intX = ceil(x);
+		final int intY = ceil(y);
 		// Background
 		Gui.drawRect(intX, intY, intX + width, intY + height, 0xFF212121);
 		
@@ -88,6 +87,11 @@ public class RenderOverlayMusicDisplay {
 	
 	public int getHeight() {
 		return height;
+	}
+	
+	private static int ceil(float value) {
+		int i = (int) value;
+		return value > (float) i ? i + 1 : i;
 	}
 	
 }

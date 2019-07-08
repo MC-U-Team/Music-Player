@@ -25,7 +25,7 @@ public class GuiScreen1_13 extends GuiScreenInternal {
 	public void setWorldAndResolution(Minecraft mc, int width, int height) {
 		this.mc = mc;
 		this.itemRender = mc.getRenderItem();
-		this.fontRenderer = mc.fontRenderer;
+		this.fontRendererObj = mc.fontRendererObj;
 		this.width = width;
 		this.height = height;
 		if (!net.minecraftforge.common.MinecraftForge.EVENT_BUS.post(new net.minecraftforge.client.event.GuiScreenEvent.InitGuiEvent.Pre(this, this.buttonList))) {
@@ -46,7 +46,7 @@ public class GuiScreen1_13 extends GuiScreenInternal {
 	public void drawScreen(int mouseX, int mouseY, float partialTicks) {
 		super.drawScreen(mouseX, mouseY, partialTicks);
 		for (int i = 0; i < this.newButtons.size(); ++i) {
-			this.newButtons.get(i).drawButton(this.mc, mouseX, mouseY, partialTicks);
+			this.newButtons.get(i).drawButton(this.mc, mouseX, mouseY);
 		}
 	}
 	

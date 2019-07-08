@@ -5,7 +5,7 @@ import static info.u_team.music_player.init.MusicPlayerLocalization.*;
 import info.u_team.music_player.gui.util.GuiTrackUtils;
 import info.u_team.music_player.lavaplayer.api.audio.IAudioTrack;
 import info.u_team.music_player.musicplayer.playlist.Playlist;
-import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.EnumChatFormatting;
 
 public class GuiMusicSearchListEntryMusicTrack extends GuiMusicSearchListEntry {
 	
@@ -17,7 +17,7 @@ public class GuiMusicSearchListEntryMusicTrack extends GuiMusicSearchListEntry {
 		this.playlistEntry = playlistEntry;
 		addTrackButton.setClickAction(() -> {
 			playlist.add(track);
-			gui.setInformation(TextFormatting.GREEN + getTranslation(gui_search_added), 150);
+			gui.setInformation(EnumChatFormatting.GREEN + getTranslation(gui_search_added), 150);
 		});
 	}
 	

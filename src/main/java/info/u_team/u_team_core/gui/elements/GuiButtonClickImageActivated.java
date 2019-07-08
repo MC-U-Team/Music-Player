@@ -23,11 +23,11 @@ public class GuiButtonClickImageActivated extends GuiButtonClickImage {
 	}
 	
 	@Override
-	public void drawButton(Minecraft mc, int mouseX, int mouseY, float partial) {
+	public void drawButton(Minecraft mc, int mouseX, int mouseY) {
 		if (active) {
 			color(activecolor);
 		}
-		super.drawButton(mc, mouseX, mouseY, partial);
+		super.drawButton(mc, mouseX, mouseY);
 	}
 	
 }

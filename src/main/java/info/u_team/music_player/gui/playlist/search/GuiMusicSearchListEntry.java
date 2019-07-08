@@ -16,9 +16,9 @@ abstract class GuiMusicSearchListEntry extends GuiScrollableListEntry<GuiMusicSe
 	
 	@Override
 	public void drawEntry(int entryWidth, int entryHeight, int mouseX, int mouseY, boolean mouseInList, float partialTicks) {
-		addTrackButton.x = entryWidth - 20;
-		addTrackButton.y = getY() + 8;
-		addTrackButton.drawButton(Minecraft.getMinecraft(), mouseX, mouseY, partialTicks);
+		addTrackButton.xPosition = entryWidth - 20;
+		addTrackButton.yPosition = getY() + 8;
+		addTrackButton.drawButton(Minecraft.getMinecraft(), mouseX, mouseY);
 	}
 	
 	protected void addTrackInfo(IAudioTrack track, int entryWidth, int leftMargin, int titleColor) {

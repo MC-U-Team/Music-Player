@@ -13,7 +13,7 @@ public class GuiMusicPlaylistListEntryError extends GuiMusicPlaylistListEntryFun
 
 	@Override
 	public void drawEntryExtended(int entryWidth, int entryHeight, int mouseX, int mouseY, boolean mouseInList, float partialTicks) {
-		mc.fontRenderer.drawString(error, getX() + 5, getY() + 5, 0xFF0000);
-		mc.fontRenderer.drawString(uri.get(), getX() + 5, getY() + 25, 0xFF0000);
+		mc.fontRendererObj.drawString(error, getX() + 5, getY() + 5, 0xFF0000);
+		mc.fontRendererObj.drawString(uri.get(), getX() + 5, getY() + 25, 0xFF0000);
 	}
 }

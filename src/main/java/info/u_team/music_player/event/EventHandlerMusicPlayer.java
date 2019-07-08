@@ -74,7 +74,7 @@ public class EventHandlerMusicPlayer {
 	
 	private boolean isKeyDown(KeyBinding binding, boolean gui, int keyCode) {
 		if (gui) {
-			return binding.isActiveAndMatches(keyCode);
+			return keyCode != 0 && keyCode == binding.getKeyCode();
 		} else {
 			return binding.isPressed();
 		}
@@ -87,14 +87,14 @@ public class EventHandlerMusicPlayer {
 	@SubscribeEvent
 	public void on(RenderGameOverlayEvent.Pre event) {
 		final Minecraft mc = Minecraft.getMinecraft();
-		if (event.getType() == ElementType.TEXT && !mc.gameSettings.showDebugInfo && mc.currentScreen == null) {
+		if (event.type == ElementType.TEXT && !mc.gameSettings.showDebugInfo && mc.currentScreen == null) {
 			if (settings.isShowIngameOverlay()) {
 				if (overlayRender == null) {
 					overlayRender = new RenderOverlayMusicDisplay();
 				}
 				IngameOverlayPosition position = settings.getIngameOverlayPosition();
 				
-				final ScaledResolution scaledResolution = new ScaledResolution(mc);
+				final ScaledResolution scaledResolution = new ScaledResolution(mc, mc.displayWidth, mc.displayHeight);
 				final int width = scaledResolution.getScaledWidth();
 				final int height = scaledResolution.getScaledHeight();
 				
@@ -119,7 +119,7 @@ public class EventHandlerMusicPlayer {
 	
 	@SubscribeEvent(priority = EventPriority.HIGHEST)
 	public void on(GuiScreenEvent.InitGuiEvent.Pre event) {
-		final GuiScreen gui = event.getGui();
+		final GuiScreen gui = event.gui;
 		if (gui instanceof GuiIngameMenu) {
 			if (settings.isShowIngameMenueOverlay()) {
 				gui.mc.displayGuiScreen(new GuiIngameMenuCustom());
