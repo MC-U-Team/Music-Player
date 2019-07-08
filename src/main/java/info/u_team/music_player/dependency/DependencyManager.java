@@ -5,6 +5,7 @@ import java.net.*;
 import java.nio.file.*;
 import java.util.*;
 import java.util.function.Consumer;
+import java.util.stream.Stream;
 
 import org.apache.logging.log4j.*;
 
@@ -43,17 +44,17 @@ public class DependencyManager {
 	}
 	
 	private static void getJarFilesInDev(Path path, Consumer<Path> consumer) {
-		try {
-			Files.walk(path).filter(file -> file.toString().endsWith(".jar")).forEach(consumer);
+		try (Stream<Path> stream = Files.walk(path)) {
+			stream.filter(file -> file.toString().endsWith(".jar")).forEach(consumer);
 		} catch (IOException ex) {
 			logger.error(load, "When searching for jar files in dev an exception occured.", ex);
 		}
 	}
 	
 	private static void getJarFilesInJar(String folder, Consumer<Path> consumer) {
-		try {
-			try (FileSystem fileSystem = FileSystems.newFileSystem(DependencyManager.class.getResource("/dependencies").toURI(), Collections.<String, Object> emptyMap())) {
-				Files.walk(fileSystem.getPath("/" + folder)).filter(file -> file.toString().endsWith(".jar")).forEach(consumer);
+		try (FileSystem fileSystem = FileSystems.newFileSystem(DependencyManager.class.getResource("/dependencies").toURI(), Collections.<String, Object> emptyMap())) {
+			try (Stream<Path> stream = Files.walk(fileSystem.getPath("/" + folder))) {
+				stream.filter(file -> file.toString().endsWith(".jar")).forEach(consumer);
 			}
 		} catch (Exception ex) {
 			logger.error(load, "When searching for jar files in jar an exception occured.", ex);
