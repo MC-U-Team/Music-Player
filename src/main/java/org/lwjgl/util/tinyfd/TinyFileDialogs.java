@@ -1,6 +1,7 @@
 package org.lwjgl.util.tinyfd;
 
 import java.io.*;
+import java.nio.charset.Charset;
 import java.nio.file.*;
 
 import com.sun.jna.*;
@@ -108,7 +109,7 @@ public class TinyFileDialogs {
 	
 	private static int getStringSize(String string) {
 		try {
-			return string.getBytes(Native.DEFAULT_ENCODING).length + 1;
+			return string.getBytes(Charset.defaultCharset().name()).length + 1;
 		} catch (UnsupportedEncodingException e) {
 			return string.getBytes().length + 1;
 		}
