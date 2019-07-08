@@ -1,21 +1,28 @@
 package info.u_team.music_player.config;
 
-import info.u_team.music_player.MusicPlayerMod;
-import net.minecraftforge.common.config.Config;
-import net.minecraftforge.common.config.Config.*;
+import java.io.File;
 
-@Config(modid = MusicPlayerMod.modid, name = MusicPlayerMod.modid + "-client", category = "")
+import net.minecraftforge.common.config.Configuration;
+
 public class ClientConfig {
 	
-	@Comment("Client configuration settings")
+	private static Configuration configuration;
+	
+	public static void setupConfig(File file) {
+		configuration = new Configuration(new File(file, "musicplayer-client" + ".cfg"));
+		configuration.load();
+		
+		configuration.getCategory("client").setComment("Client configuration settings");
+		client.internalPlaylists = configuration.getBoolean("internalPlaylists", "client", false, "Should we use instead of the global appdata dir a local dir in configs for storing and loading our playlist");
+		
+		configuration.save();
+	}
+	
 	public static Client client = new Client();
 	
 	public static class Client {
 		
-		@Comment("Should we use instead of the global appdata dir a local dir in configs for storing and loading our playlist")
-		@Name("internalPlaylists")
-		@RequiresMcRestart
 		public boolean internalPlaylists = false;
-		
 	}
+	
 }

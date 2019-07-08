@@ -1,5 +1,6 @@
 package info.u_team.music_player.proxy;
 
+import info.u_team.music_player.config.ClientConfig;
 import info.u_team.music_player.dependency.DependencyManager;
 import info.u_team.music_player.event.EventHandlerMusicPlayer;
 import info.u_team.music_player.init.*;
@@ -16,7 +17,7 @@ public class ClientProxy extends CommonProxy {
 	public void preinit(FMLPreInitializationEvent event) {
 		super.preinit(event);
 		System.setProperty("http.agent", "Chrome");
-		
+		ClientConfig.setupConfig(event.getModConfigurationDirectory());
 		DependencyManager.construct();
 		MusicPlayerKeys.construct();
 	}
