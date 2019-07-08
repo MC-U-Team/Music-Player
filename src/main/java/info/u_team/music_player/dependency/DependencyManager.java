@@ -1,6 +1,7 @@
 package info.u_team.music_player.dependency;
 
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.net.*;
 import java.nio.file.*;
 import java.util.*;
@@ -29,7 +30,19 @@ public class DependencyManager {
 			getJarFilesInDev(Paths.get(devPath, "musicplayer-lavaplayer/build/libs"), DependencyManager::addToMusicPlayerDependencies);
 			getJarFilesInDev(Paths.get(devPath, "musicplayer-lavaplayer/build/dependencies"), DependencyManager::addToMusicPlayerDependencies);
 		} else {
-			URL.setURLStreamHandlerFactory(protocol -> "musicplayer".equals(protocol) ? new URLStreamHandlerMusicPlayer() : null);
+			try {
+				URL.setURLStreamHandlerFactory(protocol -> "musicplayer".equals(protocol) ? new URLStreamHandlerMusicPlayer() : null);
+			} catch (Error error) { // Catch error if the handler already is defined. Then try with reflections
+				try {
+					final Field field = URL.class.getDeclaredField("factory");
+					field.setAccessible(true);
+					final URLStreamHandlerFactory oldFactory = (URLStreamHandlerFactory) field.get(null);
+					final URLStreamHandlerFactory newFactory = protocol -> "musicplayer".equals(protocol) ? new URLStreamHandlerMusicPlayer() : oldFactory != null ? oldFactory.createURLStreamHandler(protocol) : null;
+					field.set(null, newFactory);
+				} catch (Exception ex) {
+					logger.error(load, "Could not replace url stream handler because reflections failed.", ex);
+				}
+			}
 			getJarFilesInJar("dependencies/internal", path -> addToInternalDependencies(createInternalURL(path)));
 			getJarFilesInJar("dependencies/musicplayer", path -> addToMusicPlayerDependencies(createInternalURL(path)));
 			fixSLF4JLogger();
