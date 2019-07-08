@@ -2,8 +2,9 @@ In this jar we included the binaries of the following projects under these licen
 Thanks to all of these amazing projects to make this project working! Thanks especially
 sedmelluq for lavaplayer!
 
------------------------------------jna-----------------------------------
+-----------------------------------jna / jna-platform -----------------------------------
 by jna
+jna-platform and jna is included. The license is the same.
 
 
                                  Apache License
