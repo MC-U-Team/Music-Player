@@ -94,7 +94,7 @@ public class EventHandlerMusicPlayer {
 				}
 				IngameOverlayPosition position = settings.getIngameOverlayPosition();
 				
-				final ScaledResolution scaledResolution = new ScaledResolution(mc, mc.displayWidth, mc.displayHeight);
+				final ScaledResolution scaledResolution = new ScaledResolution(mc);
 				final int width = scaledResolution.getScaledWidth();
 				final int height = scaledResolution.getScaledHeight();
 				

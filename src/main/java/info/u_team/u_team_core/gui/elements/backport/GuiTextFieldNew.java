@@ -6,6 +6,7 @@ import javax.annotation.Nullable;
 
 import net.minecraft.client.gui.*;
 import net.minecraft.client.renderer.*;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.*;
 import net.minecraftforge.fml.relauncher.*;
 
@@ -518,19 +519,19 @@ public class GuiTextFieldNew extends Gui implements IGuiEventListener {
 		}
 		
 		Tessellator tessellator = Tessellator.getInstance();
-		WorldRenderer worldrenderer = tessellator.getWorldRenderer();
-		GlStateManager.color(0.0F, 0.0F, 255.0F, 255.0F);
-		GlStateManager.disableTexture2D();
-		GlStateManager.enableColorLogic();
-		GlStateManager.colorLogicOp(5387);
-		worldrenderer.startDrawingQuads();
-		worldrenderer.addVertex((double) startX, (double) endY, 0.0D);
-		worldrenderer.addVertex((double) endX, (double) endY, 0.0D);
-		worldrenderer.addVertex((double) endX, (double) startY, 0.0D);
-		worldrenderer.addVertex((double) startX, (double) startY, 0.0D);
-		tessellator.draw();
-		GlStateManager.disableColorLogic();
-		GlStateManager.enableTexture2D();
+        WorldRenderer worldrenderer = tessellator.getWorldRenderer();
+        GlStateManager.color(0.0F, 0.0F, 255.0F, 255.0F);
+        GlStateManager.disableTexture2D();
+        GlStateManager.enableColorLogic();
+        GlStateManager.colorLogicOp(5387);
+        worldrenderer.begin(7, DefaultVertexFormats.POSITION);
+        worldrenderer.pos((double)startX, (double)endY, 0.0D).endVertex();
+        worldrenderer.pos((double)endX, (double)endY, 0.0D).endVertex();
+        worldrenderer.pos((double)endX, (double)startY, 0.0D).endVertex();
+        worldrenderer.pos((double)startX, (double)startY, 0.0D).endVertex();
+        tessellator.draw();
+        GlStateManager.disableColorLogic();
+        GlStateManager.enableTexture2D();
 	}
 	
 	/**

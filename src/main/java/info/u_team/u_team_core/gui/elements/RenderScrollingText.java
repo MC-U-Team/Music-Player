@@ -69,7 +69,7 @@ public class RenderScrollingText extends RenderScalingText {
 	@Override
 	public void draw(float x, float y) {
 		final Minecraft mc = Minecraft.getMinecraft();
-		final ScaledResolution scaledresolution = new ScaledResolution(mc, mc.displayWidth, mc.displayHeight);
+		final ScaledResolution scaledresolution = new ScaledResolution(mc);
 		
 		final double scaleFactor = scaledresolution.getScaleFactor();
 		

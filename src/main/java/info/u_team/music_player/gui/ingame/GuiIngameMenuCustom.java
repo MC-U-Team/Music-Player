@@ -27,7 +27,7 @@ public class GuiIngameMenuCustom extends GuiScreen1_13 {
 	 * Adds the buttons (and other controls) to the screen in question. Called when the GUI is displayed and when the window
 	 * resizes, the buttonList is cleared beforehand.
 	 */
-	@SuppressWarnings("unchecked")
+	@Override
 	public void initGui() {
 		this.field_146445_a = 0;
 		this.buttonList.clear();
