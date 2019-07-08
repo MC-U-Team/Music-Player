@@ -2,6 +2,7 @@ package info.u_team.music_player.gui.util;
 
 import static info.u_team.music_player.init.MusicPlayerLocalization.*;
 
+import java.lang.reflect.*;
 import java.net.URI;
 import java.util.function.Function;
 
@@ -9,13 +10,26 @@ import info.u_team.music_player.lavaplayer.api.audio.*;
 import info.u_team.music_player.musicplayer.MusicPlayerManager;
 import info.u_team.music_player.util.TimeUtil;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.event.ClickEvent;
 import net.minecraft.event.ClickEvent.Action;
 import net.minecraft.util.*;
+import net.minecraftforge.fml.common.asm.transformers.deobf.FMLDeobfuscatingRemapper;
 
 public final class GuiTrackUtils {
 	
 	private static final Minecraft mc = Minecraft.getMinecraft();
+	
+	private static Method handleComponentClickMethod;
+	static {
+		final String name = FMLDeobfuscatingRemapper.INSTANCE.mapMethodName("GuiScreen", "func_175276_a", "(Lnet/minecraft/util/IChatComponent;)Z");
+		try {
+			handleComponentClickMethod = GuiScreen.class.getDeclaredMethod(name, IChatComponent.class);
+			handleComponentClickMethod.setAccessible(true);
+		} catch (NoSuchMethodException ex) {
+			throw new IllegalStateException("The method " + name + " must be found to work!");
+		}
+	}
 	
 	public static String trimToWith(String string, int width) {
 		String newString = mc.fontRendererObj.trimStringToWidth(string, width);
@@ -48,7 +62,11 @@ public final class GuiTrackUtils {
 		} catch (Exception ex) {
 			style.setChatClickEvent(new ClickEvent(Action.OPEN_FILE, uri));
 		}
-		return mc.currentScreen.handleComponentClick(new ChatComponentText("").setChatStyle(style));
+		try {
+			return (Boolean) handleComponentClickMethod.invoke(mc.currentScreen, new ChatComponentText("").setChatStyle(style));
+		} catch (Exception ex) {
+			throw new IllegalStateException("The method handleComponentClick in GuiScreen must be accessable. This should never happen!");
+		}
 	}
 	
 	public static String getFormattedDuration(IAudioTrack track) {
