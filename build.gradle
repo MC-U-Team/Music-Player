@@ -172,6 +172,8 @@ dependencies {
 	internal ("net.harawata:appdirs:1.0.0") {
 		transitive=false
 	}
+	
+	internal ("net.java.dev.jna:jna:5.3.1")
 }
 
 processResources {
