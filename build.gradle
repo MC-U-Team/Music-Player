@@ -1,4 +1,7 @@
 buildscript {
+	apply from: "https://raw.githubusercontent.com/HyCraftHD/Blank-Forge-Project/master/build.methods"
+	setup()
+
 	repositories {
         maven { url = "https://files.minecraftforge.net/maven" }
 		maven { url = "https://plugins.gradle.org/m2/" }
@@ -6,7 +9,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath "net.minecraftforge.gradle:ForgeGradle:2.0-SNAPSHOT"
+        classpath "net.minecraftforge.gradle:ForgeGradle:${config.forge.gradle}"
 		classpath "gradle.plugin.com.matthewprenger:CurseGradle:1.1.2"
     }
 }
@@ -29,7 +32,7 @@ repositories {
 getBuildNumber()
 
 group = "info.u-team"
-archivesBaseName = "${config.mod.filename}-1.8.x"
+archivesBaseName = "${config.mod.filename}-${config.forge.mcversion}"
 version = "${config.mod.version}.${config.buildnumber}" + getAppendix();
 
 def getAppendix() {
@@ -61,7 +64,7 @@ def normalManifest = {
 	attributes(
 		"Specification-Title": config.mod.name,
         "Specification-Vendor": "Team UTeam",
-        "Specification-Version": "14.0",
+        "Specification-Version": "11.14",
 		"Built-On": config.forge.mcversion,
 		"Implementation-Title": config.mod.name,
     	"Implementation-Version": project.version,
@@ -202,26 +205,20 @@ curseforge {
     	id = config.curse.id
     	releaseType = config.curse.type
 
-		addGameVersion "1.8"
-		addGameVersion "1.8.8"
-		addGameVersion "1.8.9"
+		addGameVersion minecraft.version
 		
 		options {
 		    forgeGradleIntegration = false
 		}
 		
-		relations {
-      		requiredDependency "u-team-core"
-    	}
-
     	mainArtifact(jar) {
-      		displayName = "${config.curse.display}-1.8.x-${project.version}"
+      		displayName = "${config.curse.display}-${minecraft.version}-${project.version}"
       		changelogType = "html"
       		changelog = "<a href=\"${config.curse.changelog}\">Changelog of ${project.version}</a>"
     	}
     	
     	addArtifact(deobfJar) {
-    		displayName = "${config.curse.display}-1.8.x-${project.version}-dev"
+    		displayName = "${config.curse.display}-${minecraft.version}-${project.version}-dev"
     		changelogType = "text"
     		changelog = "Mappings: " + config.forge.mapping
     	}
@@ -260,7 +257,7 @@ uploadArchives {
 					licenses {
 						license {
 							name "Apache License 2.0"
-							url "https://github.com/MC-U-Team/Music-Player/blob/1.8.x-backport/LICENSE"
+							url "https://github.com/MC-U-Team/Music-Player/blob/1.8-backport/LICENSE"
 							distribution "repo"
 						}
 					}
