@@ -67,6 +67,7 @@ def normalManifest = {
     	"Implementation-Version": project.version,
 		"Implementation-Vendor": "Team UTeam",
         "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
+        "FMLAT": "musicplayer_at.cfg",
 	)
 }
 
@@ -187,6 +188,7 @@ processResources {
     from(sourceSets.main.resources.srcDirs) {
         exclude "mcmod.info"
     }
+    rename '(.+_at.cfg)', 'META-INF/$1'
 }
 
 compileJava {
