@@ -29,7 +29,7 @@ repositories {
 getBuildNumber()
 
 group = "info.u-team"
-archivesBaseName = "${config.mod.filename}-${config.forge.mcversion}"
+archivesBaseName = "${config.mod.filename}-1.8.x"
 version = "${config.mod.version}.${config.buildnumber}" + getAppendix();
 
 def getAppendix() {
@@ -173,7 +173,7 @@ dependencies {
 		transitive=false
 	}
 	
-	internal ("net.java.dev.jna:jna:5.3.1")
+	internal ("net.java.dev.jna:jna-platform:5.3.1")
 }
 
 processResources {
@@ -215,13 +215,13 @@ curseforge {
     	}
 
     	mainArtifact(jar) {
-      		displayName = "${config.curse.display}-${config.forge.mcversion}-${project.version}"
+      		displayName = "${config.curse.display}-1.8.x-${project.version}"
       		changelogType = "html"
       		changelog = "<a href=\"${config.curse.changelog}\">Changelog of ${project.version}</a>"
     	}
     	
     	addArtifact(deobfJar) {
-    		displayName = "${config.curse.display}-${config.forge.mcversion}-${project.version}-dev"
+    		displayName = "${config.curse.display}-1.8.x-${project.version}-dev"
     		changelogType = "text"
     		changelog = "Mappings: " + config.forge.mapping
     	}

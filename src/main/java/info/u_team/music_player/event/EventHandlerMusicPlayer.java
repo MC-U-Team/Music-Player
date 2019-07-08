@@ -34,7 +34,7 @@ public class EventHandlerMusicPlayer {
 	}
 	
 	@SubscribeEvent
-	public void on(KeyboardInputEvent.Post event) {
+	public void on(KeyboardInputEvent.Pre event) {
 		if (settings.isKeyWorkInGui()) {
 			if (Keyboard.getEventKeyState())
 				event.setCanceled(handleKeyboard(true, Keyboard.getEventKey()));

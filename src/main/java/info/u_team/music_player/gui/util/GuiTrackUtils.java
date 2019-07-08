@@ -2,7 +2,7 @@ package info.u_team.music_player.gui.util;
 
 import static info.u_team.music_player.init.MusicPlayerLocalization.*;
 
-import java.lang.reflect.*;
+import java.lang.reflect.Method;
 import java.net.URI;
 import java.util.function.Function;
 
@@ -14,7 +14,6 @@ import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.event.ClickEvent;
 import net.minecraft.event.ClickEvent.Action;
 import net.minecraft.util.*;
-import net.minecraftforge.fml.common.asm.transformers.deobf.FMLDeobfuscatingRemapper;
 
 public final class GuiTrackUtils {
 	
@@ -22,13 +21,16 @@ public final class GuiTrackUtils {
 	
 	private static Method handleComponentClickMethod;
 	static {
-		final String name = FMLDeobfuscatingRemapper.INSTANCE.mapMethodName("GuiScreen", "func_175276_a", "(Lnet/minecraft/util/IChatComponent;)Z");
 		try {
-			handleComponentClickMethod = GuiScreen.class.getDeclaredMethod(name, IChatComponent.class);
-			handleComponentClickMethod.setAccessible(true);
+			handleComponentClickMethod = GuiScreen.class.getDeclaredMethod("func_175276_a", IChatComponent.class);
 		} catch (NoSuchMethodException ex) {
-			throw new IllegalStateException("The method " + name + " must be found to work!");
+			try {
+				handleComponentClickMethod = GuiScreen.class.getDeclaredMethod("handleComponentClick", IChatComponent.class);
+			} catch (NoSuchMethodException ex2) {
+				throw new IllegalStateException("The method func_175276_a / handleComponentClick must be found to work!");
+			}
 		}
+		handleComponentClickMethod.setAccessible(true);
 	}
 	
 	public static String trimToWith(String string, int width) {
