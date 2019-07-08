@@ -6,12 +6,16 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath "net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT"
+        classpath "net.minecraftforge.gradle:ForgeGradle:2.0-SNAPSHOT"
 		classpath "gradle.plugin.com.matthewprenger:CurseGradle:1.1.2"
     }
 }
 
+apply from: "https://raw.githubusercontent.com/HyCraftHD/Blank-Forge-Project/master/build.methods"
 apply from: "https://raw.githubusercontent.com/HyCraftHD/Blank-Forge-Project/master/git.methods"
+
+setup()
+info()
 
 apply plugin: "net.minecraftforge.gradle.forge"
 apply plugin: "com.matthewprenger.cursegradle"
@@ -20,18 +24,6 @@ apply plugin: "maven"
 repositories {
 	maven { url = "https://repo.u-team.info" }
 	mavenCentral()
-}
-
-loadConfig()
-
-def loadConfig() {
-	ext.buildProps = file "build.properties"
-
-	buildProps.withReader {
-		def prop = new Properties()
-		prop.load(it)
-		ext.config = new ConfigSlurper().parse prop
-	}
 }
 
 getBuildNumber()
@@ -57,7 +49,7 @@ compileJava {
 minecraft {
     version = config.forge.version
     runDir = "run"
-    mappings = "${config.forge.mapping_channel}_${config.forge.mapping}"
+    mappings = "${config.forge.mapping}"
     makeObfSourceJar = false
 	
 	replace '${version}', project.version
@@ -165,7 +157,6 @@ sourceSets {
 }
 
 dependencies {
-	compile "info.u-team:u_team_core-${config.forge.mcversion}:${config.uteamcore.version}:dev"
 	compile project(":musicplayer-lavaplayer-api")
 	
 	internal ("org.lwjgl:lwjgl-tinyfd:3.1.6:natives-linux") {
@@ -209,7 +200,9 @@ curseforge {
     	id = config.curse.id
     	releaseType = config.curse.type
 
-		addGameVersion config.forge.mcversion
+		addGameVersion "1.8"
+		addGameVersion "1.8.8"
+		addGameVersion "1.8.9"
 		
 		options {
 		    forgeGradleIntegration = false
@@ -265,7 +258,7 @@ uploadArchives {
 					licenses {
 						license {
 							name "Apache License 2.0"
-							url "https://github.com/MC-U-Team/Music-Player/blob/1.12.2/LICENSE"
+							url "https://github.com/MC-U-Team/Music-Player/blob/1.8.x-backport/LICENSE"
 							distribution "repo"
 						}
 					}
