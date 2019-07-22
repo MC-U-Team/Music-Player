@@ -1,6 +1,11 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [1.12.2-2.0.1.19] - 2019-07-22
+### Changed
+- Fixed crash when url stream handler was already defined
+- Close all streams now with try with resources
+
 ## [1.12.2-2.0.0.9] - 2019-06-01
 ### Changed
 - Update to newest forge and uteamcore version
