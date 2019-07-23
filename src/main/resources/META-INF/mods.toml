@@ -39,7 +39,7 @@ File formats:
 	[[dependencies.musicplayer]]
 	    modId="forge"
 	    mandatory=true
-	    versionRange="[27.0.13,)"
+	    versionRange="[27.0.60,)"
 	    ordering="NONE"
 	    side="BOTH"
 	
@@ -53,6 +53,6 @@ File formats:
 	[[dependencies.musicplayer]]
 	    modId="uteamcore"
 	    mandatory=true
-	    versionRange="[2.5.5.117,)"
+	    versionRange="[2.5.5.119,)"
 	    ordering="NONE"
 	    side="BOTH"
