@@ -1,6 +1,9 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [1.13.2-2.0.2.26] - 2019-08-03
+- Fixes [#14](https://github.com/MC-U-Team/Music-Player/issues/14)
+
 ## [1.13.2-2.0.0.10] - 2019-05-22
 ### Changed
 - Changed required dependency versions
