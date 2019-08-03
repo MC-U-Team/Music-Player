@@ -1,6 +1,9 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [1.12.2-2.0.2.25] - 2019-08-03
+- Fixes [#14](https://github.com/MC-U-Team/Music-Player/issues/14)
+
 ## [1.12.2-2.0.1.19] - 2019-07-22
 ### Changed
 - Fixed crash when url stream handler was already defined
