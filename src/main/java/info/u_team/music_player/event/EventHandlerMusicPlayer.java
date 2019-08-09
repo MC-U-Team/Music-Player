@@ -19,31 +19,32 @@ import net.minecraftforge.client.event.*;
 import net.minecraftforge.client.event.GuiScreenEvent.KeyboardKeyPressedEvent;
 import net.minecraftforge.client.event.InputEvent.KeyInputEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
+import net.minecraftforge.event.TickEvent.ClientTickEvent;
+import net.minecraftforge.event.TickEvent.Phase;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.gameevent.TickEvent.*;
 
 public class EventHandlerMusicPlayer {
-	
+
 	private final Settings settings;
-	
+
 	public EventHandlerMusicPlayer(Settings settings) {
 		this.settings = settings;
 	}
-	
+
 	// Used to listen to keyboard events
-	
+
 	@SubscribeEvent
 	public void on(KeyInputEvent event) {
 		handleKeyboard(false, -1, -1);
 	}
-	
+
 	@SubscribeEvent
 	public void on(KeyboardKeyPressedEvent.Post event) {
 		if (settings.isKeyWorkInGui()) {
 			event.setCanceled(handleKeyboard(true, event.getKeyCode(), event.getScanCode()));
 		}
 	}
-	
+
 	private boolean handleKeyboard(boolean gui, int keyCode, int scanCode) {
 		final boolean handled;
 		final ITrackManager manager = MusicPlayerManager.getPlayer().getTrackManager();
@@ -71,7 +72,7 @@ public class EventHandlerMusicPlayer {
 		}
 		return handled;
 	}
-	
+
 	private boolean isKeyDown(KeyBinding binding, boolean gui, int keyCode, int scanCode) {
 		if (gui) {
 			return binding.isActiveAndMatches(InputMappings.getInputByCode(keyCode, scanCode));
@@ -79,11 +80,11 @@ public class EventHandlerMusicPlayer {
 			return binding.isPressed();
 		}
 	}
-	
+
 	private RenderOverlayMusicDisplay overlayRender;
-	
+
 	// Render overlay
-	
+
 	@SubscribeEvent
 	public void on(RenderGameOverlayEvent.Pre event) {
 		final Minecraft mc = Minecraft.getInstance();
@@ -93,34 +94,34 @@ public class EventHandlerMusicPlayer {
 					overlayRender = new RenderOverlayMusicDisplay();
 				}
 				IngameOverlayPosition position = settings.getIngameOverlayPosition();
-				
+
 				final MainWindow window = mc.mainWindow;
 				final int width = window.getScaledWidth();
 				final int height = window.getScaledHeight();
-				
+
 				final int x;
 				if (position.isLeft()) {
 					x = 3;
 				} else {
 					x = width - 3 - overlayRender.getWidth();
 				}
-				
+
 				final int y;
 				if (position.isUp()) {
 					y = 3;
 				} else {
 					y = height - 3 - overlayRender.getHeight();
 				}
-				
+
 				overlayRender.draw(x, y);
 			}
 		}
 	}
-	
+
 	// Used to add buttons and gui controls to main ingame gui
-	
+
 	private ScrollingTextRender titleRender, authorRender;
-	
+
 	@SubscribeEvent
 	public void on(GuiScreenEvent.InitGuiEvent.Pre event) {
 		final Screen gui = event.getGui();
@@ -136,7 +137,7 @@ public class EventHandlerMusicPlayer {
 			}
 		}
 	}
-	
+
 	@SubscribeEvent
 	public void on(GuiScreenEvent.InitGuiEvent.Post event) {
 		final Screen gui = event.getGui();
@@ -157,7 +158,7 @@ public class EventHandlerMusicPlayer {
 			}
 		}
 	}
-	
+
 	@SubscribeEvent
 	public void on(GuiScreenEvent.DrawScreenEvent event) {
 		final Screen gui = event.getGui();
@@ -166,11 +167,12 @@ public class EventHandlerMusicPlayer {
 				gui.children().stream() //
 						.filter(element -> element instanceof GuiControls) //
 						.map(element -> ((GuiControls) element)).findAny() //
-						.ifPresent(controls -> controls.drawScreen(event.getMouseX(), event.getMouseY(), event.getRenderPartialTicks()));
+						.ifPresent(controls -> controls.drawScreen(event.getMouseX(), event.getMouseY(),
+								event.getRenderPartialTicks()));
 			}
 		}
 	}
-	
+
 	@SubscribeEvent
 	public void on(ClientTickEvent event) {
 		if (event.phase == Phase.END) {
