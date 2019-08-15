@@ -1,6 +1,9 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [1.14.4-2.0.3.35] - 2019-08-15
+- Fixes [#19](https://github.com/MC-U-Team/Music-Player/issues/19)
+
 ## [1.14.4-2.0.2.30] - 2019-08-09
 - Fixed crash because of forge update (28.0.45) [#15](https://github.com/MC-U-Team/Music-Player/issues/15)
 
