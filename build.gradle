@@ -7,11 +7,11 @@ buildscript {
     }
     dependencies {
         classpath group: "net.minecraftforge.gradle", name: "ForgeGradle", version: "3.+", changing: true
-		classpath "gradle.plugin.com.matthewprenger:CurseGradle:1.1.2"
+		classpath "gradle.plugin.com.matthewprenger:CurseGradle:1.3.0"
     }
 }
 
-apply from: "https://raw.githubusercontent.com/HyCraftHD/Blank-Forge-Project/master/build.methods"
+apply from: "https://raw.githubusercontent.com/HyCraftHD/Blank-Forge-Project/master/configuration.methods"
 apply from: "https://raw.githubusercontent.com/HyCraftHD/Blank-Forge-Project/master/git.methods"
 
 setup()
@@ -72,7 +72,7 @@ def normalManifest = {
 	attributes(
 		"Specification-Title": config.mod.name,
         "Specification-Vendor": "Team UTeam",
-        "Specification-Version": "27.0",
+        "Specification-Version": config.forge.major_version,
 		"Built-On": config.forge.mcversion,
 		"Implementation-Title": config.mod.name,
     	"Implementation-Version": project.version,
@@ -216,7 +216,7 @@ curseforge {
     	mainArtifact(jar) {
       		displayName = "${config.curse.display}-${config.forge.mcversion}-${project.version}"
       		changelogType = "html"
-      		changelog = "<a href=\"${config.curse.changelog}\">Changelog of ${project.version}</a>"
+      		changelog = "<a href=\"https://github.com/MC-U-Team/${config.github.name}/blob/${config.github.branch}/CHANGELOG.md\">Changelog of ${project.version}</a>"
     	}
     	
     	addArtifact(deobfJar) {
@@ -245,21 +245,21 @@ uploadArchives {
 				project {
 					name project.archivesBaseName
 					packaging "jar"
-					description "${config.maven.github_name}"
-					url "https://github.com/MC-U-Team/${config.maven.github_name}"
+					description "${config.github.name}"
+					url "https://github.com/MC-U-Team/${config.github.name}"
 					scm {
-						url "https://github.com/MC-U-Team/${config.maven.github_name}"
-						connection "scm:git:git://github.com/MC-U-Team/${config.maven.github_name}.git"
-						developerConnection "scm:git:git@github.com:MC-U-Team/${config.maven.github_name}.git"
+						url "https://github.com/MC-U-Team/${config.github.name}"
+						connection "scm:git:git://github.com/MC-U-Team/${config.github.name}.git"
+						developerConnection "scm:git:git@github.com:MC-U-Team/${config.github.name}.git"
 					}
 					issueManagement {
 						system "github"
-						url "https://github.com/MC-U-Team/${config.maven.github_name}/issues"
+						url "https://github.com/MC-U-Team/${config.github.name}/issues"
 					}
 					licenses {
 						license {
 							name "Apache License 2.0"
-							url "https://github.com/MC-U-Team/${config.maven.github_name}/blob/${config.forge.mcversion}/LICENSE"
+							url "https://github.com/MC-U-Team/${config.github.name}/blob/${config.github.branch}/LICENSE"
 							distribution "repo"
 						}
 					}
