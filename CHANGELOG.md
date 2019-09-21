@@ -7,12 +7,15 @@ All notable changes to this project will be documented in this file.
 - Update required forge version to 28.0.100
 
 ## [1.14.4-2.0.3.35] - 2019-08-15
+### Changed
 - Fixes [#19](https://github.com/MC-U-Team/Music-Player/issues/19)
 
 ## [1.14.4-2.0.2.30] - 2019-08-09
+### Changed
 - Fixed crash because of forge update (28.0.45) [#15](https://github.com/MC-U-Team/Music-Player/issues/15)
 
 ## [1.14.4-2.0.2.29] - 2019-08-03
+### Changed
 - Fixed youtube provider not working. Updated lavaplayer which fixed [#14](https://github.com/MC-U-Team/Music-Player/issues/14)
 
 ## [1.14.4-2.0.1.21] - 2019-07-23
