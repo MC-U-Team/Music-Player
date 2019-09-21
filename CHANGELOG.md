@@ -6,9 +6,11 @@ All notable changes to this project will be documented in this file.
 - Fixes [#22](https://github.com/MC-U-Team/Music-Player/issues/22) and [#23](https://github.com/MC-U-Team/Music-Player/issues/23) with updating lavaplayer to 1.3.22
 
 ## [1.12.2-2.0.3.31] - 2019-08-15
+### Changed
 - Fixes [#19](https://github.com/MC-U-Team/Music-Player/issues/19)
 
 ## [1.12.2-2.0.2.25] - 2019-08-03
+### Changed
 - Fixes [#14](https://github.com/MC-U-Team/Music-Player/issues/14)
 
 ## [1.12.2-2.0.1.19] - 2019-07-22
