@@ -1,4 +1,4 @@
-# music-player
+# Music-Player
 
 [
 ![Curseforge Downloads](http://cf.way2muchnoise.eu/music-player.svg)
