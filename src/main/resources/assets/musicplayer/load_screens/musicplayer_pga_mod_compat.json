@@ -1,0 +1,27 @@
+{
+	"screens" : [{
+			"class" : "info.u_team.music_player.gui.settings.GuiMusicPlayerSettings", 
+			"texture" : "musicplayer:textures/gui/modsupport/music_gui_music_player_settings.png", 
+			"size" : [246, 240], 
+
+			"texSize" : [246, 240]
+		}, {
+			"class" : "info.u_team.music_player.gui.settings.GuiMusicSearch", 
+			"texture" : "musicplayer:textures/gui/modsupport/music_gui_music_search.png", 
+			"size" : [246, 240], 
+
+			"texSize" : [246, 240]
+		}, {
+			"class" : "info.u_team.music_player.gui.settings.GuiMusicPlaylist", 
+			"texture" : "musicplayer:textures/gui/modsupport/music_gui_music_playlist.png", 
+			"size" : [246, 240], 
+
+			"texSize" : [246, 240]
+		}, {
+			"class" : "info.u_team.music_player.gui.settings.GuiMusicPlayer", 
+			"texture" : "musicplayer:textures/gui/modsupport/music_gui_music_player.png", 
+			"size" : [246, 240], 
+
+			"texSize" : [246, 240]
+		}]
+}
