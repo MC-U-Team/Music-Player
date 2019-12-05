@@ -38,22 +38,22 @@ public class AudioOutput extends Thread {
 	@Override
 	public void run() {
 		try {
-			AudioPlayer player = musicPlayer.getAudioPlayer();
-			AudioDataFormat dataformat = musicPlayer.getAudioDataFormat();
+			final AudioPlayer player = musicPlayer.getAudioPlayer();
+			final AudioDataFormat dataformat = musicPlayer.getAudioDataFormat();
 
-			AudioInputStream stream = AudioPlayerInputStream.createStream(player, dataformat, dataformat.frameDuration(), true);
+			final AudioInputStream stream = AudioPlayerInputStream.createStream(player, dataformat, dataformat.frameDuration(), true);
 
-			SourceDataLine.Info info = new DataLine.Info(SourceDataLine.class, stream.getFormat());
-			SourceDataLine output = (SourceDataLine) AudioSystem.getLine(info);
+			final SourceDataLine.Info info = new DataLine.Info(SourceDataLine.class, stream.getFormat());
+			final SourceDataLine output = (SourceDataLine) AudioSystem.getLine(info);
 
-			int buffersize = dataformat.chunkSampleCount * dataformat.channelCount * 2;
+			final int buffersize = dataformat.chunkSampleCount * dataformat.channelCount * 2;
 
 			output.open(stream.getFormat(), buffersize * 5);
 			output.start();
 
-			byte[] buffer = new byte[buffersize];
+			final byte[] buffer = new byte[buffersize];
+			final long frameDuration = dataformat.frameDuration();
 			int chunkSize;
-			long frameDuration = dataformat.frameDuration();
 			while (true) {
 				if (!player.isPaused()) {
 					if ((chunkSize = stream.read(buffer)) >= 0) {
