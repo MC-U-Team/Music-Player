@@ -5,6 +5,9 @@ All notable changes to this project will be documented in this file.
 ### Changed
  - Fixed sondcloud not working anymore with updating lavaplayer to 1.3.32
  - Fixed [#29](https://github.com/MC-U-Team/Music-Player/issues/29)
+ 
+### Added
+ - Add PGA support (Thanks ArtixAllMighty [#28](https://github.com/MC-U-Team/Music-Player/pull/28))
 
 ## [1.14.4-2.0.3.43] - 2019-09-11
 ### Changed
