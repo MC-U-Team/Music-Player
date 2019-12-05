@@ -7,17 +7,17 @@ import net.minecraftforge.common.ForgeConfigSpec.*;
 
 public class ClientConfig {
 	
-	public static final ForgeConfigSpec config;
-	private static final ClientConfig instance;
+	public static final ForgeConfigSpec CONFIG;
+	private static final ClientConfig INSTANCE;
 	
 	static {
 		Pair<ClientConfig, ForgeConfigSpec> pair = new Builder().configure(ClientConfig::new);
-		config = pair.getRight();
-		instance = pair.getLeft();
+		CONFIG = pair.getRight();
+		INSTANCE = pair.getLeft();
 	}
 	
 	public static ClientConfig getInstance() {
-		return instance;
+		return INSTANCE;
 	}
 	
 	public final BooleanValue internalPlaylists;
