@@ -194,6 +194,14 @@ compileJava {
     options.encoding = "UTF-8"
 }
 
+def generateChangelogUrl() {
+	String url = "https://github.com/MC-U-Team/${config.github.name}/blob/${config.github.branch}/CHANGELOG.md"
+	String mcversion = "${config.forge.mcversion}".replace(".", "")
+	String version = "${project.version}".replace(".", "")
+	String date =new Date().format("yyyy-MM-dd");
+	return url + "#" + mcversion + "-" + version + "---" + date
+}
+
 curseforge {
 	if(System.getenv("token") != null) {
 		apiKey = System.getenv("token")
@@ -221,10 +229,10 @@ curseforge {
       		requiredDependency "u-team-core"
     	}
 
-    	mainArtifact(jar) {
+		mainArtifact(jar) {
       		displayName = "${config.curse.display}-${config.forge.mcversion}-${project.version}"
       		changelogType = "html"
-      		changelog = "<a href=\"https://github.com/MC-U-Team/${config.github.name}/blob/${config.github.branch}/CHANGELOG.md\">Changelog of ${project.version}</a>"
+      		changelog = "<a href=\"" + generateChangelogUrl() + "\">Changelog of ${project.version}</a>"
     	}
     	
     	addArtifact(deobfJar) {
