@@ -9,22 +9,22 @@ import info.u_team.music_player.lavaplayer.api.IMusicPlayer;
 
 public class MusicPlayerManager {
 
-	private static final Logger logger = LogManager.getLogger();
+	private static final Logger LOGGER = LogManager.getLogger();
 
-	private static IMusicPlayer player;
+	private static IMusicPlayer PLAYER;
 
-	private static final Gson gson = new GsonBuilder().setPrettyPrinting().create();
+	private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
 
-	private static final PlaylistManager playlistManager = new PlaylistManager(gson);
-	private static final SettingsManager settingsManager = new SettingsManager(gson);
+	private static final PlaylistManager playlistManager = new PlaylistManager(GSON);
+	private static final SettingsManager settingsManager = new SettingsManager(GSON);
 
 	public static void setup() {
 		generatePlayer();
-		player.startAudioOutput();
+		PLAYER.startAudioOutput();
 		playlistManager.loadFromFile();
 		settingsManager.loadFromFile();
 
-		player.setVolume(settingsManager.getSettings().getVolume());
+		PLAYER.setVolume(settingsManager.getSettings().getVolume());
 	}
 
 	private static void generatePlayer() {
@@ -33,16 +33,16 @@ public class MusicPlayerManager {
 			if (!IMusicPlayer.class.isAssignableFrom(clazz)) {
 				throw new IllegalAccessError("The class " + clazz + " does not implement IMusicPlayer! This should not happen?!");
 			}
-			player = (IMusicPlayer) clazz.getDeclaredConstructor().newInstance();
-			logger.info("Successfully created music player instance");
+			PLAYER = (IMusicPlayer) clazz.getDeclaredConstructor().newInstance();
+			LOGGER.info("Successfully created music player instance");
 		} catch (Exception ex) {
-			logger.fatal("Cannot create music player instance. This is a serious bug and the mod will not work. Report to the mod authors", ex);
+			LOGGER.fatal("Cannot create music player instance. This is a serious bug and the mod will not work. Report to the mod authors", ex);
 			System.exit(0);
 		}
 	}
 
 	public static IMusicPlayer getPlayer() {
-		return player;
+		return PLAYER;
 	}
 
 	public static PlaylistManager getPlaylistManager() {
