@@ -1,56 +1,55 @@
 /**
- * Thanks to VSETH-GECO for this amazing audio consumer class for lavaplayer (It is kind of changed)
- * 
- * MIT License
- * 
- * Copyright (c) 2017 VSETH-GECO
- * 
- * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
- * to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
- * and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
- * 
- * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
- * 
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
- * DEALINGS IN THE SOFTWARE.
+ * Thanks to VSETH-GECO for this amazing audio consumer class for lavaplayer (It is kind of changed) MIT License
+ * Copyright (c) 2017 VSETH-GECO Permission is hereby granted, free of charge, to any person obtaining a copy of this
+ * software and associated documentation files (the "Software"), to deal in the Software without restriction, including
+ * without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the
+ * Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions: The
+ * above copyright notice and this permission notice shall be included in all copies or substantial portions of the
+ * Software. THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT
+ * LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+ * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
+ * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
  */
 
 package info.u_team.music_player.lavaplayer.output;
 
-import javax.sound.sampled.*;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.DataLine;
+import javax.sound.sampled.SourceDataLine;
 
-import com.sedmelluq.discord.lavaplayer.format.*;
+import com.sedmelluq.discord.lavaplayer.format.AudioDataFormat;
+import com.sedmelluq.discord.lavaplayer.format.AudioPlayerInputStream;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 
 import info.u_team.music_player.lavaplayer.MusicPlayer;
 
 public class AudioOutput extends Thread {
-
+	
 	private final MusicPlayer musicPlayer;
-
+	
 	public AudioOutput(MusicPlayer musicPlayer) {
 		super("Audio Player");
 		this.musicPlayer = musicPlayer;
 	}
-
+	
 	@Override
 	public void run() {
 		try {
 			final AudioPlayer player = musicPlayer.getAudioPlayer();
 			final AudioDataFormat dataformat = musicPlayer.getAudioDataFormat();
-
-			final AudioInputStream stream = AudioPlayerInputStream.createStream(player, dataformat, dataformat.frameDuration(), true);
-
+			
+			final AudioInputStream stream = AudioPlayerInputStream.createStream(player, dataformat, dataformat.frameDuration(), false);
+			
 			final SourceDataLine.Info info = new DataLine.Info(SourceDataLine.class, stream.getFormat());
 			final SourceDataLine output = (SourceDataLine) AudioSystem.getLine(info);
-
+			
 			final int buffersize = dataformat.chunkSampleCount * dataformat.channelCount * 2;
-
+			
 			output.open(stream.getFormat(), buffersize * 5);
 			output.start();
-
+			
 			final byte[] buffer = new byte[buffersize];
 			final long frameDuration = dataformat.frameDuration();
 			int chunkSize;
