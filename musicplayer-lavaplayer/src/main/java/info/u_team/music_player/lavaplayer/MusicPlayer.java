@@ -5,6 +5,7 @@ import com.sedmelluq.discord.lavaplayer.player.*;
 import com.sedmelluq.discord.lavaplayer.player.AudioConfiguration.ResamplingQuality;
 
 import info.u_team.music_player.lavaplayer.api.IMusicPlayer;
+import info.u_team.music_player.lavaplayer.api.output.IOutputConsumer;
 import info.u_team.music_player.lavaplayer.api.queue.ITrackManager;
 import info.u_team.music_player.lavaplayer.api.search.ITrackSearch;
 import info.u_team.music_player.lavaplayer.output.AudioOutput;
@@ -21,6 +22,8 @@ public class MusicPlayer implements IMusicPlayer {
 	
 	private final TrackSearch trackSearch;
 	private final TrackManager trackManager;
+	
+	private IOutputConsumer outputConsumer;
 	
 	public MusicPlayer() {
 		audioPlayerManager = new DefaultAudioPlayerManager();
@@ -57,6 +60,10 @@ public class MusicPlayer implements IMusicPlayer {
 		return audioPlazer;
 	}
 	
+	public IOutputConsumer getOutputConsumer() {
+		return outputConsumer;
+	}
+	
 	@Override
 	public ITrackManager getTrackManager() {
 		return trackManager;
@@ -80,5 +87,10 @@ public class MusicPlayer implements IMusicPlayer {
 	@Override
 	public int getVolume() {
 		return audioPlazer.getVolume();
+	}
+	
+	@Override
+	public void setOutputConsumer(IOutputConsumer consumer) {
+		outputConsumer = consumer;
 	}
 }

@@ -14,6 +14,8 @@
 
 package info.u_team.music_player.lavaplayer.output;
 
+import java.util.Arrays;
+
 import javax.sound.sampled.*;
 
 import com.sedmelluq.discord.lavaplayer.format.*;
@@ -53,6 +55,9 @@ public class AudioOutput extends Thread {
 				if (!player.isPaused()) {
 					if ((chunkSize = stream.read(buffer)) >= 0) {
 						output.write(buffer, 0, chunkSize);
+						if (musicPlayer.getOutputConsumer() != null) {
+							musicPlayer.getOutputConsumer().accept(Arrays.copyOf(buffer, buffer.length), chunkSize);
+						}
 					} else {
 						throw new IllegalStateException("Audiostream ended. This should not happen.");
 					}
