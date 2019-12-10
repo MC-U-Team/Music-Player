@@ -11,7 +11,7 @@ import com.sedmelluq.discord.lavaplayer.source.vimeo.VimeoAudioSourceManager;
 import com.sedmelluq.discord.lavaplayer.source.youtube.YoutubeAudioSourceManager;
 
 public class AudioSources {
-
+	
 	public static void registerSources(AudioPlayerManager audioPlayerManager) {
 		final YoutubeAudioSourceManager youtube = new YoutubeAudioSourceManager(true);
 		youtube.setPlaylistPageCount(20);

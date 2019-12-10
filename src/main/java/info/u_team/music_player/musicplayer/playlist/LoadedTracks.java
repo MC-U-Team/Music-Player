@@ -7,15 +7,15 @@ import info.u_team.music_player.lavaplayer.api.search.ISearchResult;
 import info.u_team.music_player.util.WrappedObject;
 
 public class LoadedTracks {
-
+	
 	private final WrappedObject<String> uri;
-
+	
 	private String errorMessage;
-
+	
 	private String title;
 	private IAudioTrack track;
 	private IAudioTrackList trackList;
-
+	
 	/**
 	 * Dummy
 	 * 
@@ -25,7 +25,7 @@ public class LoadedTracks {
 		this.uri = uri;
 		errorMessage = "Not loaded yet";
 	}
-
+	
 	public LoadedTracks(WrappedObject<String> uri, ISearchResult result) {
 		this.uri = uri;
 		if (result.hasError()) {
@@ -40,59 +40,59 @@ public class LoadedTracks {
 			}
 		}
 	}
-
+	
 	public LoadedTracks(WrappedObject<String> uri, IAudioTrack track) {
 		this.uri = uri;
 		this.track = track;
 		title = track.getInfo().getTitle();
 	}
-
+	
 	public LoadedTracks(WrappedObject<String> uri, IAudioTrackList trackList) {
 		this.uri = uri;
 		this.trackList = trackList;
 		title = trackList.getName();
 	}
-
+	
 	public WrappedObject<String> getUri() {
 		return uri;
 	}
-
+	
 	public boolean hasError() {
 		return errorMessage != null;
 	}
-
+	
 	public String getErrorMessage() {
 		return errorMessage;
 	}
-
+	
 	public String getTitle() {
 		return title;
 	}
-
+	
 	public boolean isTrack() {
 		return trackList == null && track != null;
 	}
-
+	
 	public boolean isTrackList() {
 		return trackList != null && track == null;
 	}
-
+	
 	public IAudioTrack getTrack() {
 		return track;
 	}
-
+	
 	public IAudioTrackList getTrackList() {
 		return trackList;
 	}
-
+	
 	public IAudioTrack getFirstTrack() {
 		return isTrack() ? track : trackList.getTracks().get(0);
 	}
-
+	
 	public IAudioTrack getLastTrack() {
 		return isTrack() ? track : trackList.getTracks().get(trackList.getTracks().size() - 1);
 	}
-
+	
 	public IAudioTrack getOtherTrack(IAudioTrack track, Skip skip) {
 		if (isTrack()) {
 			return null;

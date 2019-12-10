@@ -12,20 +12,20 @@ import info.u_team.music_player.init.MusicPlayerFiles;
 import info.u_team.music_player.musicplayer.playlist.Playlists;
 
 public class PlaylistManager implements IGsonLoadable {
-
+	
 	private final Logger logger = LogManager.getLogger();
-
+	
 	private final Gson gson;
-
+	
 	private final Path path;
-
+	
 	private Playlists playlists;
-
+	
 	public PlaylistManager(Gson gson) {
 		this.gson = gson;
 		path = MusicPlayerFiles.getDirectory().resolve("playlist.json.gz");
 	}
-
+	
 	@Override
 	public void loadFromFile() {
 		try {
@@ -33,8 +33,7 @@ public class PlaylistManager implements IGsonLoadable {
 				playlists = new Playlists();
 				writeToFile();
 			} else {
-				try (BufferedReader reader = new BufferedReader(
-						new InputStreamReader(new GZIPInputStream(Files.newInputStream(path))))) {
+				try (BufferedReader reader = new BufferedReader(new InputStreamReader(new GZIPInputStream(Files.newInputStream(path))))) {
 					playlists = gson.fromJson(reader, Playlists.class);
 				} catch (IOException ex) {
 					throw ex;
@@ -44,17 +43,16 @@ public class PlaylistManager implements IGsonLoadable {
 			logger.error("Could not ready playlist file at " + path, ex);
 		}
 	}
-
+	
 	@Override
 	public void writeToFile() {
-		try (BufferedWriter writer = new BufferedWriter(
-				new OutputStreamWriter(new GZIPOutputStream(Files.newOutputStream(path))))) {
+		try (BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new GZIPOutputStream(Files.newOutputStream(path))))) {
 			gson.toJson(playlists, writer);
 		} catch (IOException ex) {
 			logger.error("Could not write playlist file at " + path, ex);
 		}
 	}
-
+	
 	public Playlists getPlaylists() {
 		return playlists;
 	}

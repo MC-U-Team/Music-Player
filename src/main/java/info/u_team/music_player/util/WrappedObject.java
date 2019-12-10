@@ -11,18 +11,17 @@ import com.google.gson.annotations.SerializedName;
  * special use.
  * 
  * @author HyCraftHD
- *
  * @param <T>
  */
 public class WrappedObject<T> {
-
+	
 	/**
 	 * Wrapped object <br>
 	 * Annotation sets the gson default serialization to <code>o</code>.
 	 */
 	@SerializedName(value = "o", alternate = { "object" })
 	private final T object;
-
+	
 	/**
 	 * Creates a new {@link WrappedObject}
 	 * 
@@ -31,7 +30,7 @@ public class WrappedObject<T> {
 	public WrappedObject(T object) {
 		this.object = object;
 	}
-
+	
 	/**
 	 * Retrieves the wrapped object
 	 * 
@@ -40,5 +39,5 @@ public class WrappedObject<T> {
 	public T get() {
 		return object;
 	}
-
+	
 }

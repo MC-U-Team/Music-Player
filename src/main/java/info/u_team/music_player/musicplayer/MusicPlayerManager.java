@@ -8,25 +8,25 @@ import info.u_team.music_player.dependency.DependencyManager;
 import info.u_team.music_player.lavaplayer.api.IMusicPlayer;
 
 public class MusicPlayerManager {
-
+	
 	private static final Logger LOGGER = LogManager.getLogger();
-
+	
 	private static IMusicPlayer PLAYER;
-
+	
 	private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
-
+	
 	private static final PlaylistManager playlistManager = new PlaylistManager(GSON);
 	private static final SettingsManager settingsManager = new SettingsManager(GSON);
-
+	
 	public static void setup() {
 		generatePlayer();
 		PLAYER.startAudioOutput();
 		playlistManager.loadFromFile();
 		settingsManager.loadFromFile();
-
+		
 		PLAYER.setVolume(settingsManager.getSettings().getVolume());
 	}
-
+	
 	private static void generatePlayer() {
 		try {
 			Class<?> clazz = Class.forName("info.u_team.music_player.lavaplayer.MusicPlayer", true, DependencyManager.getClassLoader());
@@ -40,15 +40,15 @@ public class MusicPlayerManager {
 			System.exit(0);
 		}
 	}
-
+	
 	public static IMusicPlayer getPlayer() {
 		return PLAYER;
 	}
-
+	
 	public static PlaylistManager getPlaylistManager() {
 		return playlistManager;
 	}
-
+	
 	public static SettingsManager getSettingsManager() {
 		return settingsManager;
 	}

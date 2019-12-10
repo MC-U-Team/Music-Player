@@ -15,15 +15,15 @@ import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.loading.moddiscovery.ModFile;
 
 public class DependencyManager {
-
+	
 	private static final Logger logger = LogManager.getLogger();
 	private static final Marker load = MarkerManager.getMarker("Load");
-
+	
 	private static final DependencyClassLoader musicplayerclassloader = new DependencyClassLoader();
-
+	
 	public static void construct() {
 		logger.info(load, "Load dependencies");
-
+		
 		final String devPath = System.getProperty("musicplayer.dev");
 		if (devPath != null) {
 			findJarFilesInDev(Paths.get(devPath, "musicplayer-lavaplayer/build/libs"), DependencyManager::addToMusicPlayerDependencies);
@@ -32,14 +32,14 @@ public class DependencyManager {
 			findJarFilesInJar("dependencies/internal", path -> addToInternalDependencies(createInternalURL(path)));
 			findJarFilesInJar("dependencies/musicplayer", path -> addToMusicPlayerDependencies(createInternalURL(path)));
 		}
-
+		
 		logger.info(load, "Finished loading dependencies");
 	}
-
+	
 	public static DependencyClassLoader getClassLoader() {
 		return musicplayerclassloader;
 	}
-
+	
 	private static void findJarFilesInDev(Path path, Consumer<Path> consumer) {
 		try (Stream<Path> stream = Files.walk(path)) {
 			stream.filter(file -> file.toString().endsWith(".jar")).forEach(consumer);
@@ -47,7 +47,7 @@ public class DependencyManager {
 			logger.error(load, "When searching for jar files in dev an exception occured.", ex);
 		}
 	}
-
+	
 	private static void findJarFilesInJar(String folder, Consumer<Path> consumer) {
 		final ModFile modfile = ModList.get().getModFileById(MusicPlayerMod.modid).getFile();
 		try (Stream<Path> stream = Files.walk(modfile.findResource("/" + folder))) {
@@ -56,7 +56,7 @@ public class DependencyManager {
 			logger.error(load, "When searching for jar files in jar an exception occured.", ex);
 		}
 	}
-
+	
 	private static URL createInternalURL(Path path) {
 		final String url = "modjar://" + MusicPlayerMod.modid + path;
 		logger.debug(load, "Load url" + url);
@@ -67,17 +67,17 @@ public class DependencyManager {
 		}
 		return null;
 	}
-
+	
 	// Add to different classloader
-
+	
 	private static void addToMusicPlayerDependencies(URL url) {
 		musicplayerclassloader.addURL(url);
 	}
-
+	
 	private static void addToMusicPlayerDependencies(Path path) {
 		musicplayerclassloader.addPath(path);
 	}
-
+	
 	private static void addToInternalDependencies(URL url) {
 		try {
 			final URLClassLoader systemClassLoader = (URLClassLoader) ClassLoader.getSystemClassLoader();
