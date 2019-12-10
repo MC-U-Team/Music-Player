@@ -1,6 +1,10 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [1.14.4-2.0.5.46] - 2019-12-10
+### Added
+ - Added support for voice chat mod internally
+
 ## [1.14.4-2.0.4.44] - 2019-12-05
 ### Changed
  - Fixed sondcloud not working anymore with updating lavaplayer to 1.3.32
