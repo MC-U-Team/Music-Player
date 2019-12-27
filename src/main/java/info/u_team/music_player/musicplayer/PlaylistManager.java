@@ -40,7 +40,7 @@ public class PlaylistManager implements IGsonLoadable {
 				}
 			}
 		} catch (IOException ex) {
-			LOGGER.error("Could not ready playlist file at " + path, ex);
+			LOGGER.error("Could not read playlist file at " + path, ex);
 		}
 	}
 	
