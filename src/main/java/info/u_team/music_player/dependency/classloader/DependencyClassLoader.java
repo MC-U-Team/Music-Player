@@ -7,7 +7,7 @@ import org.apache.logging.log4j.*;
 
 public class DependencyClassLoader extends URLClassLoader {
 	
-	private static final Logger logger = LogManager.getLogger();
+	private static final Logger LOGGER = LogManager.getLogger();
 	
 	static {
 		ClassLoader.registerAsParallelCapable();
@@ -38,7 +38,7 @@ public class DependencyClassLoader extends URLClassLoader {
 		try {
 			addURL(path.toUri().toURL());
 		} catch (MalformedURLException ex) {
-			logger.error("Could not add dependency path to classloader", ex);
+			LOGGER.error("Could not add dependency path to classloader", ex);
 		}
 	}
 }

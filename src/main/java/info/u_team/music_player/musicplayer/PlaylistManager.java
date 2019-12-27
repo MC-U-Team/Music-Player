@@ -13,7 +13,7 @@ import info.u_team.music_player.musicplayer.playlist.Playlists;
 
 public class PlaylistManager implements IGsonLoadable {
 	
-	private final Logger logger = LogManager.getLogger();
+	private static final Logger LOGGER = LogManager.getLogger();
 	
 	private final Gson gson;
 	
@@ -40,7 +40,7 @@ public class PlaylistManager implements IGsonLoadable {
 				}
 			}
 		} catch (IOException ex) {
-			logger.error("Could not ready playlist file at " + path, ex);
+			LOGGER.error("Could not ready playlist file at " + path, ex);
 		}
 	}
 	
@@ -49,7 +49,7 @@ public class PlaylistManager implements IGsonLoadable {
 		try (BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new GZIPOutputStream(Files.newOutputStream(path))))) {
 			gson.toJson(playlists, writer);
 		} catch (IOException ex) {
-			logger.error("Could not write playlist file at " + path, ex);
+			LOGGER.error("Could not write playlist file at " + path, ex);
 		}
 	}
 	

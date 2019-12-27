@@ -15,10 +15,10 @@ import net.minecraft.util.text.event.ClickEvent.Action;
 
 public final class GuiTrackUtils {
 	
-	private static final Minecraft mc = Minecraft.getInstance();
+	private static final Minecraft MINECRAFT = Minecraft.getInstance();
 	
 	public static String trimToWith(String string, int width) {
-		String newString = mc.fontRenderer.trimStringToWidth(string, width);
+		String newString = MINECRAFT.fontRenderer.trimStringToWidth(string, width);
 		if (!newString.equals(string)) {
 			newString += "...";
 		}
@@ -35,9 +35,9 @@ public final class GuiTrackUtils {
 		final String author = trimToWith(info.getFixedAuthor(), textSize);
 		final String duration = getFormattedDuration(track);
 		
-		mc.fontRenderer.drawString(title, x + leftMargin, y + 5, titleColor);
-		mc.fontRenderer.drawString(author, x + leftMargin + 4, y + 25, 0xD86D1C);
-		mc.fontRenderer.drawString(duration, x + entryWidth - 140, y + 15, 0xFFFF00);
+		MINECRAFT.fontRenderer.drawString(title, x + leftMargin, y + 5, titleColor);
+		MINECRAFT.fontRenderer.drawString(author, x + leftMargin + 4, y + 25, 0xD86D1C);
+		MINECRAFT.fontRenderer.drawString(duration, x + entryWidth - 140, y + 15, 0xFFFF00);
 	}
 	
 	public static boolean openURI(String uri) {
@@ -48,7 +48,7 @@ public final class GuiTrackUtils {
 		} catch (Exception ex) {
 			style.setClickEvent(new ClickEvent(Action.OPEN_FILE, uri));
 		}
-		return mc.currentScreen.handleComponentClicked(new StringTextComponent("").setStyle(style));
+		return MINECRAFT.currentScreen.handleComponentClicked(new StringTextComponent("").setStyle(style));
 	}
 	
 	public static String getFormattedDuration(IAudioTrack track) {

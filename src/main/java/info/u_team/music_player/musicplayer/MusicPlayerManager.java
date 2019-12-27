@@ -15,16 +15,16 @@ public class MusicPlayerManager {
 	
 	private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
 	
-	private static final PlaylistManager playlistManager = new PlaylistManager(GSON);
-	private static final SettingsManager settingsManager = new SettingsManager(GSON);
+	private static final PlaylistManager PLAYLIST_MANAGER = new PlaylistManager(GSON);
+	private static final SettingsManager SETTINGS_MANAGER = new SettingsManager(GSON);
 	
 	public static void setup() {
 		generatePlayer();
 		PLAYER.startAudioOutput();
-		playlistManager.loadFromFile();
-		settingsManager.loadFromFile();
+		PLAYLIST_MANAGER.loadFromFile();
+		SETTINGS_MANAGER.loadFromFile();
 		
-		PLAYER.setVolume(settingsManager.getSettings().getVolume());
+		PLAYER.setVolume(SETTINGS_MANAGER.getSettings().getVolume());
 	}
 	
 	private static void generatePlayer() {
@@ -46,10 +46,10 @@ public class MusicPlayerManager {
 	}
 	
 	public static PlaylistManager getPlaylistManager() {
-		return playlistManager;
+		return PLAYLIST_MANAGER;
 	}
 	
 	public static SettingsManager getSettingsManager() {
-		return settingsManager;
+		return SETTINGS_MANAGER;
 	}
 }
