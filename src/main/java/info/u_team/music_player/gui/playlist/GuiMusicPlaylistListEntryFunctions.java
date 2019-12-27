@@ -18,9 +18,9 @@ abstract class GuiMusicPlaylistListEntryFunctions extends GuiMusicPlaylistListEn
 		super(playlists, playlist, loadedTrack, track);
 		this.playlist = playlist;
 		this.uri = loadedTrack.getUri();
-		deleteTrackButton = addButton(new ImageButton(0, 0, 20, 20, MusicPlayerResources.textureClear));
-		upButton = addButton(new ImageButton(0, 0, 20, 10, MusicPlayerResources.textureUp));
-		downButton = addButton(new ImageButton(0, 0, 20, 10, MusicPlayerResources.textureDown));
+		deleteTrackButton = addButton(new ImageButton(0, 0, 20, 20, MusicPlayerResources.TEXTURE_CLEAR));
+		upButton = addButton(new ImageButton(0, 0, 20, 10, MusicPlayerResources.TEXTURE_UP));
+		downButton = addButton(new ImageButton(0, 0, 20, 10, MusicPlayerResources.TEXTURE_DOWN));
 		
 		deleteTrackButton.setPressable(() -> {
 			playlist.remove(uri);

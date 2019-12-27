@@ -5,8 +5,8 @@ import net.minecraft.util.ResourceLocation;
 
 public enum SearchProvider {
 	
-	YOUTUBE("ytsearch:", MusicPlayerResources.textureSocialYoutube),
-	SOUNDCLOUD("scsearch:", MusicPlayerResources.textureSocialSoundcloud);
+	YOUTUBE("ytsearch:", MusicPlayerResources.TEXTURE_SOCIAL_YOUTUBE),
+	SOUNDCLOUD("scsearch:", MusicPlayerResources.TEXTURE_SOCIAL_SOUNDCLOUD);
 	
 	private final String prefix;
 	private final ResourceLocation logo;

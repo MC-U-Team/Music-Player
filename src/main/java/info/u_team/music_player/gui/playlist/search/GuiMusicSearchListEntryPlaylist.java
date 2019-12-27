@@ -26,12 +26,12 @@ public class GuiMusicSearchListEntryPlaylist extends GuiMusicSearchListEntry {
 		if (!tracks.parallelStream().anyMatch(track -> track.getInfo().isStream())) {
 			duration = TimeUtil.timeConversion(tracks.parallelStream().mapToLong(track -> track.getDuration()).sum() / 1000);
 		} else {
-			duration = getTranslation(gui_track_duration_undefined);
+			duration = getTranslation(GUI_TRACK_DURATION_UNDEFINED);
 		}
 		
 		addTrackButton.setPressable(() -> {
 			playlist.add(trackList);
-			gui.setInformation(TextFormatting.GREEN + getTranslation(gui_search_added_list), 150);
+			gui.setInformation(TextFormatting.GREEN + getTranslation(GUI_SEARCH_ADDED_LIST), 150);
 		});
 	}
 	

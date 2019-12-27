@@ -8,25 +8,25 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.*;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
-@Mod(MusicPlayerMod.modid)
+@Mod(MusicPlayerMod.MODID)
 public class MusicPlayerMod {
 	
-	public static final String modid = "musicplayer";
+	public static final String MODID = "musicplayer";
 	
-	public static final IModProxy proxy = DistExecutor.runForDist(() -> ClientProxy::new, () -> CommonProxy::new);
+	private static final IModProxy PROXY = DistExecutor.runForDist(() -> ClientProxy::new, () -> CommonProxy::new);
 	
 	public MusicPlayerMod() {
 		FMLJavaModLoadingContext.get().getModEventBus().register(this);
-		proxy.construct();
+		PROXY.construct();
 	}
 	
 	@SubscribeEvent
 	public void setup(FMLCommonSetupEvent event) {
-		proxy.setup();
+		PROXY.setup();
 	}
 	
 	public void ready(FMLLoadCompleteEvent event) {
-		proxy.complete();
+		PROXY.complete();
 	}
 	
 }

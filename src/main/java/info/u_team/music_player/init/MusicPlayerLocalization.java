@@ -5,46 +5,46 @@ import net.minecraft.client.resources.I18n;
 public class MusicPlayerLocalization {
 	
 	// Keys
-	public static final String key_category = "key.musicplayer.category";
-	public static final String key_open = "key.musicplayer.open";
-	public static final String key_pause = "key.musicplayer.pause";
-	public static final String key_skip_forward = "key.musicplayer.skip.forward";
-	public static final String key_skip_back = "key.musicplayer.skip.back";
+	public static final String KEY_CATEGORY = "key.musicplayer.category";
+	public static final String KEY_OPEN = "key.musicplayer.open";
+	public static final String KEY_PAUSE = "key.musicplayer.pause";
+	public static final String KEY_SKIP_FORWARD = "key.musicplayer.skip.forward";
+	public static final String KEY_SKIP_BACK = "key.musicplayer.skip.back";
 	
 	// Guis
-	public static final String gui_create_playlist_insert_name = "gui.musicplayer.create_playlist.insert_name";
-	public static final String gui_create_playlist_add_list = "gui.musicplayer.create_playlist.add_list";
+	public static final String GUI_CREATE_PLAYLIST_INSERT_NAME = "gui.musicplayer.create_playlist.insert_name";
+	public static final String GUI_CREATE_PLAYLIST_ADD_LIST = "gui.musicplayer.create_playlist.add_list";
 	
-	public static final String gui_playlists_no_name = "gui.musicplayer.playlists.no_name";
-	public static final String gui_playlists_entry = "gui.musicplayer.playlists.entry";
-	public static final String gui_playlists_entries = "gui.musicplayer.playlists.entries";
+	public static final String GUI_PLAYLISTS_NO_NAME = "gui.musicplayer.playlists.no_name";
+	public static final String GUI_PLAYLISTS_ENTRY = "gui.musicplayer.playlists.entry";
+	public static final String GUI_PLAYLISTS_ENTRIES = "gui.musicplayer.playlists.entries";
 	
-	public static final String gui_controls_volume = "gui.controls.volume";
+	public static final String GUI_CONTROLS_VOLUME = "gui.controls.volume";
 	
-	public static final String gui_playlist_loading = "gui.playlist.loading";
+	public static final String GUI_PLAYLIST_LOADING = "gui.playlist.loading";
 	
-	public static final String gui_track_duration_undefined = "gui.track.duration_undefined";
+	public static final String GUI_TRACK_DURATION_UNDEFINED = "gui.track.duration_undefined";
 	
-	public static final String gui_search_header = "gui.search.header";
-	public static final String gui_search_load_file = "gui.search.load.file";
-	public static final String gui_search_load_folder = "gui.search.load.folder";
-	public static final String gui_search_music_files = "gui.search.music_files";
-	public static final String gui_search_add_all = "gui.search.add_all";
-	public static final String gui_search_added = "gui.search.added";
-	public static final String gui_search_added_list = "gui.search.added_list";
-	public static final String gui_search_added_all = "gui.search.added_all";
-	public static final String gui_search_search_uri = "gui.search.search.uri";
-	public static final String gui_search_search_file = "gui.search.search.file";
-	public static final String gui_search_search_search = "gui.search.search.search";
+	public static final String GUI_SEARCH_HEADER = "gui.search.header";
+	public static final String GUI_SEARCH_LOAD_FILE = "gui.search.load.file";
+	public static final String GUI_SEARCH_LOAD_FOLDER = "gui.search.load.folder";
+	public static final String GUI_SEARCH_MUSIC_FILES = "gui.search.music_files";
+	public static final String GUI_SEARCH_ADD_ALL = "gui.search.add_all";
+	public static final String GUI_SEARCH_ADDED = "gui.search.added";
+	public static final String GUI_SEARCH_ADDED_LIST = "gui.search.added_list";
+	public static final String GUI_SEARCH_ADDED_ALL = "gui.search.added_all";
+	public static final String GUI_SEARCH_SEARCH_URI = "gui.search.search.uri";
+	public static final String GUI_SEARCH_SEARCH_FILE = "gui.search.search.file";
+	public static final String GUI_SEARCH_SEARCH_SEARCH = "gui.search.search.search";
 	
-	public static final String gui_settings_toggle_ingame_overlay = "gui.settings.toggle.ingame_overlay";
-	public static final String gui_settings_toggle_menue_overlay = "gui.settings.toggle.menue_overlay";
-	public static final String gui_settings_toggle_key_in_gui = "gui.settings.toggle.key_in_gui";
-	public static final String gui_settings_position_overlay = "gui.settings.position.overlay";
-	public static final String gui_settings_position_up_left = "gui.settings.position.up_left";
-	public static final String gui_settings_position_up_right = "gui.settings.position.up_right";
-	public static final String gui_settings_position_down_right = "gui.settings.position.down_right";
-	public static final String gui_settings_position_down_left = "gui.settings.position.down_left";
+	public static final String GUI_SETTINGS_TOGGLE_INGAME_OVERLAY = "gui.settings.toggle.ingame_overlay";
+	public static final String GUI_SETTINGS_TOGGLE_MENUE_OVERLAY = "gui.settings.toggle.menue_overlay";
+	public static final String GUI_SETTINGS_TOGGLE_KEY_IN_GUI = "gui.settings.toggle.key_in_gui";
+	public static final String GUI_SETTINGS_POSITION_OVERLAY = "gui.settings.position.overlay";
+	public static final String GUI_SETTINGS_POSITION_UP_LEFT = "gui.settings.position.up_left";
+	public static final String GUI_SETTINGS_POSITION_UP_RIGHT = "gui.settings.position.up_right";
+	public static final String GUI_SETTINGS_POSITION_DOWN_RIGHT = "gui.settings.position.down_right";
+	public static final String GUI_SETTINGS_POSITION_DOWN_LEFT = "gui.settings.position.down_left";
 	
 	public static String getTranslation(String key, Object... parameters) {
 		return I18n.format(key, parameters);

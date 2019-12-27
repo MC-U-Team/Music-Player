@@ -10,25 +10,25 @@ import net.minecraft.client.Minecraft;
 
 public class MusicPlayerFiles {
 	
-	private static final Logger logger = LogManager.getLogger();
+	private static final Logger LOGGER = LogManager.getLogger();
 	
-	private static Path directory;
+	private static Path DIRECTORY;
 	
 	public static void setup() {
 		if (ClientConfig.getInstance().internalPlaylists.get()) {
-			directory = Paths.get(Minecraft.getInstance().gameDir.toString(), "config/musicplayer");
+			DIRECTORY = Paths.get(Minecraft.getInstance().gameDir.toString(), "config/musicplayer");
 		} else {
-			directory = Paths.get(AppDirsFactory.getInstance().getUserConfigDir("musicplayer", null, "mc-u-team", true));
+			DIRECTORY = Paths.get(AppDirsFactory.getInstance().getUserConfigDir("musicplayer", null, "mc-u-team", true));
 		}
 		
 		try {
-			Files.createDirectories(directory);
+			Files.createDirectories(DIRECTORY);
 		} catch (Exception ex) {
-			logger.error("Could not create music player directories", ex);
+			LOGGER.error("Could not create music player directories", ex);
 		}
 	}
 	
 	public static Path getDirectory() {
-		return directory;
+		return DIRECTORY;
 	}
 }

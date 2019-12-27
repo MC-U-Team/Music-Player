@@ -58,7 +58,7 @@ public final class GuiTrackUtils {
 		} else {
 			final IAudioTrackInfo info = track.getInfo();
 			if (info.isStream()) {
-				return getTranslation(gui_track_duration_undefined);
+				return getTranslation(GUI_TRACK_DURATION_UNDEFINED);
 			}
 			seconds = track.getDuration() / 1000;
 		}

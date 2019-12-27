@@ -45,10 +45,10 @@ public class GuiMusicPlaylist extends Screen {
 	
 	@Override
 	protected void init() {
-		final ImageButton backButton = addButton(new ImageButton(1, 1, 15, 15, MusicPlayerResources.textureBack));
+		final ImageButton backButton = addButton(new ImageButton(1, 1, 15, 15, MusicPlayerResources.TEXTURE_BACK));
 		backButton.setPressable(() -> minecraft.displayGuiScreen(new GuiMusicPlayer()));
 		
-		addTracksButton = addButton(new ImageButton(width - 35, 20, 22, 22, MusicPlayerResources.textureAdd));
+		addTracksButton = addButton(new ImageButton(width - 35, 20, 22, 22, MusicPlayerResources.TEXTURE_ADD));
 		addTracksButton.setPressable(() -> minecraft.displayGuiScreen(new GuiMusicSearch(playlist)));
 		
 		if (!playlist.isLoaded()) {

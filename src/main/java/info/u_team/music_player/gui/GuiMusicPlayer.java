@@ -27,17 +27,17 @@ public class GuiMusicPlayer extends Screen {
 	
 	@Override
 	protected void init() {
-		addButton(new ImageButton(1, 1, 15, 15, MusicPlayerResources.textureBack, button -> minecraft.displayGuiScreen(null)));
+		addButton(new ImageButton(1, 1, 15, 15, MusicPlayerResources.TEXTURE_BACK, button -> minecraft.displayGuiScreen(null)));
 		
 		namePlaylistField = new TextFieldWidget(font, 100, 60, width - 150, 20, "");
 		namePlaylistField.setMaxStringLength(500);
 		children.add(namePlaylistField);
 		
-		final ImageButton addPlaylistButton = addButton(new ImageButton(width - 41, 59, 22, 22, MusicPlayerResources.textureCreate));
+		final ImageButton addPlaylistButton = addButton(new ImageButton(width - 41, 59, 22, 22, MusicPlayerResources.TEXTURE_CREATE));
 		addPlaylistButton.setPressable(() -> {
 			String name = namePlaylistField.getText();
-			if (StringUtils.isBlank(name) || name.equals(getTranslation(gui_create_playlist_insert_name))) {
-				namePlaylistField.setText(getTranslation(gui_create_playlist_insert_name));
+			if (StringUtils.isBlank(name) || name.equals(getTranslation(GUI_CREATE_PLAYLIST_INSERT_NAME))) {
+				namePlaylistField.setText(getTranslation(GUI_CREATE_PLAYLIST_INSERT_NAME));
 				return;
 			}
 			playlistsList.addPlaylist(name);
@@ -72,7 +72,7 @@ public class GuiMusicPlayer extends Screen {
 	public void render(int mouseX, int mouseY, float partialTicks) {
 		renderDirtBackground(0);
 		playlistsList.render(mouseX, mouseY, partialTicks);
-		font.drawString(getTranslation(gui_create_playlist_add_list), 20, 65, 0xFFFFFF);
+		font.drawString(getTranslation(GUI_CREATE_PLAYLIST_ADD_LIST), 20, 65, 0xFFFFFF);
 		namePlaylistField.render(mouseX, mouseY, partialTicks);
 		controls.drawScreen(mouseX, mouseY, partialTicks);
 		super.render(mouseX, mouseY, partialTicks);

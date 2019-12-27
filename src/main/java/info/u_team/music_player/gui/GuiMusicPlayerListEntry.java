@@ -25,7 +25,7 @@ class GuiMusicPlayerListEntry extends BetterScrollableListEntry<GuiMusicPlayerLi
 		this.playlists = playlists;
 		this.playlist = playlist;
 		
-		playPlaylistButton = addButton(new ToggleImageButton(0, 0, 20, 20, MusicPlayerResources.texturePlay, MusicPlayerResources.textureStop));
+		playPlaylistButton = addButton(new ToggleImageButton(0, 0, 20, 20, MusicPlayerResources.TEXTURE_PLAY, MusicPlayerResources.TEXTURE_STOP));
 		playPlaylistButton.toggle(playlist.equals(playlists.getPlaying()));
 		playPlaylistButton.active = !playlists.isPlayingLock();
 		
@@ -82,10 +82,10 @@ class GuiMusicPlayerListEntry extends BetterScrollableListEntry<GuiMusicPlayerLi
 			}
 		});
 		
-		openPlaylistButton = addButton(new ImageButton(0, 0, 20, 20, MusicPlayerResources.textureOpen));
+		openPlaylistButton = addButton(new ImageButton(0, 0, 20, 20, MusicPlayerResources.TEXTURE_OPEN));
 		openPlaylistButton.setPressable(() -> mc.displayGuiScreen(new GuiMusicPlaylist(playlist)));
 		
-		deletePlaylistButton = addButton(new ImageButton(0, 0, 20, 20, MusicPlayerResources.textureClear));
+		deletePlaylistButton = addButton(new ImageButton(0, 0, 20, 20, MusicPlayerResources.TEXTURE_CLEAR));
 		deletePlaylistButton.setPressable(() -> gui.removePlaylist(this));
 	}
 	
@@ -93,10 +93,10 @@ class GuiMusicPlayerListEntry extends BetterScrollableListEntry<GuiMusicPlayerLi
 	public void render(int slotIndex, int entryY, int entryX, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float partialTicks) {
 		String name = playlist.getName();
 		if (name.isEmpty()) {
-			name = "\u00A7o" + getTranslation(gui_playlists_no_name);
+			name = "\u00A7o" + getTranslation(GUI_PLAYLISTS_NO_NAME);
 		}
 		mc.fontRenderer.drawString(name, entryX + 5, entryY + 5, playlist.equals(playlists.getPlaying()) ? 0x0083FF : 0xFFF00F);
-		mc.fontRenderer.drawString(playlist.getEntrySize() + " " + getTranslation(playlist.getEntrySize() > 1 ? gui_playlists_entries : gui_playlists_entry), entryX + 5, entryY + 30, 0xFFFFFF);
+		mc.fontRenderer.drawString(playlist.getEntrySize() + " " + getTranslation(playlist.getEntrySize() > 1 ? GUI_PLAYLISTS_ENTRIES : GUI_PLAYLISTS_ENTRY), entryX + 5, entryY + 30, 0xFFFFFF);
 		
 		playPlaylistButton.x = entryWidth - 65;
 		playPlaylistButton.y = entryY + 12;

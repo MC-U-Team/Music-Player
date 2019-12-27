@@ -59,7 +59,7 @@ public class GuiControls extends FocusableGui {
 		halfButtonSize = buttonSize / 2;
 		
 		// Play button
-		playButton = addButton(new ToggleImageButton(middleX - halfButtonSize, y, buttonSize, buttonSize, MusicPlayerResources.texturePlay, MusicPlayerResources.texturePause));
+		playButton = addButton(new ToggleImageButton(middleX - halfButtonSize, y, buttonSize, buttonSize, MusicPlayerResources.TEXTURE_PLAY, MusicPlayerResources.TEXTURE_PAUSE));
 		playButton.toggle(!manager.isPaused());
 		playButton.setPressable(() -> {
 			final boolean play = playButton.isToggled();
@@ -67,13 +67,13 @@ public class GuiControls extends FocusableGui {
 		});
 		
 		// Skip forward
-		final ImageButton skipForwardButton = addButton(new ImageButton(middleX + halfButtonSize + 5, y, buttonSize, buttonSize, MusicPlayerResources.textureSkipForward));
+		final ImageButton skipForwardButton = addButton(new ImageButton(middleX + halfButtonSize + 5, y, buttonSize, buttonSize, MusicPlayerResources.TEXTURE_SKIP_FORWARD));
 		skipForwardButton.setPressable(() -> {
 			MusicPlayerUtils.skipForward();
 		});
 		
 		// Skip back
-		final ImageButton skipBackButton = addButton(new ImageButton(middleX - (buttonSize + halfButtonSize + 5), y, buttonSize, buttonSize, MusicPlayerResources.textureSkipBack));
+		final ImageButton skipBackButton = addButton(new ImageButton(middleX - (buttonSize + halfButtonSize + 5), y, buttonSize, buttonSize, MusicPlayerResources.TEXTURE_SKIP_BACK));
 		skipBackButton.setPressable(() -> {
 			MusicPlayerUtils.skipBack();
 		});
@@ -81,7 +81,7 @@ public class GuiControls extends FocusableGui {
 		final Settings settings = MusicPlayerManager.getSettingsManager().getSettings();
 		
 		// Shuffle button
-		final ActiveImageButton shuffleButton = addButton(new ActiveImageButton(middleX - (2 * buttonSize + halfButtonSize + 10), y, buttonSize, buttonSize, MusicPlayerResources.textureShuffle, 0x80FF00FF));
+		final ActiveImageButton shuffleButton = addButton(new ActiveImageButton(middleX - (2 * buttonSize + halfButtonSize + 10), y, buttonSize, buttonSize, MusicPlayerResources.TEXTURE_SHUFFLE, 0x80FF00FF));
 		
 		final Runnable updateShuffleButton = () -> {
 			shuffleButton.setActive(settings.isShuffle());
@@ -94,7 +94,7 @@ public class GuiControls extends FocusableGui {
 		});
 		
 		// Repeat button
-		final ActiveImageButton repeatButton = addButton(new ActiveImageButton(middleX + +buttonSize + halfButtonSize + 10, y, buttonSize, buttonSize, MusicPlayerResources.textureRepeat, 0x80FF00FF));
+		final ActiveImageButton repeatButton = addButton(new ActiveImageButton(middleX + +buttonSize + halfButtonSize + 10, y, buttonSize, buttonSize, MusicPlayerResources.TEXTURE_REPEAT, 0x80FF00FF));
 		final Runnable updateRepeatButton = () -> {
 			repeatButton.setActive(settings.getRepeat().isActive());
 			repeatButton.setResource(settings.getRepeat().getResource());
@@ -112,19 +112,19 @@ public class GuiControls extends FocusableGui {
 		
 		// Open Settings
 		if (!isSettings) {
-			final ImageButton settingsButton = addButtonNonDisable(new ImageButton(width - (15 + 1), 1, 15, 15, MusicPlayerResources.textureSettings));
+			final ImageButton settingsButton = addButtonNonDisable(new ImageButton(width - (15 + 1), 1, 15, 15, MusicPlayerResources.TEXTURE_SETTINGS));
 			settingsButton.setPressable(() -> mc.displayGuiScreen(new GuiMusicPlayerSettings(gui)));
 		}
 		
 		// Open musicplayer gui
 		if (isIngame) {
-			final ImageButton guiButton = addButtonNonDisable(new ImageButton(width - (15 * 2 + 2), 1, 15, 15, MusicPlayerResources.textureOpen));
+			final ImageButton guiButton = addButtonNonDisable(new ImageButton(width - (15 * 2 + 2), 1, 15, 15, MusicPlayerResources.TEXTURE_OPEN));
 			guiButton.setPressable(() -> mc.displayGuiScreen(new GuiMusicPlayer()));
 		}
 		
 		// Volume
 		final int volumeY = width - (70 + (isIngame ? 15 * 2 + 3 : (!isSettings ? 15 + 2 : 1)));
-		addButtonNonDisable(new BetterFontSlider(volumeY, 1, 70, 15, getTranslation(gui_controls_volume) + ": ", "%", 0, 100, settings.getVolume(), false, true, 0.7F, slider -> {
+		addButtonNonDisable(new BetterFontSlider(volumeY, 1, 70, 15, getTranslation(GUI_CONTROLS_VOLUME) + ": ", "%", 0, 100, settings.getVolume(), false, true, 0.7F, slider -> {
 			settings.setVolume(slider.getValueInt());
 			MusicPlayerManager.getPlayer().setVolume(settings.getVolume());
 		}));

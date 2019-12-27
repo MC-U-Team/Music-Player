@@ -5,28 +5,28 @@ import net.minecraft.util.ResourceLocation;
 
 public class MusicPlayerResources {
 	
-	public static final ResourceLocation textureCreate = createResource("create");
-	public static final ResourceLocation textureOpen = createResource("open");
-	public static final ResourceLocation textureClear = createResource("clear");
-	public static final ResourceLocation texturePlay = createResource("play");
-	public static final ResourceLocation textureStop = createResource("stop");
-	public static final ResourceLocation texturePause = createResource("pause");
-	public static final ResourceLocation textureAdd = createResource("add");
-	public static final ResourceLocation textureUp = createResource("up");
-	public static final ResourceLocation textureDown = createResource("down");
-	public static final ResourceLocation textureBack = createResource("back");
-	public static final ResourceLocation textureSkipForward = createResource("skip-forward");
-	public static final ResourceLocation textureSkipBack = createResource("skip-back");
-	public static final ResourceLocation textureShuffle = createResource("shuffle");
-	public static final ResourceLocation textureRepeat = createResource("repeat");
-	public static final ResourceLocation textureRepeatSingle = createResource("repeat-single");
-	public static final ResourceLocation textureSettings = createResource("settings");
+	public static final ResourceLocation TEXTURE_CREATE = createResource("create");
+	public static final ResourceLocation TEXTURE_OPEN = createResource("open");
+	public static final ResourceLocation TEXTURE_CLEAR = createResource("clear");
+	public static final ResourceLocation TEXTURE_PLAY = createResource("play");
+	public static final ResourceLocation TEXTURE_STOP = createResource("stop");
+	public static final ResourceLocation TEXTURE_PAUSE = createResource("pause");
+	public static final ResourceLocation TEXTURE_ADD = createResource("add");
+	public static final ResourceLocation TEXTURE_UP = createResource("up");
+	public static final ResourceLocation TEXTURE_DOWN = createResource("down");
+	public static final ResourceLocation TEXTURE_BACK = createResource("back");
+	public static final ResourceLocation TEXTURE_SKIP_FORWARD = createResource("skip-forward");
+	public static final ResourceLocation TEXTURE_SKIP_BACK = createResource("skip-back");
+	public static final ResourceLocation TEXTURE_SHUFFLE = createResource("shuffle");
+	public static final ResourceLocation TEXTURE_REPEAT = createResource("repeat");
+	public static final ResourceLocation TEXTURE_REPEAT_SINGLE = createResource("repeat-single");
+	public static final ResourceLocation TEXTURE_SETTINGS = createResource("settings");
 	
-	public static final ResourceLocation textureSocialYoutube = createResource("socialmedia/youtube-logo");
-	public static final ResourceLocation textureSocialSoundcloud = createResource("socialmedia/soundcloud-logo");
+	public static final ResourceLocation TEXTURE_SOCIAL_YOUTUBE = createResource("socialmedia/youtube-logo");
+	public static final ResourceLocation TEXTURE_SOCIAL_SOUNDCLOUD = createResource("socialmedia/soundcloud-logo");
 	
 	private static ResourceLocation createResource(String name) {
-		return new ResourceLocation(MusicPlayerMod.modid, "textures/gui/" + name + ".png");
+		return new ResourceLocation(MusicPlayerMod.MODID, "textures/gui/" + name + ".png");
 	}
 	
 }

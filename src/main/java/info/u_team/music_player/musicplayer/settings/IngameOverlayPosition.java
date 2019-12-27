@@ -4,10 +4,10 @@ import static info.u_team.music_player.init.MusicPlayerLocalization.*;
 
 public enum IngameOverlayPosition {
 	
-	UP_LEFT(gui_settings_position_up_left),
-	UP_RIGHT(gui_settings_position_up_right),
-	DOWN_RIGHT(gui_settings_position_down_right),
-	DOWN_LEFT(gui_settings_position_down_left);
+	UP_LEFT(GUI_SETTINGS_POSITION_UP_LEFT),
+	UP_RIGHT(GUI_SETTINGS_POSITION_UP_RIGHT),
+	DOWN_RIGHT(GUI_SETTINGS_POSITION_DOWN_RIGHT),
+	DOWN_LEFT(GUI_SETTINGS_POSITION_DOWN_LEFT);
 	
 	private final String localization;
 	

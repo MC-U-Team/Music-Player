@@ -45,7 +45,7 @@ public class GuiMusicSearch extends Screen {
 	
 	@Override
 	protected void init() {
-		final ImageButton backButton = addButton(new ImageButton(1, 1, 15, 15, MusicPlayerResources.textureBack));
+		final ImageButton backButton = addButton(new ImageButton(1, 1, 15, 15, MusicPlayerResources.TEXTURE_BACK));
 		backButton.setPressable(() -> minecraft.displayGuiScreen(new GuiMusicPlaylist(playlist)));
 		
 		urlField = new TextFieldWidget(font, 10, 35, width / 2 - 10, 20, "") {
@@ -65,18 +65,18 @@ public class GuiMusicSearch extends Screen {
 		urlField.setMaxStringLength(10000);
 		children.add(urlField);
 		
-		final UButton openFileButton = addButton(new UButton(width / 2 + 10, 34, width / 4 - 15, 22, getTranslation(gui_search_load_file)));
+		final UButton openFileButton = addButton(new UButton(width / 2 + 10, 34, width / 4 - 15, 22, getTranslation(GUI_SEARCH_LOAD_FILE)));
 		openFileButton.setPressable(() -> {
-			String response = TinyFileDialogs.tinyfd_openFileDialog(getTranslation(gui_search_load_file), null, null, getTranslation(gui_search_music_files), false);
+			String response = TinyFileDialogs.tinyfd_openFileDialog(getTranslation(GUI_SEARCH_LOAD_FILE), null, null, getTranslation(GUI_SEARCH_MUSIC_FILES), false);
 			if (response != null) {
 				searchList.clear();
 				addTrack(response);
 			}
 		});
 		
-		final UButton openFolderButton = addButton(new UButton((int) (width * 0.75) + 5, 34, width / 4 - 15, 22, getTranslation(gui_search_load_folder)));
+		final UButton openFolderButton = addButton(new UButton((int) (width * 0.75) + 5, 34, width / 4 - 15, 22, getTranslation(GUI_SEARCH_LOAD_FOLDER)));
 		openFolderButton.setPressable(() -> {
-			String response = TinyFileDialogs.tinyfd_selectFolderDialog(getTranslation(gui_search_load_folder), System.getProperty("user.home"));
+			String response = TinyFileDialogs.tinyfd_selectFolderDialog(getTranslation(GUI_SEARCH_LOAD_FOLDER), System.getProperty("user.home"));
 			if (response != null) {
 				searchList.clear();
 				try (Stream<Path> stream = Files.list(Paths.get(response))) {
@@ -113,7 +113,7 @@ public class GuiMusicSearch extends Screen {
 		setFocused(searchField);
 		children.add(searchField);
 		
-		final UButton addAllButton = addButton(new UButton(width - 110, 105, 100, 20, getTranslation(gui_search_add_all)));
+		final UButton addAllButton = addButton(new UButton(width - 110, 105, 100, 20, getTranslation(GUI_SEARCH_ADD_ALL)));
 		addAllButton.setPressable(() -> {
 			List<GuiMusicSearchListEntryPlaylist> list = searchList.children().stream().filter(entry -> entry instanceof GuiMusicSearchListEntryPlaylist).map(entry -> (GuiMusicSearchListEntryPlaylist) entry).collect(Collectors.toList());
 			if (list.size() > 0) {
@@ -125,7 +125,7 @@ public class GuiMusicSearch extends Screen {
 					playlist.add(entry.getTrack());
 				});
 			}
-			setInformation(TextFormatting.GREEN + getTranslation(gui_search_added_all), 150);
+			setInformation(TextFormatting.GREEN + getTranslation(GUI_SEARCH_ADDED_ALL), 150);
 		});
 		
 		searchList.updateSettings(width - 24, height, 130, height - 10, 12, width - 12);
@@ -168,10 +168,10 @@ public class GuiMusicSearch extends Screen {
 		renderDirtBackground(0);
 		searchList.render(mouseX, mouseY, partialTicks);
 		
-		drawCenteredString(minecraft.fontRenderer, getTranslation(gui_search_header), width / 2, 5, 0xFFFFFF);
-		drawString(minecraft.fontRenderer, getTranslation(gui_search_search_uri), 10, 20, 0xFFFFFF);
-		drawString(minecraft.fontRenderer, getTranslation(gui_search_search_file), 10 + width / 2, 20, 0xFFFFFF);
-		drawString(minecraft.fontRenderer, getTranslation(gui_search_search_search), 10, 63, 0xFFFFFF);
+		drawCenteredString(minecraft.fontRenderer, getTranslation(GUI_SEARCH_HEADER), width / 2, 5, 0xFFFFFF);
+		drawString(minecraft.fontRenderer, getTranslation(GUI_SEARCH_SEARCH_URI), 10, 20, 0xFFFFFF);
+		drawString(minecraft.fontRenderer, getTranslation(GUI_SEARCH_SEARCH_FILE), 10 + width / 2, 20, 0xFFFFFF);
+		drawString(minecraft.fontRenderer, getTranslation(GUI_SEARCH_SEARCH_SEARCH), 10, 63, 0xFFFFFF);
 		
 		if (information != null && informationTicks <= maxTicksInformation) {
 			drawString(minecraft.fontRenderer, information, 15, 110, 0xFFFFFF);

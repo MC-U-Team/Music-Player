@@ -47,23 +47,23 @@ public class EventHandlerMusicPlayer {
 	private boolean handleKeyboard(boolean gui, int keyCode, int scanCode) {
 		final boolean handled;
 		final ITrackManager manager = MusicPlayerManager.getPlayer().getTrackManager();
-		if (isKeyDown(MusicPlayerKeys.open, gui, keyCode, scanCode)) {
+		if (isKeyDown(MusicPlayerKeys.OPEN, gui, keyCode, scanCode)) {
 			final Minecraft mc = Minecraft.getInstance();
 			if (!(mc.currentScreen instanceof GuiMusicPlayer)) {
 				mc.displayGuiScreen(new GuiMusicPlayer());
 			}
 			handled = true;
-		} else if (isKeyDown(MusicPlayerKeys.pause, gui, keyCode, scanCode)) {
+		} else if (isKeyDown(MusicPlayerKeys.PAUSE, gui, keyCode, scanCode)) {
 			if (manager.getCurrentTrack() != null) {
 				manager.setPaused(!manager.isPaused());
 			}
 			handled = true;
-		} else if (isKeyDown(MusicPlayerKeys.skipForward, gui, keyCode, scanCode)) {
+		} else if (isKeyDown(MusicPlayerKeys.SKIP_FORWARD, gui, keyCode, scanCode)) {
 			if (manager.getCurrentTrack() != null) {
 				MusicPlayerUtils.skipForward();
 			}
 			handled = true;
-		} else if (isKeyDown(MusicPlayerKeys.skipBack, gui, keyCode, scanCode)) {
+		} else if (isKeyDown(MusicPlayerKeys.SKIP_BACK, gui, keyCode, scanCode)) {
 			MusicPlayerUtils.skipBack();
 			handled = true;
 		} else {

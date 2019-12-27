@@ -5,9 +5,9 @@ import net.minecraft.util.ResourceLocation;
 
 public enum Repeat {
 	
-	NO(false, MusicPlayerResources.textureRepeat),
-	PLAYLIST(true, MusicPlayerResources.textureRepeat),
-	SINGLE(true, MusicPlayerResources.textureRepeatSingle);
+	NO(false, MusicPlayerResources.TEXTURE_REPEAT),
+	PLAYLIST(true, MusicPlayerResources.TEXTURE_REPEAT),
+	SINGLE(true, MusicPlayerResources.TEXTURE_REPEAT_SINGLE);
 	
 	private final boolean active;
 	private final ResourceLocation resource;

@@ -11,7 +11,7 @@ abstract class GuiMusicSearchListEntry extends BetterScrollableListEntry<GuiMusi
 	protected final ImageButton addTrackButton;
 	
 	GuiMusicSearchListEntry() {
-		addTrackButton = addButton(new ImageButton(0, 0, 20, 20, MusicPlayerResources.textureAdd));
+		addTrackButton = addButton(new ImageButton(0, 0, 20, 20, MusicPlayerResources.TEXTURE_ADD));
 	}
 	
 	@Override

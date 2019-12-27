@@ -49,7 +49,7 @@ public class DependencyManager {
 	}
 	
 	private static void findJarFilesInJar(String folder, Consumer<Path> consumer) {
-		final ModFile modfile = ModList.get().getModFileById(MusicPlayerMod.modid).getFile();
+		final ModFile modfile = ModList.get().getModFileById(MusicPlayerMod.MODID).getFile();
 		try (Stream<Path> stream = Files.walk(modfile.findResource("/" + folder))) {
 			stream.filter(file -> file.toString().endsWith(".jar")).forEach(consumer);
 		} catch (IOException ex) {
@@ -58,7 +58,7 @@ public class DependencyManager {
 	}
 	
 	private static URL createInternalURL(Path path) {
-		final String url = "modjar://" + MusicPlayerMod.modid + path;
+		final String url = "modjar://" + MusicPlayerMod.MODID + path;
 		logger.debug(load, "Load url" + url);
 		try {
 			return new URL(url);

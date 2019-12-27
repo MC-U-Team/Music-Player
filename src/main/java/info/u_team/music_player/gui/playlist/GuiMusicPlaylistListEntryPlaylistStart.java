@@ -24,7 +24,7 @@ public class GuiMusicPlaylistListEntryPlaylistStart extends GuiMusicPlaylistList
 		if (!tracks.parallelStream().anyMatch(track -> track.getInfo().isStream())) {
 			duration = TimeUtil.timeConversion(tracks.parallelStream().mapToLong(track -> track.getDuration()).sum() / 1000);
 		} else {
-			duration = getTranslation(gui_track_duration_undefined);
+			duration = getTranslation(GUI_TRACK_DURATION_UNDEFINED);
 		}
 		
 		entries = new ArrayList<>();
