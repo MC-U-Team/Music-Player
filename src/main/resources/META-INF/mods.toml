@@ -16,7 +16,7 @@ authors="HyCraftHD"
 	[[dependencies.musicplayer]]
 	    modId="forge"
 	    mandatory=true
-	    versionRange="[28.1.96,)"
+	    versionRange="[28.1.107,)"
 	    ordering="NONE"
 	    side="BOTH"
 	
@@ -30,6 +30,6 @@ authors="HyCraftHD"
 	[[dependencies.musicplayer]]
 	    modId="uteamcore"
 	    mandatory=true
-	    versionRange="[2.7.8.138,)"
+	    versionRange="[2.8.0.140,)"
 	    ordering="NONE"
 	    side="BOTH"
