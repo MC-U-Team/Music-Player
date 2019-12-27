@@ -183,19 +183,19 @@ public class GuiMusicSearch extends BetterScreen {
 	}
 	
 	@Override
-	public boolean mouseClicked(double p_mouseClicked_1_, double p_mouseClicked_3_, int p_mouseClicked_5_) {
-		if (urlField.mouseClicked(p_mouseClicked_1_, p_mouseClicked_3_, p_mouseClicked_5_)) {
+	public boolean mouseClicked(double mouseX, double mouseY, int button) {
+		if (urlField.mouseClicked(mouseX, mouseY, button)) {
 			setFocused(urlField);
 			urlField.setFocused2(true);
 			searchField.setFocused2(false);
 			return true;
-		} else if (searchField.mouseClicked(p_mouseClicked_1_, p_mouseClicked_3_, p_mouseClicked_5_)) {
+		} else if (searchField.mouseClicked(mouseX, mouseY, button)) {
 			setFocused(searchField);
 			searchField.setFocused2(true);
 			urlField.setFocused2(false);
 			return true;
 		}
-		return super.mouseClicked(p_mouseClicked_1_, p_mouseClicked_3_, p_mouseClicked_5_);
+		return super.mouseClicked(mouseX, mouseY, button);
 	}
 	
 	public void setInformation(String information, int maxTicksInformation) {

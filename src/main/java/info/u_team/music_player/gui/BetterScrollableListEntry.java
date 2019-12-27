@@ -6,9 +6,9 @@ public abstract class BetterScrollableListEntry<T extends ScrollableListEntry<T>
 	
 	@SuppressWarnings({ "unchecked", "deprecation" })
 	@Override
-	public boolean mouseClicked(double p_mouseClicked_1_, double p_mouseClicked_3_, int p_mouseClicked_5_) {
+	public boolean mouseClicked(double mouseX, double mouseY, int button) {
 		list.setSelected((T) this);
-		return super.mouseClicked(p_mouseClicked_1_, p_mouseClicked_3_, p_mouseClicked_5_);
+		return super.mouseClicked(mouseX, mouseY, button);
 	}
 	
 }
