@@ -11,30 +11,7 @@ authors="HyCraftHD"
 	version="${file.jarVersion}"
 	displayName="Music Player"
 	updateJSONURL="https://api.u-team.info/update/musicplayer.json"
-	description='''
-Play every youtube video, livestream and more with this player! We use lava player to ensure this diversity.
-
-Learn more about lavaplayer here: https://github.com/sedmelluq/lavaplayer
-
-Sources:
-  - YouTube
-  - SoundCloud
-  - Bandcamp
-  - Vimeo
-  - Twitch streams
-  - Local files
-  - HTTP URLs
-  
-File formats:
-  - MP3
-  - FLAC
-  - WAV
-  - Matroska/WebM (AAC, Opus or Vorbis codecs)
-  - MP4/M4A (AAC codec)
-  - OGG streams (Opus, Vorbis and FLAC codecs)
-  - AAC streams
-  - Stream playlists (M3U and PLS)	
-'''
+	description="Play every youtube video, livestream and more with this player! We use lava player to ensure this diversity.\n\nLearn more about lavaplayer here: https://github.com/sedmelluq/lavaplayer\n\nSources:\n  - YouTube\n  - SoundCloud\n  - Bandcamp\n  - Vimeo\n  - Twitch streams\n  - Local files\n  - HTTP URLs\n\nFile formats:\n  - MP3\n  - FLAC\n  - WAV\n  - Matroska/WebM (AAC, Opus or Vorbis codecs)\n  - MP4/M4A (AAC codec)\n  - OGG streams (Opus, Vorbis and FLAC codecs)\n  - AAC streams\n  - Stream playlists (M3U and PLS)"
 	
 	[[dependencies.musicplayer]]
 	    modId="forge"
