@@ -2,6 +2,7 @@ package info.u_team.music_player.gui.settings;
 
 import static info.u_team.music_player.init.MusicPlayerLocalization.*;
 
+import info.u_team.music_player.gui.BetterScreen;
 import info.u_team.music_player.gui.controls.GuiControls;
 import info.u_team.music_player.init.MusicPlayerResources;
 import info.u_team.music_player.musicplayer.MusicPlayerManager;
@@ -12,7 +13,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.util.text.StringTextComponent;
 
-public class GuiMusicPlayerSettings extends Screen {
+public class GuiMusicPlayerSettings extends BetterScreen {
 	
 	private final Screen previousGui;
 	

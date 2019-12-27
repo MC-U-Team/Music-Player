@@ -4,7 +4,7 @@ import static info.u_team.music_player.init.MusicPlayerLocalization.*;
 
 import java.util.*;
 
-import info.u_team.music_player.gui.GuiMusicPlayer;
+import info.u_team.music_player.gui.*;
 import info.u_team.music_player.gui.settings.GuiMusicPlayerSettings;
 import info.u_team.music_player.gui.util.GuiTrackUtils;
 import info.u_team.music_player.init.MusicPlayerResources;
@@ -18,7 +18,7 @@ import net.minecraft.client.gui.*;
 import net.minecraft.client.gui.screen.*;
 import net.minecraft.client.gui.widget.Widget;
 
-public class GuiControls extends FocusableGui {
+public class GuiControls extends FocusableGui implements BetterNestedGui {
 	
 	private final int middleX;
 	private final int y, width;
@@ -127,7 +127,13 @@ public class GuiControls extends FocusableGui {
 		addButtonNonDisable(new BetterFontSlider(volumeY, 1, 70, 15, getTranslation(GUI_CONTROLS_VOLUME) + ": ", "%", 0, 100, settings.getVolume(), false, true, 0.7F, slider -> {
 			settings.setVolume(slider.getValueInt());
 			MusicPlayerManager.getPlayer().setVolume(settings.getVolume());
-		}));
+		}) {
+			
+			@Override
+			public boolean isMouseOver(double mouseX, double mouseY) {
+				return active; // Return always true here to mouseRelease is always called to the slider
+			}
+		});
 		
 		// Render playing track
 		// Title and author
@@ -150,8 +156,8 @@ public class GuiControls extends FocusableGui {
 	}
 	
 	@Override
-	public boolean isMouseOver(double p_isMouseOver_1_, double p_isMouseOver_3_) {
-		return true; // Return always true here to mouseRelease is always called to our entry for gui slider
+	public boolean isMouseOver(double mouseX, double mouseY) {
+		return true; // Return always true here to mouseRelease is always called to our entry
 	}
 	
 	public void tick() {

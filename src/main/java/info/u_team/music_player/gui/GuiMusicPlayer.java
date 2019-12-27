@@ -9,11 +9,10 @@ import info.u_team.music_player.init.MusicPlayerResources;
 import info.u_team.u_team_core.gui.elements.ImageButton;
 import info.u_team.u_team_core.gui.render.ScrollingTextRender;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.util.text.StringTextComponent;
 
-public class GuiMusicPlayer extends Screen {
+public class GuiMusicPlayer extends BetterScreen {
 	
 	private TextFieldWidget namePlaylistField;
 	

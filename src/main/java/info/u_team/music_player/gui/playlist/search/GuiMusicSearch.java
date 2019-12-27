@@ -10,6 +10,7 @@ import java.util.stream.*;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.util.tinyfd.TinyFileDialogs;
 
+import info.u_team.music_player.gui.BetterScreen;
 import info.u_team.music_player.gui.playlist.GuiMusicPlaylist;
 import info.u_team.music_player.init.MusicPlayerResources;
 import info.u_team.music_player.lavaplayer.api.audio.*;
@@ -17,11 +18,10 @@ import info.u_team.music_player.musicplayer.MusicPlayerManager;
 import info.u_team.music_player.musicplayer.playlist.Playlist;
 import info.u_team.u_team_core.gui.elements.*;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.util.text.*;
 
-public class GuiMusicSearch extends Screen {
+public class GuiMusicSearch extends BetterScreen {
 	
 	private final Playlist playlist;
 	
