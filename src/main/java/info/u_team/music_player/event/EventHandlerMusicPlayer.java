@@ -159,7 +159,7 @@ public class EventHandlerMusicPlayer {
 	}
 	
 	@SubscribeEvent
-	public void on(GuiScreenEvent.DrawScreenEvent event) {
+	public void on(GuiScreenEvent.DrawScreenEvent.Post event) {
 		final Screen gui = event.getGui();
 		if (gui instanceof IngameMenuScreen) {
 			if (settings.isShowIngameMenueOverlay()) {
@@ -167,6 +167,19 @@ public class EventHandlerMusicPlayer {
 						.filter(element -> element instanceof GuiControls) //
 						.map(element -> ((GuiControls) element)).findAny() //
 						.ifPresent(controls -> controls.drawScreen(event.getMouseX(), event.getMouseY(), event.getRenderPartialTicks()));
+			}
+		}
+	}
+	
+	@SubscribeEvent
+	public void on(GuiScreenEvent.MouseReleasedEvent.Pre event) {
+		final Screen gui = event.getGui();
+		if (gui instanceof IngameMenuScreen) {
+			if (settings.isShowIngameMenueOverlay()) {
+				gui.children().stream() //
+						.filter(element -> element instanceof GuiControls) //
+						.map(element -> ((GuiControls) element)).findAny() //
+						.ifPresent(controls -> controls.mouseReleased(event.getMouseX(), event.getMouseY(), event.getButton()));
 			}
 		}
 	}
