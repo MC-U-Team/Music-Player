@@ -1,6 +1,11 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [1.14.4-2.0.6.47] - 2019-12-28
+### Changed
+ - Fixed some scrolling and mouse release issues with the children gui system in minecraft. This fixed the volume slider not releasing the drag and the scrol bug in the playlists
+ - Fixed [#21](https://github.com/MC-U-Team/Music-Player/issues/21)
+
 ## [1.14.4-2.0.5.46] - 2019-12-10
 ### Added
  - Added support for voice chat mod internally

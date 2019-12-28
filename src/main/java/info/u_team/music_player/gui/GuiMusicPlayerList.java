@@ -2,9 +2,8 @@ package info.u_team.music_player.gui;
 
 import info.u_team.music_player.musicplayer.MusicPlayerManager;
 import info.u_team.music_player.musicplayer.playlist.*;
-import info.u_team.u_team_core.gui.elements.ScrollableList;
 
-public class GuiMusicPlayerList extends ScrollableList<GuiMusicPlayerListEntry> {
+public class GuiMusicPlayerList extends BetterScrollableList<GuiMusicPlayerListEntry> {
 	
 	private final Playlists playlists;
 	

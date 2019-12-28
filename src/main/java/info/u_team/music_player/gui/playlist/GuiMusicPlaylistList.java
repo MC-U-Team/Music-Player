@@ -2,11 +2,11 @@ package info.u_team.music_player.gui.playlist;
 
 import java.util.*;
 
+import info.u_team.music_player.gui.BetterScrollableList;
 import info.u_team.music_player.musicplayer.MusicPlayerManager;
 import info.u_team.music_player.musicplayer.playlist.*;
-import info.u_team.u_team_core.gui.elements.ScrollableList;
 
-public class GuiMusicPlaylistList extends ScrollableList<GuiMusicPlaylistListEntry> {
+public class GuiMusicPlaylistList extends BetterScrollableList<GuiMusicPlaylistListEntry> {
 	
 	private final Playlist playlist;
 	
@@ -83,5 +83,4 @@ public class GuiMusicPlaylistList extends ScrollableList<GuiMusicPlaylistListEnt
 	public void tick() {
 		children().forEach(GuiMusicPlaylistListEntry::tick);
 	}
-	
 }
