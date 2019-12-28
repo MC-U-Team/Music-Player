@@ -32,8 +32,8 @@ public class GuiMusicPlaylistListEntryPlaylistStart extends GuiMusicPlaylistList
 	
 	@Override
 	public void drawEntryExtended(int entryX, int entryY, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean mouseInList, float partialTicks) {
-		mc.fontRenderer.drawString(name, entryX + 5, entryY + 15, 0xF4E242);
-		mc.fontRenderer.drawString(duration, entryX + entryWidth - 140, entryY + 15, 0xFFFF00);
+		minecraft.fontRenderer.drawString(name, entryX + 5, entryY + 15, 0xF4E242);
+		minecraft.fontRenderer.drawString(duration, entryX + entryWidth - 140, entryY + 15, 0xFFFF00);
 	}
 	
 	public void addEntry(GuiMusicPlaylistListEntryPlaylistTrack entry) {

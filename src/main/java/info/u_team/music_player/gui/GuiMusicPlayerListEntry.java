@@ -62,12 +62,12 @@ class GuiMusicPlayerListEntry extends BetterScrollableListEntry<GuiMusicPlayerLi
 				
 				playlists.removePlayingLock();
 				
-				if (mc.currentScreen instanceof GuiMusicPlayer) {
-					final GuiMusicPlayer musicplayergui = (GuiMusicPlayer) mc.currentScreen;
+				if (minecraft.currentScreen instanceof GuiMusicPlayer) {
+					final GuiMusicPlayer musicplayergui = (GuiMusicPlayer) minecraft.currentScreen;
 					final GuiMusicPlayerList newGui = musicplayergui.getPlaylistsList();
 					newGui.children().forEach(entry -> entry.playPlaylistButton.active = true);
-				} else if (mc.currentScreen instanceof GuiMusicPlaylist) {
-					final GuiMusicPlaylist musicplaylistgui = (GuiMusicPlaylist) mc.currentScreen;
+				} else if (minecraft.currentScreen instanceof GuiMusicPlaylist) {
+					final GuiMusicPlaylist musicplaylistgui = (GuiMusicPlaylist) minecraft.currentScreen;
 					musicplaylistgui.getTrackList().updateAllEntries();
 				}
 			};
@@ -83,7 +83,7 @@ class GuiMusicPlayerListEntry extends BetterScrollableListEntry<GuiMusicPlayerLi
 		});
 		
 		openPlaylistButton = addButton(new ImageButton(0, 0, 20, 20, MusicPlayerResources.TEXTURE_OPEN));
-		openPlaylistButton.setPressable(() -> mc.displayGuiScreen(new GuiMusicPlaylist(playlist)));
+		openPlaylistButton.setPressable(() -> minecraft.displayGuiScreen(new GuiMusicPlaylist(playlist)));
 		
 		deletePlaylistButton = addButton(new ImageButton(0, 0, 20, 20, MusicPlayerResources.TEXTURE_CLEAR));
 		deletePlaylistButton.setPressable(() -> gui.removePlaylist(this));
@@ -95,8 +95,8 @@ class GuiMusicPlayerListEntry extends BetterScrollableListEntry<GuiMusicPlayerLi
 		if (name.isEmpty()) {
 			name = "\u00A7o" + getTranslation(GUI_PLAYLISTS_NO_NAME);
 		}
-		mc.fontRenderer.drawString(name, entryX + 5, entryY + 5, playlist.equals(playlists.getPlaying()) ? 0x0083FF : 0xFFF00F);
-		mc.fontRenderer.drawString(playlist.getEntrySize() + " " + getTranslation(playlist.getEntrySize() > 1 ? GUI_PLAYLISTS_ENTRIES : GUI_PLAYLISTS_ENTRY), entryX + 5, entryY + 30, 0xFFFFFF);
+		minecraft.fontRenderer.drawString(name, entryX + 5, entryY + 5, playlist.equals(playlists.getPlaying()) ? 0x0083FF : 0xFFF00F);
+		minecraft.fontRenderer.drawString(playlist.getEntrySize() + " " + getTranslation(playlist.getEntrySize() > 1 ? GUI_PLAYLISTS_ENTRIES : GUI_PLAYLISTS_ENTRY), entryX + 5, entryY + 30, 0xFFFFFF);
 		
 		playPlaylistButton.x = entryWidth - 65;
 		playPlaylistButton.y = entryY + 12;

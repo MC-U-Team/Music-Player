@@ -38,8 +38,8 @@ public class GuiMusicSearchListEntryPlaylist extends GuiMusicSearchListEntry {
 	@Override
 	public void render(int slotIndex, int entryY, int entryX, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float partialTicks) {
 		super.render(slotIndex, entryY, entryX, entryWidth, entryHeight, mouseX, mouseY, hovered, partialTicks);
-		mc.fontRenderer.drawString(name, entryX + 5, entryY + 15, 0xF4E242);
-		mc.fontRenderer.drawString(duration, entryX + entryWidth - 135, entryY + 5, 0xFFFF00);
+		minecraft.fontRenderer.drawString(name, entryX + 5, entryY + 15, 0xF4E242);
+		minecraft.fontRenderer.drawString(duration, entryX + entryWidth - 135, entryY + 5, 0xFFFF00);
 	}
 	
 	public IAudioTrackList getTrackList() {

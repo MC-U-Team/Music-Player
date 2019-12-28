@@ -7,7 +7,7 @@ public class GuiMusicPlaylistListEntryLoading extends GuiMusicPlaylistListEntry 
 	@Override
 	public void render(int slotIndex, int entryY, int entryX, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float partialTicks) {
 		String text = getTranslation(GUI_PLAYLIST_LOADING);
-		mc.fontRenderer.drawString(text, entryX + (entryWidth / 2) - (mc.fontRenderer.getStringWidth(text) / 2), entryY + 20, 0xFF0000);
+		minecraft.fontRenderer.drawString(text, entryX + (entryWidth / 2) - (minecraft.fontRenderer.getStringWidth(text) / 2), entryY + 20, 0xFF0000);
 	}
 	
 }
