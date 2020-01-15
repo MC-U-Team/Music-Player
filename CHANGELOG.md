@@ -1,6 +1,10 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [1.14.4-2.0.7.50] - 2019-01-15
+### Changed
+ - Updated lavaplayer to 1.3.33
+
 ## [1.14.4-2.0.6.47] - 2019-12-28
 ### Changed
  - Fixed some scrolling and mouse release issues with the children gui system in minecraft. This fixed the volume slider not releasing the drag and the scrol bug in the playlists
