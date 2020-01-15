@@ -1,6 +1,11 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [1.12.2-2.0.5.49] - 2020-01-15
+### Changed
+ - Update lavaplayer to 1.3.33
+ - Fixed [#21](https://github.com/MC-U-Team/Music-Player/issues/21)
+
 ## [1.12.2-2.0.4.45] - 2019-12-05
 ### Changed
  - Fixed sondcloud not working anymore with updating lavaplayer to 1.3.32
