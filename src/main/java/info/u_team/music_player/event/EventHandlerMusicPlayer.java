@@ -94,7 +94,7 @@ public class EventHandlerMusicPlayer {
 				}
 				IngameOverlayPosition position = settings.getIngameOverlayPosition();
 				
-				final MainWindow window = mc.func_228018_at_();
+				final MainWindow window = mc.getMainWindow();
 				final int width = window.getScaledWidth();
 				final int height = window.getScaledHeight();
 				
