@@ -55,12 +55,6 @@ public class GuiMusicSearch extends BetterScreen {
 				keyFromTextField(this, getText(), key);
 				return super.keyPressed(key, p_keyPressed_2_, p_keyPressed_3_);
 			}
-			
-			@Override
-			public boolean changeFocus(boolean p_changeFocus_1_) {
-				System.out.println("CHANGEED FOR Url FIELD to " + p_changeFocus_1_);
-				return super.changeFocus(p_changeFocus_1_);
-			}
 		};
 		urlField.setMaxStringLength(10000);
 		children.add(urlField);
