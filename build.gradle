@@ -13,6 +13,7 @@ buildscript {
 
 apply from: "https://raw.githubusercontent.com/HyCraftHD/Blank-Forge-Project/master/configuration.methods"
 apply from: "https://raw.githubusercontent.com/HyCraftHD/Blank-Forge-Project/master/git.methods"
+apply from: "https://raw.githubusercontent.com/HyCraftHD/Blank-Forge-Project/master/signjar.methods"
 
 setup()
 info()
@@ -80,6 +81,7 @@ def normalManifest = {
     	"Implementation-Version": project.version,
 		"Implementation-Vendor": "Team UTeam",
         "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
+        "Fingerprint": project.findProperty("keystore.fingerprint") ?: "NONE"
 	)
 }
 
@@ -161,6 +163,8 @@ artifacts {
     archives docJar
     archives jar
 }
+
+signAllJars()
 
 sourceSets {
 	main {
