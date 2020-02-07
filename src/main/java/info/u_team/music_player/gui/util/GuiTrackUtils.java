@@ -26,7 +26,6 @@ public final class GuiTrackUtils {
 	}
 	
 	public static void addTrackInfo(IAudioTrack track, int x, int y, int entryWidth, int leftMargin, int titleColor) {
-		
 		final int textSize = entryWidth - 150 - leftMargin;
 		
 		final IAudioTrackInfo info = track.getInfo();
