@@ -2,6 +2,7 @@ package info.u_team.music_player;
 
 import info.u_team.music_player.proxy.*;
 import info.u_team.u_team_core.api.IModProxy;
+import info.u_team.u_team_core.util.verify.JarSignVerifier;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.common.Mod;
@@ -16,6 +17,7 @@ public class MusicPlayerMod {
 	private static final IModProxy PROXY = DistExecutor.runForDist(() -> ClientProxy::new, () -> CommonProxy::new);
 	
 	public MusicPlayerMod() {
+		JarSignVerifier.checkSigned(MODID);
 		FMLJavaModLoadingContext.get().getModEventBus().register(this);
 		PROXY.construct();
 	}
