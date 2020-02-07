@@ -30,6 +30,6 @@ authors="HyCraftHD"
 	[[dependencies.musicplayer]]
 	    modId="uteamcore"
 	    mandatory=true
-	    versionRange="[2.10.3.152,)"
+	    versionRange="[2.10.4.153,)"
 	    ordering="NONE"
 	    side="BOTH"
