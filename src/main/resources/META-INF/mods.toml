@@ -16,7 +16,7 @@ authors="HyCraftHD"
 	[[dependencies.musicplayer]]
 	    modId="forge"
 	    mandatory=true
-	    versionRange="[31.0.0,)"
+	    versionRange="[31.1.0,)"
 	    ordering="NONE"
 	    side="BOTH"
 	
