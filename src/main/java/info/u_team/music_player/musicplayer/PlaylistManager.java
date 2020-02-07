@@ -39,6 +39,9 @@ public class PlaylistManager implements IGsonLoadable {
 					throw ex;
 				}
 			}
+		} catch (ZipException ex) {
+			logger.warn("The playlist file is corrupted and will be deleted at " + path, ex);
+			playlists = new Playlists();
 		} catch (IOException ex) {
 			logger.error("Could not ready playlist file at " + path, ex);
 		}
