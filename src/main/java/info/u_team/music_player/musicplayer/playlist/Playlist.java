@@ -360,7 +360,7 @@ public class Playlist implements ITrackQueue {
 	}
 	
 	/**
-	 * Returns a pair of calculated songs. This pair is either on after the current song if {@link Skip} is
+	 * Returns a pair of calculated songs. This pair is either one after the current song if {@link Skip} is
 	 * {@link Skip#FORWARD} or one behind.
 	 * 
 	 * @param loadedTrack The currently loaded track {@link LoadedTracks}
@@ -369,7 +369,7 @@ public class Playlist implements ITrackQueue {
 	 * @return Pair of {@link LoadedTracks} and {@link IAudioTrack}. Can't be null, but elements can be null.
 	 */
 	private Pair<LoadedTracks, IAudioTrack> getOtherTrack(LoadedTracks loadedTrack, IAudioTrack track, Skip skip) {
-		if (loadedTrack == null) {
+		if (loadedTrack == null || track == null) {
 			return Pair.of(null, null);
 		}
 		LoadedTracks nextLoadedTrack = loadedTrack;
