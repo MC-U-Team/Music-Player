@@ -379,6 +379,24 @@ public class Playlist implements ITrackQueue {
 	}
 	
 	/**
+	 * Gets the last track {@link Pair} with {@link LoadedTracks} and {@link IAudioTrack} in this playlist. Values in the
+	 * pair might be null if there are no tracks.
+	 * 
+	 * @return Pair of {@link LoadedTracks} and {@link IAudioTrack}. Can't be null, but elements can be null.
+	 */
+	public Pair<LoadedTracks, IAudioTrack> getLastTrack() {
+		if (loadedTracks.isEmpty()) {
+			return Pair.of(null, null);
+		}
+		final LoadedTracks loadedTrack = loadedTracks.get(loadedTracks.size() - 1);
+		if (loadedTrack == null) {
+			return Pair.of(null, null);
+		} else {
+			return Pair.of(loadedTrack, loadedTrack.getLastTrack());
+		}
+	}
+	
+	/**
 	 * Find a next song and set it to the {@link #nextLoadedTrack} and {@link #next} track variable
 	 * 
 	 * @param settings The current settings
