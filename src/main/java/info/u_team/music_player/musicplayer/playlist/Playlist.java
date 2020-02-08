@@ -131,7 +131,7 @@ public class Playlist implements ITrackQueue {
 		if (!loaded) {
 			return null;
 		}
-		WrappedObject<String> uri = new WrappedObject<>(track.getInfo().getURI());
+		final WrappedObject<String> uri = new WrappedObject<>(track.getInfo().getURI());
 		int index = uris.size();
 		uris.add(index, uri);
 		loadedTracks.add(index, new LoadedTracks(uri, track));
@@ -151,8 +151,8 @@ public class Playlist implements ITrackQueue {
 			return null;
 		}
 		if (!trackList.isSearch() && trackList.hasUri()) {
-			WrappedObject<String> uri = new WrappedObject<>(trackList.getUri());
-			int index = uris.size();
+			final WrappedObject<String> uri = new WrappedObject<>(trackList.getUri());
+			final int index = uris.size();
 			uris.add(index, uri);
 			loadedTracks.add(index, new LoadedTracks(uri, trackList));
 			save();
@@ -171,7 +171,7 @@ public class Playlist implements ITrackQueue {
 		if (!loaded) {
 			return false;
 		}
-		int index = uris.indexOf(uri);
+		final int index = uris.indexOf(uri);
 		if (index >= 0) {
 			uris.remove(index);
 			loadedTracks.remove(index);
