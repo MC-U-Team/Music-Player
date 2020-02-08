@@ -439,7 +439,7 @@ public class Playlist implements ITrackQueue {
 				});
 			}
 		});
-		if (shuffleEntries.size() == 0) {
+		if (shuffleEntries.isEmpty()) {
 			return false;
 		}
 		if (random == null) {
@@ -449,12 +449,6 @@ public class Playlist implements ITrackQueue {
 		final Pair<LoadedTracks, IAudioTrack> pair = shuffleEntries.get(random.nextInt(shuffleEntries.size()));
 		nextLoadedTrack = pair.getLeft();
 		next = pair.getRight();
-		
-		System.out.println(next);
-		if (next != null) {
-			System.out.println(next.getInfo().getFixedTitle());
-		}
-		
-		return nextLoadedTrack != null && next != null;
+		return true;
 	}
 }
