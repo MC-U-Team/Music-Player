@@ -3,6 +3,7 @@ package info.u_team.music_player.musicplayer.playlist;
 import java.util.*;
 import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Function;
 
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -306,15 +307,7 @@ public class Playlist implements ITrackQueue {
 	 * @return Pair of {@link LoadedTracks} and {@link IAudioTrack}. Can't be null, but elements can be null.
 	 */
 	public Pair<LoadedTracks, IAudioTrack> getFirstTrack() {
-		if (loadedTracks.isEmpty()) {
-			return Pair.of(null, null);
-		}
-		final LoadedTracks loadedTrack = loadedTracks.get(0);
-		if (loadedTrack == null) {
-			return Pair.of(null, null);
-		} else {
-			return Pair.of(loadedTrack, loadedTrack.getFirstTrack());
-		}
+		return getTrackAtIndex(0, LoadedTracks::getFirstTrack);
 	}
 	
 	/**
@@ -324,14 +317,26 @@ public class Playlist implements ITrackQueue {
 	 * @return Pair of {@link LoadedTracks} and {@link IAudioTrack}. Can't be null, but elements can be null.
 	 */
 	public Pair<LoadedTracks, IAudioTrack> getLastTrack() {
+		return getTrackAtIndex(loadedTracks.size() - 1, LoadedTracks::getLastTrack);
+	}
+	
+	/**
+	 * Gets a {@link LoadedTracks} at the index of the loaded tracks list in this playlist. The supplied function must then
+	 * select the right {@link IAudioTrack}
+	 * 
+	 * @param index The index of the {@link LoadedTracks} entry. Must be in bound
+	 * @param function A function that returns an {@link IAudioTrack} based on the passed {@link LoadedTracks}
+	 * @return Pair of {@link LoadedTracks} and {@link IAudioTrack}. Can't be null, but elements can be null.
+	 */
+	private Pair<LoadedTracks, IAudioTrack> getTrackAtIndex(int index, Function<LoadedTracks, IAudioTrack> function) {
 		if (loadedTracks.isEmpty()) {
 			return Pair.of(null, null);
 		}
-		final LoadedTracks loadedTrack = loadedTracks.get(loadedTracks.size() - 1);
+		final LoadedTracks loadedTrack = loadedTracks.get(index);
 		if (loadedTrack == null) {
 			return Pair.of(null, null);
 		} else {
-			return Pair.of(loadedTrack, loadedTrack.getLastTrack());
+			return Pair.of(loadedTrack, function.apply(loadedTrack));
 		}
 	}
 	
