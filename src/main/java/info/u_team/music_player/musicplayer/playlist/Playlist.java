@@ -279,29 +279,7 @@ public class Playlist implements ITrackQueue {
 		} else if (settings.isShuffle()) {
 			return selectRandomTrack();
 		} else {
-			final Pair<LoadedTracks, IAudioTrack> pair = getOtherTrack(nextLoadedTrack, next, Skip.FORWARD);
-			final LoadedTracks loadedTrack = pair.getLeft();
-			final IAudioTrack track = pair.getRight();
-			if (loadedTrack == null || track == null) {
-				if (settings.isFinite()) {
-					return false;
-				} else if (loadedTracks.size() > 0) {
-					nextLoadedTrack = loadedTracks.get(0);
-					if (nextLoadedTrack != null) {
-						next = nextLoadedTrack.getFirstTrack();
-						if (next != null) {
-							return true;
-						}
-					}
-				}
-				return false;
-			}
-			if (loadedTrack != null && track != null) {
-				nextLoadedTrack = loadedTrack;
-				next = track;
-				return true;
-			}
-			return false;
+			return findNextSong(settings, Skip.FORWARD);
 		}
 	}
 	
@@ -393,28 +371,7 @@ public class Playlist implements ITrackQueue {
 		if (settings.isShuffle()) {
 			return selectRandomTrack();
 		} else {
-			final Pair<LoadedTracks, IAudioTrack> pair = getOtherTrack(nextLoadedTrack, next, skip);
-			final LoadedTracks loadedTrack = pair.getLeft();
-			final IAudioTrack track = pair.getRight();
-			if (loadedTrack == null || track == null) {
-				if (settings.isFinite()) {
-					return false;
-				} else if (loadedTracks.size() > 0) {
-					nextLoadedTrack = loadedTracks.get(0);
-					if (nextLoadedTrack != null) {
-						next = nextLoadedTrack.getFirstTrack();
-						if (next != null) {
-							return true;
-						}
-					}
-				}
-			}
-			if (loadedTrack != null && track != null) {
-				nextLoadedTrack = loadedTrack;
-				next = track;
-				return true;
-			}
-			return false;
+			return first = findNextSong(settings, skip);
 		}
 	}
 	
