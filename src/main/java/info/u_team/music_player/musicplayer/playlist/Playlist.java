@@ -316,7 +316,7 @@ public class Playlist implements ITrackQueue {
 	 * 
 	 * @param loadedTrack The currently loaded track {@link LoadedTracks}
 	 * @param track The currently playing {@link IAudioTrack}
-	 * @param skip In which direction we wanna skip
+	 * @param skip In which direction we want to skip
 	 * @return Pair of {@link LoadedTracks} and {@link IAudioTrack}. Can't be null, but elements can be null.
 	 */
 	private Pair<LoadedTracks, IAudioTrack> getOtherTrack(LoadedTracks loadedTrack, IAudioTrack track, Skip skip) {
@@ -341,9 +341,19 @@ public class Playlist implements ITrackQueue {
 	 * @param track {@link IAudioTrack} which must be in the passed loadedTrack
 	 */
 	public void setPlayable(LoadedTracks loadedTrack, IAudioTrack track) {
+		setTracks(loadedTrack, track);
+		first = true;
+	}
+	
+	/**
+	 * Sets the {@link #loadedTracks} and {@link #next} variable to the passed arguments
+	 * 
+	 * @param loadedTrack {@link LoadedTracks} which must be in this playlist
+	 * @param track {@link IAudioTrack} which must be in the passed loadedTrack
+	 */
+	private void setTracks(LoadedTracks loadedTrack, IAudioTrack track) {
 		nextLoadedTrack = loadedTrack;
 		next = track;
-		first = true;
 	}
 	
 	/**
@@ -394,14 +404,14 @@ public class Playlist implements ITrackQueue {
 					if (nextLoadedTrack != null) {
 						next = nextLoadedTrack.getFirstTrack();
 						if (next != null) {
-							setPlayable(nextLoadedTrack, next);
 							return true;
 						}
 					}
 				}
 			}
 			if (loadedTrack != null && track != null) {
-				setPlayable(loadedTrack, track);
+				nextLoadedTrack = loadedTrack;
+				next = track;
 				return true;
 			}
 			return false;
@@ -409,11 +419,43 @@ public class Playlist implements ITrackQueue {
 	}
 	
 	/**
+	 * Find a next song and set it to the {@link #nextLoadedTrack} and {@link #next} track variable
+	 * 
+	 * @param settings The current settings
+	 * @param skip In which direction we want to find the song
+	 * @return Return true if a valid next song could be found. Otherwise return false
+	 */
+	private boolean findNextSong(Settings settings, Skip skip) {
+		final Pair<LoadedTracks, IAudioTrack> pair = getOtherTrack(nextLoadedTrack, next, skip);
+		final LoadedTracks loadedTrack = pair.getLeft();
+		final IAudioTrack track = pair.getRight();
+		
+		if (loadedTrack == null || track == null) {
+			if (settings.isFinite()) {
+				return false;
+			} else if (loadedTracks.size() > 0) {
+				final LoadedTracks firstLoadedTrack = loadedTracks.get(0);
+				if (firstLoadedTrack != null) {
+					final IAudioTrack firstTrack = nextLoadedTrack.getFirstTrack();
+					if (firstTrack != null) {
+						setTracks(firstLoadedTrack, firstTrack);
+						return true;
+					}
+				}
+			}
+		} else if (loadedTrack != null && track != null) {
+			setTracks(loadedTrack, track);
+			return true;
+		}
+		return false;
+	}
+	
+	/**
 	 * Select a random track
 	 * 
 	 * @return If a new random track was found
 	 */
-	public boolean selectRandomTrack() {
+	private boolean selectRandomTrack() {
 		final List<Pair<LoadedTracks, IAudioTrack>> shuffleEntries = new ArrayList<>();
 		loadedTracks.forEach(loadedTrack -> {
 			if (loadedTrack.isTrack()) {
