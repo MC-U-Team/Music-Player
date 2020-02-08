@@ -361,18 +361,18 @@ public class Playlist implements ITrackQueue {
 	}
 	
 	/**
-	 * Gets the first track {@link Pair} with {@link LoadedTracks} and {@link IAudioTrack} in this playlist. Might be null
-	 * if there are no tracks.
+	 * Gets the first track {@link Pair} with {@link LoadedTracks} and {@link IAudioTrack} in this playlist. Values in the
+	 * pair might be null if there are no tracks.
 	 * 
-	 * @return {@link Pair} with {@link LoadedTracks} as key and {@link IAudioTrack} as value
+	 * @return Pair of {@link LoadedTracks} and {@link IAudioTrack}. Can't be null, but elements can be null.
 	 */
 	public Pair<LoadedTracks, IAudioTrack> getFirstTrack() {
 		if (loadedTracks.isEmpty()) {
-			return null;
+			return Pair.of(null, null);
 		}
 		final LoadedTracks loadedTrack = loadedTracks.get(0);
 		if (loadedTrack == null) {
-			return null;
+			return Pair.of(null, null);
 		} else {
 			return Pair.of(loadedTrack, loadedTrack.getFirstTrack());
 		}
