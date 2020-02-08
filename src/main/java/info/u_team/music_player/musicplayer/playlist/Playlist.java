@@ -396,6 +396,14 @@ public class Playlist implements ITrackQueue {
 		}
 	}
 	
+	/**
+	 * Get the index of a {@link LoadedTracks} in the playlist and tests if the index is valid and the {@link LoadedTracks}
+	 * has no errors and contains a valid {@link IAudioTrack} or a valid {@link IAudioTrackList}. Returns null if the test
+	 * above failed.
+	 * 
+	 * @param index The index to search for in the playlist
+	 * @return The loaded track or null if the index is out of bounds or the {@link LoadedTracks} has an error
+	 */
 	private LoadedTracks getTrackAndValidate(int index) {
 		if (index <= 0 && index >= loadedTracks.size()) {
 			return null;
