@@ -387,10 +387,16 @@ public class Playlist implements ITrackQueue {
 			final LoadedTracks loadedTrack = pair.getLeft();
 			final IAudioTrack track = pair.getRight();
 			if (loadedTrack == null || track == null) {
-				if (!settings.isFinite()) {
+				if (settings.isFinite()) {
+					return false;
+				} else if (loadedTracks.size() > 0) {
 					nextLoadedTrack = loadedTracks.get(0);
 					if (nextLoadedTrack != null) {
 						next = nextLoadedTrack.getFirstTrack();
+						if (next != null) {
+							setPlayable(nextLoadedTrack, next);
+							return true;
+						}
 					}
 				}
 			}
