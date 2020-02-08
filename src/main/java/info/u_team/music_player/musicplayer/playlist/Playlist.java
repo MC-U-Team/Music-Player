@@ -86,7 +86,7 @@ public class Playlist implements ITrackQueue {
 			
 			uris.forEach(uri -> loadedTracks.add(new LoadedTracks(uri))); // Add dummy elements
 			
-			AtomicInteger counterIfReady = new AtomicInteger();
+			final AtomicInteger counterIfReady = new AtomicInteger();
 			
 			for (int index = 0; index < uris.size(); index++) {
 				final int immutableIndex = index; // Little workaround for using the index in closure
