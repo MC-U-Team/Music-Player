@@ -412,13 +412,12 @@ public class Playlist implements ITrackQueue {
 			if (settings.isFinite()) {
 				return false;
 			} else if (loadedTracks.size() > 0) {
-				final LoadedTracks firstLoadedTrack = loadedTracks.get(0);
-				if (firstLoadedTrack != null) {
-					final IAudioTrack firstTrack = firstLoadedTrack.getFirstTrack();
-					if (firstTrack != null) {
-						setTracks(firstLoadedTrack, firstTrack);
-						return true;
-					}
+				final Pair<LoadedTracks, IAudioTrack> sidePair = skip == Skip.FORWARD ? getFirstTrack() : getLastTrack();
+				final LoadedTracks sideLoadedTrack = sidePair.getLeft();
+				final IAudioTrack sideTrack = sidePair.getRight();
+				if (sideLoadedTrack != null && sideTrack != null) {
+					setTracks(sideLoadedTrack, sideTrack);
+					return true;
 				}
 			}
 		} else if (loadedTrack != null && track != null) {
