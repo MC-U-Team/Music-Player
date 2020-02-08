@@ -296,11 +296,7 @@ public class Playlist implements ITrackQueue {
 	 */
 	public boolean skip(Skip skip) {
 		final Settings settings = MusicPlayerManager.getSettingsManager().getSettings();
-		if (settings.isShuffle()) {
-			return selectRandomTrack();
-		} else {
-			return first = findNextSong(settings, skip);
-		}
+		return first = settings.isShuffle() ? selectRandomTrack() : findNextSong(settings, skip);
 	}
 	
 	/**
@@ -453,6 +449,12 @@ public class Playlist implements ITrackQueue {
 		final Pair<LoadedTracks, IAudioTrack> pair = shuffleEntries.get(random.nextInt(shuffleEntries.size()));
 		nextLoadedTrack = pair.getLeft();
 		next = pair.getRight();
+		
+		System.out.println(next);
+		if (next != null) {
+			System.out.println(next.getInfo().getFixedTitle());
+		}
+		
 		return nextLoadedTrack != null && next != null;
 	}
 }
