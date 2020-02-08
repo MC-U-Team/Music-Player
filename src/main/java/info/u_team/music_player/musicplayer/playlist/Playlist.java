@@ -298,6 +298,9 @@ public class Playlist implements ITrackQueue {
 	 * @return Pair of {@link LoadedTracks} and {@link IAudioTrack}. Can't be null, but elements can be null.
 	 */
 	private Pair<LoadedTracks, IAudioTrack> getOtherTrack(LoadedTracks loadedTrack, IAudioTrack track, Skip skip) {
+		if (loadedTrack == null) {
+			return Pair.of(null, null);
+		}
 		LoadedTracks nextLoadedTrack = loadedTrack;
 		IAudioTrack nextTrack = loadedTrack.getOtherTrack(track, skip);
 		if (nextTrack == null) {
