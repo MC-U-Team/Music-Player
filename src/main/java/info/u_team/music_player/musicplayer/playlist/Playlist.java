@@ -276,7 +276,9 @@ public class Playlist implements ITrackQueue {
 			return true;
 		} else if (settings.isSingleRepeat()) {
 			return true;
-		} else if (!settings.isShuffle()) {
+		} else if (settings.isShuffle()) {
+			return selectRandomTrack();
+		} else {
 			final Pair<LoadedTracks, IAudioTrack> pair = getOtherTrack(nextLoadedTrack, next, Skip.FORWARD);
 			if (pair.getLeft() == null || pair.getRight() == null) {
 				if (settings.isFinite()) {
@@ -296,25 +298,6 @@ public class Playlist implements ITrackQueue {
 				next = pair.getRight();
 				return true;
 			}
-		} else {
-			final List<Pair<LoadedTracks, IAudioTrack>> shuffleEntries = new ArrayList<>();
-			loadedTracks.forEach(loadedTrack -> {
-				if (loadedTrack.isTrack()) {
-					shuffleEntries.add(Pair.of(loadedTrack, loadedTrack.getTrack()));
-				} else if (loadedTrack.isTrackList()) {
-					loadedTrack.getTrackList().getTracks().forEach(track -> {
-						shuffleEntries.add(Pair.of(loadedTrack, track));
-					});
-				}
-			});
-			if (random == null) {
-				random = new Random();
-			}
-			Collections.shuffle(shuffleEntries, random);
-			final Pair<LoadedTracks, IAudioTrack> pair = shuffleEntries.get(new Random().nextInt(shuffleEntries.size()));
-			nextLoadedTrack = pair.getLeft();
-			next = pair.getRight();
-			return true;
 		}
 	}
 	
@@ -393,7 +376,9 @@ public class Playlist implements ITrackQueue {
 	 */
 	public boolean skip(Skip skip) {
 		final Settings settings = MusicPlayerManager.getSettingsManager().getSettings();
-		if (!settings.isShuffle()) {
+		if (settings.isShuffle()) {
+			return selectRandomTrack();
+		} else {
 			final Pair<LoadedTracks, IAudioTrack> pair = getOtherTrack(nextLoadedTrack, next, skip);
 			final LoadedTracks loadedTrack = pair.getLeft();
 			final IAudioTrack track = pair.getRight();
@@ -410,25 +395,35 @@ public class Playlist implements ITrackQueue {
 				return true;
 			}
 			return false;
-		} else {
-			final List<Pair<LoadedTracks, IAudioTrack>> shuffleEntries = new ArrayList<>();
-			loadedTracks.forEach(loadedTrack -> {
-				if (loadedTrack.isTrack()) {
-					shuffleEntries.add(Pair.of(loadedTrack, loadedTrack.getTrack()));
-				} else if (loadedTrack.isTrackList()) {
-					loadedTrack.getTrackList().getTracks().forEach(track -> {
-						shuffleEntries.add(Pair.of(loadedTrack, track));
-					});
-				}
-			});
-			if (random == null) {
-				random = new Random();
-			}
-			Collections.shuffle(shuffleEntries, random);
-			final Pair<LoadedTracks, IAudioTrack> pair = shuffleEntries.get(new Random().nextInt(shuffleEntries.size()));
-			nextLoadedTrack = pair.getLeft();
-			next = pair.getRight();
-			return true;
 		}
+	}
+	
+	/**
+	 * Select a random track
+	 * 
+	 * @return If a new random track was found
+	 */
+	public boolean selectRandomTrack() {
+		final List<Pair<LoadedTracks, IAudioTrack>> shuffleEntries = new ArrayList<>();
+		loadedTracks.forEach(loadedTrack -> {
+			if (loadedTrack.isTrack()) {
+				shuffleEntries.add(Pair.of(loadedTrack, loadedTrack.getTrack()));
+			} else if (loadedTrack.isTrackList()) {
+				loadedTrack.getTrackList().getTracks().forEach(track -> {
+					shuffleEntries.add(Pair.of(loadedTrack, track));
+				});
+			}
+		});
+		if (shuffleEntries.size() == 0) {
+			return false;
+		}
+		if (random == null) {
+			random = new Random();
+		}
+		Collections.shuffle(shuffleEntries, random);
+		final Pair<LoadedTracks, IAudioTrack> pair = shuffleEntries.get(random.nextInt(shuffleEntries.size()));
+		nextLoadedTrack = pair.getLeft();
+		next = pair.getRight();
+		return nextLoadedTrack != null && next != null;
 	}
 }
