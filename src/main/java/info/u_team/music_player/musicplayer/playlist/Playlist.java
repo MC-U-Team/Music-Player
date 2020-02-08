@@ -274,10 +274,9 @@ public class Playlist implements ITrackQueue {
 		} else if (first) {
 			first = false;
 			return true;
+		} else if (settings.isSingleRepeat()) {
+			return true;
 		} else if (!settings.isShuffle()) {
-			if (settings.isSingleRepeat()) {
-				return true;
-			}
 			final Pair<LoadedTracks, IAudioTrack> pair = getOtherTrack(nextLoadedTrack, next, Skip.FORWARD);
 			if (pair.getLeft() == null || pair.getRight() == null) {
 				if (settings.isFinite()) {
@@ -395,9 +394,9 @@ public class Playlist implements ITrackQueue {
 	public boolean skip(Skip skip) {
 		final Settings settings = MusicPlayerManager.getSettingsManager().getSettings();
 		if (!settings.isShuffle()) {
-			Pair<LoadedTracks, IAudioTrack> pair = getOtherTrack(nextLoadedTrack, next, skip);
-			LoadedTracks loadedTrack = pair.getLeft();
-			IAudioTrack track = pair.getRight();
+			final Pair<LoadedTracks, IAudioTrack> pair = getOtherTrack(nextLoadedTrack, next, skip);
+			final LoadedTracks loadedTrack = pair.getLeft();
+			final IAudioTrack track = pair.getRight();
 			if (loadedTrack == null || track == null) {
 				if (!settings.isFinite()) {
 					nextLoadedTrack = loadedTracks.get(0);
