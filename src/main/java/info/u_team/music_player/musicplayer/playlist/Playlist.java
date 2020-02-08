@@ -3,7 +3,7 @@ package info.u_team.music_player.musicplayer.playlist;
 import java.util.*;
 import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.function.Function;
+import java.util.function.*;
 
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -372,18 +372,50 @@ public class Playlist implements ITrackQueue {
 		if (loadedTrack == null || track == null) {
 			return Pair.of(null, null);
 		}
-		LoadedTracks nextLoadedTrack = loadedTrack;
-		IAudioTrack nextTrack = loadedTrack.getOtherTrack(track, skip);
-		if (nextTrack == null) {
-			final int newIndex = loadedTracks.indexOf(loadedTrack) + skip.getValue();
-			if (newIndex >= 0 && newIndex < loadedTracks.size()) {
-				nextLoadedTrack = loadedTracks.get(newIndex);
-				nextTrack = skip == Skip.FORWARD ? nextLoadedTrack.getFirstTrack() : nextLoadedTrack.getLastTrack();
-			} else {
-				nextLoadedTrack = null;
+		final IAudioTrack nextTrack = loadedTrack.getOtherTrack(track, skip);
+		if (nextTrack != null) {
+			return Pair.of(loadedTrack, nextTrack);
+		} else {
+			final int index = loadedTracks.indexOf(loadedTrack);
+			if (index == -1) {
+				return Pair.of(null, null);
 			}
+			
+			final IntPredicate testIndex = newIndex -> skip == Skip.FORWARD ? newIndex < loadedTracks.size() : newIndex >= 0;
+			
+			for (int newIndex = index + skip.getValue(); testIndex.test(newIndex); newIndex += skip.getValue()) {
+				final LoadedTracks nextValidLoadedTrack = getTrackAndValidate(newIndex);
+				if (nextValidLoadedTrack != null) {
+					return Pair.of(nextValidLoadedTrack, skip == Skip.FORWARD ? nextValidLoadedTrack.getFirstTrack() : nextValidLoadedTrack.getLastTrack());
+				}
+			}
+			return Pair.of(null, null);
+			
 		}
-		return Pair.of(nextLoadedTrack, nextTrack);
+		
+		// LoadedTracks nextLoadedTrack = loadedTrack;
+		// IAudioTrack nextTrack = loadedTrack.getOtherTrack(track, skip);
+		// if (nextTrack == null) {
+		// final int newIndex = loadedTracks.indexOf(loadedTrack) + skip.getValue();
+		// if (newIndex >= 0 && newIndex < loadedTracks.size()) {
+		// nextLoadedTrack = loadedTracks.get(newIndex);
+		// nextTrack = skip == Skip.FORWARD ? nextLoadedTrack.getFirstTrack() : nextLoadedTrack.getLastTrack();
+		// } else {
+		// nextLoadedTrack = null;
+		// }
+		// }
+		// return Pair.of(nextLoadedTrack, nextTrack);
+	}
+	
+	private LoadedTracks getTrackAndValidate(int index) {
+		if (index <= 0 && index >= loadedTracks.size()) {
+			return null;
+		}
+		final LoadedTracks loadedTrack = loadedTracks.get(index);
+		if (loadedTrack.hasError() || (!loadedTrack.isTrack() && !loadedTrack.isTrackList())) {
+			return null;
+		}
+		return loadedTrack;
 	}
 	
 	/**
