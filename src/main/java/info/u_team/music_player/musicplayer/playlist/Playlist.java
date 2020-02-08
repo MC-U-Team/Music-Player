@@ -392,19 +392,6 @@ public class Playlist implements ITrackQueue {
 			return Pair.of(null, null);
 			
 		}
-		
-		// LoadedTracks nextLoadedTrack = loadedTrack;
-		// IAudioTrack nextTrack = loadedTrack.getOtherTrack(track, skip);
-		// if (nextTrack == null) {
-		// final int newIndex = loadedTracks.indexOf(loadedTrack) + skip.getValue();
-		// if (newIndex >= 0 && newIndex < loadedTracks.size()) {
-		// nextLoadedTrack = loadedTracks.get(newIndex);
-		// nextTrack = skip == Skip.FORWARD ? nextLoadedTrack.getFirstTrack() : nextLoadedTrack.getLastTrack();
-		// } else {
-		// nextLoadedTrack = null;
-		// }
-		// }
-		// return Pair.of(nextLoadedTrack, nextTrack);
 	}
 	
 	private LoadedTracks getTrackAndValidate(int index) {
