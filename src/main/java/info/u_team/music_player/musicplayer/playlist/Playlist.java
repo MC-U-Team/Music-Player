@@ -289,6 +289,21 @@ public class Playlist implements ITrackQueue {
 	}
 	
 	/**
+	 * Skip the current song in the {@link Skip} direction
+	 * 
+	 * @param skip Should be skipped forward or backward
+	 * @return If skip was executed
+	 */
+	public boolean skip(Skip skip) {
+		final Settings settings = MusicPlayerManager.getSettingsManager().getSettings();
+		if (settings.isShuffle()) {
+			return selectRandomTrack();
+		} else {
+			return first = findNextSong(settings, skip);
+		}
+	}
+	
+	/**
 	 * Returns a pair of calculated songs. This pair is either on after the current song if {@link Skip} is
 	 * {@link Skip#FORWARD} or one behind.
 	 * 
@@ -360,21 +375,6 @@ public class Playlist implements ITrackQueue {
 			return null;
 		} else {
 			return Pair.of(loadedTrack, loadedTrack.getFirstTrack());
-		}
-	}
-	
-	/**
-	 * Skip the current song in the {@link Skip} direction
-	 * 
-	 * @param skip Should be skipped forward or backward
-	 * @return If skip was executed
-	 */
-	public boolean skip(Skip skip) {
-		final Settings settings = MusicPlayerManager.getSettingsManager().getSettings();
-		if (settings.isShuffle()) {
-			return selectRandomTrack();
-		} else {
-			return first = findNextSong(settings, skip);
 		}
 	}
 	
