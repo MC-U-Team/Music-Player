@@ -280,10 +280,12 @@ public class Playlist implements ITrackQueue {
 			return selectRandomTrack();
 		} else {
 			final Pair<LoadedTracks, IAudioTrack> pair = getOtherTrack(nextLoadedTrack, next, Skip.FORWARD);
-			if (pair.getLeft() == null || pair.getRight() == null) {
+			final LoadedTracks loadedTrack = pair.getLeft();
+			final IAudioTrack track = pair.getRight();
+			if (loadedTrack == null || track == null) {
 				if (settings.isFinite()) {
 					return false;
-				} else {
+				} else if (loadedTracks.size() > 0) {
 					nextLoadedTrack = loadedTracks.get(0);
 					if (nextLoadedTrack != null) {
 						next = nextLoadedTrack.getFirstTrack();
@@ -291,13 +293,15 @@ public class Playlist implements ITrackQueue {
 							return true;
 						}
 					}
-					return false;
 				}
-			} else {
-				nextLoadedTrack = pair.getLeft();
-				next = pair.getRight();
+				return false;
+			}
+			if (loadedTrack != null && track != null) {
+				nextLoadedTrack = loadedTrack;
+				next = track;
 				return true;
 			}
+			return false;
 		}
 	}
 	
