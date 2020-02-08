@@ -298,11 +298,11 @@ public class Playlist implements ITrackQueue {
 				return true;
 			}
 		} else {
-			List<Pair<LoadedTracks, IAudioTrack>> shuffleEntries = new ArrayList<>();
+			final List<Pair<LoadedTracks, IAudioTrack>> shuffleEntries = new ArrayList<>();
 			loadedTracks.forEach(loadedTrack -> {
 				if (loadedTrack.isTrack()) {
 					shuffleEntries.add(Pair.of(loadedTrack, loadedTrack.getTrack()));
-				} else {
+				} else if (loadedTrack.isTrackList()) {
 					loadedTrack.getTrackList().getTracks().forEach(track -> {
 						shuffleEntries.add(Pair.of(loadedTrack, track));
 					});
@@ -312,7 +312,7 @@ public class Playlist implements ITrackQueue {
 				random = new Random();
 			}
 			Collections.shuffle(shuffleEntries, random);
-			Pair<LoadedTracks, IAudioTrack> pair = shuffleEntries.get(new Random().nextInt(shuffleEntries.size()));
+			final Pair<LoadedTracks, IAudioTrack> pair = shuffleEntries.get(new Random().nextInt(shuffleEntries.size()));
 			nextLoadedTrack = pair.getLeft();
 			next = pair.getRight();
 			return true;
