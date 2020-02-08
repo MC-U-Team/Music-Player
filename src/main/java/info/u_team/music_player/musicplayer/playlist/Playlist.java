@@ -393,7 +393,7 @@ public class Playlist implements ITrackQueue {
 			} else if (loadedTracks.size() > 0) {
 				final LoadedTracks firstLoadedTrack = loadedTracks.get(0);
 				if (firstLoadedTrack != null) {
-					final IAudioTrack firstTrack = nextLoadedTrack.getFirstTrack();
+					final IAudioTrack firstTrack = firstLoadedTrack.getFirstTrack();
 					if (firstTrack != null) {
 						setTracks(firstLoadedTrack, firstTrack);
 						return true;
