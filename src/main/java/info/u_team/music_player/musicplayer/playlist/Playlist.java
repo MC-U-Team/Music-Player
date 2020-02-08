@@ -410,7 +410,25 @@ public class Playlist implements ITrackQueue {
 				return true;
 			}
 			return false;
+		} else {
+			final List<Pair<LoadedTracks, IAudioTrack>> shuffleEntries = new ArrayList<>();
+			loadedTracks.forEach(loadedTrack -> {
+				if (loadedTrack.isTrack()) {
+					shuffleEntries.add(Pair.of(loadedTrack, loadedTrack.getTrack()));
+				} else if (loadedTrack.isTrackList()) {
+					loadedTrack.getTrackList().getTracks().forEach(track -> {
+						shuffleEntries.add(Pair.of(loadedTrack, track));
+					});
+				}
+			});
+			if (random == null) {
+				random = new Random();
+			}
+			Collections.shuffle(shuffleEntries, random);
+			final Pair<LoadedTracks, IAudioTrack> pair = shuffleEntries.get(new Random().nextInt(shuffleEntries.size()));
+			nextLoadedTrack = pair.getLeft();
+			next = pair.getRight();
+			return true;
 		}
-		return true;
 	}
 }
