@@ -361,7 +361,9 @@ public class Playlist implements ITrackQueue {
 	
 	/**
 	 * Returns a pair of calculated songs. This pair is either one after the current song if {@link Skip} is
-	 * {@link Skip#FORWARD} or one behind.
+	 * {@link Skip#FORWARD} or one behind. If the next song is invalid which is tested with
+	 * {@link #getTrackAndValidate(int)} then the next valid song is chosen. If the end or start of the playlist is reached
+	 * the pair contains null values.
 	 * 
 	 * @param loadedTrack The currently loaded track {@link LoadedTracks}
 	 * @param track The currently playing {@link IAudioTrack}
