@@ -110,9 +110,9 @@ public class LoadedTracks {
 		if (!isTrackList()) {
 			return null;
 		}
-		List<IAudioTrack> list = trackList.getTracks();
-		int index = list.indexOf(track);
-		int newIndex = index + skip.getValue();
+		final List<IAudioTrack> list = trackList.getTracks();
+		final int index = list.indexOf(track);
+		final int newIndex = index + skip.getValue();
 		if (newIndex >= 0 && newIndex < list.size()) {
 			return list.get(newIndex);
 		}
