@@ -304,63 +304,6 @@ public class Playlist implements ITrackQueue {
 	}
 	
 	/**
-	 * Returns a pair of calculated songs. This pair is either on after the current song if {@link Skip} is
-	 * {@link Skip#FORWARD} or one behind.
-	 * 
-	 * @param loadedTrack The currently loaded track {@link LoadedTracks}
-	 * @param track The currently playing {@link IAudioTrack}
-	 * @param skip In which direction we want to skip
-	 * @return Pair of {@link LoadedTracks} and {@link IAudioTrack}. Can't be null, but elements can be null.
-	 */
-	private Pair<LoadedTracks, IAudioTrack> getOtherTrack(LoadedTracks loadedTrack, IAudioTrack track, Skip skip) {
-		if (loadedTrack == null) {
-			return Pair.of(null, null);
-		}
-		LoadedTracks nextLoadedTrack = loadedTrack;
-		IAudioTrack nextTrack = loadedTrack.getOtherTrack(track, skip);
-		if (nextTrack == null) {
-			final int newIndex = loadedTracks.indexOf(loadedTrack) + skip.getValue();
-			if (newIndex >= 0 && newIndex < loadedTracks.size()) {
-				nextLoadedTrack = loadedTracks.get(newIndex);
-				nextTrack = skip == Skip.FORWARD ? nextLoadedTrack.getFirstTrack() : nextLoadedTrack.getLastTrack();
-			} else {
-				nextLoadedTrack = null;
-			}
-		}
-		return Pair.of(nextLoadedTrack, nextTrack);
-	}
-	
-	/**
-	 * Sets the start {@link LoadedTracks} with the contained {@link IAudioTrack}
-	 * 
-	 * @param loadedTrack {@link LoadedTracks} which must be in this playlist
-	 * @param track {@link IAudioTrack} which must be in the passed loadedTrack
-	 */
-	public void setPlayable(LoadedTracks loadedTrack, IAudioTrack track) {
-		setTracks(loadedTrack, track);
-		first = true;
-	}
-	
-	/**
-	 * Sets the {@link #loadedTracks} and {@link #next} variable to the passed arguments
-	 * 
-	 * @param loadedTrack {@link LoadedTracks} which must be in this playlist
-	 * @param track {@link IAudioTrack} which must be in the passed loadedTrack
-	 */
-	private void setTracks(LoadedTracks loadedTrack, IAudioTrack track) {
-		nextLoadedTrack = loadedTrack;
-		next = track;
-	}
-	
-	/**
-	 * Sets the next track to null. So the queue if playing will then be stopped.
-	 */
-	public void setStopable() {
-		nextLoadedTrack = null;
-		next = null;
-	}
-	
-	/**
 	 * Gets the first track {@link Pair} with {@link LoadedTracks} and {@link IAudioTrack} in this playlist. Values in the
 	 * pair might be null if there are no tracks.
 	 * 
@@ -394,6 +337,63 @@ public class Playlist implements ITrackQueue {
 		} else {
 			return Pair.of(loadedTrack, loadedTrack.getLastTrack());
 		}
+	}
+	
+	/**
+	 * Sets the start {@link LoadedTracks} with the contained {@link IAudioTrack}
+	 * 
+	 * @param loadedTrack {@link LoadedTracks} which must be in this playlist
+	 * @param track {@link IAudioTrack} which must be in the passed loadedTrack
+	 */
+	public void setPlayable(LoadedTracks loadedTrack, IAudioTrack track) {
+		setTracks(loadedTrack, track);
+		first = true;
+	}
+	
+	/**
+	 * Sets the next track to null. So the queue if playing will then be stopped.
+	 */
+	public void setStopable() {
+		nextLoadedTrack = null;
+		next = null;
+	}
+	
+	/**
+	 * Returns a pair of calculated songs. This pair is either on after the current song if {@link Skip} is
+	 * {@link Skip#FORWARD} or one behind.
+	 * 
+	 * @param loadedTrack The currently loaded track {@link LoadedTracks}
+	 * @param track The currently playing {@link IAudioTrack}
+	 * @param skip In which direction we want to skip
+	 * @return Pair of {@link LoadedTracks} and {@link IAudioTrack}. Can't be null, but elements can be null.
+	 */
+	private Pair<LoadedTracks, IAudioTrack> getOtherTrack(LoadedTracks loadedTrack, IAudioTrack track, Skip skip) {
+		if (loadedTrack == null) {
+			return Pair.of(null, null);
+		}
+		LoadedTracks nextLoadedTrack = loadedTrack;
+		IAudioTrack nextTrack = loadedTrack.getOtherTrack(track, skip);
+		if (nextTrack == null) {
+			final int newIndex = loadedTracks.indexOf(loadedTrack) + skip.getValue();
+			if (newIndex >= 0 && newIndex < loadedTracks.size()) {
+				nextLoadedTrack = loadedTracks.get(newIndex);
+				nextTrack = skip == Skip.FORWARD ? nextLoadedTrack.getFirstTrack() : nextLoadedTrack.getLastTrack();
+			} else {
+				nextLoadedTrack = null;
+			}
+		}
+		return Pair.of(nextLoadedTrack, nextTrack);
+	}
+	
+	/**
+	 * Sets the {@link #loadedTracks} and {@link #next} variable to the passed arguments
+	 * 
+	 * @param loadedTrack {@link LoadedTracks} which must be in this playlist
+	 * @param track {@link IAudioTrack} which must be in the passed loadedTrack
+	 */
+	private void setTracks(LoadedTracks loadedTrack, IAudioTrack track) {
+		nextLoadedTrack = loadedTrack;
+		next = track;
 	}
 	
 	/**
