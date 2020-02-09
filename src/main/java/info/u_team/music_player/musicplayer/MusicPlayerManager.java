@@ -29,13 +29,13 @@ public class MusicPlayerManager {
 	
 	private static void generatePlayer() {
 		try {
-			Class<?> clazz = Class.forName("info.u_team.music_player.lavaplayer.MusicPlayer", true, DependencyManager.getClassLoader());
+			final Class<?> clazz = Class.forName("info.u_team.music_player.lavaplayer.MusicPlayer", true, DependencyManager.getClassLoader());
 			if (!IMusicPlayer.class.isAssignableFrom(clazz)) {
 				throw new IllegalAccessError("The class " + clazz + " does not implement IMusicPlayer! This should not happen?!");
 			}
 			PLAYER = (IMusicPlayer) clazz.getDeclaredConstructor().newInstance();
 			LOGGER.info("Successfully created music player instance");
-		} catch (Exception ex) {
+		} catch (final Exception ex) {
 			LOGGER.fatal("Cannot create music player instance. This is a serious bug and the mod will not work. Report to the mod authors", ex);
 			System.exit(0);
 		}

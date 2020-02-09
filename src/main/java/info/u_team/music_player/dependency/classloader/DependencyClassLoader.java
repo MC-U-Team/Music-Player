@@ -21,7 +21,7 @@ public class DependencyClassLoader extends URLClassLoader {
 	public Class<?> loadClass(String name) throws ClassNotFoundException {
 		try {
 			return super.loadClass(name);
-		} catch (ClassNotFoundException ex) {
+		} catch (final ClassNotFoundException ex) {
 			if (name.startsWith("info.u_team.music_player.lavaplayer.api")) {
 				return getClass().getClassLoader().loadClass(name);
 			}
@@ -37,7 +37,7 @@ public class DependencyClassLoader extends URLClassLoader {
 	public void addPath(Path path) {
 		try {
 			addURL(path.toUri().toURL());
-		} catch (MalformedURLException ex) {
+		} catch (final MalformedURLException ex) {
 			LOGGER.error("Could not add dependency path to classloader", ex);
 		}
 	}

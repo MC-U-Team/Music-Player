@@ -34,7 +34,7 @@ public class GuiMusicPlayer extends BetterScreen {
 		
 		final ImageButton addPlaylistButton = addButton(new ImageButton(width - 41, 59, 22, 22, MusicPlayerResources.TEXTURE_CREATE));
 		addPlaylistButton.setPressable(() -> {
-			String name = namePlaylistField.getText();
+			final String name = namePlaylistField.getText();
 			if (StringUtils.isBlank(name) || name.equals(getTranslation(GUI_CREATE_PLAYLIST_INSERT_NAME))) {
 				namePlaylistField.setText(getTranslation(GUI_CREATE_PLAYLIST_INSERT_NAME));
 				return;

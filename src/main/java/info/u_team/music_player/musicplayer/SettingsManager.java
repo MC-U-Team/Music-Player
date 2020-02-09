@@ -38,11 +38,11 @@ public class SettingsManager implements IGsonLoadable {
 						settings = new Settings();
 						writeToFile();
 					}
-				} catch (IOException ex) {
+				} catch (final IOException ex) {
 					throw ex;
 				}
 			}
-		} catch (IOException ex) {
+		} catch (final IOException ex) {
 			LOGGER.error("Could not ready playlist file at " + path, ex);
 		}
 	}
@@ -51,7 +51,7 @@ public class SettingsManager implements IGsonLoadable {
 	public void writeToFile() {
 		try (BufferedWriter writer = Files.newBufferedWriter(path)) {
 			gson.toJson(settings, writer);
-		} catch (IOException ex) {
+		} catch (final IOException ex) {
 			LOGGER.error("Could not write playlist file at " + path, ex);
 		}
 	}

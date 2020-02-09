@@ -23,7 +23,7 @@ public class MusicPlayerFiles {
 		
 		try {
 			Files.createDirectories(DIRECTORY);
-		} catch (Exception ex) {
+		} catch (final Exception ex) {
 			LOGGER.error("Could not create music player directories", ex);
 		}
 	}

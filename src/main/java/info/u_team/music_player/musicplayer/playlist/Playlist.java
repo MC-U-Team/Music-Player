@@ -93,7 +93,7 @@ public class Playlist implements ITrackQueue {
 				final int immutableIndex = index; // Little workaround for using the index in closure
 				final WrappedObject<String> uri = uris.get(immutableIndex);
 				search.getTracks(uri.get(), result -> {
-					LoadedTracks loadedTrack = new LoadedTracks(uri, result);
+					final LoadedTracks loadedTrack = new LoadedTracks(uri, result);
 					loadedTracks.set(immutableIndex, loadedTrack);
 					if (counterIfReady.incrementAndGet() == loadedTracks.size()) { // Count up for every replaced track in loadedTracks. When its the last one it sets the loaded flag and runs the
 																					// runnable
@@ -133,7 +133,7 @@ public class Playlist implements ITrackQueue {
 			return null;
 		}
 		final WrappedObject<String> uri = new WrappedObject<>(track.getInfo().getURI());
-		int index = uris.size();
+		final int index = uris.size();
 		uris.add(index, uri);
 		loadedTracks.add(index, new LoadedTracks(uri, track));
 		save();

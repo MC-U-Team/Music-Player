@@ -44,7 +44,7 @@ public final class GuiTrackUtils {
 		try {
 			new URI(uri);
 			style.setClickEvent(new ClickEvent(Action.OPEN_URL, uri));
-		} catch (Exception ex) {
+		} catch (final Exception ex) {
 			style.setClickEvent(new ClickEvent(Action.OPEN_FILE, uri));
 		}
 		return MINECRAFT.currentScreen.handleComponentClicked(new StringTextComponent("").setStyle(style));

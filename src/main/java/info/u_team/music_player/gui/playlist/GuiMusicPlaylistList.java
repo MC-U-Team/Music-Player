@@ -28,10 +28,10 @@ public class GuiMusicPlaylistList extends BetterScrollableList<GuiMusicPlaylistL
 		} else if (loadedTracks.isTrack()) { // Add track gui element
 			list.add(new GuiMusicPlaylistListEntryMusicTrack(this, playlists, playlist, loadedTracks));
 		} else { // Add playlist start element and all track sub elements
-			GuiMusicPlaylistListEntryPlaylistStart start = new GuiMusicPlaylistListEntryPlaylistStart(this, playlists, playlist, loadedTracks);
+			final GuiMusicPlaylistListEntryPlaylistStart start = new GuiMusicPlaylistListEntryPlaylistStart(this, playlists, playlist, loadedTracks);
 			list.add(start);
 			loadedTracks.getTrackList().getTracks().forEach(track -> {
-				GuiMusicPlaylistListEntryPlaylistTrack entry = new GuiMusicPlaylistListEntryPlaylistTrack(start, playlists, playlist, loadedTracks, track);
+				final GuiMusicPlaylistListEntryPlaylistTrack entry = new GuiMusicPlaylistListEntryPlaylistTrack(start, playlists, playlist, loadedTracks, track);
 				start.addEntry(entry);
 				list.add(entry);
 			});

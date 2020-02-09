@@ -61,7 +61,7 @@ public class GuiMusicSearch extends BetterScreen {
 		
 		final UButton openFileButton = addButton(new UButton(width / 2 + 10, 34, width / 4 - 15, 22, getTranslation(GUI_SEARCH_LOAD_FILE)));
 		openFileButton.setPressable(() -> {
-			String response = TinyFileDialogs.tinyfd_openFileDialog(getTranslation(GUI_SEARCH_LOAD_FILE), null, null, getTranslation(GUI_SEARCH_MUSIC_FILES), false);
+			final String response = TinyFileDialogs.tinyfd_openFileDialog(getTranslation(GUI_SEARCH_LOAD_FILE), null, null, getTranslation(GUI_SEARCH_MUSIC_FILES), false);
 			if (response != null) {
 				searchList.clear();
 				addTrack(response);
@@ -70,12 +70,12 @@ public class GuiMusicSearch extends BetterScreen {
 		
 		final UButton openFolderButton = addButton(new UButton((int) (width * 0.75) + 5, 34, width / 4 - 15, 22, getTranslation(GUI_SEARCH_LOAD_FOLDER)));
 		openFolderButton.setPressable(() -> {
-			String response = TinyFileDialogs.tinyfd_selectFolderDialog(getTranslation(GUI_SEARCH_LOAD_FOLDER), System.getProperty("user.home"));
+			final String response = TinyFileDialogs.tinyfd_selectFolderDialog(getTranslation(GUI_SEARCH_LOAD_FOLDER), System.getProperty("user.home"));
 			if (response != null) {
 				searchList.clear();
 				try (Stream<Path> stream = Files.list(Paths.get(response))) {
 					stream.filter(path -> !Files.isDirectory(path)).forEach(path -> addTrack(path.toString()));
-				} catch (IOException ex) {
+				} catch (final IOException ex) {
 					setInformation(TextFormatting.RED + ex.getMessage(), 150);
 				}
 			}
@@ -109,7 +109,7 @@ public class GuiMusicSearch extends BetterScreen {
 		
 		final UButton addAllButton = addButton(new UButton(width - 110, 105, 100, 20, getTranslation(GUI_SEARCH_ADD_ALL)));
 		addAllButton.setPressable(() -> {
-			List<GuiMusicSearchListEntryPlaylist> list = searchList.children().stream().filter(entry -> entry instanceof GuiMusicSearchListEntryPlaylist).map(entry -> (GuiMusicSearchListEntryPlaylist) entry).collect(Collectors.toList());
+			final List<GuiMusicSearchListEntryPlaylist> list = searchList.children().stream().filter(entry -> entry instanceof GuiMusicSearchListEntryPlaylist).map(entry -> (GuiMusicSearchListEntryPlaylist) entry).collect(Collectors.toList());
 			if (list.size() > 0) {
 				list.forEach(entry -> {
 					playlist.add(entry.getTrackList());

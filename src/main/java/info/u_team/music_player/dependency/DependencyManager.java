@@ -43,7 +43,7 @@ public class DependencyManager {
 	private static void findJarFilesInDev(Path path, Consumer<Path> consumer) {
 		try (Stream<Path> stream = Files.walk(path)) {
 			stream.filter(file -> file.toString().endsWith(".jar")).forEach(consumer);
-		} catch (IOException ex) {
+		} catch (final IOException ex) {
 			LOGGER.error(MARKER, "When searching for jar files in dev an exception occured.", ex);
 		}
 	}
@@ -52,7 +52,7 @@ public class DependencyManager {
 		final ModFile modfile = ModList.get().getModFileById(MusicPlayerMod.MODID).getFile();
 		try (Stream<Path> stream = Files.walk(modfile.findResource("/" + folder))) {
 			stream.filter(file -> file.toString().endsWith(".jar")).forEach(consumer);
-		} catch (IOException ex) {
+		} catch (final IOException ex) {
 			LOGGER.error(MARKER, "When searching for jar files in jar an exception occured.", ex);
 		}
 	}
@@ -62,7 +62,7 @@ public class DependencyManager {
 		LOGGER.debug(MARKER, "Load url" + url);
 		try {
 			return new URL(url);
-		} catch (MalformedURLException ex) {
+		} catch (final MalformedURLException ex) {
 			LOGGER.error(MARKER, "Could not create url from internal path", ex);
 		}
 		return null;
@@ -84,7 +84,7 @@ public class DependencyManager {
 			final Method method = URLClassLoader.class.getDeclaredMethod("addURL", URL.class);
 			method.setAccessible(true);
 			method.invoke(systemClassLoader, url);
-		} catch (Exception ex) {
+		} catch (final Exception ex) {
 			LOGGER.error(MARKER, "Method addURL on system classloader could not be invoked", ex);
 		}
 	}

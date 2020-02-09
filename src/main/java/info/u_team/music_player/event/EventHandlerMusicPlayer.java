@@ -92,7 +92,7 @@ public class EventHandlerMusicPlayer {
 				if (overlayRender == null) {
 					overlayRender = new RenderOverlayMusicDisplay();
 				}
-				IngameOverlayPosition position = settings.getIngameOverlayPosition();
+				final IngameOverlayPosition position = settings.getIngameOverlayPosition();
 				
 				final MainWindow window = mc.getMainWindow();
 				final int width = window.getScaledWidth();
@@ -152,6 +152,7 @@ public class EventHandlerMusicPlayer {
 					authorRender = null;
 				}
 				@SuppressWarnings("unchecked")
+				final
 				List<IGuiEventListener> list = (List<IGuiEventListener>) gui.children();
 				list.add(controls);
 			}

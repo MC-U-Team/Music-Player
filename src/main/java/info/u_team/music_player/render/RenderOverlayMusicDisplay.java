@@ -13,8 +13,8 @@ public class RenderOverlayMusicDisplay {
 	
 	private final ITrackManager manager;
 	
-	private int width;
-	private int height;
+	private final int width;
+	private final int height;
 	
 	private final ScrollingTextRender title;
 	private final ScrollingTextRender author;
