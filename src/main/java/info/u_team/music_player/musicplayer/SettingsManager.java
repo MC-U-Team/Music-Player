@@ -25,6 +25,7 @@ public class SettingsManager implements IGsonLoadable {
 		path = MusicPlayerFiles.getDirectory().resolve("settings.json");
 	}
 	
+	@Override
 	public void loadFromFile() {
 		try {
 			if (!Files.exists(path)) {
@@ -46,6 +47,7 @@ public class SettingsManager implements IGsonLoadable {
 		}
 	}
 	
+	@Override
 	public void writeToFile() {
 		try (BufferedWriter writer = Files.newBufferedWriter(path)) {
 			gson.toJson(settings, writer);
