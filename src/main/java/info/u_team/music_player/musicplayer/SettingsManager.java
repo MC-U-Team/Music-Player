@@ -32,7 +32,7 @@ public class SettingsManager implements IGsonLoadable {
 				settings = new Settings();
 				writeToFile();
 			} else {
-				try (BufferedReader reader = Files.newBufferedReader(path)) {
+				try (final BufferedReader reader = Files.newBufferedReader(path)) {
 					settings = gson.fromJson(reader, Settings.class);
 					if (settings == null) {
 						settings = new Settings();
@@ -49,7 +49,7 @@ public class SettingsManager implements IGsonLoadable {
 	
 	@Override
 	public void writeToFile() {
-		try (BufferedWriter writer = Files.newBufferedWriter(path)) {
+		try (final BufferedWriter writer = Files.newBufferedWriter(path)) {
 			gson.toJson(settings, writer);
 		} catch (final IOException ex) {
 			LOGGER.error("Could not write playlist file at " + path, ex);

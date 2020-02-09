@@ -33,7 +33,7 @@ public class PlaylistManager implements IGsonLoadable {
 				playlists = new Playlists();
 				writeToFile();
 			} else {
-				try (BufferedReader reader = new BufferedReader(new InputStreamReader(new GZIPInputStream(Files.newInputStream(path)), "UTF-8"))) {
+				try (final BufferedReader reader = new BufferedReader(new InputStreamReader(new GZIPInputStream(Files.newInputStream(path)), "UTF-8"))) {
 					playlists = gson.fromJson(reader, Playlists.class);
 				} catch (final IOException ex) {
 					throw ex;
@@ -49,7 +49,7 @@ public class PlaylistManager implements IGsonLoadable {
 	
 	@Override
 	public void writeToFile() {
-		try (BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new GZIPOutputStream(Files.newOutputStream(path)), "UTF-8"))) {
+		try (final BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new GZIPOutputStream(Files.newOutputStream(path)), "UTF-8"))) {
 			gson.toJson(playlists, writer);
 		} catch (final IOException ex) {
 			LOGGER.error("Could not write playlist file at " + path, ex);
