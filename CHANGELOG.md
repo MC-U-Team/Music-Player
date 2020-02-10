@@ -11,6 +11,7 @@ All notable changes to this project will be documented in this file.
  - Rewritten many parts of the playlist class that handles the next song selection
  - Fixed many potential npe
  - When a song cannot be loaded the playlist now skips the errored song instead of stopping the playlist
+ - Apply final to many variables 🙃 
 
 ## [1.15.2-2.0.9.58] - 2020-02-07
 ### Changed
