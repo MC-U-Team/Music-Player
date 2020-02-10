@@ -1,6 +1,17 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [1.12.2-2.0.7.59] - 2020-02-10
+### Changed
+ - Fixed [#33](https://github.com/MC-U-Team/Music-Player/issues/33) by using utf-8 as standard charset
+ - Fixed [#35](https://github.com/MC-U-Team/Music-Player/issues/35)
+ - Fixed [#36](https://github.com/MC-U-Team/Music-Player/issues/36)
+ - Fixed [#37](https://github.com/MC-U-Team/Music-Player/issues/37)
+ - Fixed [#38](https://github.com/MC-U-Team/Music-Player/issues/38)
+ - Rewritten many parts of the playlist class that handles the next song selection
+ - Fixed many potential npe
+ - When a song cannot be loaded the playlist now skips the errored song instead of stopping the playlist
+
 ## [1.12.2-2.0.6.56] - 2020-02-07
 ### Changed
  - Updated uteamcore to 2.2.5.147
