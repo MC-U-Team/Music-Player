@@ -1,7 +1,7 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
-## [1.15.2-2.0.10.xxx] - 2020-02-10
+## [1.15.2-2.0.10.61] - 2020-02-10
 ### Changed
  - Fixed [#33](https://github.com/MC-U-Team/Music-Player/issues/33) by using utf-8 as standard charset
  - Fixed [#35](https://github.com/MC-U-Team/Music-Player/issues/35)
