@@ -18,7 +18,7 @@ All notable changes to this project will be documented in this file.
  - Updated uteamcore to 2.8.2.150
  - Updated forge to 28.2.0
 
-## [1.14.4-2.0.7.50] - 2019-01-15
+## [1.14.4-2.0.7.50] - 2020-01-15
 ### Changed
  - Updated lavaplayer to 1.3.33
 
