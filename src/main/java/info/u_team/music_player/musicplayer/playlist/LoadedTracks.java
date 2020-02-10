@@ -86,20 +86,33 @@ public class LoadedTracks {
 	}
 	
 	public IAudioTrack getFirstTrack() {
-		return isTrack() ? track : trackList.getTracks().get(0);
+		if (isTrack()) {
+			return track;
+		} else if (isTrackList()) {
+			return trackList.getTracks().get(0);
+		}
+		return null;
 	}
 	
 	public IAudioTrack getLastTrack() {
-		return isTrack() ? track : trackList.getTracks().get(trackList.getTracks().size() - 1);
+		if (isTrack()) {
+			return track;
+		} else if (isTrackList()) {
+			return trackList.getTracks().get(trackList.getTracks().size() - 1);
+		}
+		return null;
 	}
 	
 	public IAudioTrack getOtherTrack(IAudioTrack track, Skip skip) {
 		if (isTrack()) {
 			return null;
 		}
-		List<IAudioTrack> list = trackList.getTracks();
-		int index = list.indexOf(track);
-		int newIndex = index + skip.getValue();
+		if (!isTrackList()) {
+			return null;
+		}
+		final List<IAudioTrack> list = trackList.getTracks();
+		final int index = list.indexOf(track);
+		final int newIndex = index + skip.getValue();
 		if (newIndex >= 0 && newIndex < list.size()) {
 			return list.get(newIndex);
 		}

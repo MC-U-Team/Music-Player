@@ -3,6 +3,7 @@ package info.u_team.music_player.musicplayer.playlist;
 import java.util.*;
 import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.*;
 
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -86,13 +87,13 @@ public class Playlist implements ITrackQueue {
 			
 			uris.forEach(uri -> loadedTracks.add(new LoadedTracks(uri))); // Add dummy elements
 			
-			AtomicInteger counterIfReady = new AtomicInteger();
+			final AtomicInteger counterIfReady = new AtomicInteger();
 			
 			for (int index = 0; index < uris.size(); index++) {
 				final int immutableIndex = index; // Little workaround for using the index in closure
 				final WrappedObject<String> uri = uris.get(immutableIndex);
 				search.getTracks(uri.get(), result -> {
-					LoadedTracks loadedTrack = new LoadedTracks(uri, result);
+					final LoadedTracks loadedTrack = new LoadedTracks(uri, result);
 					loadedTracks.set(immutableIndex, loadedTrack);
 					if (counterIfReady.incrementAndGet() == loadedTracks.size()) { // Count up for every replaced track in loadedTracks. When its the last one it sets the loaded flag and runs the
 																					// runnable
@@ -131,8 +132,8 @@ public class Playlist implements ITrackQueue {
 		if (!loaded) {
 			return null;
 		}
-		WrappedObject<String> uri = new WrappedObject<>(track.getInfo().getURI());
-		int index = uris.size();
+		final WrappedObject<String> uri = new WrappedObject<>(track.getInfo().getURI());
+		final int index = uris.size();
 		uris.add(index, uri);
 		loadedTracks.add(index, new LoadedTracks(uri, track));
 		save();
@@ -151,8 +152,8 @@ public class Playlist implements ITrackQueue {
 			return null;
 		}
 		if (!trackList.isSearch() && trackList.hasUri()) {
-			WrappedObject<String> uri = new WrappedObject<>(trackList.getUri());
-			int index = uris.size();
+			final WrappedObject<String> uri = new WrappedObject<>(trackList.getUri());
+			final int index = uris.size();
 			uris.add(index, uri);
 			loadedTracks.add(index, new LoadedTracks(uri, trackList));
 			save();
@@ -171,7 +172,7 @@ public class Playlist implements ITrackQueue {
 		if (!loaded) {
 			return false;
 		}
-		int index = uris.indexOf(uri);
+		final int index = uris.indexOf(uri);
 		if (index >= 0) {
 			uris.remove(index);
 			loadedTracks.remove(index);
@@ -274,48 +275,12 @@ public class Playlist implements ITrackQueue {
 		} else if (first) {
 			first = false;
 			return true;
-		} else if (!settings.isShuffle()) {
-			if (settings.isSingleRepeat()) {
-				return true;
-			}
-			final Pair<LoadedTracks, IAudioTrack> pair = getOtherTrack(nextLoadedTrack, next, Skip.FORWARD);
-			if (pair.getLeft() == null || pair.getRight() == null) {
-				if (settings.isFinite()) {
-					return false;
-				} else {
-					nextLoadedTrack = loadedTracks.get(0);
-					if (nextLoadedTrack != null) {
-						next = nextLoadedTrack.getFirstTrack();
-						if (next != null) {
-							return true;
-						}
-					}
-					return false;
-				}
-			} else {
-				nextLoadedTrack = pair.getLeft();
-				next = pair.getRight();
-				return true;
-			}
-		} else {
-			List<Pair<LoadedTracks, IAudioTrack>> shuffleEntries = new ArrayList<>();
-			loadedTracks.forEach(loadedTrack -> {
-				if (loadedTrack.isTrack()) {
-					shuffleEntries.add(Pair.of(loadedTrack, loadedTrack.getTrack()));
-				} else {
-					loadedTrack.getTrackList().getTracks().forEach(track -> {
-						shuffleEntries.add(Pair.of(loadedTrack, track));
-					});
-				}
-			});
-			if (random == null) {
-				random = new Random();
-			}
-			Collections.shuffle(shuffleEntries, random);
-			Pair<LoadedTracks, IAudioTrack> pair = shuffleEntries.get(new Random().nextInt(shuffleEntries.size()));
-			nextLoadedTrack = pair.getLeft();
-			next = pair.getRight();
+		} else if (settings.isSingleRepeat()) {
 			return true;
+		} else if (settings.isShuffle()) {
+			return selectRandomTrack();
+		} else {
+			return findNextSong(settings, Skip.FORWARD);
 		}
 	}
 	
@@ -325,27 +290,54 @@ public class Playlist implements ITrackQueue {
 	}
 	
 	/**
-	 * Returns a pair of calculated songs. This pair is either on after the current song if {@link Skip} is
-	 * {@link Skip#FORWARD} or one behind.
+	 * Skip the current song in the {@link Skip} direction
 	 * 
-	 * @param loadedTrack The currently loaded track {@link LoadedTracks}
-	 * @param track The currently playing {@link IAudioTrack}
-	 * @param skip In which direction we wanna skip
+	 * @param skip Should be skipped forward or backward
+	 * @return If skip was executed
+	 */
+	public boolean skip(Skip skip) {
+		final Settings settings = MusicPlayerManager.getSettingsManager().getSettings();
+		return first = settings.isShuffle() ? selectRandomTrack() : findNextSong(settings, skip);
+	}
+	
+	/**
+	 * Gets the first track {@link Pair} with {@link LoadedTracks} and {@link IAudioTrack} in this playlist. Values in the
+	 * pair might be null if there are no tracks.
+	 * 
 	 * @return Pair of {@link LoadedTracks} and {@link IAudioTrack}. Can't be null, but elements can be null.
 	 */
-	private Pair<LoadedTracks, IAudioTrack> getOtherTrack(LoadedTracks loadedTrack, IAudioTrack track, Skip skip) {
-		LoadedTracks nextLoadedTrack = loadedTrack;
-		IAudioTrack nextTrack = loadedTrack.getOtherTrack(track, skip);
-		if (nextTrack == null) {
-			final int newIndex = loadedTracks.indexOf(loadedTrack) + skip.getValue();
-			if (newIndex >= 0 && newIndex < loadedTracks.size()) {
-				nextLoadedTrack = loadedTracks.get(newIndex);
-				nextTrack = skip == Skip.FORWARD ? nextLoadedTrack.getFirstTrack() : nextLoadedTrack.getLastTrack();
-			} else {
-				nextLoadedTrack = null;
-			}
+	public Pair<LoadedTracks, IAudioTrack> getFirstTrack() {
+		return getTrackAtIndex(0, LoadedTracks::getFirstTrack);
+	}
+	
+	/**
+	 * Gets the last track {@link Pair} with {@link LoadedTracks} and {@link IAudioTrack} in this playlist. Values in the
+	 * pair might be null if there are no tracks.
+	 * 
+	 * @return Pair of {@link LoadedTracks} and {@link IAudioTrack}. Can't be null, but elements can be null.
+	 */
+	public Pair<LoadedTracks, IAudioTrack> getLastTrack() {
+		return getTrackAtIndex(loadedTracks.size() - 1, LoadedTracks::getLastTrack);
+	}
+	
+	/**
+	 * Gets a {@link LoadedTracks} at the index of the loaded tracks list in this playlist. The supplied function must then
+	 * select the right {@link IAudioTrack}
+	 * 
+	 * @param index The index of the {@link LoadedTracks} entry. Must be in bound
+	 * @param function A function that returns an {@link IAudioTrack} based on the passed {@link LoadedTracks}
+	 * @return Pair of {@link LoadedTracks} and {@link IAudioTrack}. Can't be null, but elements can be null.
+	 */
+	private Pair<LoadedTracks, IAudioTrack> getTrackAtIndex(int index, Function<LoadedTracks, IAudioTrack> function) {
+		if (loadedTracks.isEmpty()) {
+			return Pair.of(null, null);
 		}
-		return Pair.of(nextLoadedTrack, nextTrack);
+		final LoadedTracks loadedTrack = loadedTracks.get(index);
+		if (loadedTrack == null) {
+			return Pair.of(null, null);
+		} else {
+			return Pair.of(loadedTrack, function.apply(loadedTrack));
+		}
 	}
 	
 	/**
@@ -355,8 +347,7 @@ public class Playlist implements ITrackQueue {
 	 * @param track {@link IAudioTrack} which must be in the passed loadedTrack
 	 */
 	public void setPlayable(LoadedTracks loadedTrack, IAudioTrack track) {
-		nextLoadedTrack = loadedTrack;
-		next = track;
+		setTracks(loadedTrack, track);
 		first = true;
 	}
 	
@@ -369,49 +360,129 @@ public class Playlist implements ITrackQueue {
 	}
 	
 	/**
-	 * Gets the first track {@link Pair} with {@link LoadedTracks} and {@link IAudioTrack} in this playlist. Might be null
-	 * if there are no tracks.
+	 * Returns a pair of calculated songs. This pair is either one after the current song if {@link Skip} is
+	 * {@link Skip#FORWARD} or one behind. If the next song is invalid which is tested with
+	 * {@link #getTrackAndValidate(int)} then the next valid song is chosen. If the end or start of the playlist is reached
+	 * the pair contains null values.
 	 * 
-	 * @return {@link Pair} with {@link LoadedTracks} as key and {@link IAudioTrack} as value
+	 * @param loadedTrack The currently loaded track {@link LoadedTracks}
+	 * @param track The currently playing {@link IAudioTrack}
+	 * @param skip In which direction we want to skip
+	 * @return Pair of {@link LoadedTracks} and {@link IAudioTrack}. Can't be null, but elements can be null.
 	 */
-	public Pair<LoadedTracks, IAudioTrack> getFirstTrack() {
-		if (loadedTracks.isEmpty()) {
-			return null;
+	private Pair<LoadedTracks, IAudioTrack> getOtherTrack(LoadedTracks loadedTrack, IAudioTrack track, Skip skip) {
+		if (loadedTrack == null || track == null) {
+			return Pair.of(null, null);
 		}
-		final LoadedTracks loadedTrack = loadedTracks.get(0);
-		if (loadedTrack == null) {
-			return null;
+		final IAudioTrack nextTrack = loadedTrack.getOtherTrack(track, skip);
+		if (nextTrack != null) {
+			return Pair.of(loadedTrack, nextTrack);
 		} else {
-			return Pair.of(loadedTrack, loadedTrack.getFirstTrack());
+			final int index = loadedTracks.indexOf(loadedTrack);
+			if (index == -1) {
+				return Pair.of(null, null);
+			}
+			
+			final IntPredicate testIndex = newIndex -> skip == Skip.FORWARD ? newIndex < loadedTracks.size() : newIndex >= 0;
+			
+			for (int newIndex = index + skip.getValue(); testIndex.test(newIndex); newIndex += skip.getValue()) {
+				final LoadedTracks nextValidLoadedTrack = getTrackAndValidate(newIndex);
+				if (nextValidLoadedTrack != null) {
+					return Pair.of(nextValidLoadedTrack, skip == Skip.FORWARD ? nextValidLoadedTrack.getFirstTrack() : nextValidLoadedTrack.getLastTrack());
+				}
+			}
+			return Pair.of(null, null);
+			
 		}
 	}
 	
 	/**
-	 * Skip the current song in the {@link Skip} direction
+	 * Get the index of a {@link LoadedTracks} in the playlist and tests if the index is valid and the {@link LoadedTracks}
+	 * has no errors and contains a valid {@link IAudioTrack} or a valid {@link IAudioTrackList}. Returns null if the test
+	 * above failed.
 	 * 
-	 * @param skip Should be skipped forward or backward
-	 * @return If skip was executed
+	 * @param index The index to search for in the playlist
+	 * @return The loaded track or null if the index is out of bounds or the {@link LoadedTracks} has an error
 	 */
-	public boolean skip(Skip skip) {
-		final Settings settings = MusicPlayerManager.getSettingsManager().getSettings();
-		if (!settings.isShuffle()) {
-			Pair<LoadedTracks, IAudioTrack> pair = getOtherTrack(nextLoadedTrack, next, skip);
-			LoadedTracks loadedTrack = pair.getLeft();
-			IAudioTrack track = pair.getRight();
-			if (loadedTrack == null || track == null) {
-				if (!settings.isFinite()) {
-					nextLoadedTrack = loadedTracks.get(0);
-					if (nextLoadedTrack != null) {
-						next = nextLoadedTrack.getFirstTrack();
-					}
+	private LoadedTracks getTrackAndValidate(int index) {
+		if (index <= 0 && index >= loadedTracks.size()) {
+			return null;
+		}
+		final LoadedTracks loadedTrack = loadedTracks.get(index);
+		if (loadedTrack.hasError() || (!loadedTrack.isTrack() && !loadedTrack.isTrackList())) {
+			return null;
+		}
+		return loadedTrack;
+	}
+	
+	/**
+	 * Sets the {@link #loadedTracks} and {@link #next} variable to the passed arguments
+	 * 
+	 * @param loadedTrack {@link LoadedTracks} which must be in this playlist
+	 * @param track {@link IAudioTrack} which must be in the passed loadedTrack
+	 */
+	private void setTracks(LoadedTracks loadedTrack, IAudioTrack track) {
+		nextLoadedTrack = loadedTrack;
+		next = track;
+	}
+	
+	/**
+	 * Find a next song and set it to the {@link #nextLoadedTrack} and {@link #next} track variable
+	 * 
+	 * @param settings The current settings
+	 * @param skip In which direction we want to find the song
+	 * @return Return true if a valid next song could be found. Otherwise return false
+	 */
+	private boolean findNextSong(Settings settings, Skip skip) {
+		final Pair<LoadedTracks, IAudioTrack> pair = getOtherTrack(nextLoadedTrack, next, skip);
+		final LoadedTracks loadedTrack = pair.getLeft();
+		final IAudioTrack track = pair.getRight();
+		
+		if (loadedTrack == null || track == null) {
+			if (settings.isFinite()) {
+				return false;
+			} else if (loadedTracks.size() > 0) {
+				final Pair<LoadedTracks, IAudioTrack> sidePair = skip == Skip.FORWARD ? getFirstTrack() : getLastTrack();
+				final LoadedTracks sideLoadedTrack = sidePair.getLeft();
+				final IAudioTrack sideTrack = sidePair.getRight();
+				if (sideLoadedTrack != null && sideTrack != null) {
+					setTracks(sideLoadedTrack, sideTrack);
+					return true;
 				}
 			}
-			if (loadedTrack != null && track != null) {
-				setPlayable(loadedTrack, track);
-				return true;
+		} else if (loadedTrack != null && track != null) {
+			setTracks(loadedTrack, track);
+			return true;
+		}
+		return false;
+	}
+	
+	/**
+	 * Select a random track
+	 * 
+	 * @return If a new random track was found
+	 */
+	private boolean selectRandomTrack() {
+		final List<Pair<LoadedTracks, IAudioTrack>> shuffleEntries = new ArrayList<>();
+		loadedTracks.forEach(loadedTrack -> {
+			if (loadedTrack.isTrack()) {
+				shuffleEntries.add(Pair.of(loadedTrack, loadedTrack.getTrack()));
+			} else if (loadedTrack.isTrackList()) {
+				loadedTrack.getTrackList().getTracks().forEach(track -> {
+					shuffleEntries.add(Pair.of(loadedTrack, track));
+				});
 			}
+		});
+		if (shuffleEntries.isEmpty()) {
 			return false;
 		}
+		if (random == null) {
+			random = new Random();
+		}
+		Collections.shuffle(shuffleEntries, random);
+		final Pair<LoadedTracks, IAudioTrack> pair = shuffleEntries.get(random.nextInt(shuffleEntries.size()));
+		nextLoadedTrack = pair.getLeft();
+		next = pair.getRight();
 		return true;
 	}
 }
