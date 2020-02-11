@@ -19,6 +19,10 @@ task copyNewDep(type: Copy) {
 
 tasks.build.dependsOn copyNewDep
 
+jar {
+	exclude("LICENSE-DEPENDENCIES")  
+}
+
 sourceSets {
    	main {
 		java
