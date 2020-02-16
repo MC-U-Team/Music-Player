@@ -122,6 +122,8 @@ jar {
 		from configurations.internal		
 	}
 	
+	exclude(".cache")  
+	
    	manifest normalManifest
 }
 
@@ -145,6 +147,8 @@ task deobfJar(type: Jar) {
 	into ("dependencies/internal") {
 		from configurations.internal		
 	}
+	
+	exclude(".cache")  
 
     manifest normalManifest
 }
