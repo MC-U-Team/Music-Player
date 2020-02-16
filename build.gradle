@@ -71,6 +71,9 @@ minecraft {
         data = {
             workingDirectory project.file("run/data").canonicalPath
             args "--mod", "musicplayer", "--all", "--output", "\"" + file("src/generated/resources").toString() + "\"", "--validate", "--existing", "\"" + sourceSets.main.resources.srcDirs[0] + "\""
+            
+            property "musicplayer.dev", "\"${project.rootDir}\""
+            
             mods {
                 musicplayer {
                     source sourceSets.main
