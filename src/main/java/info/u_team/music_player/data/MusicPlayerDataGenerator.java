@@ -1,6 +1,7 @@
 package info.u_team.music_player.data;
 
 import info.u_team.music_player.MusicPlayerMod;
+import info.u_team.music_player.data.provider.MusicPlayerLanguagesProvider;
 import info.u_team.u_team_core.data.GenerationData;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
@@ -14,9 +15,8 @@ public class MusicPlayerDataGenerator {
 	public static void data(GatherDataEvent event) {
 		final GenerationData data = new GenerationData(MusicPlayerMod.MODID, event);
 		if (event.includeClient()) {
-//			data.addProvider(MusicPlayerLanguagesProvider::new);
+			data.addProvider(MusicPlayerLanguagesProvider::new);
 		}
 	}
 	
 }
-
