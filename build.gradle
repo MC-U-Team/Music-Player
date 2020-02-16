@@ -68,6 +68,15 @@ minecraft {
 				}
 			}
         }
+        data = {
+            workingDirectory project.file("run/data").canonicalPath
+            args "--mod", "musicplayer", "--all", "--output", "\"" + file("src/generated/resources").toString() + "\"", "--validate", "--existing", "\"" + sourceSets.main.resources.srcDirs[0] + "\""
+            mods {
+                musicplayer {
+                    source sourceSets.main
+				}
+			}
+        }
     }
 }
 
