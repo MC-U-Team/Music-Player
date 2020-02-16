@@ -55,6 +55,50 @@ public class MusicPlayerLanguagesProvider extends CommonLanguagesProvider {
 		add(GUI_SETTINGS_POSITION_UP_RIGHT, "Top right");
 		add(GUI_SETTINGS_POSITION_DOWN_RIGHT, "Bottom right");
 		add(GUI_SETTINGS_POSITION_DOWN_LEFT, "Bottom left");
+		
+		// German
+		
+		// Keys
+		add("de_de", KEY_CATEGORY, "Musikplayer");
+		add("de_de", KEY_OPEN, "Öffne den Musikplayer");
+		add("de_de", KEY_PAUSE, "Pausiere den Musikplayer");
+		add("de_de", KEY_SKIP_FORWARD, "Nach vorne spulen");
+		add("de_de", KEY_SKIP_BACK, "Zurück spulen");
+		
+		// Guis
+		add("de_de", GUI_CREATE_PLAYLIST_INSERT_NAME, "Gebe einen Namen an");
+		add("de_de", GUI_CREATE_PLAYLIST_ADD_LIST, "Füge eine Wiedergabeliste hinzu");
+		
+		add("de_de", GUI_PLAYLISTS_NO_NAME, "Kein Name");
+		add("de_de", GUI_PLAYLISTS_ENTRY, "Eintrag");
+		add("de_de", GUI_PLAYLISTS_ENTRIES, "Einträge");
+		
+		add("de_de", GUI_CONTROLS_VOLUME, "Lautstärke");
+		
+		add("de_de", GUI_PLAYLIST_LOADING, "Lade Audioeinträge ...");
+		
+		add("de_de", GUI_TRACK_DURATION_UNDEFINED, "nicht definiert");
+		
+		add("de_de", GUI_SEARCH_HEADER, "Füge neue Audioeinträge hinzu");
+		add("de_de", GUI_SEARCH_LOAD_FILE, "Lade eine Datei");
+		add("de_de", GUI_SEARCH_LOAD_FOLDER, "Lade einen Ordner");
+		add("de_de", GUI_SEARCH_MUSIC_FILES, "Musikdatein");
+		add("de_de", GUI_SEARCH_ADD_ALL, "Füge alle Audioeinträge hinzu");
+		add("de_de", GUI_SEARCH_ADDED, "Audioeintrag hinzugefügt");
+		add("de_de", GUI_SEARCH_ADDED_LIST, "Audioeintragliste hinzugefügt");
+		add("de_de", GUI_SEARCH_ADDED_ALL, "Alle Audioeinträge hinzugefügt");
+		add("de_de", GUI_SEARCH_SEARCH_URI, "Gebe eine URL zum Musikstück an");
+		add("de_de", GUI_SEARCH_SEARCH_FILE, "Öffne den Dateimanager");
+		add("de_de", GUI_SEARCH_SEARCH_SEARCH, "Suche nach Audiodatein");
+		
+		add("de_de", GUI_SETTINGS_TOGGLE_INGAME_OVERLAY, "Ingame-Overlay umschalten");
+		add("de_de", GUI_SETTINGS_TOGGLE_MENUE_OVERLAY, "Menü-Overlay umschalten");
+		add("de_de", GUI_SETTINGS_TOGGLE_KEY_IN_GUI, "Tastenkombinationen im Gui umschalten");
+		add("de_de", GUI_SETTINGS_POSITION_OVERLAY, "Ingame-Overlay Position");
+		add("de_de", GUI_SETTINGS_POSITION_UP_LEFT, "Oben Links");
+		add("de_de", GUI_SETTINGS_POSITION_UP_RIGHT, "Oben Rechts");
+		add("de_de", GUI_SETTINGS_POSITION_DOWN_RIGHT, "Unten Rechts");
+		add("de_de", GUI_SETTINGS_POSITION_DOWN_LEFT, "Unten Links");
 	}
 	
 }
