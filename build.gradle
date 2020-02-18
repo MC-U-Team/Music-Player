@@ -11,36 +11,16 @@ buildscript {
     }
 }
 
-apply from: "https://raw.githubusercontent.com/HyCraftHD/Blank-Forge-Project/master/configuration.methods"
-apply from: "https://raw.githubusercontent.com/HyCraftHD/Blank-Forge-Project/master/git.methods"
-apply from: "https://raw.githubusercontent.com/HyCraftHD/Blank-Forge-Project/master/signjar.methods"
-
-setup()
-info()
+apply from: "https://gradle-files.u-team.info/default-project.gradle"
 
 apply plugin: "net.minecraftforge.gradle"
 apply plugin: "eclipse"
 apply plugin: "com.matthewprenger.cursegradle"
 apply plugin: "maven"
 
-repositories {
-    maven { url = "https://repo.u-team.info" }
-    mavenCentral()
-}
-
-getBuildNumber()
-
 group = "info.u-team"
-archivesBaseName = "${config.mod.filename}-${config.forge.mcversion}"
-version = "${config.mod.version}.${config.buildnumber}" + getAppendix();
-
-def getAppendix() {
-	if("${config.mod.snapshot}".toBoolean()) {
-		return "-SNAPSHOT"
-	} else {
-		return ""
-	}
-}
+archivesBaseName = generateArchivesBaseName()
+version = generateVersion()
 
 sourceCompatibility = targetCompatibility = "1.8"
 
@@ -55,7 +35,7 @@ minecraft {
             property "musicplayer.dev", "\"${project.rootDir}\""
             
             mods {
-                musicplayer {
+                "${config.mod.modid}" {
                     source sourceSets.main
 				}
 			}
@@ -63,38 +43,24 @@ minecraft {
         server = {
             workingDirectory project.file("run/server").canonicalPath
             mods {
-                musicplayer {
+                "${config.mod.modid}" {
                     source sourceSets.main
 				}
 			}
         }
         data = {
             workingDirectory project.file("run/data").canonicalPath
-            args "--mod", "musicplayer", "--all", "--output", "\"" + file("src/generated/resources").toString() + "\"", "--validate", "--existing", "\"" + sourceSets.main.resources.srcDirs[0] + "\""
+            args "--mod", config.mod.modid, "--all", "--output", "\"" + file("src/generated/resources").toString() + "\"", "--validate", "--existing", "\"" + sourceSets.main.resources.srcDirs[0] + "\""
             
             property "musicplayer.dev", "\"${project.rootDir}\""
             
             mods {
-                musicplayer {
+                "${config.mod.modid}" {
                     source sourceSets.main
 				}
 			}
         }
     }
-}
-
-def normalManifest = {
-	attributes(
-		"Specification-Title": config.mod.name,
-        "Specification-Vendor": "Team UTeam",
-        "Specification-Version": config.forge.major_version,
-		"Built-On": config.forge.mcversion,
-		"Implementation-Title": config.mod.name,
-    	"Implementation-Version": project.version,
-		"Implementation-Vendor": "Team UTeam",
-        "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
-        "Fingerprint": project.findProperty("keystore.fingerprint") ?: "NONE"
-	)
 }
 
 configurations {
@@ -134,8 +100,8 @@ task deobfJar(type: Jar) {
     from "LICENSE"
 	from "musicplayer-lavaplayer/src/main/resources/LICENSE-DEPENDENCIES"
 	
-	jar.dependsOn ":musicplayer-lavaplayer-api:build"
-    jar.dependsOn ":musicplayer-lavaplayer:build"
+	deobfJar.dependsOn ":musicplayer-lavaplayer-api:build"
+    deobfJar.dependsOn ":musicplayer-lavaplayer:build"
 	    
 	from "musicplayer-lavaplayer-api/build/classes/java/main"
 	
@@ -192,8 +158,8 @@ sourceSets {
 }
 
 dependencies {
-    minecraft "net.minecraftforge:forge:$config.forge.version"
-	compile "info.u-team:u_team_core-${config.forge.mcversion}:${config.uteamcore.version}:dev"
+    minecraft getForgeDependency()
+    compile getUTeamCoreDependency()
 	compile project(":musicplayer-lavaplayer-api")
 	internal ("org.slf4j:slf4j-simple:1.7.26")
 	internal ("net.harawata:appdirs:1.0.0") {
@@ -201,30 +167,16 @@ dependencies {
 	}
 }
 
-compileJava {
-    options.encoding = "UTF-8"
-}
-
-def generateChangelogUrl() {
-	String url = "https://github.com/MC-U-Team/${config.github.name}/blob/${config.github.branch}/CHANGELOG.md"
-	String mcversion = "${config.forge.mcversion}".replace(".", "")
-	String version = "${project.version}".replace(".", "")
-	String date =new Date().format("yyyy-MM-dd");
-	return url + "#" + mcversion + "-" + version + "---" + date
-}
-
 curseforge {
-	tasks.curseforge.dependsOn build
-
-	if(System.getenv("token") != null) {
-		apiKey = System.getenv("token")
-	} else {
-		if (project.hasProperty("token")) {
-			apiKey = project.getProperty("token")
-		} else {
-			apiKey = "mrTroble" //We dont have one lol ¯\_(ツ)_/¯
+	afterEvaluate {
+		tasks."curseforge${config.curse.id}".onlyIf {
+			getValue("token") != null
 		}
 	}
+	
+	tasks.curseforge.dependsOn build
+	
+	apiKey = getValue("token")
 	
   	project {
     	id = config.curse.id
@@ -240,7 +192,7 @@ curseforge {
       		requiredDependency "u-team-core"
     	}
 
-		mainArtifact(jar) {
+    	mainArtifact(jar) {
       		displayName = "${config.curse.display}-${config.forge.mcversion}-${project.version}"
       		changelogType = "html"
       		changelog = "<a href=\"" + generateChangelogUrl() + "\">Changelog of ${project.version}</a>"
@@ -255,18 +207,16 @@ curseforge {
 }
 
 uploadArchives {
+	onlyIf {
+		getValue("mavenpass") != null
+	}
+
 	tasks.uploadArchives.dependsOn build
 
 	repositories {
 		mavenDeployer {
-			String mavenPass = System.getenv("mavenpass")
-			if(mavenPass == null) {
-				mavenPass = project.getProperty("mavenpass")
-			}
-			if (mavenPass != null) {
-				repository(url: "https://repo.u-team.info") {
-					authentication(userName: "maven", password: mavenPass)
-				}
+			repository(url: "https://repo.u-team.info") {
+				authentication(userName: "maven", password: getValue("mavenpass"))
 			}
 			pom {
 				groupId = project.group
