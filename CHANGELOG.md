@@ -1,6 +1,10 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [1.15.2-2.0.12.63] - 2020-02-18
+### Changed
+ - Fixed [#39](https://github.com/MC-U-Team/Music-Player/issues/39)
+
 ## [1.15.2-2.0.11.62] - 2020-02-18
 ### Changed
  - Updated to forge 31.1.12
