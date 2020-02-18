@@ -1,6 +1,17 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [1.15.2-2.0.11.62] - 2020-02-18
+### Changed
+ - Updated to forge 31.1.12
+ - Updated mappings to 20200217-1.15.1
+ - Updated to uteamcore 2.10.5.154
+ - Update buildscripts
+ - Generate language files now
+
+### Added
+ - Added german translation 
+
 ## [1.15.2-2.0.10.61] - 2020-02-10
 ### Changed
  - Fixed [#33](https://github.com/MC-U-Team/Music-Player/issues/33) by using utf-8 as standard charset
