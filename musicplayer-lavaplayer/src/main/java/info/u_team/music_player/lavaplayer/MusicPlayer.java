@@ -80,6 +80,11 @@ public class MusicPlayer implements IMusicPlayer {
 	}
 	
 	@Override
+	public void setMixer(String name) {
+		audioOutput.setMixer(name);
+	}
+	
+	@Override
 	public void setVolume(int volume) {
 		audioPlayer.setVolume(volume);
 	}

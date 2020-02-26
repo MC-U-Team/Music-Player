@@ -12,6 +12,8 @@ public interface IMusicPlayer {
 	
 	void startAudioOutput();
 	
+	void setMixer(String name);
+	
 	int getVolume();
 	
 	void setVolume(int volume);
