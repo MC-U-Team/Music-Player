@@ -1,5 +1,7 @@
 package info.u_team.music_player.lavaplayer;
 
+import javax.sound.sampled.DataLine.Info;
+
 import com.sedmelluq.discord.lavaplayer.format.*;
 import com.sedmelluq.discord.lavaplayer.player.*;
 import com.sedmelluq.discord.lavaplayer.player.AudioConfiguration.ResamplingQuality;
@@ -82,6 +84,16 @@ public class MusicPlayer implements IMusicPlayer {
 	@Override
 	public void setMixer(String name) {
 		audioOutput.setMixer(name);
+	}
+	
+	@Override
+	public String getMixer() {
+		return audioOutput.getMixer();
+	}
+	
+	@Override
+	public Info getSpeakerInfo() {
+		return audioOutput.getSpeakerInfo();
 	}
 	
 	@Override

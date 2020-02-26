@@ -90,6 +90,17 @@ public class AudioOutput extends Thread {
 		mixer = AudioUtil.findMixer(name, speakerInfo);
 	}
 	
+	public String getMixer() {
+		if (mixer == null) {
+			return null;
+		}
+		return mixer.getMixerInfo().getName();
+	}
+	
+	public DataLine.Info getSpeakerInfo() {
+		return speakerInfo;
+	}
+	
 	private boolean createLine() {
 		if (mixer != null) {
 			try {
