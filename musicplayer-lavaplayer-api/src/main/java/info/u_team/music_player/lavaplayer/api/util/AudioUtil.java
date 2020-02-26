@@ -1,4 +1,4 @@
-package info.u_team.music_player.lavaplayer.util;
+package info.u_team.music_player.lavaplayer.api.util;
 
 import java.util.*;
 
