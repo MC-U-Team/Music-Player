@@ -1,6 +1,14 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [1.15.2-2.0.13.64] - 2020-02-27
+### Changed
+ - Starting the playlist with an errored song will now skip to the next song
+ 
+### Added
+ - Added better integration for the new upcomming voicechat mod
+ - Added selection of the sound output device
+
 ## [1.15.2-2.0.12.63] - 2020-02-18
 ### Changed
  - Fixed [#39](https://github.com/MC-U-Team/Music-Player/issues/39)
