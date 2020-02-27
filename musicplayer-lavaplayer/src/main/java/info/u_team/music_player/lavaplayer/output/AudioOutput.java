@@ -80,13 +80,17 @@ public class AudioOutput extends Thread {
 	}
 	
 	public void setMixer(String name) {
+		if (mixer != null && mixer.getMixerInfo().getName().equals(name)) {
+			return;
+		}
+		final Mixer oldMixer = mixer;
+		mixer = findMixer(name, speakerInfo);
 		closeLine();
-		if (mixer != null) {
-			if (!hasLinesOpen(mixer)) {
-				mixer.close();
+		if (oldMixer != null) {
+			if (!hasLinesOpen(oldMixer)) {
+				oldMixer.close();
 			}
 		}
-		mixer = findMixer(name, speakerInfo);
 	}
 	
 	public String getMixer() {
