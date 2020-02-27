@@ -22,7 +22,6 @@ import com.sedmelluq.discord.lavaplayer.format.*;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 
 import info.u_team.music_player.lavaplayer.MusicPlayer;
-import info.u_team.music_player.lavaplayer.api.util.AudioUtil;
 
 public class AudioOutput extends Thread {
 	
@@ -83,11 +82,11 @@ public class AudioOutput extends Thread {
 	public void setMixer(String name) {
 		closeLine();
 		if (mixer != null) {
-			if (!AudioUtil.hasLinesOpen(mixer)) {
+			if (!hasLinesOpen(mixer)) {
 				mixer.close();
 			}
 		}
-		mixer = AudioUtil.findMixer(name, speakerInfo);
+		mixer = findMixer(name, speakerInfo);
 	}
 	
 	public String getMixer() {
@@ -122,5 +121,25 @@ public class AudioOutput extends Thread {
 			souceLine.stop();
 			souceLine.close();
 		}
+	}
+	
+	private Mixer findMixer(String name, Line.Info lineInfo) {
+		Mixer defaultMixer = null;
+		for (Mixer.Info mixerInfo : AudioSystem.getMixerInfo()) {
+			final Mixer mixer = AudioSystem.getMixer(mixerInfo);
+			if (mixer.isLineSupported(lineInfo)) {
+				if (mixerInfo.getName().equals(name)) {
+					return mixer;
+				}
+				if (defaultMixer == null) {
+					defaultMixer = mixer;
+				}
+			}
+		}
+		return defaultMixer;
+	}
+	
+	public static boolean hasLinesOpen(Mixer mixer) {
+		return mixer.getSourceLines().length != 0 || mixer.getTargetLines().length != 0;
 	}
 }
