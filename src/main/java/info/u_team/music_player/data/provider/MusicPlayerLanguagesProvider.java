@@ -55,6 +55,7 @@ public class MusicPlayerLanguagesProvider extends CommonLanguagesProvider {
 		add(GUI_SETTINGS_POSITION_UP_RIGHT, "Top right");
 		add(GUI_SETTINGS_POSITION_DOWN_RIGHT, "Bottom right");
 		add(GUI_SETTINGS_POSITION_DOWN_LEFT, "Bottom left");
+		add(GUI_SETTINGS_MIXER_DEVICE_SELECTION, "Select audio device");
 		
 		// German
 		
@@ -99,6 +100,7 @@ public class MusicPlayerLanguagesProvider extends CommonLanguagesProvider {
 		add("de_de", GUI_SETTINGS_POSITION_UP_RIGHT, "Oben Rechts");
 		add("de_de", GUI_SETTINGS_POSITION_DOWN_RIGHT, "Unten Rechts");
 		add("de_de", GUI_SETTINGS_POSITION_DOWN_LEFT, "Unten Links");
+		add("de_de", GUI_SETTINGS_MIXER_DEVICE_SELECTION, "Wähle das Audiogerät");
 	}
 	
 }

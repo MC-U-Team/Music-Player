@@ -17,6 +17,7 @@
 	"gui.search.search.file": "Open file explorer",
 	"gui.search.search.search": "Search for track",
 	"gui.search.search.uri": "Enter url to track",
+	"gui.settings.mixer_device_selection": "Select audio device",
 	"gui.settings.position.down_left": "Bottom left",
 	"gui.settings.position.down_right": "Bottom right",
 	"gui.settings.position.overlay": "Ingame overlay position",

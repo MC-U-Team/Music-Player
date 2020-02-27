@@ -17,6 +17,7 @@
 	"gui.search.search.file": "Öffne den Dateimanager",
 	"gui.search.search.search": "Suche nach Audiodatein",
 	"gui.search.search.uri": "Gebe eine URL zum Musikstück an",
+	"gui.settings.mixer_device_selection": "Wähle das Audiogerät",
 	"gui.settings.position.down_left": "Unten Links",
 	"gui.settings.position.down_right": "Unten Rechts",
 	"gui.settings.position.overlay": "Ingame-Overlay Position",
