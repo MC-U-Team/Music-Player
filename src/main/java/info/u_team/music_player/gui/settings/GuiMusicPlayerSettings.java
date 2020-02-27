@@ -59,7 +59,7 @@ public class GuiMusicPlayerSettings extends BetterScreen {
 			ingameOverlayPositionButton.setMessage(getTranslation(GUI_SETTINGS_POSITION_OVERLAY) + ": " + getTranslation(settings.getIngameOverlayPosition().getLocalization()));
 		});
 		
-		mixerDeviceList = new GuiMusicPlayerSettingsMixerDeviceList(width - 24, height, 90, height - 10, 12, width - 12);
+		mixerDeviceList = new GuiMusicPlayerSettingsMixerDeviceList(width - 24, height, 120, 170, 12, width - 12);
 		children.add(mixerDeviceList);
 		
 		controls = new GuiControls(this, 5, width);
