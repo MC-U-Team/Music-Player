@@ -2,7 +2,7 @@ package info.u_team.music_player.gui.settings;
 
 import static info.u_team.music_player.init.MusicPlayerLocalization.*;
 
-import info.u_team.music_player.gui.BetterScreen;
+import info.u_team.music_player.gui.*;
 import info.u_team.music_player.gui.controls.GuiControls;
 import info.u_team.music_player.init.MusicPlayerResources;
 import info.u_team.music_player.musicplayer.MusicPlayerManager;
@@ -16,6 +16,8 @@ import net.minecraft.util.text.StringTextComponent;
 public class GuiMusicPlayerSettings extends BetterScreen {
 	
 	private final Screen previousGui;
+	
+	private GuiMusicPlayerSettingsMixerDeviceList mixerDeviceList;
 	
 	private GuiControls controls;
 	
@@ -57,6 +59,9 @@ public class GuiMusicPlayerSettings extends BetterScreen {
 			ingameOverlayPositionButton.setMessage(getTranslation(GUI_SETTINGS_POSITION_OVERLAY) + ": " + getTranslation(settings.getIngameOverlayPosition().getLocalization()));
 		});
 		
+		mixerDeviceList = new GuiMusicPlayerSettingsMixerDeviceList(width - 24, height, 90, height - 10, 12, width - 12);
+		children.add(mixerDeviceList);
+		
 		controls = new GuiControls(this, 5, width);
 		children.add(controls);
 	}
@@ -78,6 +83,7 @@ public class GuiMusicPlayerSettings extends BetterScreen {
 	@Override
 	public void render(int mouseX, int mouseY, float partialTicks) {
 		renderDirtBackground(0);
+		mixerDeviceList.render(mouseX, mouseY, partialTicks);
 		controls.drawScreen(mouseX, mouseY, partialTicks);
 		super.render(mouseX, mouseY, partialTicks);
 	}
