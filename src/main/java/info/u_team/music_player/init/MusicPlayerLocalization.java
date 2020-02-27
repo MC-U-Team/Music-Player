@@ -45,6 +45,7 @@ public class MusicPlayerLocalization {
 	public static final String GUI_SETTINGS_POSITION_UP_RIGHT = "gui.settings.position.up_right";
 	public static final String GUI_SETTINGS_POSITION_DOWN_RIGHT = "gui.settings.position.down_right";
 	public static final String GUI_SETTINGS_POSITION_DOWN_LEFT = "gui.settings.position.down_left";
+	public static final String GUI_SETTINGS_MIXER_DEVICE_SELECTION = "gui.settings.mixer_device_selection";
 	
 	public static String getTranslation(String key, Object... parameters) {
 		return I18n.format(key, parameters);

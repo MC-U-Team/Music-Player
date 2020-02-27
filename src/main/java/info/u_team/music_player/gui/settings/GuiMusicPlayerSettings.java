@@ -59,7 +59,7 @@ public class GuiMusicPlayerSettings extends BetterScreen {
 			ingameOverlayPositionButton.setMessage(getTranslation(GUI_SETTINGS_POSITION_OVERLAY) + ": " + getTranslation(settings.getIngameOverlayPosition().getLocalization()));
 		});
 		
-		mixerDeviceList = new GuiMusicPlayerSettingsMixerDeviceList(width - 24, height, 120, 170, 12, width - 12);
+		mixerDeviceList = new GuiMusicPlayerSettingsMixerDeviceList(width - 24, height, 133, 183, 12, width - 12);
 		children.add(mixerDeviceList);
 		
 		controls = new GuiControls(this, 5, width);
@@ -84,6 +84,7 @@ public class GuiMusicPlayerSettings extends BetterScreen {
 	public void render(int mouseX, int mouseY, float partialTicks) {
 		renderDirtBackground(0);
 		mixerDeviceList.render(mouseX, mouseY, partialTicks);
+		font.drawString(getTranslation(GUI_SETTINGS_MIXER_DEVICE_SELECTION), 13, 117, 0xFFFFFF);
 		controls.drawScreen(mouseX, mouseY, partialTicks);
 		super.render(mouseX, mouseY, partialTicks);
 	}
