@@ -152,8 +152,7 @@ public class EventHandlerMusicPlayer {
 					authorRender = null;
 				}
 				@SuppressWarnings("unchecked")
-				final
-				List<IGuiEventListener> list = (List<IGuiEventListener>) gui.children();
+				final List<IGuiEventListener> list = (List<IGuiEventListener>) gui.children();
 				list.add(controls);
 			}
 		}
