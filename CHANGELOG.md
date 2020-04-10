@@ -1,12 +1,12 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
-## [1.14.4-2.0.9.65] - 2019-04-10
+## [1.14.4-2.0.9.65] - 2020-04-10
 ### Changed
  - Update lavaplayer to 1.3.46
  - Fixed [#42](https://github.com/MC-U-Team/Music-Player/issues/42)
 
-## [1.14.4-2.0.9.60] - 2019-02-10
+## [1.14.4-2.0.9.60] - 2020-02-10
 ### Changed
  - Fixed [#33](https://github.com/MC-U-Team/Music-Player/issues/33) by using utf-8 as standard charset
  - Fixed [#35](https://github.com/MC-U-Team/Music-Player/issues/35)
