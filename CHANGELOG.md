@@ -17,7 +17,7 @@ All notable changes to this project will be documented in this file.
  - Fixed many potential npe
  - When a song cannot be loaded the playlist now skips the errored song instead of stopping the playlist
 
-## [1.14.4-2.0.8.57] - 2019-02-07
+## [1.14.4-2.0.8.57] - 2020-02-07
 ### Changed
  - Updated lavaplayer to 1.3.34
  - Updated uteamcore to 2.8.2.150
