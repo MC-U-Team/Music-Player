@@ -1,6 +1,11 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [1.15.2-2.0.13.66] - 2020-04-10
+### Changed
+ - Update lavaplayer to 1.3.46
+ - Fixed [#42](https://github.com/MC-U-Team/Music-Player/issues/42)
+
 ## [1.15.2-2.0.13.64] - 2020-02-27
 ### Changed
  - Starting the playlist with an errored song will now skip to the next song
