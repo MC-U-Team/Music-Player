@@ -190,6 +190,7 @@ curseforge {
 		
 		relations {
       		requiredDependency "u-team-core"
+      		optionalDependency "voice-chat"
     	}
 
     	mainArtifact(jar) {
