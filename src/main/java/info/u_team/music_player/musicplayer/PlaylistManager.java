@@ -33,7 +33,7 @@ public class PlaylistManager implements IGsonLoadable {
 				playlists = new Playlists();
 				writeToFile();
 			} else {
-				try (BufferedReader reader = new BufferedReader(new InputStreamReader(new GZIPInputStream(Files.newInputStream(path))))) {
+				try (final BufferedReader reader = new BufferedReader(new InputStreamReader(new GZIPInputStream(Files.newInputStream(path)), "UTF-8"))) {
 					playlists = gson.fromJson(reader, Playlists.class);
 				} catch (IOException ex) {
 					throw ex;
@@ -43,13 +43,13 @@ public class PlaylistManager implements IGsonLoadable {
 			logger.warn("The playlist file is corrupted and will be deleted at " + path, ex);
 			playlists = new Playlists();
 		} catch (IOException ex) {
-			logger.error("Could not ready playlist file at " + path, ex);
+			logger.error("Could not read playlist file at " + path, ex);
 		}
 	}
 	
 	@Override
 	public void writeToFile() {
-		try (BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new GZIPOutputStream(Files.newOutputStream(path))))) {
+		try (final BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new GZIPOutputStream(Files.newOutputStream(path)), "UTF-8"))) {
 			gson.toJson(playlists, writer);
 		} catch (IOException ex) {
 			logger.error("Could not write playlist file at " + path, ex);

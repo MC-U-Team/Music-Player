@@ -46,6 +46,9 @@ class GuiMusicPlayerListEntry extends GuiScrollableListEntry<GuiMusicPlayerListE
 						playlists.setPlaying(playlist);
 						Pair<LoadedTracks, IAudioTrack> pair = playlist.getFirstTrack();
 						playlist.setPlayable(pair.getLeft(), pair.getRight());
+						if (pair.getLeft().hasError() || pair.getRight() == null) {
+							playlist.skip(Skip.FORWARD);
+						}
 						manager.setTrackQueue(playlist);
 						manager.start();
 					} else {
