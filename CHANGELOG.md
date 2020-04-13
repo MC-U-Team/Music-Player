@@ -1,6 +1,11 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [1.8.9-2.0.3.70] - 2020-04-13
+### Changed
+ - Update lavaplayer to 1.3.46
+ - Backport many other fixes
+
 ## [1.8.9-2.0.3.55] - 2020-02-07
  - Update lavaplayer to 1.3.34
  - Fixed [#21](https://github.com/MC-U-Team/Music-Player/issues/21)
