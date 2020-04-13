@@ -45,8 +45,7 @@ public class Playlist implements ITrackQueue {
 	/**
 	 * Create a new playlist object with a name
 	 * 
-	 * @param name
-	 *            The playlist's name
+	 * @param name The playlist's name
 	 */
 	public Playlist(String name) {
 		this.name = name;
@@ -69,8 +68,7 @@ public class Playlist implements ITrackQueue {
 	 * and {@link IAudioTrackList} for {@link LoadedTracks}. This method is async. This method calls the
 	 * {@link Runnable#run()} method when everything is loaded and the playlist was not loaded before.
 	 * 
-	 * @param runnable
-	 *            A runnable that should be executed when the playlist is loaded
+	 * @param runnable A runnable that should be executed when the playlist is loaded
 	 */
 	public void load(Runnable runnable) {
 		if (loaded) {
@@ -127,8 +125,7 @@ public class Playlist implements ITrackQueue {
 	/**
 	 * Adds an {@link IAudioTrack} to the uri list and the loaded tracks. This playlist must be loaded.
 	 * 
-	 * @param track
-	 *            The track that should be added
+	 * @param track The track that should be added
 	 * @return The {@link WrappedObject} with the uri as a string
 	 */
 	public WrappedObject<String> add(IAudioTrack track) {
@@ -147,8 +144,7 @@ public class Playlist implements ITrackQueue {
 	 * Adds an {@link IAudioTrackList} to the uri list and the loaded tracks if it has a valid uri and is not a search
 	 * result. This playlist must be loaded.
 	 * 
-	 * @param trackList
-	 *            The tracklist that should be added
+	 * @param trackList The tracklist that should be added
 	 * @return The {@link WrappedObject} with the uri as a string
 	 */
 	public WrappedObject<String> add(IAudioTrackList trackList) {
@@ -169,8 +165,7 @@ public class Playlist implements ITrackQueue {
 	/**
 	 * Removes an uri from the uri list and the loaded tracks. This playlist must be loaded.
 	 * 
-	 * @param uri
-	 *            The {@link WrappedObject} with the uri as a string
+	 * @param uri The {@link WrappedObject} with the uri as a string
 	 * @return If the uri was removed
 	 */
 	public boolean remove(WrappedObject<String> uri) {
@@ -190,10 +185,8 @@ public class Playlist implements ITrackQueue {
 	/**
 	 * Move the uri and loaded track in the list up or down. This playlist must be loaded.
 	 * 
-	 * @param uri
-	 *            The {@link WrappedObject} with the uri as a string
-	 * @param value
-	 *            Positive value to move the uri up the value, and the other way around for a negative value
+	 * @param uri The {@link WrappedObject} with the uri as a string
+	 * @param value Positive value to move the uri up the value, and the other way around for a negative value
 	 * @return If move was successful
 	 */
 	public boolean move(WrappedObject<String> uri, int value) {
@@ -215,8 +208,7 @@ public class Playlist implements ITrackQueue {
 	/**
 	 * Sets the name of this playlist
 	 * 
-	 * @param name
-	 *            Name
+	 * @param name Name
 	 */
 	public void setName(String name) {
 		this.name = name;
@@ -300,8 +292,7 @@ public class Playlist implements ITrackQueue {
 	/**
 	 * Skip the current song in the {@link Skip} direction
 	 * 
-	 * @param skip
-	 *            Should be skipped forward or backward
+	 * @param skip Should be skipped forward or backward
 	 * @return If skip was executed
 	 */
 	public boolean skip(Skip skip) {
@@ -333,10 +324,8 @@ public class Playlist implements ITrackQueue {
 	 * Gets a {@link LoadedTracks} at the index of the loaded tracks list in this playlist. The supplied function must then
 	 * select the right {@link IAudioTrack}
 	 * 
-	 * @param index
-	 *            The index of the {@link LoadedTracks} entry. Must be in bound
-	 * @param function
-	 *            A function that returns an {@link IAudioTrack} based on the passed {@link LoadedTracks}
+	 * @param index The index of the {@link LoadedTracks} entry. Must be in bound
+	 * @param function A function that returns an {@link IAudioTrack} based on the passed {@link LoadedTracks}
 	 * @return Pair of {@link LoadedTracks} and {@link IAudioTrack}. Can't be null, but elements can be null.
 	 */
 	private Pair<LoadedTracks, IAudioTrack> getTrackAtIndex(int index, Function<LoadedTracks, IAudioTrack> function) {
@@ -354,10 +343,8 @@ public class Playlist implements ITrackQueue {
 	/**
 	 * Sets the start {@link LoadedTracks} with the contained {@link IAudioTrack}
 	 * 
-	 * @param loadedTrack
-	 *            {@link LoadedTracks} which must be in this playlist
-	 * @param track
-	 *            {@link IAudioTrack} which must be in the passed loadedTrack
+	 * @param loadedTrack {@link LoadedTracks} which must be in this playlist
+	 * @param track {@link IAudioTrack} which must be in the passed loadedTrack
 	 */
 	public void setPlayable(LoadedTracks loadedTrack, IAudioTrack track) {
 		setTracks(loadedTrack, track);
@@ -378,16 +365,13 @@ public class Playlist implements ITrackQueue {
 	 * {@link #getTrackAndValidate(int)} then the next valid song is chosen. If the end or start of the playlist is reached
 	 * the pair contains null values.
 	 * 
-	 * @param loadedTrack
-	 *            The currently loaded track {@link LoadedTracks}
-	 * @param track
-	 *            The currently playing {@link IAudioTrack}
-	 * @param skip
-	 *            In which direction we want to skip
+	 * @param loadedTrack The currently loaded track {@link LoadedTracks}
+	 * @param track The currently playing {@link IAudioTrack}
+	 * @param skip In which direction we want to skip
 	 * @return Pair of {@link LoadedTracks} and {@link IAudioTrack}. Can't be null, but elements can be null.
 	 */
 	private Pair<LoadedTracks, IAudioTrack> getOtherTrack(LoadedTracks loadedTrack, IAudioTrack track, Skip skip) {
-		if (loadedTrack == null || track == null) {
+		if (loadedTrack == null) {
 			return Pair.of(null, null);
 		}
 		final IAudioTrack nextTrack = loadedTrack.getOtherTrack(track, skip);
@@ -417,8 +401,7 @@ public class Playlist implements ITrackQueue {
 	 * has no errors and contains a valid {@link IAudioTrack} or a valid {@link IAudioTrackList}. Returns null if the test
 	 * above failed.
 	 * 
-	 * @param index
-	 *            The index to search for in the playlist
+	 * @param index The index to search for in the playlist
 	 * @return The loaded track or null if the index is out of bounds or the {@link LoadedTracks} has an error
 	 */
 	private LoadedTracks getTrackAndValidate(int index) {
@@ -435,10 +418,8 @@ public class Playlist implements ITrackQueue {
 	/**
 	 * Sets the {@link #loadedTracks} and {@link #next} variable to the passed arguments
 	 * 
-	 * @param loadedTrack
-	 *            {@link LoadedTracks} which must be in this playlist
-	 * @param track
-	 *            {@link IAudioTrack} which must be in the passed loadedTrack
+	 * @param loadedTrack {@link LoadedTracks} which must be in this playlist
+	 * @param track {@link IAudioTrack} which must be in the passed loadedTrack
 	 */
 	private void setTracks(LoadedTracks loadedTrack, IAudioTrack track) {
 		nextLoadedTrack = loadedTrack;
@@ -448,10 +429,8 @@ public class Playlist implements ITrackQueue {
 	/**
 	 * Find a next song and set it to the {@link #nextLoadedTrack} and {@link #next} track variable
 	 * 
-	 * @param settings
-	 *            The current settings
-	 * @param skip
-	 *            In which direction we want to find the song
+	 * @param settings The current settings
+	 * @param skip In which direction we want to find the song
 	 * @return Return true if a valid next song could be found. Otherwise return false
 	 */
 	private boolean findNextSong(Settings settings, Skip skip) {
@@ -469,6 +448,14 @@ public class Playlist implements ITrackQueue {
 				if (sideLoadedTrack != null && sideTrack != null) {
 					setTracks(sideLoadedTrack, sideTrack);
 					return true;
+				} else if (sideLoadedTrack != null) {
+					final Pair<LoadedTracks, IAudioTrack> nextValidPair = getOtherTrack(sideLoadedTrack, null, skip);
+					final LoadedTracks nextValidLoadedTrack = nextValidPair.getLeft();
+					final IAudioTrack nextValidTrack = nextValidPair.getRight();
+					if (nextValidLoadedTrack != null && nextValidTrack != null) {
+						setTracks(nextValidLoadedTrack, nextValidTrack);
+						return true;
+					}
 				}
 			}
 		} else if (loadedTrack != null && track != null) {
