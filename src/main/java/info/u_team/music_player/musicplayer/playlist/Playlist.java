@@ -371,7 +371,7 @@ public class Playlist implements ITrackQueue {
 	 * @return Pair of {@link LoadedTracks} and {@link IAudioTrack}. Can't be null, but elements can be null.
 	 */
 	private Pair<LoadedTracks, IAudioTrack> getOtherTrack(LoadedTracks loadedTrack, IAudioTrack track, Skip skip) {
-		if (loadedTrack == null || track == null) {
+		if (loadedTrack == null) {
 			return Pair.of(null, null);
 		}
 		final IAudioTrack nextTrack = loadedTrack.getOtherTrack(track, skip);
@@ -448,6 +448,14 @@ public class Playlist implements ITrackQueue {
 				if (sideLoadedTrack != null && sideTrack != null) {
 					setTracks(sideLoadedTrack, sideTrack);
 					return true;
+				} else if (sideLoadedTrack != null) {
+					final Pair<LoadedTracks, IAudioTrack> nextValidPair = getOtherTrack(sideLoadedTrack, null, skip);
+					final LoadedTracks nextValidLoadedTrack = nextValidPair.getLeft();
+					final IAudioTrack nextValidTrack = nextValidPair.getRight();
+					if (nextValidLoadedTrack != null && nextValidTrack != null) {
+						setTracks(nextValidLoadedTrack, nextValidTrack);
+						return true;
+					}
 				}
 			}
 		} else if (loadedTrack != null && track != null) {
