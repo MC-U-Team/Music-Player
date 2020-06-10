@@ -32,7 +32,7 @@ minecraft {
         client = {
             workingDirectory project.file("run/client").canonicalPath
             
-            property "musicplayer.dev", "\"${project.rootDir}\""
+            property "musicplayer.dev", "${project.rootDir}"
             
             mods {
                 "${config.mod.modid}" {
@@ -52,7 +52,7 @@ minecraft {
             workingDirectory project.file("run/data").canonicalPath
             args "--mod", config.mod.modid, "--all", "--output", "\"" + file("src/generated/resources").toString() + "\"", "--validate", "--existing", "\"" + sourceSets.main.resources.srcDirs[0] + "\""
             
-            property "musicplayer.dev", "\"${project.rootDir}\""
+            property "musicplayer.dev", "${project.rootDir}"
             
             mods {
                 "${config.mod.modid}" {
