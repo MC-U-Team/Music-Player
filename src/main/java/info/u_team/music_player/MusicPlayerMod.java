@@ -14,7 +14,7 @@ public class MusicPlayerMod {
 	
 	public static final String MODID = "musicplayer";
 	
-	private static final IModProxy PROXY = DistExecutor.runForDist(() -> ClientProxy::new, () -> CommonProxy::new);
+	private static final IModProxy PROXY = DistExecutor.safeRunForDist(() -> ClientProxy::new, () -> CommonProxy::new);
 	
 	public MusicPlayerMod() {
 		JarSignVerifier.checkSigned(MODID);
