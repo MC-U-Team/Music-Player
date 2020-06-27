@@ -1,6 +1,10 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [1.15.2-1.1.0.80-SNAPSHOT] - 2020-06-27
+### Changed
+ - Update to uteamcore 3.0.0
+
 ## [1.15.2-2.0.14.79] - 2020-06-10
 ### Changed
  - Update lavaplayer to 1.3.49
