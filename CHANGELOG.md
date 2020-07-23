@@ -1,6 +1,13 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [1.12.2-2.1.0.85] - 2020-07-23
+### Changed
+ - Update lavaplayer to 1.3.50
+
+### Added
+ - Added spanish translation (Thanks to NathanielFreeman)
+
 ## [1.12.2-2.0.8.77] - 2020-06-10
 ### Changed
  - Update lavaplayer to 1.3.49
