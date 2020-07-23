@@ -59,6 +59,8 @@ minecraft {
     runDir = "run"
     mappings = "${config.forge.mapping_channel}_${config.forge.mapping}"
     makeObfSourceJar = false
+    
+    clientJvmArgs += "\"-Dmusicplayer.dev=${project.rootDir}\""
 	
 	replace '${version}', project.version
 	replace '${mcversion}', project.minecraft.version
