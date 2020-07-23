@@ -51,7 +51,7 @@ minecraft {
         client = {
             workingDirectory project.file("run/client").canonicalPath
             
-            property "musicplayer.dev", "\"${project.rootDir}\""
+            property "musicplayer.dev", "${project.rootDir}"
             
             mods {
                 musicplayer {
