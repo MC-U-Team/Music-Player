@@ -1,6 +1,10 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [1.15.2-2.2.0.87] - 2020-07-23
+### Changed
+ - Update lavaplayer to 1.3.50 which fixes [#59](https://github.com/MC-U-Team/Music-Player/issues/59)
+
 ## [1.15.2-2.1.0.81] - 2020-07-02
 ### Changed
  - Updated to forge 31.2.30
