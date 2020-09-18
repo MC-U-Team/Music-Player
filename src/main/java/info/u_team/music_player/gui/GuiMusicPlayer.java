@@ -4,13 +4,15 @@ import static info.u_team.music_player.init.MusicPlayerLocalization.*;
 
 import org.apache.commons.lang3.StringUtils;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
+
 import info.u_team.music_player.gui.controls.GuiControls;
 import info.u_team.music_player.init.MusicPlayerResources;
 import info.u_team.u_team_core.gui.elements.ImageButton;
 import info.u_team.u_team_core.gui.render.ScrollingTextRender;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.widget.TextFieldWidget;
-import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.*;
 
 public class GuiMusicPlayer extends BetterScreen {
 	
@@ -28,7 +30,7 @@ public class GuiMusicPlayer extends BetterScreen {
 	protected void init() {
 		addButton(new ImageButton(1, 1, 15, 15, MusicPlayerResources.TEXTURE_BACK, button -> minecraft.displayGuiScreen(null)));
 		
-		namePlaylistField = new TextFieldWidget(font, 100, 60, width - 150, 20, "");
+		namePlaylistField = new TextFieldWidget(font, 100, 60, width - 150, 20, ITextComponent.func_241827_a_(null));
 		namePlaylistField.setMaxStringLength(500);
 		children.add(namePlaylistField);
 		
@@ -68,13 +70,13 @@ public class GuiMusicPlayer extends BetterScreen {
 	}
 	
 	@Override
-	public void render(int mouseX, int mouseY, float partialTicks) {
+	public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
 		renderDirtBackground(0);
-		playlistsList.render(mouseX, mouseY, partialTicks);
-		font.drawString(getTranslation(GUI_CREATE_PLAYLIST_ADD_LIST), 20, 65, 0xFFFFFF);
-		namePlaylistField.render(mouseX, mouseY, partialTicks);
+		playlistsList.render(matrixStack, mouseX, mouseY, partialTicks);
+		font.drawString(matrixStack, getTranslation(GUI_CREATE_PLAYLIST_ADD_LIST), 20, 65, 0xFFFFFF);
+		namePlaylistField.render(matrixStack, mouseX, mouseY, partialTicks);
 		controls.drawScreen(mouseX, mouseY, partialTicks);
-		super.render(mouseX, mouseY, partialTicks);
+		super.render(matrixStack, mouseX, mouseY, partialTicks);
 	}
 	
 	public GuiMusicPlayerList getPlaylistsList() {
