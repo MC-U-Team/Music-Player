@@ -196,5 +196,15 @@ public class EventHandlerMusicPlayer {
 	}
 	
 	public static void registerForge(IEventBus bus) {
+		bus.addListener(EventHandlerMusicPlayer::onKeyInput);
+		bus.addListener(EventHandlerMusicPlayer::onKeyboardPressed);
+		
+		bus.addListener(EventHandlerMusicPlayer::onRenderGameOverlay);
+		
+		bus.addListener(EventHandlerMusicPlayer::onInitGuiPre);
+		bus.addListener(EventHandlerMusicPlayer::onInitGuiPost);
+		bus.addListener(EventHandlerMusicPlayer::onDrawScreenPost);
+		bus.addListener(EventHandlerMusicPlayer::onMouseReleasePre);
+		bus.addListener(EventHandlerMusicPlayer::onClientTick);
 	}
 }
