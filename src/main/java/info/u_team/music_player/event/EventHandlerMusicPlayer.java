@@ -122,7 +122,7 @@ public class EventHandlerMusicPlayer {
 		final Screen gui = event.getGui();
 		if (gui instanceof IngameMenuScreen) {
 			if (SETTINGS_MANAGER.getSettings().isShowIngameMenueOverlay()) {
-				gui.children().stream() //
+				gui.getEventListeners().stream() //
 						.filter(element -> element instanceof GuiControls) //
 						.map(element -> ((GuiControls) element)).findAny() //
 						.ifPresent(controls -> {
@@ -148,7 +148,7 @@ public class EventHandlerMusicPlayer {
 					authorRender = null;
 				}
 				@SuppressWarnings("unchecked")
-				final List<IGuiEventListener> list = (List<IGuiEventListener>) gui.children();
+				final List<IGuiEventListener> list = (List<IGuiEventListener>) gui.getEventListeners();
 				list.add(controls);
 			}
 		}
@@ -159,7 +159,7 @@ public class EventHandlerMusicPlayer {
 		final Screen gui = event.getGui();
 		if (gui instanceof IngameMenuScreen) {
 			if (SETTINGS_MANAGER.getSettings().isShowIngameMenueOverlay()) {
-				gui.children().stream() //
+				gui.getEventListeners().stream() //
 						.filter(element -> element instanceof GuiControls) //
 						.map(element -> ((GuiControls) element)).findAny() //
 						.ifPresent(controls -> controls.drawScreen(event.getMouseX(), event.getMouseY(), event.getRenderPartialTicks()));
@@ -172,7 +172,7 @@ public class EventHandlerMusicPlayer {
 		final Screen gui = event.getGui();
 		if (gui instanceof IngameMenuScreen) {
 			if (SETTINGS_MANAGER.getSettings().isShowIngameMenueOverlay()) {
-				gui.children().stream() //
+				gui.getEventListeners().stream() //
 						.filter(element -> element instanceof GuiControls) //
 						.map(element -> ((GuiControls) element)).findAny() //
 						.ifPresent(controls -> controls.mouseReleased(event.getMouseX(), event.getMouseY(), event.getButton()));
@@ -186,7 +186,7 @@ public class EventHandlerMusicPlayer {
 			final Screen gui = Minecraft.getInstance().currentScreen;
 			if (gui instanceof IngameMenuScreen) {
 				if (SETTINGS_MANAGER.getSettings().isShowIngameMenueOverlay()) {
-					gui.children().stream() //
+					gui.getEventListeners().stream() //
 							.filter(element -> element instanceof GuiControls) //
 							.map(element -> ((GuiControls) element)).findAny() //
 							.ifPresent(GuiControls::tick);
