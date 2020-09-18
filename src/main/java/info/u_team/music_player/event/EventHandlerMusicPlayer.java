@@ -20,31 +20,27 @@ import net.minecraftforge.client.event.GuiScreenEvent.KeyboardKeyPressedEvent;
 import net.minecraftforge.client.event.InputEvent.KeyInputEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
 import net.minecraftforge.event.TickEvent.*;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.eventbus.api.*;
 
 public class EventHandlerMusicPlayer {
 	
-	private final Settings settings;
-	
-	public EventHandlerMusicPlayer(Settings settings) {
-		this.settings = settings;
-	}
+	private static final SettingsManager SETTINGS_MANAGER = MusicPlayerManager.getSettingsManager();
 	
 	// Used to listen to keyboard events
 	
 	@SubscribeEvent
-	public void on(KeyInputEvent event) {
+	private static void onKeyInput(KeyInputEvent event) {
 		handleKeyboard(false, -1, -1);
 	}
 	
 	@SubscribeEvent
-	public void on(KeyboardKeyPressedEvent.Post event) {
-		if (settings.isKeyWorkInGui()) {
+	private static void onKeyboardPressed(KeyboardKeyPressedEvent.Post event) {
+		if (SETTINGS_MANAGER.getSettings().isKeyWorkInGui()) {
 			event.setCanceled(handleKeyboard(true, event.getKeyCode(), event.getScanCode()));
 		}
 	}
 	
-	private boolean handleKeyboard(boolean gui, int keyCode, int scanCode) {
+	private static boolean handleKeyboard(boolean gui, int keyCode, int scanCode) {
 		final boolean handled;
 		final ITrackManager manager = MusicPlayerManager.getPlayer().getTrackManager();
 		if (isKeyDown(MusicPlayerKeys.OPEN, gui, keyCode, scanCode)) {
@@ -72,7 +68,7 @@ public class EventHandlerMusicPlayer {
 		return handled;
 	}
 	
-	private boolean isKeyDown(KeyBinding binding, boolean gui, int keyCode, int scanCode) {
+	private static boolean isKeyDown(KeyBinding binding, boolean gui, int keyCode, int scanCode) {
 		if (gui) {
 			return binding.isActiveAndMatches(InputMappings.getInputByCode(keyCode, scanCode));
 		} else {
@@ -80,19 +76,19 @@ public class EventHandlerMusicPlayer {
 		}
 	}
 	
-	private RenderOverlayMusicDisplay overlayRender;
+	private static RenderOverlayMusicDisplay overlayRender;
 	
 	// Render overlay
 	
 	@SubscribeEvent
-	public void on(RenderGameOverlayEvent.Pre event) {
+	private static void onRenderGameOverlay(RenderGameOverlayEvent.Pre event) {
 		final Minecraft mc = Minecraft.getInstance();
 		if (event.getType() == ElementType.TEXT && !mc.gameSettings.showDebugInfo && mc.currentScreen == null) {
-			if (settings.isShowIngameOverlay()) {
+			if (SETTINGS_MANAGER.getSettings().isShowIngameOverlay()) {
 				if (overlayRender == null) {
 					overlayRender = new RenderOverlayMusicDisplay();
 				}
-				final IngameOverlayPosition position = settings.getIngameOverlayPosition();
+				final IngameOverlayPosition position = SETTINGS_MANAGER.getSettings().getIngameOverlayPosition();
 				
 				final MainWindow window = mc.getMainWindow();
 				final int width = window.getScaledWidth();
@@ -119,13 +115,13 @@ public class EventHandlerMusicPlayer {
 	
 	// Used to add buttons and gui controls to main ingame gui
 	
-	private ScrollingTextRender titleRender, authorRender;
+	private static ScrollingTextRender titleRender, authorRender;
 	
 	@SubscribeEvent
-	public void on(GuiScreenEvent.InitGuiEvent.Pre event) {
+	private static void onInitGuiPre(GuiScreenEvent.InitGuiEvent.Pre event) {
 		final Screen gui = event.getGui();
 		if (gui instanceof IngameMenuScreen) {
-			if (settings.isShowIngameMenueOverlay()) {
+			if (SETTINGS_MANAGER.getSettings().isShowIngameMenueOverlay()) {
 				gui.children().stream() //
 						.filter(element -> element instanceof GuiControls) //
 						.map(element -> ((GuiControls) element)).findAny() //
@@ -138,10 +134,10 @@ public class EventHandlerMusicPlayer {
 	}
 	
 	@SubscribeEvent
-	public void on(GuiScreenEvent.InitGuiEvent.Post event) {
+	private static void onInitGuiPost(GuiScreenEvent.InitGuiEvent.Post event) {
 		final Screen gui = event.getGui();
 		if (gui instanceof IngameMenuScreen) {
-			if (settings.isShowIngameMenueOverlay()) {
+			if (SETTINGS_MANAGER.getSettings().isShowIngameMenueOverlay()) {
 				final GuiControls controls = new GuiControls(gui, 3, gui.width);
 				if (titleRender != null) {
 					controls.setTitleRender(titleRender);
@@ -159,10 +155,10 @@ public class EventHandlerMusicPlayer {
 	}
 	
 	@SubscribeEvent
-	public void on(GuiScreenEvent.DrawScreenEvent.Post event) {
+	private static void onDrawScreenPost(GuiScreenEvent.DrawScreenEvent.Post event) {
 		final Screen gui = event.getGui();
 		if (gui instanceof IngameMenuScreen) {
-			if (settings.isShowIngameMenueOverlay()) {
+			if (SETTINGS_MANAGER.getSettings().isShowIngameMenueOverlay()) {
 				gui.children().stream() //
 						.filter(element -> element instanceof GuiControls) //
 						.map(element -> ((GuiControls) element)).findAny() //
@@ -172,10 +168,10 @@ public class EventHandlerMusicPlayer {
 	}
 	
 	@SubscribeEvent
-	public void on(GuiScreenEvent.MouseReleasedEvent.Pre event) {
+	private static void onMouseReleasePre(GuiScreenEvent.MouseReleasedEvent.Pre event) {
 		final Screen gui = event.getGui();
 		if (gui instanceof IngameMenuScreen) {
-			if (settings.isShowIngameMenueOverlay()) {
+			if (SETTINGS_MANAGER.getSettings().isShowIngameMenueOverlay()) {
 				gui.children().stream() //
 						.filter(element -> element instanceof GuiControls) //
 						.map(element -> ((GuiControls) element)).findAny() //
@@ -185,11 +181,11 @@ public class EventHandlerMusicPlayer {
 	}
 	
 	@SubscribeEvent
-	public void on(ClientTickEvent event) {
+	private static void onClientTick(ClientTickEvent event) {
 		if (event.phase == Phase.END) {
 			final Screen gui = Minecraft.getInstance().currentScreen;
 			if (gui instanceof IngameMenuScreen) {
-				if (settings.isShowIngameMenueOverlay()) {
+				if (SETTINGS_MANAGER.getSettings().isShowIngameMenueOverlay()) {
 					gui.children().stream() //
 							.filter(element -> element instanceof GuiControls) //
 							.map(element -> ((GuiControls) element)).findAny() //
@@ -197,5 +193,8 @@ public class EventHandlerMusicPlayer {
 				}
 			}
 		}
+	}
+	
+	public static void registerForge(IEventBus bus) {
 	}
 }
