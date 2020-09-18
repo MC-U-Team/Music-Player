@@ -21,7 +21,7 @@ public class ClientProxy extends CommonProxy implements IModProxy {
 		
 		ModLoadingContext.get().registerConfig(Type.CLIENT, ClientConfig.CONFIG);
 		
-		DependencyManager.construct();
+		DependencyManager.load();
 	}
 	
 	@Override

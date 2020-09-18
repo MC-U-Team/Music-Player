@@ -21,7 +21,7 @@ public class DependencyManager {
 	
 	private static final DependencyClassLoader MUSICPLAYER_CLASSLOADER = new DependencyClassLoader();
 	
-	public static void construct() {
+	public static void load() {
 		LOGGER.info(MARKER, "Load dependencies");
 		
 		final String devPath = System.getProperty("musicplayer.dev");

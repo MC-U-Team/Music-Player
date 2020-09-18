@@ -16,7 +16,7 @@ public class MusicPlayerClientConstruct implements IModConstruct {
 		
 		ModLoadingContext.get().registerConfig(Type.CLIENT, ClientConfig.CONFIG);
 		
-		DependencyManager.construct();
+		DependencyManager.load();
 	}
 	
 }
