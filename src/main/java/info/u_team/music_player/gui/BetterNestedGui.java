@@ -8,7 +8,7 @@ import net.minecraft.client.gui.*;
 public interface BetterNestedGui extends INestedGuiEventHandler {
 	
 	default Collection<IGuiEventListener> getEventListenersForPos(double mouseX, double mouseY) {
-		return children().stream().filter(listener -> listener.isMouseOver(mouseX, mouseY)).collect(Collectors.toList());
+		return getEventListeners().stream().filter(listener -> listener.isMouseOver(mouseX, mouseY)).collect(Collectors.toList());
 	}
 	
 	@Override
