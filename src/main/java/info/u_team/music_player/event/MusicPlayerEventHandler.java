@@ -22,7 +22,7 @@ import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
 import net.minecraftforge.event.TickEvent.*;
 import net.minecraftforge.eventbus.api.IEventBus;
 
-public class EventHandlerMusicPlayer {
+public class MusicPlayerEventHandler {
 	
 	private static final SettingsManager SETTINGS_MANAGER = MusicPlayerManager.getSettingsManager();
 	
@@ -188,15 +188,15 @@ public class EventHandlerMusicPlayer {
 	}
 	
 	public static void registerForge(IEventBus bus) {
-		bus.addListener(EventHandlerMusicPlayer::onKeyInput);
-		bus.addListener(EventHandlerMusicPlayer::onKeyboardPressed);
+		bus.addListener(MusicPlayerEventHandler::onKeyInput);
+		bus.addListener(MusicPlayerEventHandler::onKeyboardPressed);
 		
-		bus.addListener(EventHandlerMusicPlayer::onRenderGameOverlay);
+		bus.addListener(MusicPlayerEventHandler::onRenderGameOverlay);
 		
-		bus.addListener(EventHandlerMusicPlayer::onInitGuiPre);
-		bus.addListener(EventHandlerMusicPlayer::onInitGuiPost);
-		bus.addListener(EventHandlerMusicPlayer::onDrawScreenPost);
-		bus.addListener(EventHandlerMusicPlayer::onMouseReleasePre);
-		bus.addListener(EventHandlerMusicPlayer::onClientTick);
+		bus.addListener(MusicPlayerEventHandler::onInitGuiPre);
+		bus.addListener(MusicPlayerEventHandler::onInitGuiPost);
+		bus.addListener(MusicPlayerEventHandler::onDrawScreenPost);
+		bus.addListener(MusicPlayerEventHandler::onMouseReleasePre);
+		bus.addListener(MusicPlayerEventHandler::onClientTick);
 	}
 }
