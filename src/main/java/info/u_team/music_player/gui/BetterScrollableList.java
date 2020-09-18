@@ -12,8 +12,8 @@ public class BetterScrollableList<T extends AbstractList.AbstractListEntry<T>> e
 	
 	@Override
 	public boolean mouseDragged(double mouseX, double mouseY, int button, double dragX, double dragY) {
-		if (getFocused() != null && isDragging() && button == 0) {
-			getFocused().mouseDragged(mouseX, mouseY, button, dragX, dragY);
+		if (getListener() != null && isDragging() && button == 0) {
+			getListener().mouseDragged(mouseX, mouseY, button, dragX, dragY);
 		}
 		if (button == 0 && scrolling) {
 			if (mouseY < y0) {
