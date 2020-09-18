@@ -22,12 +22,13 @@ public class ClientProxy extends CommonProxy implements IModProxy {
 		ModLoadingContext.get().registerConfig(Type.CLIENT, ClientConfig.CONFIG);
 		
 		DependencyManager.load();
+		
 	}
 	
 	@Override
 	public void setup() {
-		super.setup();
-		MusicPlayerFiles.setup();
+		super.load();
+		MusicPlayerFiles.load();
 		MusicPlayerManager.setup();
 		MinecraftForge.EVENT_BUS.register(new EventHandlerMusicPlayer(MusicPlayerManager.getSettingsManager().getSettings()));
 	}
