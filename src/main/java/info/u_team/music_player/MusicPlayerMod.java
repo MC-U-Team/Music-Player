@@ -1,5 +1,6 @@
 package info.u_team.music_player;
 
+import info.u_team.u_team_core.util.annotation.AnnotationManager;
 import info.u_team.u_team_core.util.verify.JarSignVerifier;
 import net.minecraftforge.fml.common.Mod;
 
@@ -10,5 +11,7 @@ public class MusicPlayerMod {
 	
 	public MusicPlayerMod() {
 		JarSignVerifier.checkSigned(MODID);
+		
+		AnnotationManager.callAnnotations(MODID);
 	}
 }
