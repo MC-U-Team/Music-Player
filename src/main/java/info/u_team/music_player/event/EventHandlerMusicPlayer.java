@@ -7,7 +7,7 @@ import info.u_team.music_player.gui.controls.GuiControls;
 import info.u_team.music_player.init.MusicPlayerKeys;
 import info.u_team.music_player.lavaplayer.api.queue.ITrackManager;
 import info.u_team.music_player.musicplayer.*;
-import info.u_team.music_player.musicplayer.settings.*;
+import info.u_team.music_player.musicplayer.settings.IngameOverlayPosition;
 import info.u_team.music_player.render.RenderOverlayMusicDisplay;
 import info.u_team.u_team_core.gui.render.ScrollingTextRender;
 import net.minecraft.client.*;
@@ -20,7 +20,7 @@ import net.minecraftforge.client.event.GuiScreenEvent.KeyboardKeyPressedEvent;
 import net.minecraftforge.client.event.InputEvent.KeyInputEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
 import net.minecraftforge.event.TickEvent.*;
-import net.minecraftforge.eventbus.api.*;
+import net.minecraftforge.eventbus.api.IEventBus;
 
 public class EventHandlerMusicPlayer {
 	
@@ -28,12 +28,10 @@ public class EventHandlerMusicPlayer {
 	
 	// Used to listen to keyboard events
 	
-	@SubscribeEvent
 	private static void onKeyInput(KeyInputEvent event) {
 		handleKeyboard(false, -1, -1);
 	}
 	
-	@SubscribeEvent
 	private static void onKeyboardPressed(KeyboardKeyPressedEvent.Post event) {
 		if (SETTINGS_MANAGER.getSettings().isKeyWorkInGui()) {
 			event.setCanceled(handleKeyboard(true, event.getKeyCode(), event.getScanCode()));
@@ -80,7 +78,6 @@ public class EventHandlerMusicPlayer {
 	
 	// Render overlay
 	
-	@SubscribeEvent
 	private static void onRenderGameOverlay(RenderGameOverlayEvent.Pre event) {
 		final Minecraft mc = Minecraft.getInstance();
 		if (event.getType() == ElementType.TEXT && !mc.gameSettings.showDebugInfo && mc.currentScreen == null) {
@@ -117,7 +114,6 @@ public class EventHandlerMusicPlayer {
 	
 	private static ScrollingTextRender titleRender, authorRender;
 	
-	@SubscribeEvent
 	private static void onInitGuiPre(GuiScreenEvent.InitGuiEvent.Pre event) {
 		final Screen gui = event.getGui();
 		if (gui instanceof IngameMenuScreen) {
@@ -133,7 +129,6 @@ public class EventHandlerMusicPlayer {
 		}
 	}
 	
-	@SubscribeEvent
 	private static void onInitGuiPost(GuiScreenEvent.InitGuiEvent.Post event) {
 		final Screen gui = event.getGui();
 		if (gui instanceof IngameMenuScreen) {
@@ -154,7 +149,6 @@ public class EventHandlerMusicPlayer {
 		}
 	}
 	
-	@SubscribeEvent
 	private static void onDrawScreenPost(GuiScreenEvent.DrawScreenEvent.Post event) {
 		final Screen gui = event.getGui();
 		if (gui instanceof IngameMenuScreen) {
@@ -167,7 +161,6 @@ public class EventHandlerMusicPlayer {
 		}
 	}
 	
-	@SubscribeEvent
 	private static void onMouseReleasePre(GuiScreenEvent.MouseReleasedEvent.Pre event) {
 		final Screen gui = event.getGui();
 		if (gui instanceof IngameMenuScreen) {
@@ -180,7 +173,6 @@ public class EventHandlerMusicPlayer {
 		}
 	}
 	
-	@SubscribeEvent
 	private static void onClientTick(ClientTickEvent event) {
 		if (event.phase == Phase.END) {
 			final Screen gui = Minecraft.getInstance().currentScreen;
