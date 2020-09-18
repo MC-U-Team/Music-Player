@@ -4,6 +4,8 @@ import static info.u_team.music_player.init.MusicPlayerLocalization.*;
 
 import org.apache.commons.lang3.tuple.Pair;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
+
 import info.u_team.music_player.gui.playlist.GuiMusicPlaylist;
 import info.u_team.music_player.init.MusicPlayerResources;
 import info.u_team.music_player.lavaplayer.api.audio.IAudioTrack;
@@ -35,7 +37,7 @@ class GuiMusicPlayerListEntry extends BetterScrollableListEntry<GuiMusicPlayerLi
 				return;
 			}
 			playlists.setPlaying(null);
-			gui.children().stream().filter(entry -> entry != this).forEach(entry -> entry.playPlaylistButton.toggle(false)); // Reset all playlist buttons except this one
+			gui.getEventListeners().stream().filter(entry -> entry != this).forEach(entry -> entry.playPlaylistButton.toggle(false)); // Reset all playlist buttons except this one
 			
 			final Runnable runnable = () -> {
 				final ITrackManager manager = MusicPlayerManager.getPlayer().getTrackManager();
@@ -68,14 +70,14 @@ class GuiMusicPlayerListEntry extends BetterScrollableListEntry<GuiMusicPlayerLi
 				if (minecraft.currentScreen instanceof GuiMusicPlayer) {
 					final GuiMusicPlayer musicplayergui = (GuiMusicPlayer) minecraft.currentScreen;
 					final GuiMusicPlayerList newGui = musicplayergui.getPlaylistsList();
-					newGui.children().forEach(entry -> entry.playPlaylistButton.active = true);
+					newGui.getEventListeners().forEach(entry -> entry.playPlaylistButton.active = true);
 				} else if (minecraft.currentScreen instanceof GuiMusicPlaylist) {
 					final GuiMusicPlaylist musicplaylistgui = (GuiMusicPlaylist) minecraft.currentScreen;
 					musicplaylistgui.getTrackList().updateAllEntries();
 				}
 			};
 			
-			gui.children().forEach(entry -> entry.playPlaylistButton.active = false);
+			gui.getEventListeners().forEach(entry -> entry.playPlaylistButton.active = false);
 			playlists.setPlayingLock();
 			
 			if (!playlist.isLoaded()) {
@@ -93,25 +95,25 @@ class GuiMusicPlayerListEntry extends BetterScrollableListEntry<GuiMusicPlayerLi
 	}
 	
 	@Override
-	public void render(int slotIndex, int entryY, int entryX, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float partialTicks) {
+	public void render(MatrixStack matrixStack, int slotIndex, int entryY, int entryX, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float partialTicks) {
 		String name = playlist.getName();
 		if (name.isEmpty()) {
 			name = "\u00A7o" + getTranslation(GUI_PLAYLISTS_NO_NAME);
 		}
-		minecraft.fontRenderer.drawString(name, entryX + 5, entryY + 5, playlist.equals(playlists.getPlaying()) ? 0x0083FF : 0xFFF00F);
-		minecraft.fontRenderer.drawString(playlist.getEntrySize() + " " + getTranslation(playlist.getEntrySize() > 1 ? GUI_PLAYLISTS_ENTRIES : GUI_PLAYLISTS_ENTRY), entryX + 5, entryY + 30, 0xFFFFFF);
+		minecraft.fontRenderer.drawString(matrixStack, name, entryX + 5, entryY + 5, playlist.equals(playlists.getPlaying()) ? 0x0083FF : 0xFFF00F);
+		minecraft.fontRenderer.drawString(matrixStack, playlist.getEntrySize() + " " + getTranslation(playlist.getEntrySize() > 1 ? GUI_PLAYLISTS_ENTRIES : GUI_PLAYLISTS_ENTRY), entryX + 5, entryY + 30, 0xFFFFFF);
 		
 		playPlaylistButton.x = entryWidth - 65;
 		playPlaylistButton.y = entryY + 12;
-		playPlaylistButton.render(mouseX, mouseY, partialTicks);
+		playPlaylistButton.render(matrixStack, mouseX, mouseY, partialTicks);
 		
 		openPlaylistButton.x = entryWidth - 40;
 		openPlaylistButton.y = entryY + 12;
-		openPlaylistButton.render(mouseX, mouseY, partialTicks);
+		openPlaylistButton.render(matrixStack, mouseX, mouseY, partialTicks);
 		
 		deletePlaylistButton.x = entryWidth - 15;
 		deletePlaylistButton.y = entryY + 12;
-		deletePlaylistButton.render(mouseX, mouseY, partialTicks);
+		deletePlaylistButton.render(matrixStack, mouseX, mouseY, partialTicks);
 	}
 	
 	public Playlist getPlaylist() {
