@@ -1,14 +1,22 @@
 package info.u_team.music_player.init;
 
 import info.u_team.music_player.MusicPlayerMod;
+import info.u_team.music_player.config.ClientConfig;
+import info.u_team.music_player.dependency.DependencyManager;
 import info.u_team.u_team_core.api.construct.*;
+import net.minecraftforge.fml.ModLoadingContext;
+import net.minecraftforge.fml.config.ModConfig.Type;
 
 @Construct(modid = MusicPlayerMod.MODID, client = true)
 public class MusicPlayerClientConstruct implements IModConstruct {
 	
 	@Override
 	public void construct() {
+		System.setProperty("http.agent", "Chrome");
 		
+		ModLoadingContext.get().registerConfig(Type.CLIENT, ClientConfig.CONFIG);
+		
+		DependencyManager.construct();
 	}
 	
 }
