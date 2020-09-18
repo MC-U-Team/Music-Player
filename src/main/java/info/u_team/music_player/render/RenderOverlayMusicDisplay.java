@@ -1,5 +1,7 @@
 package info.u_team.music_player.render;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
+
 import info.u_team.music_player.gui.util.GuiTrackUtils;
 import info.u_team.music_player.lavaplayer.api.audio.IAudioTrack;
 import info.u_team.music_player.lavaplayer.api.queue.ITrackManager;
@@ -53,7 +55,7 @@ public class RenderOverlayMusicDisplay {
 		
 	}
 	
-	public void draw(float x, float y) {
+	public void draw(MatrixStack matrixStack, float x, float y) {
 		final IAudioTrack track = manager.getCurrentTrack();
 		if (track == null) {
 			return;
@@ -61,7 +63,7 @@ public class RenderOverlayMusicDisplay {
 		final int intX = MathHelper.ceil(x);
 		final int intY = MathHelper.ceil(y);
 		// Background
-		AbstractGui.fill(intX, intY, intX + width, intY + height, 0xFF212121);
+		AbstractGui.fill(matrixStack, intX, intY, intX + width, intY + height, 0xFF212121);
 		
 		// Progressbar
 		final double progress;
@@ -71,8 +73,8 @@ public class RenderOverlayMusicDisplay {
 			progress = (double) track.getPosition() / track.getDuration();
 		}
 		
-		AbstractGui.fill(intX + 6, intY + 23, intX + width - 6, intY + 26, 0xFF555555);
-		AbstractGui.fill(intX + 6, intY + 23, intX + 6 + (int) ((width - 12) * progress), intY + 26, 0xFF3e9100);
+		AbstractGui.fill(matrixStack, intX + 6, intY + 23, intX + width - 6, intY + 26, 0xFF555555);
+		AbstractGui.fill(matrixStack, intX + 6, intY + 23, intX + 6 + (int) ((width - 12) * progress), intY + 26, 0xFF3e9100);
 		
 		// Draw strings
 		title.draw(x + 3, y + 2);
