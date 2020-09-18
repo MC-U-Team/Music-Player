@@ -104,7 +104,7 @@ public class MusicPlayerEventHandler {
 					y = height - 3 - overlayRender.getHeight();
 				}
 				
-				overlayRender.draw(x, y);
+				overlayRender.draw(event.getMatrixStack(), x, y);
 			}
 		}
 	}
