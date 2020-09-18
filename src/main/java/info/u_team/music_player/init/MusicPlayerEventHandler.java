@@ -1,10 +1,9 @@
-package info.u_team.music_player.event;
+package info.u_team.music_player.init;
 
 import java.util.List;
 
 import info.u_team.music_player.gui.GuiMusicPlayer;
 import info.u_team.music_player.gui.controls.GuiControls;
-import info.u_team.music_player.init.MusicPlayerKeys;
 import info.u_team.music_player.lavaplayer.api.queue.ITrackManager;
 import info.u_team.music_player.musicplayer.*;
 import info.u_team.music_player.musicplayer.settings.IngameOverlayPosition;
