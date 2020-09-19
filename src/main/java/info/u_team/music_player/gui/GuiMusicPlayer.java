@@ -75,7 +75,7 @@ public class GuiMusicPlayer extends BetterScreen {
 		playlistsList.render(matrixStack, mouseX, mouseY, partialTicks);
 		font.drawString(matrixStack, getTranslation(GUI_CREATE_PLAYLIST_ADD_LIST), 20, 65, 0xFFFFFF);
 		namePlaylistField.render(matrixStack, mouseX, mouseY, partialTicks);
-		controls.drawScreen(mouseX, mouseY, partialTicks);
+		controls.drawScreen(matrixStack, mouseX, mouseY, partialTicks);
 		super.render(matrixStack, mouseX, mouseY, partialTicks);
 	}
 	
