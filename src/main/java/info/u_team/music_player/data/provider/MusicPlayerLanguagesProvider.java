@@ -1,8 +1,8 @@
 package info.u_team.music_player.data.provider;
 
-import info.u_team.u_team_core.data.*;
-
 import static info.u_team.music_player.init.MusicPlayerLocalization.*;
+
+import info.u_team.u_team_core.data.*;
 
 public class MusicPlayerLanguagesProvider extends CommonLanguagesProvider {
 	

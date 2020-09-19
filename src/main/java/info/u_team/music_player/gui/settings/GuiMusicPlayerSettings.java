@@ -4,7 +4,7 @@ import static info.u_team.music_player.init.MusicPlayerLocalization.*;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 
-import info.u_team.music_player.gui.*;
+import info.u_team.music_player.gui.BetterScreen;
 import info.u_team.music_player.gui.controls.GuiControls;
 import info.u_team.music_player.init.MusicPlayerResources;
 import info.u_team.music_player.musicplayer.MusicPlayerManager;
