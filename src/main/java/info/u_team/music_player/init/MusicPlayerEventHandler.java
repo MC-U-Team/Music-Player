@@ -155,7 +155,7 @@ public class MusicPlayerEventHandler {
 				gui.getEventListeners().stream() //
 						.filter(element -> element instanceof GuiControls) //
 						.map(element -> ((GuiControls) element)).findAny() //
-						.ifPresent(controls -> controls.drawScreen(event.getMouseX(), event.getMouseY(), event.getRenderPartialTicks()));
+						.ifPresent(controls -> controls.drawScreen(event.getMatrixStack(), event.getMouseX(), event.getMouseY(), event.getRenderPartialTicks()));
 			}
 		}
 	}
