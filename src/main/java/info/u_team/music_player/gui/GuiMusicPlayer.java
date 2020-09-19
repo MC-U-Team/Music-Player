@@ -30,7 +30,7 @@ public class GuiMusicPlayer extends BetterScreen {
 	protected void init() {
 		addButton(new ImageButton(1, 1, 15, 15, MusicPlayerResources.TEXTURE_BACK, button -> minecraft.displayGuiScreen(null)));
 		
-		namePlaylistField = new TextFieldWidget(font, 100, 60, width - 150, 20, ITextComponent.func_241827_a_(null));
+		namePlaylistField = new TextFieldWidget(font, 100, 60, width - 150, 20, ITextComponent.func_244388_a(null));
 		namePlaylistField.setMaxStringLength(500);
 		children.add(namePlaylistField);
 		
