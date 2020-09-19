@@ -23,6 +23,7 @@ public class MusicPlayerClientConstruct implements IModConstruct {
 		MusicPlayerFiles.load();
 		
 		BusRegister.registerMod(MusicPlayerManager::registerMod);
+		BusRegister.registerMod(MusicPlayerKeys::registerMod);
 		
 		BusRegister.registerForge(MusicPlayerEventHandler::registerForge);
 	}
