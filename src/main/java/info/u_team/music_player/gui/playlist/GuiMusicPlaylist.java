@@ -1,5 +1,7 @@
 package info.u_team.music_player.gui.playlist;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
+
 import info.u_team.music_player.gui.*;
 import info.u_team.music_player.gui.controls.GuiControls;
 import info.u_team.music_player.gui.playlist.search.GuiMusicSearch;
@@ -78,11 +80,11 @@ public class GuiMusicPlaylist extends BetterScreen {
 	}
 	
 	@Override
-	public void render(int mouseX, int mouseY, float partialTicks) {
+	public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
 		renderDirtBackground(0);
-		trackList.render(mouseX, mouseY, partialTicks);
-		controls.drawScreen(mouseX, mouseY, partialTicks);
-		super.render(mouseX, mouseY, partialTicks);
+		trackList.render(matrixStack, mouseX, mouseY, partialTicks);
+		controls.drawScreen(matrixStack, mouseX, mouseY, partialTicks);
+		super.render(matrixStack, mouseX, mouseY, partialTicks);
 	}
 	
 	public GuiMusicPlaylistList getTrackList() {
