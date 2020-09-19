@@ -3,6 +3,7 @@ loaderVersion="[33,)"
 issueTrackerURL="https://github.com/MC-U-Team/Music-Player/issues"
 displayURL="https://u-team.info/mods/musicplayer"
 logoFile="logo.png"
+license="Apache-2.0 License"
 credits="Thanks to sedmelluq for making lavaplayer"
 authors="HyCraftHD"
 
