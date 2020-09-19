@@ -42,12 +42,12 @@ public final class GuiTrackUtils {
 	}
 	
 	public static boolean openURI(String uri) {
-		final Style style = ITextComponent.func_241827_a_(null).getStyle();
+		Style style = ITextComponent.func_241827_a_(null).getStyle();
 		try {
 			new URI(uri);
-			style.setClickEvent(new ClickEvent(Action.OPEN_URL, uri));
+			style = style.setClickEvent(new ClickEvent(Action.OPEN_URL, uri));
 		} catch (final Exception ex) {
-			style.setClickEvent(new ClickEvent(Action.OPEN_FILE, uri));
+			style = style.setClickEvent(new ClickEvent(Action.OPEN_FILE, uri));
 		}
 		return MINECRAFT.currentScreen.handleComponentClicked(style);
 	}
