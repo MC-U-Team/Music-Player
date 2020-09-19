@@ -49,7 +49,7 @@ public class Main {
 					audioTrack.setPosition(audioTrack.getDuration() - 10000);
 				} else if (line.startsWith("playing")) {
 					final IAudioTrack audioTrack = manager.getCurrentTrack();
-					System.out.println(audioTrack.getInfo().getAuthor() + " -" + audioTrack.getInfo().getTitle());
+					System.out.println(audioTrack.getInfo().getAuthor() + " - " + audioTrack.getInfo().getTitle());
 				}
 			}
 			scanner.close();
