@@ -44,7 +44,7 @@ abstract class GuiMusicPlaylistListEntryFunctions extends GuiMusicPlaylistListEn
 	@Override
 	public void render(MatrixStack matrixStack, int slotIndex, int entryY, int entryX, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float partialTicks) {
 		super.render(matrixStack, slotIndex, entryY, entryX, entryWidth, entryHeight, mouseX, mouseY, hovered, partialTicks);
-		drawEntryExtended(entryX, entryY, entryWidth, entryHeight, mouseX, mouseY, hovered, partialTicks);
+		drawEntryExtended(matrixStack, entryX, entryY, entryWidth, entryHeight, mouseX, mouseY, hovered, partialTicks);
 		
 		deleteTrackButton.x = entryWidth - 15;
 		deleteTrackButton.y = entryY + 8;
@@ -59,6 +59,6 @@ abstract class GuiMusicPlaylistListEntryFunctions extends GuiMusicPlaylistListEn
 		downButton.render(matrixStack, mouseX, mouseY, partialTicks);
 	}
 	
-	public abstract void drawEntryExtended(int entryX, int entryY, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean mouseInList, float partialTicks);
+	public abstract void drawEntryExtended(MatrixStack matrixStack, int entryX, int entryY, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean mouseInList, float partialTicks);
 	
 }
