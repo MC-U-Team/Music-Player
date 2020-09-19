@@ -26,7 +26,7 @@ public class GuiMusicSearchListEntryMusicTrack extends GuiMusicSearchListEntry {
 	@Override
 	public void render(MatrixStack matrixStack, int slotIndex, int entryY, int entryX, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float partialTicks) {
 		super.render(matrixStack, slotIndex, entryY, entryX, entryWidth, entryHeight, mouseX, mouseY, hovered, partialTicks);
-		addTrackInfo(track, entryX, entryY, entryWidth, playlistEntry ? 15 : 5, playlistEntry ? 0x42F4F1 : 0x419BF4);
+		addTrackInfo(matrixStack, track, entryX, entryY, entryWidth, playlistEntry ? 15 : 5, playlistEntry ? 0x42F4F1 : 0x419BF4);
 	}
 	
 	public boolean isPlaylistEntry() {
