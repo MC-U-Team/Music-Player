@@ -179,7 +179,7 @@ public class GuiControls extends FocusableGui implements BetterNestedGui {
 	
 	public void drawScreen(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
 		buttons.forEach(button -> button.render(matrixStack, mouseX, mouseY, partialTicks));
-		songProgress.render(mouseX, mouseY, partialTicks);
+		songProgress.render(matrixStack, mouseX, mouseY, partialTicks);
 		
 		final int textRenderWidth = middleX - (2 * buttonSize + halfButtonSize + 10) - (small ? 15 : 35);
 		
