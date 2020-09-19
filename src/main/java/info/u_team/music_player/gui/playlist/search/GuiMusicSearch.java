@@ -106,7 +106,7 @@ public class GuiMusicSearch extends BetterScreen {
 		};
 		searchField.setMaxStringLength(1000);
 		searchField.setFocused2(true);
-		setFocused(searchField);
+		setListener(searchField);
 		children.add(searchField);
 		
 		final UButton addAllButton = addButton(new UButton(width - 110, 105, 100, 20, ITextComponent.func_241827_a_(getTranslation(GUI_SEARCH_ADD_ALL))));
@@ -131,23 +131,23 @@ public class GuiMusicSearch extends BetterScreen {
 	@Override
 	public void resize(Minecraft minecraft, int width, int height) {
 		final String urlFieldText = urlField.getText();
-		final boolean urlFieldFocus = urlField.isFocused() && getFocused() == urlField;
+		final boolean urlFieldFocus = urlField.isFocused() && getListener() == urlField;
 		
 		final String searchFieldText = searchField.getText();
-		final boolean searchFieldFocus = searchField.isFocused() && getFocused() == searchField;
+		final boolean searchFieldFocus = searchField.isFocused() && getListener() == searchField;
 		
 		init(minecraft, width, height);
 		
 		urlField.setText(urlFieldText);
 		urlField.setFocused2(urlFieldFocus);
 		if (urlFieldFocus) {
-			setFocused(urlField);
+			setListener(urlField);
 		}
 		
 		searchField.setText(searchFieldText);
 		searchField.setFocused2(searchFieldFocus);
 		if (searchFieldFocus) {
-			setFocused(searchField);
+			setListener(searchField);
 		}
 		
 	}
@@ -181,12 +181,12 @@ public class GuiMusicSearch extends BetterScreen {
 	@Override
 	public boolean mouseClicked(double mouseX, double mouseY, int button) {
 		if (urlField.mouseClicked(mouseX, mouseY, button)) {
-			setFocused(urlField);
+			setListener(urlField);
 			urlField.setFocused2(true);
 			searchField.setFocused2(false);
 			return true;
 		} else if (searchField.mouseClicked(mouseX, mouseY, button)) {
-			setFocused(searchField);
+			setListener(searchField);
 			searchField.setFocused2(true);
 			urlField.setFocused2(false);
 			return true;
