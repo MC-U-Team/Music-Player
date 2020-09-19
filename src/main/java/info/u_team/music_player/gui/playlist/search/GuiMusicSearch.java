@@ -10,6 +10,8 @@ import java.util.stream.*;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.util.tinyfd.TinyFileDialogs;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
+
 import info.u_team.music_player.gui.BetterScreen;
 import info.u_team.music_player.gui.playlist.GuiMusicPlaylist;
 import info.u_team.music_player.init.MusicPlayerResources;
@@ -48,7 +50,7 @@ public class GuiMusicSearch extends BetterScreen {
 		final ImageButton backButton = addButton(new ImageButton(1, 1, 15, 15, MusicPlayerResources.TEXTURE_BACK));
 		backButton.setPressable(() -> minecraft.displayGuiScreen(new GuiMusicPlaylist(playlist)));
 		
-		urlField = new TextFieldWidget(font, 10, 35, width / 2 - 10, 20, "") {
+		urlField = new TextFieldWidget(font, 10, 35, width / 2 - 10, 20, ITextComponent.func_241827_a_("")) {
 			
 			@Override
 			public boolean keyPressed(int key, int p_keyPressed_2_, int p_keyPressed_3_) {
@@ -59,7 +61,7 @@ public class GuiMusicSearch extends BetterScreen {
 		urlField.setMaxStringLength(10000);
 		children.add(urlField);
 		
-		final UButton openFileButton = addButton(new UButton(width / 2 + 10, 34, width / 4 - 15, 22, getTranslation(GUI_SEARCH_LOAD_FILE)));
+		final UButton openFileButton = addButton(new UButton(width / 2 + 10, 34, width / 4 - 15, 22, ITextComponent.func_241827_a_(getTranslation(GUI_SEARCH_LOAD_FILE))));
 		openFileButton.setPressable(() -> {
 			final String response = TinyFileDialogs.tinyfd_openFileDialog(getTranslation(GUI_SEARCH_LOAD_FILE), null, null, getTranslation(GUI_SEARCH_MUSIC_FILES), false);
 			if (response != null) {
@@ -68,7 +70,7 @@ public class GuiMusicSearch extends BetterScreen {
 			}
 		});
 		
-		final UButton openFolderButton = addButton(new UButton((int) (width * 0.75) + 5, 34, width / 4 - 15, 22, getTranslation(GUI_SEARCH_LOAD_FOLDER)));
+		final UButton openFolderButton = addButton(new UButton((int) (width * 0.75) + 5, 34, width / 4 - 15, 22, ITextComponent.func_241827_a_(getTranslation(GUI_SEARCH_LOAD_FOLDER))));
 		openFolderButton.setPressable(() -> {
 			final String response = TinyFileDialogs.tinyfd_selectFolderDialog(getTranslation(GUI_SEARCH_LOAD_FOLDER), System.getProperty("user.home"));
 			if (response != null) {
@@ -87,7 +89,7 @@ public class GuiMusicSearch extends BetterScreen {
 			searchButton.setResource(searchProvider.getLogo());
 		});
 		
-		searchField = new TextFieldWidget(font, 40, 78, width - 51, 20, "") {
+		searchField = new TextFieldWidget(font, 40, 78, width - 51, 20, ITextComponent.func_241827_a_("")) {
 			
 			@Override
 			public boolean keyPressed(int key, int p_keyPressed_2_, int p_keyPressed_3_) {
@@ -107,15 +109,15 @@ public class GuiMusicSearch extends BetterScreen {
 		setFocused(searchField);
 		children.add(searchField);
 		
-		final UButton addAllButton = addButton(new UButton(width - 110, 105, 100, 20, getTranslation(GUI_SEARCH_ADD_ALL)));
+		final UButton addAllButton = addButton(new UButton(width - 110, 105, 100, 20, ITextComponent.func_241827_a_(getTranslation(GUI_SEARCH_ADD_ALL))));
 		addAllButton.setPressable(() -> {
-			final List<GuiMusicSearchListEntryPlaylist> list = searchList.children().stream().filter(entry -> entry instanceof GuiMusicSearchListEntryPlaylist).map(entry -> (GuiMusicSearchListEntryPlaylist) entry).collect(Collectors.toList());
+			final List<GuiMusicSearchListEntryPlaylist> list = searchList.getEventListeners().stream().filter(entry -> entry instanceof GuiMusicSearchListEntryPlaylist).map(entry -> (GuiMusicSearchListEntryPlaylist) entry).collect(Collectors.toList());
 			if (list.size() > 0) {
 				list.forEach(entry -> {
 					playlist.add(entry.getTrackList());
 				});
 			} else {
-				searchList.children().stream().filter(entry -> entry instanceof GuiMusicSearchListEntryMusicTrack).map(entry -> (GuiMusicSearchListEntryMusicTrack) entry).filter(entry -> !entry.isPlaylistEntry()).forEach(entry -> {
+				searchList.getEventListeners().stream().filter(entry -> entry instanceof GuiMusicSearchListEntryMusicTrack).map(entry -> (GuiMusicSearchListEntryMusicTrack) entry).filter(entry -> !entry.isPlaylistEntry()).forEach(entry -> {
 					playlist.add(entry.getTrack());
 				});
 			}
@@ -158,22 +160,22 @@ public class GuiMusicSearch extends BetterScreen {
 	}
 	
 	@Override
-	public void render(int mouseX, int mouseY, float partialTicks) {
+	public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
 		renderDirtBackground(0);
-		searchList.render(mouseX, mouseY, partialTicks);
+		searchList.render(matrixStack, mouseX, mouseY, partialTicks);
 		
-		drawCenteredString(minecraft.fontRenderer, getTranslation(GUI_SEARCH_HEADER), width / 2, 5, 0xFFFFFF);
-		drawString(minecraft.fontRenderer, getTranslation(GUI_SEARCH_SEARCH_URI), 10, 20, 0xFFFFFF);
-		drawString(minecraft.fontRenderer, getTranslation(GUI_SEARCH_SEARCH_FILE), 10 + width / 2, 20, 0xFFFFFF);
-		drawString(minecraft.fontRenderer, getTranslation(GUI_SEARCH_SEARCH_SEARCH), 10, 63, 0xFFFFFF);
+		drawCenteredString(matrixStack, minecraft.fontRenderer, getTranslation(GUI_SEARCH_HEADER), width / 2, 5, 0xFFFFFF);
+		drawString(matrixStack, minecraft.fontRenderer, getTranslation(GUI_SEARCH_SEARCH_URI), 10, 20, 0xFFFFFF);
+		drawString(matrixStack, minecraft.fontRenderer, getTranslation(GUI_SEARCH_SEARCH_FILE), 10 + width / 2, 20, 0xFFFFFF);
+		drawString(matrixStack, minecraft.fontRenderer, getTranslation(GUI_SEARCH_SEARCH_SEARCH), 10, 63, 0xFFFFFF);
 		
 		if (information != null && informationTicks <= maxTicksInformation) {
-			drawString(minecraft.fontRenderer, information, 15, 110, 0xFFFFFF);
+			drawString(matrixStack, minecraft.fontRenderer, information, 15, 110, 0xFFFFFF);
 		}
 		
-		urlField.render(mouseX, mouseY, partialTicks);
-		searchField.render(mouseX, mouseY, partialTicks);
-		super.render(mouseX, mouseY, partialTicks);
+		urlField.render(matrixStack, mouseX, mouseY, partialTicks);
+		searchField.render(matrixStack, mouseX, mouseY, partialTicks);
+		super.render(matrixStack, mouseX, mouseY, partialTicks);
 	}
 	
 	@Override
