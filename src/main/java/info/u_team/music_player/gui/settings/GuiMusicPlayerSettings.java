@@ -11,7 +11,7 @@ import info.u_team.u_team_core.gui.elements.*;
 import info.u_team.u_team_core.gui.render.ScrollingTextRender;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.*;
 
 public class GuiMusicPlayerSettings extends BetterScreen {
 	
@@ -32,31 +32,31 @@ public class GuiMusicPlayerSettings extends BetterScreen {
 		
 		final Settings settings = MusicPlayerManager.getSettingsManager().getSettings();
 		
-		final ActiveButton toggleKeyWorkInGuiButton = addButton(new ActiveButton(12, 60, width / 2 - 24, 20, getTranslation(GUI_SETTINGS_TOGGLE_KEY_IN_GUI), 0x80FF00FF));
+		final ActiveButton toggleKeyWorkInGuiButton = addButton(new ActiveButton(12, 60, width / 2 - 24, 20, ITextComponent.func_241827_a_(getTranslation(GUI_SETTINGS_TOGGLE_KEY_IN_GUI)), 0x80FF00FF));
 		toggleKeyWorkInGuiButton.setActive(settings.isKeyWorkInGui());
 		toggleKeyWorkInGuiButton.setPressable(() -> {
 			settings.setKeyWorkInGui(!settings.isKeyWorkInGui());
 			toggleKeyWorkInGuiButton.setActive(settings.isKeyWorkInGui());
 		});
 		
-		final ActiveButton toggleIngameMenueDisplayButton = addButton(new ActiveButton(width / 2 + 14, 60, width / 2 - 24, 20, getTranslation(GUI_SETTINGS_TOGGLE_MENUE_OVERLAY), 0x80FF00FF));
+		final ActiveButton toggleIngameMenueDisplayButton = addButton(new ActiveButton(width / 2 + 14, 60, width / 2 - 24, 20, ITextComponent.func_241827_a_(getTranslation(GUI_SETTINGS_TOGGLE_MENUE_OVERLAY)), 0x80FF00FF));
 		toggleIngameMenueDisplayButton.setActive(settings.isShowIngameMenueOverlay());
 		toggleIngameMenueDisplayButton.setPressable(() -> {
 			settings.setShowIngameMenueOverlay(!settings.isShowIngameMenueOverlay());
 			toggleIngameMenueDisplayButton.setActive(settings.isShowIngameMenueOverlay());
 		});
 		
-		final ActiveButton toggleIngameDisplayButton = addButton(new ActiveButton(12, 90, width / 2 - 24, 20, getTranslation(GUI_SETTINGS_TOGGLE_INGAME_OVERLAY), 0x80FF00FF));
+		final ActiveButton toggleIngameDisplayButton = addButton(new ActiveButton(12, 90, width / 2 - 24, 20, ITextComponent.func_241827_a_(getTranslation(GUI_SETTINGS_TOGGLE_INGAME_OVERLAY)), 0x80FF00FF));
 		toggleIngameDisplayButton.setActive(settings.isShowIngameOverlay());
 		toggleIngameDisplayButton.setPressable(() -> {
 			settings.setShowIngameOverlay(!settings.isShowIngameOverlay());
 			toggleIngameDisplayButton.setActive(settings.isShowIngameOverlay());
 		});
 		
-		final UButton ingameOverlayPositionButton = addButton(new UButton(width / 2 + 14, 90, width / 2 - 24, 20, getTranslation(GUI_SETTINGS_POSITION_OVERLAY) + ": " + getTranslation(settings.getIngameOverlayPosition().getLocalization())));
+		final UButton ingameOverlayPositionButton = addButton(new UButton(width / 2 + 14, 90, width / 2 - 24, 20, ITextComponent.func_241827_a_(getTranslation(GUI_SETTINGS_POSITION_OVERLAY) + ": " + getTranslation(settings.getIngameOverlayPosition().getLocalization()))));
 		ingameOverlayPositionButton.setPressable(() -> {
 			settings.setIngameOverlayPosition(IngameOverlayPosition.forwardCycle(settings.getIngameOverlayPosition()));
-			ingameOverlayPositionButton.setMessage(getTranslation(GUI_SETTINGS_POSITION_OVERLAY) + ": " + getTranslation(settings.getIngameOverlayPosition().getLocalization()));
+			ingameOverlayPositionButton.setMessage(ITextComponent.func_241827_a_(getTranslation(GUI_SETTINGS_POSITION_OVERLAY) + ": " + getTranslation(settings.getIngameOverlayPosition().getLocalization())));
 		});
 		
 		mixerDeviceList = new GuiMusicPlayerSettingsMixerDeviceList(width - 24, height, 133, 183, 12, width - 12);
