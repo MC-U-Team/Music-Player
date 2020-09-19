@@ -1,5 +1,7 @@
 package info.u_team.music_player.gui.playlist;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
+
 import info.u_team.music_player.init.MusicPlayerResources;
 import info.u_team.music_player.lavaplayer.api.audio.IAudioTrack;
 import info.u_team.music_player.musicplayer.playlist.*;
@@ -40,21 +42,21 @@ abstract class GuiMusicPlaylistListEntryFunctions extends GuiMusicPlaylistListEn
 	}
 	
 	@Override
-	public void render(int slotIndex, int entryY, int entryX, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float partialTicks) {
-		super.render(slotIndex, entryY, entryX, entryWidth, entryHeight, mouseX, mouseY, hovered, partialTicks);
+	public void render(MatrixStack matrixStack, int slotIndex, int entryY, int entryX, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float partialTicks) {
+		super.render(matrixStack, slotIndex, entryY, entryX, entryWidth, entryHeight, mouseX, mouseY, hovered, partialTicks);
 		drawEntryExtended(entryX, entryY, entryWidth, entryHeight, mouseX, mouseY, hovered, partialTicks);
 		
 		deleteTrackButton.x = entryWidth - 15;
 		deleteTrackButton.y = entryY + 8;
-		deleteTrackButton.render(mouseX, mouseY, partialTicks);
+		deleteTrackButton.render(matrixStack, mouseX, mouseY, partialTicks);
 		
 		upButton.x = entryWidth - 40;
 		upButton.y = entryY + 8;
-		upButton.render(mouseX, mouseY, partialTicks);
+		upButton.render(matrixStack, mouseX, mouseY, partialTicks);
 		
 		downButton.x = entryWidth - 40;
 		downButton.y = entryY + 18;
-		downButton.render(mouseX, mouseY, partialTicks);
+		downButton.render(matrixStack, mouseX, mouseY, partialTicks);
 	}
 	
 	public abstract void drawEntryExtended(int entryX, int entryY, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean mouseInList, float partialTicks);
