@@ -39,7 +39,7 @@ public class AudioTrackInfoImpl implements IAudioTrackInfo {
 	
 	@Override
 	public String getFixedTitle() {
-		if (info.title.equals("Unknown title")) {
+		if (info.title == null || info.title.equals("Unknown title")) {
 			return info.uri;
 		}
 		return info.title;
@@ -47,7 +47,7 @@ public class AudioTrackInfoImpl implements IAudioTrackInfo {
 	
 	@Override
 	public String getFixedAuthor() {
-		if (info.author.equals("Unknown artist")) {
+		if (info.author == null || info.author.equals("Unknown artist")) {
 			return "";
 		}
 		return info.author;
