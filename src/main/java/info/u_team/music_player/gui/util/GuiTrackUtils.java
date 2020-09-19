@@ -5,6 +5,8 @@ import static info.u_team.music_player.init.MusicPlayerLocalization.*;
 import java.net.URI;
 import java.util.function.Function;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
+
 import info.u_team.music_player.lavaplayer.api.audio.*;
 import info.u_team.music_player.musicplayer.MusicPlayerManager;
 import info.u_team.music_player.util.TimeUtil;
@@ -18,14 +20,14 @@ public final class GuiTrackUtils {
 	private static final Minecraft MINECRAFT = Minecraft.getInstance();
 	
 	public static String trimToWith(String string, int width) {
-		String newString = MINECRAFT.fontRenderer.trimStringToWidth(string, width);
+		String newString = MINECRAFT.fontRenderer.func_238412_a_(string, width);
 		if (!newString.equals(string)) {
 			newString += "...";
 		}
 		return newString;
 	}
 	
-	public static void addTrackInfo(IAudioTrack track, int x, int y, int entryWidth, int leftMargin, int titleColor) {
+	public static void addTrackInfo(MatrixStack matrixStack, IAudioTrack track, int x, int y, int entryWidth, int leftMargin, int titleColor) {
 		final int textSize = entryWidth - 150 - leftMargin;
 		
 		final IAudioTrackInfo info = track.getInfo();
@@ -34,9 +36,9 @@ public final class GuiTrackUtils {
 		final String author = trimToWith(info.getFixedAuthor(), textSize);
 		final String duration = getFormattedDuration(track);
 		
-		MINECRAFT.fontRenderer.drawString(title, x + leftMargin, y + 5, titleColor);
-		MINECRAFT.fontRenderer.drawString(author, x + leftMargin + 4, y + 25, 0xD86D1C);
-		MINECRAFT.fontRenderer.drawString(duration, x + entryWidth - 140, y + 15, 0xFFFF00);
+		MINECRAFT.fontRenderer.drawString(matrixStack, title, x + leftMargin, y + 5, titleColor);
+		MINECRAFT.fontRenderer.drawString(matrixStack, author, x + leftMargin + 4, y + 25, 0xD86D1C);
+		MINECRAFT.fontRenderer.drawString(matrixStack, duration, x + entryWidth - 140, y + 15, 0xFFFF00);
 	}
 	
 	public static boolean openURI(String uri) {
