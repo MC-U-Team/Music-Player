@@ -18,12 +18,12 @@ public class Main {
 	}
 	
 	public Main() {
-		IMusicPlayer musicPlayer = new MusicPlayer();
+		final IMusicPlayer musicPlayer = new MusicPlayer();
 		musicPlayer.startAudioOutput();
 		
 		musicPlayer.setVolume(10);
 		
-		ITrackManager manager = musicPlayer.getTrackManager();
+		final ITrackManager manager = musicPlayer.getTrackManager();
 		
 		musicPlayer.getTrackSearch().getTracks("https://www.youtube.com/playlist?list=PLyseegEZ84-drkYTkLldkiIBPHRJd7Xgd", result -> {
 			
@@ -33,9 +33,9 @@ public class Main {
 		});
 		
 		new Thread(() -> {
-			Scanner scanner = new Scanner(System.in);
+			final Scanner scanner = new Scanner(System.in);
 			while (scanner.hasNext()) {
-				String line = scanner.nextLine();
+				final String line = scanner.nextLine();
 				if (line.startsWith("pause")) {
 					manager.setPaused(true);
 				} else if (line.startsWith("unpause")) {
@@ -45,8 +45,11 @@ public class Main {
 				} else if (line.startsWith("stop")) {
 					manager.stop();
 				} else if (line.startsWith("setending")) {
-					IAudioTrack audiotrack = manager.getCurrentTrack();
-					audiotrack.setPosition(audiotrack.getDuration() - 10000);
+					final IAudioTrack audioTrack = manager.getCurrentTrack();
+					audioTrack.setPosition(audioTrack.getDuration() - 10000);
+				} else if (line.startsWith("playing")) {
+					final IAudioTrack audioTrack = manager.getCurrentTrack();
+					System.out.println(audioTrack.getInfo().getAuthor() + " -" + audioTrack.getInfo().getTitle());
 				}
 			}
 			scanner.close();
