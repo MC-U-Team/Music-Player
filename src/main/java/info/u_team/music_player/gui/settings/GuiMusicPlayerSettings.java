@@ -2,6 +2,8 @@ package info.u_team.music_player.gui.settings;
 
 import static info.u_team.music_player.init.MusicPlayerLocalization.*;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
+
 import info.u_team.music_player.gui.*;
 import info.u_team.music_player.gui.controls.GuiControls;
 import info.u_team.music_player.init.MusicPlayerResources;
@@ -81,12 +83,12 @@ public class GuiMusicPlayerSettings extends BetterScreen {
 	}
 	
 	@Override
-	public void render(int mouseX, int mouseY, float partialTicks) {
+	public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
 		renderDirtBackground(0);
-		mixerDeviceList.render(mouseX, mouseY, partialTicks);
-		font.drawString(getTranslation(GUI_SETTINGS_MIXER_DEVICE_SELECTION), 13, 117, 0xFFFFFF);
-		controls.drawScreen(mouseX, mouseY, partialTicks);
-		super.render(mouseX, mouseY, partialTicks);
+		mixerDeviceList.render(matrixStack, mouseX, mouseY, partialTicks);
+		font.drawString(matrixStack, getTranslation(GUI_SETTINGS_MIXER_DEVICE_SELECTION), 13, 117, 0xFFFFFF);
+		controls.drawScreen(matrixStack, mouseX, mouseY, partialTicks);
+		super.render(matrixStack, mouseX, mouseY, partialTicks);
 	}
 	
 }
