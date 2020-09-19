@@ -1,5 +1,7 @@
 package info.u_team.music_player.gui.controls;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
+
 import info.u_team.music_player.gui.util.GuiTrackUtils;
 import info.u_team.music_player.lavaplayer.api.audio.IAudioTrack;
 import info.u_team.music_player.lavaplayer.api.queue.ITrackManager;
@@ -25,8 +27,8 @@ public class GuiMusicProgressBar extends ProgressBar {
 	}
 	
 	@Override
-	public void render(int mouseX, int mouseY, float partialTicks) {
-		super.render(mouseX, mouseY, partialTicks);
+	public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
+		super.render(matrixStack, mouseX, mouseY, partialTicks);
 		
 		positionRender.draw(getX() - positionRender.getTextWidth() - (positionRender.getScale() < 1 ? 3 : 5), getY() - (positionRender.getScale() < 1 ? 1 : 2));
 		durationRender.draw(getX() + getWidth() + (positionRender.getScale() < 1 ? 3 : 5), getY() - (positionRender.getScale() < 1 ? 1 : 2));
