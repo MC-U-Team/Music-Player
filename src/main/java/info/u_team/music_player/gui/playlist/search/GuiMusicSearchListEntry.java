@@ -23,8 +23,8 @@ abstract class GuiMusicSearchListEntry extends BetterScrollableListEntry<GuiMusi
 		addTrackButton.render(matrixStack, mouseX, mouseY, partialTicks);
 	}
 	
-	protected void addTrackInfo(IAudioTrack track, int entryX, int entryY, int entryWidth, int leftMargin, int titleColor) {
-		GuiTrackUtils.addTrackInfo(track, entryX, entryY, entryWidth, leftMargin, titleColor);
+	protected void addTrackInfo(MatrixStack matrixStack, IAudioTrack track, int entryX, int entryY, int entryWidth, int leftMargin, int titleColor) {
+		GuiTrackUtils.addTrackInfo(matrixStack, track, entryX, entryY, entryWidth, leftMargin, titleColor);
 	}
 	
 }
