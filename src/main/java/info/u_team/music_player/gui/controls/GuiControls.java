@@ -4,6 +4,8 @@ import static info.u_team.music_player.init.MusicPlayerLocalization.*;
 
 import java.util.*;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
+
 import info.u_team.music_player.gui.*;
 import info.u_team.music_player.gui.settings.GuiMusicPlayerSettings;
 import info.u_team.music_player.gui.util.GuiTrackUtils;
@@ -17,6 +19,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.*;
 import net.minecraft.client.gui.screen.*;
 import net.minecraft.client.gui.widget.Widget;
+import net.minecraft.util.text.ITextComponent;
 
 public class GuiControls extends FocusableGui implements BetterNestedGui {
 	
@@ -124,7 +127,7 @@ public class GuiControls extends FocusableGui implements BetterNestedGui {
 		
 		// Volume
 		final int volumeY = width - (70 + (isIngame ? 15 * 2 + 3 : (!isSettings ? 15 + 2 : 1)));
-		addButtonNonDisable(new BetterFontSlider(volumeY, 1, 70, 15, getTranslation(GUI_CONTROLS_VOLUME) + ": ", "%", 0, 100, settings.getVolume(), false, true, 0.7F, slider -> {
+		addButtonNonDisable(new BetterFontSlider(volumeY, 1, 70, 15, ITextComponent.func_241827_a_(getTranslation(GUI_CONTROLS_VOLUME) + ": "), ITextComponent.func_241827_a_("%"), 0, 100, settings.getVolume(), false, true, 0.7F, slider -> {
 			settings.setVolume(slider.getValueInt());
 			MusicPlayerManager.getPlayer().setVolume(settings.getVolume());
 		}) {
@@ -170,12 +173,12 @@ public class GuiControls extends FocusableGui implements BetterNestedGui {
 	}
 	
 	@Override
-	public List<? extends IGuiEventListener> children() {
+	public List<? extends IGuiEventListener> getEventListeners() {
 		return children;
 	}
 	
-	public void drawScreen(int mouseX, int mouseY, float partialTicks) {
-		buttons.forEach(button -> button.render(mouseX, mouseY, partialTicks));
+	public void drawScreen(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
+		buttons.forEach(button -> button.render(matrixStack, mouseX, mouseY, partialTicks));
 		songProgress.render(mouseX, mouseY, partialTicks);
 		
 		final int textRenderWidth = middleX - (2 * buttonSize + halfButtonSize + 10) - (small ? 15 : 35);
