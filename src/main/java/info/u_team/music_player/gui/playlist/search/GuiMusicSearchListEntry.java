@@ -1,5 +1,7 @@
 package info.u_team.music_player.gui.playlist.search;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
+
 import info.u_team.music_player.gui.BetterScrollableListEntry;
 import info.u_team.music_player.gui.util.GuiTrackUtils;
 import info.u_team.music_player.init.MusicPlayerResources;
@@ -15,10 +17,10 @@ abstract class GuiMusicSearchListEntry extends BetterScrollableListEntry<GuiMusi
 	}
 	
 	@Override
-	public void render(int slotIndex, int entryY, int entryX, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float partialTicks) {
+	public void render(MatrixStack matrixStack, int slotIndex, int entryY, int entryX, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float partialTicks) {
 		addTrackButton.x = entryWidth - 20;
 		addTrackButton.y = entryY + 8;
-		addTrackButton.render(mouseX, mouseY, partialTicks);
+		addTrackButton.render(matrixStack, mouseX, mouseY, partialTicks);
 	}
 	
 	protected void addTrackInfo(IAudioTrack track, int entryX, int entryY, int entryWidth, int leftMargin, int titleColor) {
