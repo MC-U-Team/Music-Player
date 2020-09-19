@@ -25,9 +25,12 @@ public class Main {
 		
 		final ITrackManager manager = musicPlayer.getTrackManager();
 		
-		musicPlayer.getTrackSearch().getTracks("https://www.youtube.com/playlist?list=PLyseegEZ84-drkYTkLldkiIBPHRJd7Xgd", result -> {
-			
-			manager.setTrackQueue(new TrackQueue(result.getTrackList().getTracks()));
+		musicPlayer.getTrackSearch().getTracks("https://www.youtube.com/watch?v=ScNNfyq3d_w", result -> {
+			if (result.isList()) {
+				manager.setTrackQueue(new TrackQueue(result.getTrackList().getTracks()));
+			} else {
+				manager.setTrackQueue(new TrackQueue(Arrays.asList(result.getTrack())));
+			}
 			log.info("Loaded all tracks -> starting now");
 			manager.start();
 		});
