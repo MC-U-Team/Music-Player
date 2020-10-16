@@ -29,7 +29,7 @@ public class MusicPlayerManager {
 	
 	private static void generatePlayer() {
 		try {
-			Class<?> clazz = Class.forName("info.u_team.music_player.lavaplayer.MusicPlayer", true, DependencyManager.getClassLoader());
+			final Class<?> clazz = Class.forName("info.u_team.music_player.lavaplayer.MusicPlayer", true, DependencyManager.MUSICPLAYER_CLASSLOADER);
 			if (!IMusicPlayer.class.isAssignableFrom(clazz)) {
 				throw new IllegalAccessError("The class " + clazz + " does not implement IMusicPlayer! This should not happen?!");
 			}
