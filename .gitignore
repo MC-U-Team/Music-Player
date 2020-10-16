@@ -16,3 +16,4 @@ gradle.properties
 eclipse
 run
 libs
+logs
