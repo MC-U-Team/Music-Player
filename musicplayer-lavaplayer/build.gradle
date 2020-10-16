@@ -5,33 +5,33 @@ repositories {
 }
 
 task deleteOldDep(type: Delete) {
-    delete fileTree("build/dependencies")
+	delete fileTree("build/dependencies")
 }
 
 task copyNewDep(type: Copy) {
 	tasks.copyNewDep.dependsOn deleteOldDep
 	destinationDir = file("build")
 	into ("dependencies") {
-		from configurations.runtime		
-		exclude "musicplayer-lavaplayer-api.jar"	
+		from configurations.runtime
+		exclude "musicplayer-lavaplayer-api.jar"
 	}
 }
 
 tasks.build.dependsOn copyNewDep
 
 jar {
-	exclude("LICENSE-DEPENDENCIES")  
+	exclude("LICENSE-DEPENDENCIES")
 }
 
 sourceSets {
-   	main {
+	main {
 		java
 		resources
-   	}
-   	test {
-   		java
-   		resources
-   	}
+	}
+	test {
+		java
+		resources
+	}
 }
 
 dependencies {
