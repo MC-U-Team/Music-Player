@@ -42,7 +42,7 @@ public final class GuiTrackUtils {
 	}
 	
 	public static boolean openURI(String uri) {
-		Style style = ITextComponent.func_244388_a(null).getStyle();
+		Style style = ITextComponent.getTextComponentOrEmpty(null).getStyle();
 		try {
 			new URI(uri);
 			style = style.setClickEvent(new ClickEvent(Action.OPEN_URL, uri));
