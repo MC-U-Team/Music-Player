@@ -38,7 +38,8 @@ sourceSets {
 }
 
 dependencies {
-	compile "com.sedmelluq:lavaplayer:1.3.50"
+	//compile "com.sedmelluq:lavaplayer:1.3.50" We use the fork for now as it fixes some youtube bugs
+	compile "com.github.Devoxin:lavaplayer:1.3.53"
 	compile "org.slf4j:slf4j-simple:1.7.25"
 	compile project(":musicplayer-lavaplayer-api")
 }
