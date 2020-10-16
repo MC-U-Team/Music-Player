@@ -161,7 +161,7 @@ dependencies {
 	minecraft getForgeDependency()
 	compile getUTeamCoreDependency()
 	compile project(":musicplayer-lavaplayer-api")
-	internal ("org.slf4j:slf4j-simple:1.7.26")
+	internal ("org.slf4j:slf4j-simple:1.7.30")
 	internal ("net.harawata:appdirs:1.0.0") {
 		transitive=false
 	}
