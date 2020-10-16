@@ -4,12 +4,13 @@ import java.io.IOException;
 import java.lang.reflect.*;
 import java.net.*;
 import java.nio.file.*;
-import java.util.function.Consumer;
+import java.util.function.*;
 import java.util.stream.Stream;
 
 import org.apache.logging.log4j.*;
 
 import cpw.mods.modlauncher.TransformingClassLoader;
+import cpw.mods.modlauncher.api.LamdbaExceptionUtils;
 import info.u_team.music_player.MusicPlayerMod;
 import info.u_team.music_player.dependency.classloader.DependencyClassLoader;
 import net.minecraftforge.fml.ModList;
@@ -27,14 +28,18 @@ public class DependencyManager {
 		
 		final String devPath = System.getProperty("musicplayer.dev");
 		if (devPath != null) {
-			findJarFilesInDev(Paths.get(devPath, "musicplayer-lavaplayer/build/libs"), DependencyManager::addToMusicPlayerDependencies);
-			findJarFilesInDev(Paths.get(devPath, "musicplayer-lavaplayer/build/dependencies"), DependencyManager::addToMusicPlayerDependencies);
+			findJarFilesInDev(Paths.get(devPath, "musicplayer-lavaplayer/build/libs"), path -> addToMusicPlayerDependencies(pathToUrl().apply(path)));
+			findJarFilesInDev(Paths.get(devPath, "musicplayer-lavaplayer/build/dependencies"), path -> addToMusicPlayerDependencies(pathToUrl().apply(path)));
 		} else {
 			findJarFilesInJar("dependencies/internal", path -> addToInternalDependencies(createInternalURL(path)));
 			findJarFilesInJar("dependencies/musicplayer", path -> addToMusicPlayerDependencies(createInternalURL(path)));
 		}
 		
 		LOGGER.info(MARKER, "Finished loading dependencies");
+	}
+	
+	private static Function<Path, URL> pathToUrl() {
+		return LamdbaExceptionUtils.rethrowFunction(path -> path.toUri().toURL());
 	}
 	
 	public static DependencyClassLoader getClassLoader() {
@@ -73,10 +78,6 @@ public class DependencyManager {
 	
 	private static void addToMusicPlayerDependencies(URL url) {
 		MUSICPLAYER_CLASSLOADER.addURL(url);
-	}
-	
-	private static void addToMusicPlayerDependencies(Path path) {
-		MUSICPLAYER_CLASSLOADER.addPath(path);
 	}
 	
 	private static void addToInternalDependencies(URL url) {
