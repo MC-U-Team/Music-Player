@@ -62,11 +62,11 @@ public class DependencyManager {
 	
 	private static URL createInternalURL(Path path) {
 		final String url = "modjar://" + MusicPlayerMod.MODID + path;
-		LOGGER.debug(MARKER_LOAD, "Load url" + url);
+		LOGGER.debug(MARKER_LOAD, "Create mod jar url ({}) from path ({}).", url, path);
 		try {
 			return new URL(url);
 		} catch (final MalformedURLException ex) {
-			LOGGER.error(MARKER_LOAD, "Could not create url from internal path", ex);
+			LOGGER.error(MARKER_LOAD, "Could not create url from internal path.", ex);
 		}
 		return null;
 	}
@@ -88,7 +88,7 @@ public class DependencyManager {
 			method.invoke(delegatedUrlClassLoader, url);
 			LOGGER.debug(MARKER_ADD, "Added new jar file ({}) to the transforming / delegated classloader.", url);
 		} catch (final Exception ex) {
-			LOGGER.error(MARKER_LOAD, "Method addURL on transforming / delegated classloader could not be invoked", ex);
+			LOGGER.error(MARKER_LOAD, "Method addURL on transforming / delegated classloader could not be invoked.", ex);
 		}
 	}
 }
