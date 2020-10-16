@@ -88,7 +88,7 @@ public class DependencyManager {
 			method.setAccessible(true);
 			method.invoke(delegatedUrlClassLoader, url);
 		} catch (final Exception ex) {
-			LOGGER.error(MARKER, "Method addURL on delegated classloader could not be invoked", ex);
+			LOGGER.error(MARKER, "Method addURL on transforming / delegated classloader could not be invoked", ex);
 		}
 	}
 }
