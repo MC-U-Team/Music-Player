@@ -1,14 +1,14 @@
 buildscript {
-    repositories {
-        maven { url = "https://files.minecraftforge.net/maven" }
+	repositories {
+		maven { url = "https://files.minecraftforge.net/maven" }
 		maven { url = "https://plugins.gradle.org/m2/" }
-        jcenter()
-        mavenCentral()
-    }
-    dependencies {
-        classpath group: "net.minecraftforge.gradle", name: "ForgeGradle", version: "3.+", changing: true
+		jcenter()
+		mavenCentral()
+	}
+	dependencies {
+		classpath group: "net.minecraftforge.gradle", name: "ForgeGradle", version: "3.+", changing: true
 		classpath "gradle.plugin.com.matthewprenger:CurseGradle:1.4.0"
-    }
+	}
 }
 
 apply from: "https://gradle-files.u-team.info/default-project.gradle"
@@ -25,114 +25,114 @@ version = generateVersion()
 sourceCompatibility = targetCompatibility = "1.8"
 
 minecraft {
-    mappings channel: config.forge.mapping_channel, version: config.forge.mapping
-    accessTransformer = file("$rootDir/src/main/resources/META-INF/accesstransformer.cfg")
-    
-    runs {
-        client = {
-            workingDirectory project.file("run/client").canonicalPath
-            
-            property "musicplayer.dev", "${project.rootDir}"
-            
-            mods {
-                "${config.mod.modid}" {
-                    source sourceSets.main
+	mappings channel: config.forge.mapping_channel, version: config.forge.mapping
+	accessTransformer = file("$rootDir/src/main/resources/META-INF/accesstransformer.cfg")
+	
+	runs {
+		client = {
+			workingDirectory project.file("run/client").canonicalPath
+			
+			property "musicplayer.dev", "${project.rootDir}"
+			
+			mods {
+				"${config.mod.modid}" {
+					source sourceSets.main
 				}
 			}
-        }
-        server = {
-            workingDirectory project.file("run/server").canonicalPath
-            mods {
-                "${config.mod.modid}" {
-                    source sourceSets.main
+		}
+		server = {
+			workingDirectory project.file("run/server").canonicalPath
+			mods {
+				"${config.mod.modid}" {
+					source sourceSets.main
 				}
 			}
-        }
-        data = {
-            workingDirectory project.file("run/data").canonicalPath
-            args "--mod", config.mod.modid, "--all", "--output", "\"" + file("src/generated/resources").toString() + "\"", "--validate", "--existing", "\"" + sourceSets.main.resources.srcDirs[0] + "\""
-            
-            property "musicplayer.dev", "${project.rootDir}"
-            
-            mods {
-                "${config.mod.modid}" {
-                    source sourceSets.main
+		}
+		data = {
+			workingDirectory project.file("run/data").canonicalPath
+			args "--mod", config.mod.modid, "--all", "--output", "\"" + file("src/generated/resources").toString() + "\"", "--validate", "--existing", "\"" + sourceSets.main.resources.srcDirs[0] + "\""
+			
+			property "musicplayer.dev", "${project.rootDir}"
+			
+			mods {
+				"${config.mod.modid}" {
+					source sourceSets.main
 				}
 			}
-        }
-    }
+		}
+	}
 }
 
 configurations {
-    internal
-    compile.extendsFrom(internal)
+	internal
+	compile.extendsFrom(internal)
 }
 
 jar {
 	classifier = ""
-
-    from "LICENSE"
+	
+	from "LICENSE"
 	from "musicplayer-lavaplayer/src/main/resources/LICENSE-DEPENDENCIES"
 	
 	jar.dependsOn ":musicplayer-lavaplayer-api:build"
-    jar.dependsOn ":musicplayer-lavaplayer:build"
-	    
+	jar.dependsOn ":musicplayer-lavaplayer:build"
+	
 	from "musicplayer-lavaplayer-api/build/classes/java/main"
 	
-    into ("dependencies/musicplayer") {
+	into ("dependencies/musicplayer") {
 		from "musicplayer-lavaplayer/build/libs/musicplayer-lavaplayer.jar"
-		from "musicplayer-lavaplayer/build/dependencies"	
+		from "musicplayer-lavaplayer/build/dependencies"
 	}
 	
 	into ("dependencies/internal") {
-		from configurations.internal		
+		from configurations.internal
 	}
 	
-	exclude(".cache")  
+	exclude(".cache")
 	
-   	manifest normalManifest
+	manifest normalManifest
 }
 
 task deobfJar(type: Jar) {
 	classifier = "dev"
-
-    from sourceSets.main.output
-    from "LICENSE"
+	
+	from sourceSets.main.output
+	from "LICENSE"
 	from "musicplayer-lavaplayer/src/main/resources/LICENSE-DEPENDENCIES"
 	
 	deobfJar.dependsOn ":musicplayer-lavaplayer-api:build"
-    deobfJar.dependsOn ":musicplayer-lavaplayer:build"
-	    
+	deobfJar.dependsOn ":musicplayer-lavaplayer:build"
+	
 	from "musicplayer-lavaplayer-api/build/classes/java/main"
 	
-    into ("dependencies/musicplayer") {
+	into ("dependencies/musicplayer") {
 		from "musicplayer-lavaplayer/build/libs/musicplayer-lavaplayer.jar"
-		from "musicplayer-lavaplayer/build/dependencies"	
+		from "musicplayer-lavaplayer/build/dependencies"
 	}
 	
 	into ("dependencies/internal") {
-		from configurations.internal		
+		from configurations.internal
 	}
 	
-	exclude(".cache")  
-
-    manifest normalManifest
+	exclude(".cache")
+	
+	manifest normalManifest
 }
 
 task sourcesJar(type: Jar) {
-    classifier = "sources"
-    
-    from sourceSets.main.allJava
-    from "LICENSE"
+	classifier = "sources"
+	
+	from sourceSets.main.allJava
+	from "LICENSE"
 }
 
 task docJar(type: Jar) {
-    classifier = "javadoc"
-    
-    from javadoc
-    from "LICENSE"
-    
-    tasks.withType(Javadoc) {
+	classifier = "javadoc"
+	
+	from javadoc
+	from "LICENSE"
+	
+	tasks.withType(Javadoc) {
 		options.addStringOption('Xdoclint:none', '-quiet')
 		options.addStringOption('encoding', 'UTF-8')
 		options.addStringOption('charSet', 'UTF-8')
@@ -140,10 +140,10 @@ task docJar(type: Jar) {
 }
 
 artifacts {
-    archives deobfJar
-    archives sourcesJar
-    archives docJar
-    archives jar
+	archives deobfJar
+	archives sourcesJar
+	archives docJar
+	archives jar
 }
 
 signAllJars()
@@ -158,8 +158,8 @@ sourceSets {
 }
 
 dependencies {
-    minecraft getForgeDependency()
-    compile getUTeamCoreDependency()
+	minecraft getForgeDependency()
+	compile getUTeamCoreDependency()
 	compile project(":musicplayer-lavaplayer-api")
 	internal ("org.slf4j:slf4j-simple:1.7.26")
 	internal ("net.harawata:appdirs:1.0.0") {
@@ -178,42 +178,42 @@ curseforge {
 	
 	apiKey = getValueDefault("token")
 	
-  	project {
-    	id = config.curse.id
-    	releaseType = config.curse.type
-
+	project {
+		id = config.curse.id
+		releaseType = config.curse.type
+		
 		addGameVersion config.forge.mcversion
 		
 		options {
-		    forgeGradleIntegration = false
+			forgeGradleIntegration = false
 		}
 		
 		relations {
-      		requiredDependency "u-team-core"
-      		optionalDependency "voice-chat"
-    	}
-
-    	mainArtifact(jar) {
-      		displayName = "${config.curse.display}-${config.forge.mcversion}-${project.version}"
-      		changelogType = "html"
-      		changelog = "<a href=\"" + generateChangelogUrl() + "\">Changelog of ${project.version}</a>"
-    	}
-    	
-    	addArtifact(deobfJar) {
-    		displayName = "${config.curse.display}-${config.forge.mcversion}-${project.version}-dev"
-    		changelogType = "text"
-    		changelog = "Mappings: ${config.forge.mapping_channel}_${config.forge.mapping}"
-    	}
-  	}
+			requiredDependency "u-team-core"
+			optionalDependency "voice-chat"
+		}
+		
+		mainArtifact(jar) {
+			displayName = "${config.curse.display}-${config.forge.mcversion}-${project.version}"
+			changelogType = "html"
+			changelog = "<a href=\"" + generateChangelogUrl() + "\">Changelog of ${project.version}</a>"
+		}
+		
+		addArtifact(deobfJar) {
+			displayName = "${config.curse.display}-${config.forge.mcversion}-${project.version}-dev"
+			changelogType = "text"
+			changelog = "Mappings: ${config.forge.mapping_channel}_${config.forge.mapping}"
+		}
+	}
 }
 
 uploadArchives {
 	onlyIf {
 		getValue("mavenpass") != null
 	}
-
+	
 	tasks.uploadArchives.dependsOn build
-
+	
 	repositories {
 		mavenDeployer {
 			repository(url: "https://repo.u-team.info") {
@@ -244,7 +244,7 @@ uploadArchives {
 							distribution "repo"
 						}
 					}
-
+					
 					developers {
 						developer {
 							name "HyCraftHD"
