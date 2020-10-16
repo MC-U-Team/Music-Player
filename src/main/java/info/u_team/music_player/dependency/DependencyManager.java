@@ -22,7 +22,7 @@ public class DependencyManager {
 	private static final Marker MARKER_LOAD = MarkerManager.getMarker("Load");
 	private static final Marker MARKER_ADD = MarkerManager.getMarker("Add");
 	
-	private static final DependencyClassLoader MUSICPLAYER_CLASSLOADER = new DependencyClassLoader();
+	public static final DependencyClassLoader MUSICPLAYER_CLASSLOADER = new DependencyClassLoader();
 	
 	public static void construct() {
 		LOGGER.info(MARKER_LOAD, "Load dependencies");
@@ -41,10 +41,6 @@ public class DependencyManager {
 	
 	private static Function<Path, URL> pathToUrl() {
 		return LamdbaExceptionUtils.rethrowFunction(path -> path.toUri().toURL());
-	}
-	
-	public static DependencyClassLoader getClassLoader() {
-		return MUSICPLAYER_CLASSLOADER;
 	}
 	
 	private static void findJarFilesInDev(Path path, Consumer<Path> consumer) {
