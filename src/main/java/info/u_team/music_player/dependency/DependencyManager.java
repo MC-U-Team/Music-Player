@@ -88,7 +88,7 @@ public class DependencyManager {
 			final URLClassLoader delegatedUrlClassLoader = (URLClassLoader) field.get(Thread.currentThread().getContextClassLoader());
 			final Method method = URLClassLoader.class.getDeclaredMethod("addURL", URL.class);
 			final Lookup lookup = MethodHandles.lookup();
-			UnsafeHacks.setIntField(Lookup.class.getDeclaredField("allowedModes"), lookup, -1);
+			UnsafeHacks.setIntField(Lookup.class.getDeclaredField("allowedModes"), lookup, -1); // This is a hack to change our lookup to trusted
 			final MethodHandle methodHandle = lookup.unreflectSpecial(method, URLClassLoader.class);
 			methodHandle.invoke(delegatedUrlClassLoader, url);
 			LOGGER.debug(MARKER_ADD, "Added new jar file ({}) to the transforming / delegated classloader.", url);
