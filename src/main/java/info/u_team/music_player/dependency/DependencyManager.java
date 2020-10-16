@@ -1,7 +1,7 @@
 package info.u_team.music_player.dependency;
 
 import java.io.IOException;
-import java.lang.reflect.Method;
+import java.lang.reflect.*;
 import java.net.*;
 import java.nio.file.*;
 import java.util.function.Consumer;
@@ -9,6 +9,7 @@ import java.util.stream.Stream;
 
 import org.apache.logging.log4j.*;
 
+import cpw.mods.modlauncher.TransformingClassLoader;
 import info.u_team.music_player.MusicPlayerMod;
 import info.u_team.music_player.dependency.classloader.DependencyClassLoader;
 import net.minecraftforge.fml.ModList;
@@ -80,12 +81,14 @@ public class DependencyManager {
 	
 	private static void addToInternalDependencies(URL url) {
 		try {
-			final URLClassLoader systemClassLoader = (URLClassLoader) ClassLoader.getSystemClassLoader();
+			final Field field = TransformingClassLoader.class.getDeclaredField("delegatedClassLoader");
+			field.setAccessible(true);
+			final URLClassLoader delegatedUrlClassLoader = (URLClassLoader) field.get(Thread.currentThread().getContextClassLoader());
 			final Method method = URLClassLoader.class.getDeclaredMethod("addURL", URL.class);
 			method.setAccessible(true);
-			method.invoke(systemClassLoader, url);
-		} catch (Exception ex) {
-			LOGGER.error(MARKER, "Method addURL on system classloader could not be invoked", ex);
+			method.invoke(delegatedUrlClassLoader, url);
+		} catch (final Exception ex) {
+			LOGGER.error(MARKER, "Method addURL on delegated classloader could not be invoked", ex);
 		}
 	}
 }
