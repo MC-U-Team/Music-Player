@@ -19,12 +19,13 @@ import net.minecraftforge.fml.loading.moddiscovery.ModFile;
 public class DependencyManager {
 	
 	private static final Logger LOGGER = LogManager.getLogger();
-	private static final Marker MARKER = MarkerManager.getMarker("Load");
+	private static final Marker MARKER_LOAD = MarkerManager.getMarker("Load");
+	private static final Marker MARKER_ADD = MarkerManager.getMarker("Add");
 	
 	private static final DependencyClassLoader MUSICPLAYER_CLASSLOADER = new DependencyClassLoader();
 	
 	public static void construct() {
-		LOGGER.info(MARKER, "Load dependencies");
+		LOGGER.info(MARKER_LOAD, "Load dependencies");
 		
 		final String devPath = System.getProperty("musicplayer.dev");
 		if (devPath != null) {
@@ -35,7 +36,7 @@ public class DependencyManager {
 			findJarFilesInJar("dependencies/musicplayer", path -> addToMusicPlayerDependencies(createInternalURL(path)));
 		}
 		
-		LOGGER.info(MARKER, "Finished loading dependencies");
+		LOGGER.info(MARKER_LOAD, "Finished loading dependencies");
 	}
 	
 	private static Function<Path, URL> pathToUrl() {
@@ -50,7 +51,7 @@ public class DependencyManager {
 		try (Stream<Path> stream = Files.walk(path)) {
 			stream.filter(file -> file.toString().endsWith(".jar")).forEach(consumer);
 		} catch (final IOException ex) {
-			LOGGER.error(MARKER, "When searching for jar files in dev an exception occured.", ex);
+			LOGGER.error(MARKER_LOAD, "When searching for jar files in dev an exception occured.", ex);
 		}
 	}
 	
@@ -59,17 +60,17 @@ public class DependencyManager {
 		try (Stream<Path> stream = Files.walk(modfile.findResource("/" + folder))) {
 			stream.filter(file -> file.toString().endsWith(".jar")).forEach(consumer);
 		} catch (final IOException ex) {
-			LOGGER.error(MARKER, "When searching for jar files in jar an exception occured.", ex);
+			LOGGER.error(MARKER_LOAD, "When searching for jar files in jar an exception occured.", ex);
 		}
 	}
 	
 	private static URL createInternalURL(Path path) {
 		final String url = "modjar://" + MusicPlayerMod.MODID + path;
-		LOGGER.debug(MARKER, "Load url" + url);
+		LOGGER.debug(MARKER_LOAD, "Load url" + url);
 		try {
 			return new URL(url);
 		} catch (final MalformedURLException ex) {
-			LOGGER.error(MARKER, "Could not create url from internal path", ex);
+			LOGGER.error(MARKER_LOAD, "Could not create url from internal path", ex);
 		}
 		return null;
 	}
@@ -78,6 +79,7 @@ public class DependencyManager {
 	
 	private static void addToMusicPlayerDependencies(URL url) {
 		MUSICPLAYER_CLASSLOADER.addURL(url);
+		LOGGER.debug(MARKER_ADD, "Added new jar file ({}) to the musicplayer dependency classloader.", url);
 	}
 	
 	private static void addToInternalDependencies(URL url) {
@@ -88,8 +90,9 @@ public class DependencyManager {
 			final Method method = URLClassLoader.class.getDeclaredMethod("addURL", URL.class);
 			method.setAccessible(true);
 			method.invoke(delegatedUrlClassLoader, url);
+			LOGGER.debug(MARKER_ADD, "Added new jar file ({}) to the transforming / delegated classloader.", url);
 		} catch (final Exception ex) {
-			LOGGER.error(MARKER, "Method addURL on transforming / delegated classloader could not be invoked", ex);
+			LOGGER.error(MARKER_LOAD, "Method addURL on transforming / delegated classloader could not be invoked", ex);
 		}
 	}
 }
