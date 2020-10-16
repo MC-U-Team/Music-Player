@@ -50,7 +50,7 @@ public class GuiMusicSearch extends BetterScreen {
 		final ImageButton backButton = addButton(new ImageButton(1, 1, 15, 15, MusicPlayerResources.TEXTURE_BACK));
 		backButton.setPressable(() -> minecraft.displayGuiScreen(new GuiMusicPlaylist(playlist)));
 		
-		urlField = new TextFieldWidget(font, 10, 35, width / 2 - 10, 20, ITextComponent.func_244388_a("")) {
+		urlField = new TextFieldWidget(font, 10, 35, width / 2 - 10, 20, ITextComponent.getTextComponentOrEmpty("")) {
 			
 			@Override
 			public boolean keyPressed(int key, int p_keyPressed_2_, int p_keyPressed_3_) {
@@ -61,7 +61,7 @@ public class GuiMusicSearch extends BetterScreen {
 		urlField.setMaxStringLength(10000);
 		children.add(urlField);
 		
-		final UButton openFileButton = addButton(new UButton(width / 2 + 10, 34, width / 4 - 15, 22, ITextComponent.func_244388_a(getTranslation(GUI_SEARCH_LOAD_FILE))));
+		final UButton openFileButton = addButton(new UButton(width / 2 + 10, 34, width / 4 - 15, 22, ITextComponent.getTextComponentOrEmpty(getTranslation(GUI_SEARCH_LOAD_FILE))));
 		openFileButton.setPressable(() -> {
 			final String response = TinyFileDialogs.tinyfd_openFileDialog(getTranslation(GUI_SEARCH_LOAD_FILE), null, null, getTranslation(GUI_SEARCH_MUSIC_FILES), false);
 			if (response != null) {
@@ -70,7 +70,7 @@ public class GuiMusicSearch extends BetterScreen {
 			}
 		});
 		
-		final UButton openFolderButton = addButton(new UButton((int) (width * 0.75) + 5, 34, width / 4 - 15, 22, ITextComponent.func_244388_a(getTranslation(GUI_SEARCH_LOAD_FOLDER))));
+		final UButton openFolderButton = addButton(new UButton((int) (width * 0.75) + 5, 34, width / 4 - 15, 22, ITextComponent.getTextComponentOrEmpty(getTranslation(GUI_SEARCH_LOAD_FOLDER))));
 		openFolderButton.setPressable(() -> {
 			final String response = TinyFileDialogs.tinyfd_selectFolderDialog(getTranslation(GUI_SEARCH_LOAD_FOLDER), System.getProperty("user.home"));
 			if (response != null) {
@@ -89,7 +89,7 @@ public class GuiMusicSearch extends BetterScreen {
 			searchButton.setResource(searchProvider.getLogo());
 		});
 		
-		searchField = new TextFieldWidget(font, 40, 78, width - 51, 20, ITextComponent.func_244388_a("")) {
+		searchField = new TextFieldWidget(font, 40, 78, width - 51, 20, ITextComponent.getTextComponentOrEmpty("")) {
 			
 			@Override
 			public boolean keyPressed(int key, int p_keyPressed_2_, int p_keyPressed_3_) {
@@ -109,7 +109,7 @@ public class GuiMusicSearch extends BetterScreen {
 		setListener(searchField);
 		children.add(searchField);
 		
-		final UButton addAllButton = addButton(new UButton(width - 110, 105, 100, 20, ITextComponent.func_244388_a(getTranslation(GUI_SEARCH_ADD_ALL))));
+		final UButton addAllButton = addButton(new UButton(width - 110, 105, 100, 20, ITextComponent.getTextComponentOrEmpty(getTranslation(GUI_SEARCH_ADD_ALL))));
 		addAllButton.setPressable(() -> {
 			final List<GuiMusicSearchListEntryPlaylist> list = searchList.getEventListeners().stream().filter(entry -> entry instanceof GuiMusicSearchListEntryPlaylist).map(entry -> (GuiMusicSearchListEntryPlaylist) entry).collect(Collectors.toList());
 			if (list.size() > 0) {
