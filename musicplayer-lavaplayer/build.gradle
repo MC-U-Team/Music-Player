@@ -2,6 +2,9 @@ apply plugin: "java"
 
 repositories {
 	jcenter()
+	maven {
+		url "https://jitpack.io"
+	}
 }
 
 task deleteOldDep(type: Delete) {
