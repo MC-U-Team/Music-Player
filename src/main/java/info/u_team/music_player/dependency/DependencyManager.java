@@ -1,6 +1,8 @@
 package info.u_team.music_player.dependency;
 
 import java.io.IOException;
+import java.lang.invoke.*;
+import java.lang.invoke.MethodHandles.Lookup;
 import java.lang.reflect.*;
 import java.net.*;
 import java.nio.file.*;
@@ -15,6 +17,7 @@ import info.u_team.music_player.MusicPlayerMod;
 import info.u_team.music_player.dependency.classloader.DependencyClassLoader;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.loading.moddiscovery.ModFile;
+import net.minecraftforge.fml.unsafe.UnsafeHacks;
 
 public class DependencyManager {
 	
@@ -84,10 +87,12 @@ public class DependencyManager {
 			field.setAccessible(true);
 			final URLClassLoader delegatedUrlClassLoader = (URLClassLoader) field.get(Thread.currentThread().getContextClassLoader());
 			final Method method = URLClassLoader.class.getDeclaredMethod("addURL", URL.class);
-			method.setAccessible(true);
-			method.invoke(delegatedUrlClassLoader, url);
+			final Lookup lookup = MethodHandles.lookup();
+			UnsafeHacks.setIntField(Lookup.class.getDeclaredField("allowedModes"), lookup, -1);
+			final MethodHandle methodHandle = lookup.unreflectSpecial(method, URLClassLoader.class);
+			methodHandle.invoke(delegatedUrlClassLoader, url);
 			LOGGER.debug(MARKER_ADD, "Added new jar file ({}) to the transforming / delegated classloader.", url);
-		} catch (final Exception ex) {
+		} catch (final Throwable ex) {
 			LOGGER.error(MARKER_LOAD, "Method addURL on transforming / delegated classloader could not be invoked.", ex);
 		}
 	}
