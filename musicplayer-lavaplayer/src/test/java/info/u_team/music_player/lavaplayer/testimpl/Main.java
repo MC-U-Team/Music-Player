@@ -65,6 +65,7 @@ public class Main {
 		private final List<IAudioTrack> tracks;
 		
 		public TrackQueue(List<IAudioTrack> tracks) {
+			System.out.println("Init track queue with " + tracks.size() + " tracks.");
 			this.tracks = tracks;
 		}
 		
