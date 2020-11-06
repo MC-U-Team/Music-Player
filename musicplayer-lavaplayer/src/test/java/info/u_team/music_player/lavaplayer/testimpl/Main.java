@@ -62,6 +62,8 @@ public class Main {
 	
 	private class TrackQueue implements ITrackQueue {
 		
+		private final Random random = new Random();
+		
 		private final List<IAudioTrack> tracks;
 		
 		public TrackQueue(List<IAudioTrack> tracks) {
@@ -76,7 +78,7 @@ public class Main {
 		
 		@Override
 		public IAudioTrack getNext() {
-			return tracks.get(new Random().nextInt(tracks.size()));
+			return tracks.get(random.nextInt(tracks.size()));
 		}
 		
 	}
