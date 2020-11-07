@@ -173,7 +173,7 @@ dependencies {
 	internal ("org.lwjgl:lwjgl-tinyfd:3.1.6:natives-windows") {
 		transitive=false
 	}
-	internal ("org.slf4j:slf4j-simple:1.7.26")
+	internal ("org.slf4j:slf4j-simple:1.7.30")
 	internal ("net.harawata:appdirs:1.0.0") {
 		transitive=false
 	}
