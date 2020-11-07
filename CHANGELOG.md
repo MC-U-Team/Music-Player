@@ -1,6 +1,10 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [1.15.2-2.2.1.99] - 2020-11-07
+### Changed
+ - Update lavaplayer to 1.3.58
+
 ## [1.15.2-2.2.1.94] - 2020-10-17
 ### Changed
  - Update lavaplayer to 1.3.58 (unofficial fork of Devoxin) to fix some youtube issues
