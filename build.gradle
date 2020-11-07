@@ -174,7 +174,7 @@ dependencies {
 	compile "info.u-team:u_team_core-${config.forge.mcversion}:${config.uteamcore.version}:dev"
 	compile project(":musicplayer-lavaplayer-api")
 	
-	internal ("org.lwjgl:lwjgl-tinyfd:3.2.2") {
+	internal ("org.lwjgl:lwjgl-tinyfd:3.2.3") {
 		transitive=false
 	}
 	internal ("org.lwjgl:lwjgl-tinyfd:3.2.2:natives-linux") {
