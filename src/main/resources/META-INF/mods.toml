@@ -24,7 +24,7 @@ authors="HyCraftHD"
 	[[dependencies.musicplayer]]
 	    modId="minecraft"
 	    mandatory=true
-	    versionRange="[1.16.3]"
+	    versionRange="[1.16.4]"
 	    ordering="NONE"
 	    side="BOTH"
 	    
