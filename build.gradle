@@ -185,6 +185,7 @@ curseforge {
 		releaseType = config.curse.type
 		
 		addGameVersion config.forge.mcversion
+		addGameVersion "Forge"
 		
 		options {
 			forgeGradleIntegration = false
