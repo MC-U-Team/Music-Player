@@ -1,6 +1,10 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [1.14.4-2.1.1.109] - 2020-11-23
+### Changed
+ - Update lavaplayer to 1.3.61
+
 ## [1.14.4-2.1.1.103] - 2020-11-08
 ### Changed
  - Update lavaplayer to 1.3.59
