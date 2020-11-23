@@ -118,8 +118,8 @@ task deobfJar(type: Jar) {
     from "LICENSE"
 	from "LICENSE-DEPENDENCIES"
 	
-	jar.dependsOn ":musicplayer-lavaplayer-api:build"
-    jar.dependsOn ":musicplayer-lavaplayer:build"
+	deobfJar.dependsOn ":musicplayer-lavaplayer-api:build"
+    deobfJar.dependsOn ":musicplayer-lavaplayer:build"
 	    
 	from "musicplayer-lavaplayer-api/build/classes/java/main"
 	
