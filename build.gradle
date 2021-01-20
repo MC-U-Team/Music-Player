@@ -6,7 +6,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath "net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT"
+        classpath "net.minecraftforge.gradle:ForgeGradle:4.0.7"
 		classpath "gradle.plugin.com.matthewprenger:CurseGradle:1.1.2"
     }
 }
