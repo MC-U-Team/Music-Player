@@ -8,6 +8,7 @@ buildscript {
 	dependencies {
 		classpath group: "net.minecraftforge.gradle", name: "ForgeGradle", version: "3.+", changing: true
 		classpath "gradle.plugin.com.matthewprenger:CurseGradle:1.4.0"
+		classpath group: "com.github.jengelman.gradle.plugins", name: "shadow", version: "4.0.4"
 	}
 }
 
@@ -17,6 +18,7 @@ apply plugin: "net.minecraftforge.gradle"
 apply plugin: "eclipse"
 apply plugin: "com.matthewprenger.cursegradle"
 apply plugin: "maven"
+apply plugin: "com.github.johnrengelman.shadow"
 
 group = "info.u-team"
 archivesBaseName = generateArchivesBaseName()
@@ -64,59 +66,70 @@ minecraft {
 }
 
 configurations {
-	internal
-	compile.extendsFrom(internal)
+	shade
+	compile.extendsFrom(shade)
 }
 
-jar {
+import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
+
+task normalJar(type: ShadowJar) {
 	classifier = ""
 	
-	from "LICENSE"
-	from "musicplayer-lavaplayer/src/main/resources/LICENSE-DEPENDENCIES"
-	
-	jar.dependsOn ":musicplayer-lavaplayer-api:build"
-	jar.dependsOn ":musicplayer-lavaplayer:build"
-	
-	from "musicplayer-lavaplayer-api/build/classes/java/main"
-	
-	into ("dependencies/musicplayer") {
-		from "musicplayer-lavaplayer/build/libs/musicplayer-lavaplayer.jar"
-		from "musicplayer-lavaplayer/build/dependencies"
-	}
-	
-	into ("dependencies/internal") {
-		from configurations.internal
-	}
-	
-	exclude(".cache")
-	
-	manifest normalManifest
-}
-
-task deobfJar(type: Jar) {
-	classifier = "dev"
+	configurations = [project.configurations.shade]
 	
 	from sourceSets.main.output
+	
 	from "LICENSE"
 	from "musicplayer-lavaplayer/src/main/resources/LICENSE-DEPENDENCIES"
 	
-	deobfJar.dependsOn ":musicplayer-lavaplayer-api:build"
-	deobfJar.dependsOn ":musicplayer-lavaplayer:build"
+	normalJar.dependsOn ":musicplayer-lavaplayer-api:build"
+	normalJar.dependsOn ":musicplayer-lavaplayer:build"
 	
 	from "musicplayer-lavaplayer-api/build/classes/java/main"
 	
-	into ("dependencies/musicplayer") {
-		from "musicplayer-lavaplayer/build/libs/musicplayer-lavaplayer.jar"
+	into ("dependencies") {
+		from "musicplayer-lavaplayer/build/libs/musicplayer-lavaplayer.jar.packed"
 		from "musicplayer-lavaplayer/build/dependencies"
-	}
-	
-	into ("dependencies/internal") {
-		from configurations.internal
 	}
 	
 	exclude(".cache")
 	
 	manifest normalManifest
+	
+	relocate "org.slf4j", "info.u_team.music_player.shade.org.slf4j"
+	relocate "net.harawata.appdirs", "info.u_team.music_player.shade.net.harawata.appdirs"
+	
+	exclude "META-INF/maven/**"
+}
+
+task deobfJar(type: ShadowJar) {
+	classifier = "dev"
+	
+	configurations = [project.configurations.shade]
+	
+	from sourceSets.main.output
+	
+	from "LICENSE"
+	from "musicplayer-lavaplayer/src/main/resources/LICENSE-DEPENDENCIES"
+	
+	normalJar.dependsOn ":musicplayer-lavaplayer-api:build"
+	normalJar.dependsOn ":musicplayer-lavaplayer:build"
+	
+	from "musicplayer-lavaplayer-api/build/classes/java/main"
+	
+	into ("dependencies") {
+		from "musicplayer-lavaplayer/build/libs/musicplayer-lavaplayer.jar.packed"
+		from "musicplayer-lavaplayer/build/dependencies"
+	}
+	
+	exclude(".cache")
+	
+	manifest normalManifest
+	
+	relocate "org.slf4j", "info.u_team.music_player.shade.org.slf4j"
+	relocate "net.harawata.appdirs", "info.u_team.music_player.shade.net.harawata.appdirs"
+	
+	exclude "META-INF/maven/**"
 }
 
 task sourcesJar(type: Jar) {
@@ -139,11 +152,15 @@ task docJar(type: Jar) {
 	}
 }
 
+reobf {
+	normalJar
+}
+
 artifacts {
 	archives deobfJar
 	archives sourcesJar
 	archives docJar
-	archives jar
+	archives normalJar
 }
 
 signAllJars()
@@ -163,8 +180,8 @@ dependencies {
 	minecraft getForgeDependency()
 	compile getUTeamCoreDependency()
 	compile project(":musicplayer-lavaplayer-api")
-	internal ("org.slf4j:slf4j-simple:1.7.26")
-	internal ("net.harawata:appdirs:1.0.0") {
+	shade ("org.slf4j:slf4j-simple:1.7.26")
+	shade ("net.harawata:appdirs:1.0.0") {
 		transitive=false
 	}
 }

@@ -15,11 +15,16 @@ task copyNewDep(type: Copy) {
 		from configurations.runtime
 		exclude "musicplayer-lavaplayer-api.jar"
 	}
+	rename { String fileName ->
+		fileName += ".packed"
+	}
 }
 
 tasks.build.dependsOn copyNewDep
 
 jar {
+	archiveName += ".packed"
+	
 	exclude("LICENSE-DEPENDENCIES")
 }
 
