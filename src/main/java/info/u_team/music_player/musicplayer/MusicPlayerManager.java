@@ -39,7 +39,7 @@ public class MusicPlayerManager {
 			LOGGER.info("Successfully created music player instance");
 		} catch (final Exception ex) {
 			LOGGER.fatal("Cannot create music player instance. This is a serious bug and the mod will not work. Report to the mod authors", ex);
-			System.exit(0);
+			System.exit(-1);
 		}
 	}
 	
