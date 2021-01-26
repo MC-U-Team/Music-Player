@@ -20,6 +20,8 @@ public class DependencyManager {
 	private static final Marker MARKER_LOAD = MarkerManager.getMarker("Load");
 	private static final Marker MARKER_ADD = MarkerManager.getMarker("Add");
 	
+	private static final String FILE_ENDING = ".jar.packed";
+	
 	public static final DependencyClassLoader MUSICPLAYER_CLASSLOADER = new DependencyClassLoader();
 	
 	public static void load() {
@@ -42,7 +44,7 @@ public class DependencyManager {
 	
 	private static void findJarFilesInDev(Path path, Consumer<Path> consumer) {
 		try (Stream<Path> stream = Files.walk(path)) {
-			stream.filter(file -> file.toString().endsWith(".jar")).forEach(consumer);
+			stream.filter(file -> file.toString().endsWith(FILE_ENDING)).forEach(consumer);
 		} catch (final IOException ex) {
 			LOGGER.error(MARKER_LOAD, "When searching for jar files in dev an exception occured.", ex);
 		}
@@ -51,7 +53,7 @@ public class DependencyManager {
 	private static void findJarFilesInJar(String folder, Consumer<Path> consumer) {
 		final ModFile modfile = ModList.get().getModFileById(MusicPlayerMod.MODID).getFile();
 		try (Stream<Path> stream = Files.walk(modfile.findResource("/" + folder))) {
-			stream.filter(file -> file.toString().endsWith(".jar")).forEach(consumer);
+			stream.filter(file -> file.toString().endsWith(FILE_ENDING)).forEach(consumer);
 		} catch (final IOException ex) {
 			LOGGER.error(MARKER_LOAD, "When searching for jar files in jar an exception occured.", ex);
 		}
