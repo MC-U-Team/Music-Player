@@ -1,9 +1,6 @@
 package info.u_team.music_player.dependency;
 
 import java.io.IOException;
-import java.lang.invoke.*;
-import java.lang.invoke.MethodHandles.Lookup;
-import java.lang.reflect.*;
 import java.net.*;
 import java.nio.file.*;
 import java.util.function.*;
@@ -11,13 +8,11 @@ import java.util.stream.Stream;
 
 import org.apache.logging.log4j.*;
 
-import cpw.mods.modlauncher.TransformingClassLoader;
 import cpw.mods.modlauncher.api.LamdbaExceptionUtils;
 import info.u_team.music_player.MusicPlayerMod;
 import info.u_team.music_player.dependency.classloader.DependencyClassLoader;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.loading.moddiscovery.ModFile;
-import net.minecraftforge.fml.unsafe.UnsafeHacks;
 
 public class DependencyManager {
 	
@@ -35,8 +30,7 @@ public class DependencyManager {
 			findJarFilesInDev(Paths.get(devPath, "musicplayer-lavaplayer/build/libs"), path -> addToMusicPlayerDependencies(pathToUrl().apply(path)));
 			findJarFilesInDev(Paths.get(devPath, "musicplayer-lavaplayer/build/dependencies"), path -> addToMusicPlayerDependencies(pathToUrl().apply(path)));
 		} else {
-			findJarFilesInJar("dependencies/internal", path -> addToInternalDependencies(createInternalURL(path)));
-			findJarFilesInJar("dependencies/musicplayer", path -> addToMusicPlayerDependencies(createInternalURL(path)));
+			findJarFilesInJar("dependencies", path -> addToMusicPlayerDependencies(createInternalURL(path)));
 		}
 		
 		LOGGER.info(MARKER_LOAD, "Finished loading dependencies");
@@ -79,21 +73,5 @@ public class DependencyManager {
 	private static void addToMusicPlayerDependencies(URL url) {
 		MUSICPLAYER_CLASSLOADER.addURL(url);
 		LOGGER.debug(MARKER_ADD, "Added new jar file ({}) to the musicplayer dependency classloader.", url);
-	}
-	
-	private static void addToInternalDependencies(URL url) {
-		try {
-			final Field field = TransformingClassLoader.class.getDeclaredField("delegatedClassLoader");
-			field.setAccessible(true);
-			final URLClassLoader delegatedUrlClassLoader = (URLClassLoader) field.get(Thread.currentThread().getContextClassLoader());
-			final Method method = URLClassLoader.class.getDeclaredMethod("addURL", URL.class);
-			final Lookup lookup = MethodHandles.lookup();
-			UnsafeHacks.setIntField(Lookup.class.getDeclaredField("allowedModes"), lookup, -1); // This is a hack to change our lookup to trusted
-			final MethodHandle methodHandle = lookup.unreflectSpecial(method, URLClassLoader.class);
-			methodHandle.invoke(delegatedUrlClassLoader, url);
-			LOGGER.debug(MARKER_ADD, "Added new jar file ({}) to the transforming / delegated classloader.", url);
-		} catch (final Throwable ex) {
-			LOGGER.error(MARKER_LOAD, "Method addURL on transforming / delegated classloader could not be invoked.", ex);
-		}
 	}
 }
