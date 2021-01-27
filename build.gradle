@@ -178,7 +178,8 @@ sourceSets {
 
 dependencies {
 	minecraft getForgeDependency()
-	compile getUTeamCoreDependency()
+    // TODO replace with -> getUTeamCoreDependency
+	compile "info.u-team:u_team_core-1.16.4:3.1.17.192:dev"
 	compile project(":musicplayer-lavaplayer-api")
 	shade ("org.slf4j:slf4j-simple:1.7.26")
 	shade ("net.harawata:appdirs:1.0.0") {
