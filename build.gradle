@@ -1,13 +1,19 @@
 buildscript {
 	repositories {
-		maven { url = "https://files.minecraftforge.net/maven" }
-		maven { url = "https://plugins.gradle.org/m2/" }
+		maven {
+			url = "https://files.minecraftforge.net/maven"
+		}
+		maven {
+			url = "https://repo.u-team.info"
+		}
+		maven {
+			url = "https://plugins.gradle.org/m2/"
+		}
 		jcenter()
-		mavenCentral()
 	}
 	dependencies {
-		classpath group: "net.minecraftforge.gradle", name: "ForgeGradle", version: "3.+", changing: true
-		classpath "gradle.plugin.com.matthewprenger:CurseGradle:1.4.0"
+		classpath group: "net.minecraftforge.gradle", name: "ForgeGradle", version: "4.0.11", changing: true
+		classpath group: "info.u-team.curse_gradle_uploader", name: "curse_gradle_uploader", version: "1.4.1"
 		classpath group: "com.github.jengelman.gradle.plugins", name: "shadow", version: "4.0.4"
 	}
 }
@@ -16,26 +22,30 @@ apply from: "https://gradle-files.u-team.info/default-project.gradle"
 
 apply plugin: "net.minecraftforge.gradle"
 apply plugin: "eclipse"
-apply plugin: "com.matthewprenger.cursegradle"
-apply plugin: "maven"
+apply plugin: "info.u_team.curse_gradle_uploader"
+apply plugin: "maven-publish"
 apply plugin: "com.github.johnrengelman.shadow"
 
 group = "info.u-team"
 archivesBaseName = generateArchivesBaseName()
 version = generateVersion()
 
-sourceCompatibility = targetCompatibility = "1.8"
+java {
+	toolchain {
+		languageVersion = JavaLanguageVersion.of(8)
+	}
+}
 
 minecraft {
 	mappings channel: config.forge.mapping_channel, version: config.forge.mapping
+
 	accessTransformer = file("$rootDir/src/main/resources/META-INF/accesstransformer.cfg")
 	
 	runs {
 		client = {
 			workingDirectory project.file("run/client").canonicalPath
-			
+			property "mixin.env.disableRefMap", "true"
 			property "musicplayer.dev", "${project.rootDir}"
-			
 			mods {
 				"${config.mod.modid}" {
 					source sourceSets.main
@@ -44,6 +54,8 @@ minecraft {
 		}
 		server = {
 			workingDirectory project.file("run/server").canonicalPath
+			property "mixin.env.disableRefMap", "true"
+			property "musicplayer.dev", "${project.rootDir}"
 			mods {
 				"${config.mod.modid}" {
 					source sourceSets.main
@@ -52,10 +64,9 @@ minecraft {
 		}
 		data = {
 			workingDirectory project.file("run/data").canonicalPath
-			args "--mod", config.mod.modid, "--all", "--output", "\"" + file("src/generated/resources").toString() + "\"", "--validate", "--existing", "\"" + sourceSets.main.resources.srcDirs[0] + "\""
-			
+			property "mixin.env.disableRefMap", "true"
 			property "musicplayer.dev", "${project.rootDir}"
-			
+			args "--mod", config.mod.modid, "--all", "--output", "\"" + file("src/generated/resources").toString() + "\"", "--validate", "--existing", "\"" + sourceSets.main.resources.srcDirs[0] + "\""			
 			mods {
 				"${config.mod.modid}" {
 					source sourceSets.main
@@ -157,10 +168,10 @@ reobf {
 }
 
 artifacts {
+	archives normalJar
 	archives deobfJar
 	archives sourcesJar
 	archives docJar
-	archives normalJar
 }
 
 signAllJars()
@@ -178,9 +189,8 @@ sourceSets {
 
 dependencies {
 	minecraft getForgeDependency()
-    // TODO replace with -> getUTeamCoreDependency
-	compile "info.u-team:u_team_core-1.16.4:3.1.17.192:dev"
-	compile project(":musicplayer-lavaplayer-api")
+	compileOnly getUTeamCoreDependency()
+	compileOnly project(":musicplayer-lavaplayer-api")
 	shade ("org.slf4j:slf4j-simple:1.7.26")
 	shade ("net.harawata:appdirs:1.0.0") {
 		transitive=false
@@ -204,10 +214,9 @@ curseforge {
 		
 		addGameVersion config.forge.mcversion
 		addGameVersion "Forge"
-		
-		options {
-			forgeGradleIntegration = false
-		}
+		addGameVersion "Java 8"
+		addGameVersion "Java 9"
+		addGameVersion "Java 10"
 		
 		relations {
 			requiredDependency "u-team-core"
@@ -223,56 +232,66 @@ curseforge {
 		addArtifact(deobfJar) {
 			displayName = "${config.curse.display}-${config.forge.mcversion}-${project.version}-dev"
 			changelogType = "text"
-			changelog = "Mappings: ${config.forge.mapping_channel}_${config.forge.mapping}"
+			changelog = "ONLY for development environment!\nMappings: ${config.forge.mapping_channel}_${config.forge.mapping}"
 		}
 	}
 }
 
-uploadArchives {
+tasks.withType(PublishToMavenRepository) {
 	onlyIf {
 		getValue("mavenpass") != null
 	}
-	
-	tasks.uploadArchives.dependsOn build
+}
+
+publishing {
+	publish.dependsOn build
 	
 	repositories {
-		mavenDeployer {
-			repository(url: "https://repo.u-team.info") {
-				authentication(userName: "maven", password: getValue("mavenpass"))
+		maven {
+			url "https://repo.u-team.info"
+			credentials {
+				username = "maven"
+				password = getValue("mavenpass")
 			}
+		}
+	}
+	publications {
+		mavenJava(MavenPublication) {
+			artifact jar
+			artifact deobfJar
+			artifact sourcesJar
+			artifact docJar
+			
+			groupId = project.group
+			artifactId = project.archivesBaseName
+			version = project.version
+			
 			pom {
-				groupId = project.group
-				artifactId = project.archivesBaseName
-				version = project.version
-				project {
-					name project.archivesBaseName
-					packaging "jar"
-					description "${config.github.name}"
-					url "https://github.com/MC-U-Team/${config.github.name}"
-					scm {
-						url "https://github.com/MC-U-Team/${config.github.name}"
-						connection "scm:git:git://github.com/MC-U-Team/${config.github.name}.git"
-						developerConnection "scm:git:git@github.com:MC-U-Team/${config.github.name}.git"
-					}
-					issueManagement {
-						system "github"
-						url "https://github.com/MC-U-Team/${config.github.name}/issues"
-					}
-					licenses {
-						license {
-							name "Apache License 2.0"
-							url "https://github.com/MC-U-Team/${config.github.name}/blob/${config.github.branch}/LICENSE"
-							distribution "repo"
-						}
-					}
-					
-					developers {
-						developer {
-							name "HyCraftHD"
-						}
+				name = project.archivesBaseName
+				description = "${config.github.name}"
+				url = "https://github.com/MC-U-Team/${config.github.name}"
+				scm {
+					url = "https://github.com/MC-U-Team/${config.github.name}"
+					connection = "scm:git:git://github.com/MC-U-Team/${config.github.name}.git"
+					developerConnection = "scm:git:git@github.com:MC-U-Team/${config.github.name}.git"
+				}
+				
+				issueManagement {
+					system = "github"
+					url = "https://github.com/MC-U-Team/${config.github.name}/issues"
+				}
+				licenses {
+					license {
+						name = "Apache License 2.0"
+						url = "https://github.com/MC-U-Team/${config.github.name}/blob/${config.github.branch}/LICENSE"
+						distribution = "repo"
 					}
 				}
-				setConfigurations(null) // Prevent all dependencies in the pom file
+				developers {
+					developer {
+						name = "HyCraftHD"
+					}
+				}
 			}
 		}
 	}
@@ -280,7 +299,7 @@ uploadArchives {
 
 task uploadBoth {
 	tasks.uploadBoth.dependsOn build
-	tasks.uploadBoth.dependsOn uploadArchives
+	tasks.uploadBoth.dependsOn publish
 	tasks.uploadBoth.dependsOn "curseforge${config.curse.id}"
 	tasks.uploadBoth.dependsOn setBuildNumber
 	doLast {
