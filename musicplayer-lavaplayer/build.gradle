@@ -39,7 +39,7 @@ sourceSets {
 		java
 		resources
 	}
-	test {
+	test_player {
 		java
 		resources
 	}
