@@ -4,6 +4,12 @@ repositories {
 	jcenter()
 }
 
+java {
+	toolchain {
+		languageVersion = JavaLanguageVersion.of(8)
+	}
+}
+
 task deleteOldDep(type: Delete) {
 	delete fileTree("build/dependencies")
 }
