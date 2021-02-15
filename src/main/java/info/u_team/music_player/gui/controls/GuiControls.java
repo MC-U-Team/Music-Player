@@ -9,23 +9,22 @@ import com.mojang.blaze3d.matrix.MatrixStack;
 import info.u_team.music_player.gui.*;
 import info.u_team.music_player.gui.settings.GuiMusicPlayerSettings;
 import info.u_team.music_player.gui.util.GuiTrackUtils;
-import info.u_team.music_player.init.MusicPlayerResources;
+import info.u_team.music_player.init.*;
 import info.u_team.music_player.lavaplayer.api.queue.ITrackManager;
 import info.u_team.music_player.musicplayer.*;
 import info.u_team.music_player.musicplayer.settings.*;
 import info.u_team.u_team_core.gui.elements.*;
-import info.u_team.u_team_core.gui.render.ScrollingTextRender;
+import info.u_team.u_team_core.gui.renderer.ScrollingTextRenderer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.*;
 import net.minecraft.client.gui.screen.*;
 import net.minecraft.client.gui.widget.Widget;
 import net.minecraft.util.text.ITextComponent;
 
-public class GuiControls extends FocusableGui implements BetterNestedGui {
+public class GuiControls extends FocusableGui implements BetterNestedGui, IRenderable {
 	
 	private final int middleX;
 	private final int y, width;
-	private final boolean small;
 	private final int buttonSize, halfButtonSize;
 	
 	private final List<Widget> buttons;
@@ -34,12 +33,12 @@ public class GuiControls extends FocusableGui implements BetterNestedGui {
 	
 	private final ITrackManager manager;
 	
-	private final ToggleImageButton playButton;
+	private final ImageToggleButton playButton;
 	
 	private final GuiMusicProgressBar songProgress;
 	
-	private ScrollingTextRender titleRender;
-	private ScrollingTextRender authorRender;
+	private ScrollingTextRenderer titleRender;
+	private ScrollingTextRenderer authorRender;
 	
 	public GuiControls(Screen gui, int y, int width) {
 		this.y = y;
@@ -56,14 +55,13 @@ public class GuiControls extends FocusableGui implements BetterNestedGui {
 		final boolean isSettings = gui instanceof GuiMusicPlayerSettings;
 		final boolean isIngame = gui instanceof IngameMenuScreen;
 		
-		small = isIngame;
+		final boolean small = isIngame;
 		
 		buttonSize = small ? 15 : 20;
 		halfButtonSize = buttonSize / 2;
 		
 		// Play button
-		playButton = addButton(new ToggleImageButton(middleX - halfButtonSize, y, buttonSize, buttonSize, MusicPlayerResources.TEXTURE_PLAY, MusicPlayerResources.TEXTURE_PAUSE));
-		playButton.toggle(!manager.isPaused());
+		playButton = addButton(new ImageToggleButton(middleX - halfButtonSize, y, buttonSize, buttonSize, MusicPlayerResources.TEXTURE_PLAY, MusicPlayerResources.TEXTURE_PAUSE, !manager.isPaused()));
 		playButton.setPressable(() -> {
 			final boolean play = playButton.isToggled();
 			manager.setPaused(!play);
@@ -84,29 +82,21 @@ public class GuiControls extends FocusableGui implements BetterNestedGui {
 		final Settings settings = MusicPlayerManager.getSettingsManager().getSettings();
 		
 		// Shuffle button
-		final ActiveImageButton shuffleButton = addButton(new ActiveImageButton(middleX - (2 * buttonSize + halfButtonSize + 10), y, buttonSize, buttonSize, MusicPlayerResources.TEXTURE_SHUFFLE, 0x80FF00FF));
+		final ImageActivatableButton shuffleButton = addButton(new ImageActivatableButton(middleX - (2 * buttonSize + halfButtonSize + 10), y, buttonSize, buttonSize, MusicPlayerResources.TEXTURE_SHUFFLE, settings.isShuffle(), MusicPlayerColors.LIGHT_GREEN));
 		
-		final Runnable updateShuffleButton = () -> {
-			shuffleButton.setActive(settings.isShuffle());
-		};
-		
-		updateShuffleButton.run();
 		shuffleButton.setPressable(() -> {
 			settings.setShuffle(!settings.isShuffle());
-			updateShuffleButton.run();
+			shuffleButton.setActivated(settings.isShuffle());
 		});
 		
 		// Repeat button
-		final ActiveImageButton repeatButton = addButton(new ActiveImageButton(middleX + +buttonSize + halfButtonSize + 10, y, buttonSize, buttonSize, MusicPlayerResources.TEXTURE_REPEAT, 0x80FF00FF));
-		final Runnable updateRepeatButton = () -> {
-			repeatButton.setActive(settings.getRepeat().isActive());
-			repeatButton.setResource(settings.getRepeat().getResource());
-		};
+		final ImageActivatableButton repeatButton = addButton(new ImageActivatableButton(middleX + +buttonSize + halfButtonSize + 10, y, buttonSize, buttonSize, MusicPlayerResources.TEXTURE_REPEAT, settings.getRepeat().isActive(), MusicPlayerColors.LIGHT_GREEN));
+		repeatButton.setImage(settings.getRepeat().getResource());
 		
-		updateRepeatButton.run();
 		repeatButton.setPressable(() -> {
 			settings.setRepeat(Repeat.forwardCycle(settings.getRepeat()));
-			updateRepeatButton.run();
+			repeatButton.setActivated(settings.getRepeat().isActive());
+			repeatButton.setImage(settings.getRepeat().getResource());
 		});
 		
 		// Song progress
@@ -127,7 +117,7 @@ public class GuiControls extends FocusableGui implements BetterNestedGui {
 		
 		// Volume
 		final int volumeY = width - (70 + (isIngame ? 15 * 2 + 3 : (!isSettings ? 15 + 2 : 1)));
-		addButtonNonDisable(new BetterFontSlider(volumeY, 1, 70, 15, ITextComponent.getTextComponentOrEmpty(getTranslation(GUI_CONTROLS_VOLUME) + ": "), ITextComponent.getTextComponentOrEmpty("%"), 0, 100, settings.getVolume(), false, true, 0.7F, slider -> {
+		addButtonNonDisable(new ScalableSlider(volumeY, 1, 70, 15, ITextComponent.getTextComponentOrEmpty(getTranslation(GUI_CONTROLS_VOLUME) + ": "), ITextComponent.getTextComponentOrEmpty("%"), 0, 100, settings.getVolume(), false, true, false, 0.7F, slider -> {
 			settings.setVolume(slider.getValueInt());
 			MusicPlayerManager.getPlayer().setVolume(settings.getVolume());
 		}) {
@@ -138,16 +128,21 @@ public class GuiControls extends FocusableGui implements BetterNestedGui {
 			}
 		});
 		
+		final int textRenderWidth = middleX - (2 * buttonSize + halfButtonSize + 10) - (small ? 15 : 35);
+		final int textRenderY = small ? y : y + 2;
+		
 		// Render playing track
 		// Title and author
-		titleRender = new ScrollingTextRender(() -> mc.fontRenderer, () -> GuiTrackUtils.getValueOfPlayingTrack(track -> track.getInfo().getFixedTitle()));
+		titleRender = new ScrollingTextRenderer(() -> mc.fontRenderer, () -> GuiTrackUtils.getValueOfPlayingTrack(track -> track.getInfo().getFixedTitle()), small ? 10 : 25, textRenderY);
+		titleRender.setWidth(textRenderWidth);
 		titleRender.setStepSize(0.5F);
-		titleRender.setColor(0xFFFF00);
+		titleRender.setColor(MusicPlayerColors.YELLOW);
 		titleRender.setSpeedTime(35);
 		
-		authorRender = new ScrollingTextRender(() -> mc.fontRenderer, () -> GuiTrackUtils.getValueOfPlayingTrack(track -> track.getInfo().getFixedAuthor()));
+		authorRender = new ScrollingTextRenderer(() -> mc.fontRenderer, () -> GuiTrackUtils.getValueOfPlayingTrack(track -> track.getInfo().getFixedAuthor()), small ? 10 : 25, textRenderY + 10);
+		authorRender.setWidth(textRenderWidth);
 		authorRender.setStepSize(0.5F);
-		authorRender.setColor(0xFFFF00);
+		authorRender.setColor(MusicPlayerColors.YELLOW);
 		authorRender.setScale(0.75F);
 		authorRender.setSpeedTime(35);
 		
@@ -169,7 +164,7 @@ public class GuiControls extends FocusableGui implements BetterNestedGui {
 		} else {
 			disableButtons.forEach(button -> button.active = true);
 		}
-		playButton.toggle(!manager.isPaused());
+		playButton.setToggled(!manager.isPaused());
 	}
 	
 	@Override
@@ -177,19 +172,13 @@ public class GuiControls extends FocusableGui implements BetterNestedGui {
 		return children;
 	}
 	
-	public void drawScreen(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
+	@Override
+	public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
 		buttons.forEach(button -> button.render(matrixStack, mouseX, mouseY, partialTicks));
 		songProgress.render(matrixStack, mouseX, mouseY, partialTicks);
 		
-		final int textRenderWidth = middleX - (2 * buttonSize + halfButtonSize + 10) - (small ? 15 : 35);
-		
-		titleRender.setWidth(textRenderWidth);
-		authorRender.setWidth(textRenderWidth);
-		
-		final int textRenderY = small ? y : y + 2;
-		
-		titleRender.draw(small ? 10 : 25, textRenderY);
-		authorRender.draw(small ? 10 : 25, textRenderY + 10);
+		titleRender.render(matrixStack, mouseX, mouseY, partialTicks);
+		authorRender.render(matrixStack, mouseX, mouseY, partialTicks);
 	}
 	
 	private <B extends Widget> B addButton(B button) {
@@ -211,19 +200,19 @@ public class GuiControls extends FocusableGui implements BetterNestedGui {
 		return width;
 	}
 	
-	public ScrollingTextRender getTitleRender() {
+	public ScrollingTextRenderer getTitleRender() {
 		return titleRender;
 	}
 	
-	public void setTitleRender(ScrollingTextRender titleRender) {
+	public void setTitleRender(ScrollingTextRenderer titleRender) {
 		this.titleRender = titleRender;
 	}
 	
-	public ScrollingTextRender getAuthorRender() {
+	public ScrollingTextRenderer getAuthorRender() {
 		return authorRender;
 	}
 	
-	public void setAuthorRender(ScrollingTextRender authorRender) {
+	public void setAuthorRender(ScrollingTextRenderer authorRender) {
 		this.authorRender = authorRender;
 	}
 }
