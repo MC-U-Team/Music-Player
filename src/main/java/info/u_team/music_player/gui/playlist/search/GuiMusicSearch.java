@@ -86,7 +86,7 @@ public class GuiMusicSearch extends BetterScreen {
 		final ImageButton searchButton = addButton(new ImageButton(10, 76, 24, 24, searchProvider.getLogo()));
 		searchButton.setPressable(() -> {
 			searchProvider = SearchProvider.toggle(searchProvider);
-			searchButton.setResource(searchProvider.getLogo());
+			searchButton.setImage(searchProvider.getLogo());
 		});
 		
 		searchField = new TextFieldWidget(font, 40, 78, width - 51, 20, ITextComponent.getTextComponentOrEmpty("")) {
