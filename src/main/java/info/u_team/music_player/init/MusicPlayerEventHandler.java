@@ -8,7 +8,7 @@ import info.u_team.music_player.lavaplayer.api.queue.ITrackManager;
 import info.u_team.music_player.musicplayer.*;
 import info.u_team.music_player.musicplayer.settings.IngameOverlayPosition;
 import info.u_team.music_player.render.RenderOverlayMusicDisplay;
-import info.u_team.u_team_core.gui.render.ScrollingTextRender;
+import info.u_team.u_team_core.gui.renderer.ScrollingTextRenderer;
 import net.minecraft.client.*;
 import net.minecraft.client.gui.IGuiEventListener;
 import net.minecraft.client.gui.screen.*;
@@ -111,7 +111,7 @@ public class MusicPlayerEventHandler {
 	
 	// Used to add buttons and gui controls to main ingame gui
 	
-	private static ScrollingTextRender titleRender, authorRender;
+	private static ScrollingTextRenderer titleRender, authorRender;
 	
 	private static void onInitGuiPre(GuiScreenEvent.InitGuiEvent.Pre event) {
 		final Screen gui = event.getGui();
@@ -155,7 +155,7 @@ public class MusicPlayerEventHandler {
 				gui.getEventListeners().stream() //
 						.filter(element -> element instanceof GuiControls) //
 						.map(element -> ((GuiControls) element)).findAny() //
-						.ifPresent(controls -> controls.drawScreen(event.getMatrixStack(), event.getMouseX(), event.getMouseY(), event.getRenderPartialTicks()));
+						.ifPresent(controls -> controls.render(event.getMatrixStack(), event.getMouseX(), event.getMouseY(), event.getRenderPartialTicks()));
 			}
 		}
 	}
