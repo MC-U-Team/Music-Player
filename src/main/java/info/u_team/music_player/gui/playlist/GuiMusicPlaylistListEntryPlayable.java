@@ -8,7 +8,7 @@ import info.u_team.music_player.lavaplayer.api.audio.IAudioTrack;
 import info.u_team.music_player.lavaplayer.api.queue.ITrackManager;
 import info.u_team.music_player.musicplayer.MusicPlayerManager;
 import info.u_team.music_player.musicplayer.playlist.*;
-import info.u_team.u_team_core.gui.elements.ToggleImageButton;
+import info.u_team.u_team_core.gui.elements.*;
 
 public abstract class GuiMusicPlaylistListEntryPlayable extends GuiMusicPlaylistListEntry {
 	
@@ -17,19 +17,19 @@ public abstract class GuiMusicPlaylistListEntryPlayable extends GuiMusicPlaylist
 	
 	private final LoadedTracks loadedTrack;
 	
-	protected final ToggleImageButton playTrackButton;
+	protected final ImageToggleButton playTrackButton;
 	
 	GuiMusicPlaylistListEntryPlayable(Playlists playlists, Playlist playlist, LoadedTracks loadedTrack, IAudioTrack track) {
 		this.track = track;
 		this.loadedTrack = loadedTrack;
 		manager = MusicPlayerManager.getPlayer().getTrackManager();
 		
-		playTrackButton = addButton(new ToggleImageButton(0, 0, 20, 20, MusicPlayerResources.TEXTURE_PLAY, MusicPlayerResources.TEXTURE_PAUSE));
+		playTrackButton = addButton(new ImageToggleButton(0, 0, 20, 20, MusicPlayerResources.TEXTURE_PLAY, MusicPlayerResources.TEXTURE_PAUSE, false));
 		
 		if (loadedTrack.hasError() || track == null) {
 			playTrackButton.visible = false;
 		} else {
-			playTrackButton.toggle(track == getCurrentlyPlaying());
+			playTrackButton.setToggled(track == getCurrentlyPlaying());
 			playTrackButton.setPressable(() -> {
 				final boolean play = playTrackButton.isToggled();
 				if (play) {
@@ -69,9 +69,9 @@ public abstract class GuiMusicPlaylistListEntryPlayable extends GuiMusicPlaylist
 	@Override
 	protected void tick() {
 		if (isPlaying()) {
-			playTrackButton.toggle(!manager.isPaused());
+			playTrackButton.setToggled(!manager.isPaused());
 		} else {
-			playTrackButton.toggle(false);
+			playTrackButton.setToggled(false);
 		}
 	}
 	
@@ -87,7 +87,7 @@ public abstract class GuiMusicPlaylistListEntryPlayable extends GuiMusicPlaylist
 		return track;
 	}
 	
-	public ToggleImageButton getPlayTrackButton() {
+	public ImageToggleButton getPlayTrackButton() {
 		return playTrackButton;
 	}
 }

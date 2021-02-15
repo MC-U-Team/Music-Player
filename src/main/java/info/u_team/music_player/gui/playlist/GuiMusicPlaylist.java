@@ -8,7 +8,7 @@ import info.u_team.music_player.gui.playlist.search.GuiMusicSearch;
 import info.u_team.music_player.init.MusicPlayerResources;
 import info.u_team.music_player.musicplayer.playlist.Playlist;
 import info.u_team.u_team_core.gui.elements.ImageButton;
-import info.u_team.u_team_core.gui.render.ScrollingTextRender;
+import info.u_team.u_team_core.gui.renderer.ScrollingTextRenderer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.text.StringTextComponent;
 
@@ -72,8 +72,8 @@ public class GuiMusicPlaylist extends BetterScreen {
 	
 	@Override
 	public void resize(Minecraft minecraft, int width, int height) {
-		final ScrollingTextRender titleRender = controls.getTitleRender();
-		final ScrollingTextRender authorRender = controls.getAuthorRender();
+		final ScrollingTextRenderer titleRender = controls.getTitleRender();
+		final ScrollingTextRenderer authorRender = controls.getAuthorRender();
 		this.init(minecraft, width, height);
 		controls.setTitleRender(titleRender);
 		controls.setAuthorRender(authorRender);
@@ -83,7 +83,7 @@ public class GuiMusicPlaylist extends BetterScreen {
 	public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
 		renderDirtBackground(0);
 		trackList.render(matrixStack, mouseX, mouseY, partialTicks);
-		controls.drawScreen(matrixStack, mouseX, mouseY, partialTicks);
+		controls.render(matrixStack, mouseX, mouseY, partialTicks);
 		super.render(matrixStack, mouseX, mouseY, partialTicks);
 	}
 	
