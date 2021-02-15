@@ -6,11 +6,11 @@ import com.mojang.blaze3d.matrix.MatrixStack;
 
 import info.u_team.music_player.gui.BetterScreen;
 import info.u_team.music_player.gui.controls.GuiControls;
-import info.u_team.music_player.init.MusicPlayerResources;
+import info.u_team.music_player.init.*;
 import info.u_team.music_player.musicplayer.MusicPlayerManager;
 import info.u_team.music_player.musicplayer.settings.*;
 import info.u_team.u_team_core.gui.elements.*;
-import info.u_team.u_team_core.gui.render.ScrollingTextRender;
+import info.u_team.u_team_core.gui.renderer.ScrollingTextRenderer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.util.text.*;
@@ -34,25 +34,22 @@ public class GuiMusicPlayerSettings extends BetterScreen {
 		
 		final Settings settings = MusicPlayerManager.getSettingsManager().getSettings();
 		
-		final ActiveButton toggleKeyWorkInGuiButton = addButton(new ActiveButton(12, 60, width / 2 - 24, 20, ITextComponent.getTextComponentOrEmpty(getTranslation(GUI_SETTINGS_TOGGLE_KEY_IN_GUI)), 0x80FF00FF));
-		toggleKeyWorkInGuiButton.setActive(settings.isKeyWorkInGui());
+		final ScalableActivatableButton toggleKeyWorkInGuiButton = addButton(new ScalableActivatableButton(12, 60, width / 2 - 24, 20, ITextComponent.getTextComponentOrEmpty(getTranslation(GUI_SETTINGS_TOGGLE_KEY_IN_GUI)), 1, settings.isKeyWorkInGui(), MusicPlayerColors.LIGHT_GREEN));
 		toggleKeyWorkInGuiButton.setPressable(() -> {
 			settings.setKeyWorkInGui(!settings.isKeyWorkInGui());
-			toggleKeyWorkInGuiButton.setActive(settings.isKeyWorkInGui());
+			toggleKeyWorkInGuiButton.setActivated(settings.isKeyWorkInGui());
 		});
 		
-		final ActiveButton toggleIngameMenueDisplayButton = addButton(new ActiveButton(width / 2 + 14, 60, width / 2 - 24, 20, ITextComponent.getTextComponentOrEmpty(getTranslation(GUI_SETTINGS_TOGGLE_MENUE_OVERLAY)), 0x80FF00FF));
-		toggleIngameMenueDisplayButton.setActive(settings.isShowIngameMenueOverlay());
+		final ScalableActivatableButton toggleIngameMenueDisplayButton = addButton(new ScalableActivatableButton(width / 2 + 14, 60, width / 2 - 24, 20, ITextComponent.getTextComponentOrEmpty(getTranslation(GUI_SETTINGS_TOGGLE_MENUE_OVERLAY)), 1, settings.isShowIngameMenueOverlay(), MusicPlayerColors.LIGHT_GREEN));
 		toggleIngameMenueDisplayButton.setPressable(() -> {
 			settings.setShowIngameMenueOverlay(!settings.isShowIngameMenueOverlay());
-			toggleIngameMenueDisplayButton.setActive(settings.isShowIngameMenueOverlay());
+			toggleIngameMenueDisplayButton.setActivated(settings.isShowIngameMenueOverlay());
 		});
 		
-		final ActiveButton toggleIngameDisplayButton = addButton(new ActiveButton(12, 90, width / 2 - 24, 20, ITextComponent.getTextComponentOrEmpty(getTranslation(GUI_SETTINGS_TOGGLE_INGAME_OVERLAY)), 0x80FF00FF));
-		toggleIngameDisplayButton.setActive(settings.isShowIngameOverlay());
+		final ScalableActivatableButton toggleIngameDisplayButton = addButton(new ScalableActivatableButton(12, 90, width / 2 - 24, 20, ITextComponent.getTextComponentOrEmpty(getTranslation(GUI_SETTINGS_TOGGLE_INGAME_OVERLAY)), 1, settings.isShowIngameOverlay(), MusicPlayerColors.LIGHT_GREEN));
 		toggleIngameDisplayButton.setPressable(() -> {
 			settings.setShowIngameOverlay(!settings.isShowIngameOverlay());
-			toggleIngameDisplayButton.setActive(settings.isShowIngameOverlay());
+			toggleIngameDisplayButton.setActivated(settings.isShowIngameOverlay());
 		});
 		
 		final UButton ingameOverlayPositionButton = addButton(new UButton(width / 2 + 14, 90, width / 2 - 24, 20, ITextComponent.getTextComponentOrEmpty(getTranslation(GUI_SETTINGS_POSITION_OVERLAY) + ": " + getTranslation(settings.getIngameOverlayPosition().getLocalization()))));
@@ -75,8 +72,8 @@ public class GuiMusicPlayerSettings extends BetterScreen {
 	
 	@Override
 	public void resize(Minecraft minecraft, int width, int height) {
-		final ScrollingTextRender titleRender = controls.getTitleRender();
-		final ScrollingTextRender authorRender = controls.getAuthorRender();
+		final ScrollingTextRenderer titleRender = controls.getTitleRender();
+		final ScrollingTextRenderer authorRender = controls.getAuthorRender();
 		this.init(minecraft, width, height);
 		controls.setTitleRender(titleRender);
 		controls.setAuthorRender(authorRender);
@@ -87,7 +84,7 @@ public class GuiMusicPlayerSettings extends BetterScreen {
 		renderDirtBackground(0);
 		mixerDeviceList.render(matrixStack, mouseX, mouseY, partialTicks);
 		font.drawString(matrixStack, getTranslation(GUI_SETTINGS_MIXER_DEVICE_SELECTION), 13, 117, 0xFFFFFF);
-		controls.drawScreen(matrixStack, mouseX, mouseY, partialTicks);
+		controls.render(matrixStack, mouseX, mouseY, partialTicks);
 		super.render(matrixStack, mouseX, mouseY, partialTicks);
 	}
 	
