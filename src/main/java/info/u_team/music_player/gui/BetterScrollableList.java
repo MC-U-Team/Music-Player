@@ -6,8 +6,8 @@ import net.minecraft.util.math.MathHelper;
 
 public class BetterScrollableList<T extends AbstractList.AbstractListEntry<T>> extends ScrollableList<T> {
 	
-	public BetterScrollableList(int width, int height, int top, int bottom, int left, int right, int slotHeight, int listWidth, int scrollbarPos) {
-		super(width, height, top, bottom, left, right, slotHeight, listWidth, scrollbarPos);
+	public BetterScrollableList(int width, int height, int top, int bottom, int left, int right, int slotHeight, int sideDistance) {
+		super(width, height, top, bottom, left, right, slotHeight, sideDistance);
 	}
 	
 	@Override

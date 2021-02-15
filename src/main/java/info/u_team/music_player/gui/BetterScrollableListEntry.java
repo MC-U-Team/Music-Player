@@ -4,10 +4,10 @@ import info.u_team.u_team_core.gui.elements.ScrollableListEntry;
 
 public abstract class BetterScrollableListEntry<T extends ScrollableListEntry<T>> extends ScrollableListEntry<T> {
 	
-	@SuppressWarnings({ "unchecked", "deprecation" })
+	@SuppressWarnings("unchecked")
 	@Override
 	public boolean mouseClicked(double mouseX, double mouseY, int button) {
-		list.setSelected((T) this);
+		getList().setSelected((T) this);
 		return super.mouseClicked(mouseX, mouseY, button);
 	}
 	
