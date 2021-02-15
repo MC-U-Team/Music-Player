@@ -81,30 +81,30 @@ public class MusicPlayerEventHandler {
 		final Minecraft mc = Minecraft.getInstance();
 		if (event.getType() == ElementType.TEXT && !mc.gameSettings.showDebugInfo && mc.currentScreen == null) {
 			if (SETTINGS_MANAGER.getSettings().isShowIngameOverlay()) {
-				if (overlayRender == null) {
-					overlayRender = new RenderOverlayMusicDisplay();
-				}
 				final IngameOverlayPosition position = SETTINGS_MANAGER.getSettings().getIngameOverlayPosition();
 				
-				final MainWindow window = mc.getMainWindow();
-				final int width = window.getScaledWidth();
-				final int height = window.getScaledHeight();
-				
-				final int x;
-				if (position.isLeft()) {
-					x = 3;
-				} else {
-					x = width - 3 - overlayRender.getWidth();
+				if (overlayRender == null || overlayRender.getOverlayPosition() != position) {
+					final MainWindow window = mc.getMainWindow();
+					final int width = window.getScaledWidth();
+					final int height = window.getScaledHeight();
+					
+					final int x;
+					if (position.isLeft()) {
+						x = 3;
+					} else {
+						x = width - 3 - overlayRender.getWidth();
+					}
+					
+					final int y;
+					if (position.isUp()) {
+						y = 3;
+					} else {
+						y = height - 3 - overlayRender.getHeight();
+					}
+					overlayRender = new RenderOverlayMusicDisplay(position, x, y);
 				}
 				
-				final int y;
-				if (position.isUp()) {
-					y = 3;
-				} else {
-					y = height - 3 - overlayRender.getHeight();
-				}
-				
-				overlayRender.draw(event.getMatrixStack(), x, y);
+				overlayRender.render(event.getMatrixStack(), 0, 0, event.getPartialTicks());
 			}
 		}
 	}

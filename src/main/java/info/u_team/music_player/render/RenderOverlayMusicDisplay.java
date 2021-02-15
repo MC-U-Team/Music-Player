@@ -7,6 +7,7 @@ import info.u_team.music_player.init.MusicPlayerColors;
 import info.u_team.music_player.lavaplayer.api.audio.IAudioTrack;
 import info.u_team.music_player.lavaplayer.api.queue.ITrackManager;
 import info.u_team.music_player.musicplayer.MusicPlayerManager;
+import info.u_team.music_player.musicplayer.settings.IngameOverlayPosition;
 import info.u_team.u_team_core.gui.renderer.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.*;
@@ -14,10 +15,12 @@ import net.minecraft.util.math.MathHelper;
 
 public class RenderOverlayMusicDisplay implements IRenderable {
 	
+	private final IngameOverlayPosition overlayPosition;
+	
 	private final ITrackManager manager;
 	
-	private final float x;
-	private final float y;
+	private float x;
+	private float y;
 	
 	private final int width;
 	private final int height;
@@ -28,7 +31,8 @@ public class RenderOverlayMusicDisplay implements IRenderable {
 	private final ScalingTextRenderer position;
 	private final ScalingTextRenderer duration;
 	
-	public RenderOverlayMusicDisplay(float x, float y) {
+	public RenderOverlayMusicDisplay(IngameOverlayPosition overlayPosition, float x, float y) {
+		this.overlayPosition = overlayPosition;
 		this.x = x;
 		this.y = y;
 		
@@ -95,6 +99,10 @@ public class RenderOverlayMusicDisplay implements IRenderable {
 		duration.render(matrixStack, mouseX, mouseY, partialTicks);
 	}
 	
+	public IngameOverlayPosition getOverlayPosition() {
+		return overlayPosition;
+	}
+	
 	public int getWidth() {
 		return width;
 	}
@@ -102,4 +110,21 @@ public class RenderOverlayMusicDisplay implements IRenderable {
 	public int getHeight() {
 		return height;
 	}
+	
+	public float getX() {
+		return x;
+	}
+	
+	public void setX(float x) {
+		this.x = x;
+	}
+	
+	public float getY() {
+		return y;
+	}
+	
+	public void setY(float y) {
+		this.y = y;
+	}
+	
 }
