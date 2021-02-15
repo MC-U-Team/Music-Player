@@ -19,7 +19,7 @@ class GuiMusicPlayerListEntry extends BetterScrollableListEntry<GuiMusicPlayerLi
 	private final Playlists playlists;
 	private final Playlist playlist;
 	
-	private final ToggleImageButton playPlaylistButton;
+	private final ImageToggleButton playPlaylistButton;
 	private final ImageButton openPlaylistButton;
 	private final ImageButton deletePlaylistButton;
 	
@@ -27,8 +27,7 @@ class GuiMusicPlayerListEntry extends BetterScrollableListEntry<GuiMusicPlayerLi
 		this.playlists = playlists;
 		this.playlist = playlist;
 		
-		playPlaylistButton = addButton(new ToggleImageButton(0, 0, 20, 20, MusicPlayerResources.TEXTURE_PLAY, MusicPlayerResources.TEXTURE_STOP));
-		playPlaylistButton.toggle(playlist.equals(playlists.getPlaying()));
+		playPlaylistButton = addButton(new ImageToggleButton(0, 0, 20, 20, MusicPlayerResources.TEXTURE_PLAY, MusicPlayerResources.TEXTURE_STOP, playlist.equals(playlists.getPlaying())));
 		playPlaylistButton.active = !playlists.isPlayingLock();
 		
 		playPlaylistButton.setPressable(() -> {
@@ -37,7 +36,7 @@ class GuiMusicPlayerListEntry extends BetterScrollableListEntry<GuiMusicPlayerLi
 				return;
 			}
 			playlists.setPlaying(null);
-			gui.getEventListeners().stream().filter(entry -> entry != this).forEach(entry -> entry.playPlaylistButton.toggle(false)); // Reset all playlist buttons except this one
+			gui.getEventListeners().stream().filter(entry -> entry != this).forEach(entry -> entry.playPlaylistButton.setToggled(false)); // Reset all playlist buttons except this one
 			
 			final Runnable runnable = () -> {
 				final ITrackManager manager = MusicPlayerManager.getPlayer().getTrackManager();
@@ -57,7 +56,7 @@ class GuiMusicPlayerListEntry extends BetterScrollableListEntry<GuiMusicPlayerLi
 						playlists.setPlaying(null);
 						playlist.setStopable();
 						manager.stop();
-						playPlaylistButton.toggle(false);
+						playPlaylistButton.setToggled(false);
 					}
 				} else {
 					playlists.setPlaying(null);

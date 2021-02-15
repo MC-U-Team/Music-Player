@@ -9,7 +9,7 @@ import com.mojang.blaze3d.matrix.MatrixStack;
 import info.u_team.music_player.gui.controls.GuiControls;
 import info.u_team.music_player.init.MusicPlayerResources;
 import info.u_team.u_team_core.gui.elements.ImageButton;
-import info.u_team.u_team_core.gui.render.ScrollingTextRender;
+import info.u_team.u_team_core.gui.renderer.ScrollingTextRenderer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.util.text.*;
@@ -55,8 +55,8 @@ public class GuiMusicPlayer extends BetterScreen {
 	@Override
 	public void resize(Minecraft minecraft, int width, int height) {
 		final String text = namePlaylistField.getText();
-		final ScrollingTextRender titleRender = controls.getTitleRender();
-		final ScrollingTextRender authorRender = controls.getAuthorRender();
+		final ScrollingTextRenderer titleRender = controls.getTitleRender();
+		final ScrollingTextRenderer authorRender = controls.getAuthorRender();
 		this.init(minecraft, width, height);
 		namePlaylistField.setText(text);
 		controls.setTitleRender(titleRender);
@@ -75,7 +75,7 @@ public class GuiMusicPlayer extends BetterScreen {
 		playlistsList.render(matrixStack, mouseX, mouseY, partialTicks);
 		font.drawString(matrixStack, getTranslation(GUI_CREATE_PLAYLIST_ADD_LIST), 20, 65, 0xFFFFFF);
 		namePlaylistField.render(matrixStack, mouseX, mouseY, partialTicks);
-		controls.drawScreen(matrixStack, mouseX, mouseY, partialTicks);
+		controls.render(matrixStack, mouseX, mouseY, partialTicks);
 		super.render(matrixStack, mouseX, mouseY, partialTicks);
 	}
 	
