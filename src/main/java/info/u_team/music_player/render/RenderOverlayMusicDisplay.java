@@ -3,28 +3,35 @@ package info.u_team.music_player.render;
 import com.mojang.blaze3d.matrix.MatrixStack;
 
 import info.u_team.music_player.gui.util.GuiTrackUtils;
+import info.u_team.music_player.init.MusicPlayerColors;
 import info.u_team.music_player.lavaplayer.api.audio.IAudioTrack;
 import info.u_team.music_player.lavaplayer.api.queue.ITrackManager;
 import info.u_team.music_player.musicplayer.MusicPlayerManager;
-import info.u_team.u_team_core.gui.render.*;
+import info.u_team.u_team_core.gui.renderer.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.*;
 import net.minecraft.util.math.MathHelper;
 
-public class RenderOverlayMusicDisplay {
+public class RenderOverlayMusicDisplay implements IRenderable {
 	
 	private final ITrackManager manager;
+	
+	private final float x;
+	private final float y;
 	
 	private final int width;
 	private final int height;
 	
-	private final ScrollingTextRender title;
-	private final ScrollingTextRender author;
+	private final ScrollingTextRenderer title;
+	private final ScrollingTextRenderer author;
 	
-	private final ScalingTextRender position;
-	private final ScalingTextRender duration;
+	private final ScalingTextRenderer position;
+	private final ScalingTextRenderer duration;
 	
-	public RenderOverlayMusicDisplay() {
+	public RenderOverlayMusicDisplay(float x, float y) {
+		this.x = x;
+		this.y = y;
+		
 		manager = MusicPlayerManager.getPlayer().getTrackManager();
 		
 		height = 35;
@@ -32,30 +39,34 @@ public class RenderOverlayMusicDisplay {
 		
 		final FontRenderer fontRender = Minecraft.getInstance().fontRenderer;
 		
-		title = new ScrollingTextRender(() -> fontRender, () -> GuiTrackUtils.getValueOfPlayingTrack(track -> track.getInfo().getFixedTitle()));
+		title = new ScrollingTextRenderer(() -> fontRender, () -> GuiTrackUtils.getValueOfPlayingTrack(track -> track.getInfo().getFixedTitle()), x + 3, y + 2);
 		title.setStepSize(0.5F);
-		title.setColor(0xFFFF00);
+		title.setColor(MusicPlayerColors.YELLOW);
 		title.setWidth(114);
 		title.setSpeedTime(35);
 		
-		author = new ScrollingTextRender(() -> fontRender, () -> GuiTrackUtils.getValueOfPlayingTrack(track -> track.getInfo().getFixedAuthor()));
+		author = new ScrollingTextRenderer(() -> fontRender, () -> GuiTrackUtils.getValueOfPlayingTrack(track -> track.getInfo().getFixedAuthor()), x + 3, y + 12);
 		author.setStepSize(0.5F);
-		author.setColor(0xFFFF00);
+		author.setColor(MusicPlayerColors.YELLOW);
 		author.setScale(0.75F);
 		author.setWidth(114);
 		author.setSpeedTime(35);
 		
-		position = new ScalingTextRender(() -> fontRender, () -> GuiTrackUtils.getValueOfPlayingTrack(GuiTrackUtils::getFormattedPosition));
-		position.setColor(0xFFFF00);
+		position = new ScalingTextRenderer(() -> fontRender, () -> GuiTrackUtils.getValueOfPlayingTrack(GuiTrackUtils::getFormattedPosition), x + 6, y + 28);
+		position.setColor(MusicPlayerColors.YELLOW);
 		position.setScale(0.5F);
 		
-		duration = new ScalingTextRender(() -> fontRender, () -> GuiTrackUtils.getValueOfPlayingTrack(GuiTrackUtils::getFormattedDuration));
-		duration.setColor(0xFFFF00);
+		duration = new ScalingTextRenderer(() -> fontRender, () -> GuiTrackUtils.getValueOfPlayingTrack(GuiTrackUtils::getFormattedDuration), x + width - 6, y + 28);
+		duration.setTextChanged(renderer -> {
+			duration.setX(x + width - 6 - renderer.getTextWidth());
+		});
+		duration.setColor(MusicPlayerColors.YELLOW);
 		duration.setScale(0.5F);
 		
 	}
 	
-	public void draw(MatrixStack matrixStack, float x, float y) {
+	@Override
+	public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
 		final IAudioTrack track = manager.getCurrentTrack();
 		if (track == null) {
 			return;
@@ -77,11 +88,11 @@ public class RenderOverlayMusicDisplay {
 		AbstractGui.fill(matrixStack, intX + 6, intY + 23, intX + 6 + (int) ((width - 12) * progress), intY + 26, 0xFF3e9100);
 		
 		// Draw strings
-		title.draw(x + 3, y + 2);
-		author.draw(x + 3, y + 12);
+		title.render(matrixStack, mouseX, mouseY, partialTicks);
+		author.render(matrixStack, mouseX, mouseY, partialTicks);
 		
-		position.draw(x + 6, y + 28);
-		duration.draw(x + width - 6 - duration.getTextWidth(), y + 28);
+		position.render(matrixStack, mouseX, mouseY, partialTicks);
+		duration.render(matrixStack, mouseX, mouseY, partialTicks);
 	}
 	
 	public int getWidth() {
@@ -91,5 +102,4 @@ public class RenderOverlayMusicDisplay {
 	public int getHeight() {
 		return height;
 	}
-	
 }
