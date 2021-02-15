@@ -31,15 +31,14 @@ public class RenderOverlayMusicDisplay implements IRenderable {
 	private final ScalingTextRenderer position;
 	private final ScalingTextRenderer duration;
 	
-	public RenderOverlayMusicDisplay(IngameOverlayPosition overlayPosition, float x, float y) {
+	public RenderOverlayMusicDisplay(IngameOverlayPosition overlayPosition, float x, float y, int height, int width) {
 		this.overlayPosition = overlayPosition;
 		this.x = x;
 		this.y = y;
+		this.height = height;
+		this.width = width;
 		
 		manager = MusicPlayerManager.getPlayer().getTrackManager();
-		
-		height = 35;
-		width = 120;
 		
 		final FontRenderer fontRender = Minecraft.getInstance().fontRenderer;
 		

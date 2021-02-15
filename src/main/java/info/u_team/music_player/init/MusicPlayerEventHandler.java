@@ -85,23 +85,26 @@ public class MusicPlayerEventHandler {
 				
 				if (overlayRender == null || overlayRender.getOverlayPosition() != position) {
 					final MainWindow window = mc.getMainWindow();
-					final int width = window.getScaledWidth();
-					final int height = window.getScaledHeight();
+					final int screenWidth = window.getScaledWidth();
+					final int screenHeight = window.getScaledHeight();
+					
+					final int height = 35;
+					final int width = 120;
 					
 					final int x;
 					if (position.isLeft()) {
 						x = 3;
 					} else {
-						x = width - 3 - overlayRender.getWidth();
+						x = screenWidth - 3 - width;
 					}
 					
 					final int y;
 					if (position.isUp()) {
 						y = 3;
 					} else {
-						y = height - 3 - overlayRender.getHeight();
+						y = screenHeight - 3 - height;
 					}
-					overlayRender = new RenderOverlayMusicDisplay(position, x, y);
+					overlayRender = new RenderOverlayMusicDisplay(position, x, y, height, width);
 				}
 				
 				overlayRender.render(event.getMatrixStack(), 0, 0, event.getPartialTicks());
