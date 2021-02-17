@@ -2,6 +2,8 @@ package info.u_team.music_player.init;
 
 import java.util.List;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
+
 import info.u_team.music_player.gui.GuiMusicPlayer;
 import info.u_team.music_player.gui.controls.GuiControls;
 import info.u_team.music_player.lavaplayer.api.queue.ITrackManager;
@@ -83,31 +85,37 @@ public class MusicPlayerEventHandler {
 			if (SETTINGS_MANAGER.getSettings().isShowIngameOverlay()) {
 				final IngameOverlayPosition position = SETTINGS_MANAGER.getSettings().getIngameOverlayPosition();
 				
-				if (overlayRender == null || overlayRender.getOverlayPosition() != position) {
-					final MainWindow window = mc.getMainWindow();
-					final int screenWidth = window.getScaledWidth();
-					final int screenHeight = window.getScaledHeight();
-					
-					final int height = 35;
-					final int width = 120;
-					
-					final int x;
-					if (position.isLeft()) {
-						x = 3;
-					} else {
-						x = screenWidth - 3 - width;
-					}
-					
-					final int y;
-					if (position.isUp()) {
-						y = 3;
-					} else {
-						y = screenHeight - 3 - height;
-					}
-					overlayRender = new RenderOverlayMusicDisplay(position, x, y, height, width);
+				if (overlayRender == null) {
+					overlayRender = new RenderOverlayMusicDisplay();
 				}
 				
-				overlayRender.render(event.getMatrixStack(), 0, 0, event.getPartialTicks());
+				final MainWindow window = mc.getMainWindow();
+				final int screenWidth = window.getScaledWidth();
+				final int screenHeight = window.getScaledHeight();
+				
+				final int height = overlayRender.getHeight();
+				final int width = overlayRender.getWidth();
+				
+				final int x;
+				if (position.isLeft()) {
+					x = 3;
+				} else {
+					x = screenWidth - 3 - width;
+				}
+				
+				final int y;
+				if (position.isUp()) {
+					y = 3;
+				} else {
+					y = screenHeight - 3 - height;
+				}
+				
+				final MatrixStack matrixStack = event.getMatrixStack();
+				
+				matrixStack.push();
+				matrixStack.translate(x, y, 0);
+				overlayRender.render(matrixStack, 0, 0, event.getPartialTicks());
+				matrixStack.pop();
 			}
 		}
 	}

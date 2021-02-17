@@ -7,20 +7,13 @@ import info.u_team.music_player.init.MusicPlayerColors;
 import info.u_team.music_player.lavaplayer.api.audio.IAudioTrack;
 import info.u_team.music_player.lavaplayer.api.queue.ITrackManager;
 import info.u_team.music_player.musicplayer.MusicPlayerManager;
-import info.u_team.music_player.musicplayer.settings.IngameOverlayPosition;
 import info.u_team.u_team_core.gui.renderer.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.*;
-import net.minecraft.util.math.MathHelper;
 
 public class RenderOverlayMusicDisplay implements IRenderable {
 	
-	private final IngameOverlayPosition overlayPosition;
-	
 	private final ITrackManager manager;
-	
-	private float x;
-	private float y;
 	
 	private final int width;
 	private final int height;
@@ -31,37 +24,34 @@ public class RenderOverlayMusicDisplay implements IRenderable {
 	private final ScalingTextRenderer position;
 	private final ScalingTextRenderer duration;
 	
-	public RenderOverlayMusicDisplay(IngameOverlayPosition overlayPosition, float x, float y, int height, int width) {
-		this.overlayPosition = overlayPosition;
-		this.x = x;
-		this.y = y;
-		this.height = height;
-		this.width = width;
-		
+	public RenderOverlayMusicDisplay() {
 		manager = MusicPlayerManager.getPlayer().getTrackManager();
+		
+		height = 35;
+		width = 120;
 		
 		final FontRenderer fontRender = Minecraft.getInstance().fontRenderer;
 		
-		title = new ScrollingTextRenderer(() -> fontRender, () -> GuiTrackUtils.getValueOfPlayingTrack(track -> track.getInfo().getFixedTitle()), x + 3, y + 2);
+		title = new ScrollingTextRenderer(() -> fontRender, () -> GuiTrackUtils.getValueOfPlayingTrack(track -> track.getInfo().getFixedTitle()), 3, 2);
 		title.setStepSize(0.5F);
 		title.setColor(MusicPlayerColors.YELLOW);
 		title.setWidth(114);
 		title.setSpeedTime(35);
 		
-		author = new ScrollingTextRenderer(() -> fontRender, () -> GuiTrackUtils.getValueOfPlayingTrack(track -> track.getInfo().getFixedAuthor()), x + 3, y + 12);
+		author = new ScrollingTextRenderer(() -> fontRender, () -> GuiTrackUtils.getValueOfPlayingTrack(track -> track.getInfo().getFixedAuthor()), 3, 12);
 		author.setStepSize(0.5F);
 		author.setColor(MusicPlayerColors.YELLOW);
 		author.setScale(0.75F);
 		author.setWidth(114);
 		author.setSpeedTime(35);
 		
-		position = new ScalingTextRenderer(() -> fontRender, () -> GuiTrackUtils.getValueOfPlayingTrack(GuiTrackUtils::getFormattedPosition), x + 6, y + 28);
+		position = new ScalingTextRenderer(() -> fontRender, () -> GuiTrackUtils.getValueOfPlayingTrack(GuiTrackUtils::getFormattedPosition), 6, 28);
 		position.setColor(MusicPlayerColors.YELLOW);
 		position.setScale(0.5F);
 		
-		duration = new ScalingTextRenderer(() -> fontRender, () -> GuiTrackUtils.getValueOfPlayingTrack(GuiTrackUtils::getFormattedDuration), x + width - 6, y + 28);
+		duration = new ScalingTextRenderer(() -> fontRender, () -> GuiTrackUtils.getValueOfPlayingTrack(GuiTrackUtils::getFormattedDuration), width - 6, 28);
 		duration.setTextChanged(renderer -> {
-			duration.setX(x + width - 6 - renderer.getTextWidth());
+			duration.setX(width - 6 - renderer.getTextWidth());
 		});
 		duration.setColor(MusicPlayerColors.YELLOW);
 		duration.setScale(0.5F);
@@ -74,10 +64,8 @@ public class RenderOverlayMusicDisplay implements IRenderable {
 		if (track == null) {
 			return;
 		}
-		final int intX = MathHelper.ceil(x);
-		final int intY = MathHelper.ceil(y);
 		// Background
-		AbstractGui.fill(matrixStack, intX, intY, intX + width, intY + height, 0xFF212121);
+		AbstractGui.fill(matrixStack, 0, 0, width, height, 0xFF212121);
 		
 		// Progressbar
 		final double progress;
@@ -87,8 +75,8 @@ public class RenderOverlayMusicDisplay implements IRenderable {
 			progress = (double) track.getPosition() / track.getDuration();
 		}
 		
-		AbstractGui.fill(matrixStack, intX + 6, intY + 23, intX + width - 6, intY + 26, 0xFF555555);
-		AbstractGui.fill(matrixStack, intX + 6, intY + 23, intX + 6 + (int) ((width - 12) * progress), intY + 26, 0xFF3e9100);
+		AbstractGui.fill(matrixStack, 6, 23, width - 6, 26, 0xFF555555);
+		AbstractGui.fill(matrixStack, 6, 23, 6 + (int) ((width - 12) * progress), 26, 0xFF3E9100);
 		
 		// Draw strings
 		title.render(matrixStack, mouseX, mouseY, partialTicks);
@@ -98,10 +86,6 @@ public class RenderOverlayMusicDisplay implements IRenderable {
 		duration.render(matrixStack, mouseX, mouseY, partialTicks);
 	}
 	
-	public IngameOverlayPosition getOverlayPosition() {
-		return overlayPosition;
-	}
-	
 	public int getWidth() {
 		return width;
 	}
@@ -109,21 +93,4 @@ public class RenderOverlayMusicDisplay implements IRenderable {
 	public int getHeight() {
 		return height;
 	}
-	
-	public float getX() {
-		return x;
-	}
-	
-	public void setX(float x) {
-		this.x = x;
-	}
-	
-	public float getY() {
-		return y;
-	}
-	
-	public void setY(float y) {
-		this.y = y;
-	}
-	
 }
