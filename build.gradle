@@ -12,7 +12,7 @@ buildscript {
 		jcenter()
 	}
 	dependencies {
-		classpath group: "net.minecraftforge.gradle", name: "ForgeGradle", version: "4.0.11", changing: true
+		classpath group: "net.minecraftforge.gradle", name: "ForgeGradle", version: "4.0.18", changing: true
 		classpath group: "info.u-team.curse_gradle_uploader", name: "curse_gradle_uploader", version: "1.4.1"
 		classpath group: "com.github.jengelman.gradle.plugins", name: "shadow", version: "6.1.0"
 	}
