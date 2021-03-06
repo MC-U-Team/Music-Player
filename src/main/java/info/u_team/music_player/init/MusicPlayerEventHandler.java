@@ -114,7 +114,7 @@ public class MusicPlayerEventHandler {
 				final MatrixStack matrixStack = event.getMatrixStack();
 				
 				matrixStack.push();
-				matrixStack.translate(x, y, 0);
+				matrixStack.translate(x, y, 500);
 				overlayRender.render(matrixStack, 0, 0, event.getPartialTicks());
 				matrixStack.pop();
 			}
