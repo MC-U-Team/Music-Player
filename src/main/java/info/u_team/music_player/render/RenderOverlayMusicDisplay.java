@@ -32,24 +32,24 @@ public class RenderOverlayMusicDisplay implements IRenderable {
 		
 		final FontRenderer fontRender = Minecraft.getInstance().fontRenderer;
 		
-		title = new ScrollingTextRenderer(() -> fontRender, () -> GuiTrackUtils.getValueOfPlayingTrack(track -> track.getInfo().getFixedTitle()), 3, 2);
+		title = new ScrollingTextRenderer(fontRender, () -> GuiTrackUtils.getValueOfPlayingTrack(track -> track.getInfo().getFixedTitle()), 3, 2);
 		title.setStepSize(0.5F);
 		title.setColor(MusicPlayerColors.YELLOW);
 		title.setWidth(114);
 		title.setSpeedTime(35);
 		
-		author = new ScrollingTextRenderer(() -> fontRender, () -> GuiTrackUtils.getValueOfPlayingTrack(track -> track.getInfo().getFixedAuthor()), 3, 12);
+		author = new ScrollingTextRenderer(fontRender, () -> GuiTrackUtils.getValueOfPlayingTrack(track -> track.getInfo().getFixedAuthor()), 3, 12);
 		author.setStepSize(0.5F);
 		author.setColor(MusicPlayerColors.YELLOW);
 		author.setScale(0.75F);
 		author.setWidth(114);
 		author.setSpeedTime(35);
 		
-		position = new ScalingTextRenderer(() -> fontRender, () -> GuiTrackUtils.getValueOfPlayingTrack(GuiTrackUtils::getFormattedPosition), 6, 28);
+		position = new ScalingTextRenderer(fontRender, () -> GuiTrackUtils.getValueOfPlayingTrack(GuiTrackUtils::getFormattedPosition), 6, 28);
 		position.setColor(MusicPlayerColors.YELLOW);
 		position.setScale(0.5F);
 		
-		duration = new ScalingTextRenderer(() -> fontRender, () -> GuiTrackUtils.getValueOfPlayingTrack(GuiTrackUtils::getFormattedDuration), width - 6, 28);
+		duration = new ScalingTextRenderer(fontRender, () -> GuiTrackUtils.getValueOfPlayingTrack(GuiTrackUtils::getFormattedDuration), width - 6, 28);
 		duration.setTextChanged(renderer -> {
 			duration.setX(width - 6 - renderer.getTextWidth());
 		});

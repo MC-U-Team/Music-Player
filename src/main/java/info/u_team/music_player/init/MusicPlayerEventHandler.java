@@ -81,7 +81,8 @@ public class MusicPlayerEventHandler {
 	
 	private static void onRenderGameOverlay(RenderGameOverlayEvent.Pre event) {
 		final Minecraft mc = Minecraft.getInstance();
-		if (event.getType() == ElementType.TEXT && !mc.gameSettings.showDebugInfo && mc.currentScreen == null) {
+		// if (event.getType() == ElementType.TEXT && !mc.gameSettings.showDebugInfo && mc.currentScreen == null) {
+		if (event.getType() == ElementType.TEXT) {
 			if (SETTINGS_MANAGER.getSettings().isShowIngameOverlay()) {
 				final IngameOverlayPosition position = SETTINGS_MANAGER.getSettings().getIngameOverlayPosition();
 				
@@ -118,6 +119,7 @@ public class MusicPlayerEventHandler {
 				matrixStack.pop();
 			}
 		}
+		// }
 	}
 	
 	// Used to add buttons and gui controls to main ingame gui

@@ -133,13 +133,13 @@ public class GuiControls extends FocusableGui implements BetterNestedGui, IRende
 		
 		// Render playing track
 		// Title and author
-		titleRender = new ScrollingTextRenderer(() -> mc.fontRenderer, () -> GuiTrackUtils.getValueOfPlayingTrack(track -> track.getInfo().getFixedTitle()), small ? 10 : 25, textRenderY);
+		titleRender = new ScrollingTextRenderer(mc.fontRenderer, () -> GuiTrackUtils.getValueOfPlayingTrack(track -> track.getInfo().getFixedTitle()), small ? 10 : 25, textRenderY);
 		titleRender.setWidth(textRenderWidth);
 		titleRender.setStepSize(0.5F);
 		titleRender.setColor(MusicPlayerColors.YELLOW);
 		titleRender.setSpeedTime(35);
 		
-		authorRender = new ScrollingTextRenderer(() -> mc.fontRenderer, () -> GuiTrackUtils.getValueOfPlayingTrack(track -> track.getInfo().getFixedAuthor()), small ? 10 : 25, textRenderY + 10);
+		authorRender = new ScrollingTextRenderer(mc.fontRenderer, () -> GuiTrackUtils.getValueOfPlayingTrack(track -> track.getInfo().getFixedAuthor()), small ? 10 : 25, textRenderY + 10);
 		authorRender.setWidth(textRenderWidth);
 		authorRender.setStepSize(0.5F);
 		authorRender.setColor(MusicPlayerColors.YELLOW);
