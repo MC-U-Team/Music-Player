@@ -59,8 +59,8 @@ public class GuiMusicPlayer extends BetterScreen {
 		final ScrollingTextRenderer authorRender = controls.getAuthorRender();
 		this.init(minecraft, width, height);
 		namePlaylistField.setText(text);
-		controls.setTitleRender(titleRender);
-		controls.setAuthorRender(authorRender);
+		controls.copyTitleRendererState(titleRender);
+		controls.copyAuthorRendererState(authorRender);
 	}
 	
 	@Override

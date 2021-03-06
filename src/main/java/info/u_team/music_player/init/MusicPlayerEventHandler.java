@@ -147,11 +147,11 @@ public class MusicPlayerEventHandler {
 			if (SETTINGS_MANAGER.getSettings().isShowIngameMenueOverlay()) {
 				final GuiControls controls = new GuiControls(gui, 3, gui.width);
 				if (titleRender != null) {
-					controls.setTitleRender(titleRender);
+					controls.copyTitleRendererState(titleRender);
 					titleRender = null;
 				}
 				if (authorRender != null) {
-					controls.setAuthorRender(authorRender);
+					controls.copyAuthorRendererState(authorRender);
 					authorRender = null;
 				}
 				@SuppressWarnings("unchecked")

@@ -204,15 +204,16 @@ public class GuiControls extends FocusableGui implements BetterNestedGui, IRende
 		return titleRender;
 	}
 	
-	public void setTitleRender(ScrollingTextRenderer titleRender) {
-		this.titleRender = titleRender;
-	}
-	
 	public ScrollingTextRenderer getAuthorRender() {
 		return authorRender;
 	}
 	
-	public void setAuthorRender(ScrollingTextRenderer authorRender) {
-		this.authorRender = authorRender;
+	public void copyTitleRendererState(ScrollingTextRenderer renderer) {
+		titleRender.copyState(renderer);
 	}
+	
+	public void copyAuthorRendererState(ScrollingTextRenderer renderer) {
+		authorRender.copyState(renderer);
+	}
+	
 }
