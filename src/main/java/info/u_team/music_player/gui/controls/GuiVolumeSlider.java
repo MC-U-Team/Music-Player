@@ -2,6 +2,8 @@ package info.u_team.music_player.gui.controls;
 
 import info.u_team.u_team_core.gui.elements.ScalableSlider;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.audio.SimpleSound;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.util.text.ITextComponent;
 
 public class GuiVolumeSlider extends ScalableSlider {
@@ -21,7 +23,7 @@ public class GuiVolumeSlider extends ScalableSlider {
 	@Override
 	public void onRelease(double mouseX, double mouseY) {
 		if (isHovered() && clicked) {
-			super.playDownSound(Minecraft.getInstance().getSoundHandler());
+			Minecraft.getInstance().getSoundHandler().play(SimpleSound.master(SoundEvents.UI_BUTTON_CLICK, 1));
 		}
 		clicked = false;
 	}
