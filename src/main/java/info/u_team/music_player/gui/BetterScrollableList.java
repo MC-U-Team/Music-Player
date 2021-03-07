@@ -8,6 +8,9 @@ public class BetterScrollableList<T extends AbstractList.AbstractListEntry<T>> e
 	
 	public BetterScrollableList(int width, int height, int top, int bottom, int left, int right, int slotHeight, int sideDistance) {
 		super(width, height, top, bottom, left, right, slotHeight, sideDistance);
+		func_244606_c(false);
+		setShouldUseScissor(true);
+		setShouldRenderTransparentBorder(true);
 	}
 	
 	@Override
