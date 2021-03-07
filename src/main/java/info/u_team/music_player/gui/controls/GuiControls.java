@@ -175,6 +175,16 @@ public class GuiControls extends FocusableGui implements BetterNestedGui, IRende
 		authorRender.render(matrixStack, mouseX, mouseY, partialTicks);
 	}
 	
+	@Override
+	public boolean mouseClicked(double mouseX, double mouseY, int button) {
+		if (manager.getCurrentTrack() != null && button == 0 && mouseX >= titleRender.getX() && mouseY >= titleRender.getY() && mouseX < titleRender.getX() + titleRender.getWidth() && mouseY < titleRender.getY() + (Minecraft.getInstance().fontRenderer.FONT_HEIGHT + 1) * titleRender.getScale()) {
+			if (GuiTrackUtils.openURI(manager.getCurrentTrack().getInfo().getURI())) {
+				return true;
+			}
+		}
+		return super.mouseClicked(mouseX, mouseY, button);
+	}
+	
 	private <B extends Widget> B addButton(B button) {
 		buttons.add(button);
 		disableButtons.add(button);
