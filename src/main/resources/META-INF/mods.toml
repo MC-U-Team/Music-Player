@@ -1,5 +1,5 @@
 modLoader="javafml"
-loaderVersion="[35,)"
+loaderVersion="[36,)"
 issueTrackerURL="https://github.com/MC-U-Team/Music-Player/issues"
 displayURL="https://u-team.info/mods/musicplayer"
 logoFile="logo.png"
@@ -17,20 +17,20 @@ authors="HyCraftHD"
 	[[dependencies.musicplayer]]
 	    modId="forge"
 	    mandatory=true
-	    versionRange="[35.1.37,)"
+	    versionRange="[36.0.22,)"
 	    ordering="NONE"
 	    side="BOTH"
 	
 	[[dependencies.musicplayer]]
 	    modId="minecraft"
 	    mandatory=true
-	    versionRange="[1.16.4]"
+	    versionRange="[1.16.5]"
 	    ordering="NONE"
 	    side="BOTH"
 	    
 	[[dependencies.musicplayer]]
 	    modId="uteamcore"
 	    mandatory=true
-	    versionRange="[3.1.17.192,)"
+	    versionRange="[3.2.0.193-SNAPSHOT,)"
 	    ordering="NONE"
 	    side="BOTH"
