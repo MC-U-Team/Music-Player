@@ -117,7 +117,7 @@ public class GuiControls extends FocusableGui implements BetterNestedGui, IRende
 		
 		// Volume
 		final int volumeY = width - (70 + (isIngame ? 15 * 2 + 3 : (!isSettings ? 15 + 2 : 1)));
-		addButtonNonDisable(new ScalableSlider(volumeY, 1, 70, 15, ITextComponent.getTextComponentOrEmpty(getTranslation(GUI_CONTROLS_VOLUME) + ": "), ITextComponent.getTextComponentOrEmpty("%"), 0, 100, settings.getVolume(), false, true, false, 0.7F, slider -> {
+		addButtonNonDisable(new GuiVolumeSlider(volumeY, 1, 70, 15, ITextComponent.getTextComponentOrEmpty(getTranslation(GUI_CONTROLS_VOLUME) + ": "), ITextComponent.getTextComponentOrEmpty("%"), 0, 100, settings.getVolume(), false, true, false, 0.7F, slider -> {
 			settings.setVolume(slider.getValueInt());
 			MusicPlayerManager.getPlayer().setVolume(settings.getVolume());
 		}));
