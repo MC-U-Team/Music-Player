@@ -175,11 +175,6 @@ public class GuiControls extends FocusableGui implements BetterNestedGui, IRende
 		authorRender.render(matrixStack, mouseX, mouseY, partialTicks);
 	}
 	
-	@Override
-	public boolean mouseReleased(double mouseX, double mouseY, int button) {
-		return super.mouseReleased(mouseX, mouseY, button);
-	}
-	
 	private <B extends Widget> B addButton(B button) {
 		buttons.add(button);
 		disableButtons.add(button);
