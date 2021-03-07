@@ -120,13 +120,7 @@ public class GuiControls extends FocusableGui implements BetterNestedGui, IRende
 		addButtonNonDisable(new ScalableSlider(volumeY, 1, 70, 15, ITextComponent.getTextComponentOrEmpty(getTranslation(GUI_CONTROLS_VOLUME) + ": "), ITextComponent.getTextComponentOrEmpty("%"), 0, 100, settings.getVolume(), false, true, false, 0.7F, slider -> {
 			settings.setVolume(slider.getValueInt());
 			MusicPlayerManager.getPlayer().setVolume(settings.getVolume());
-		}) {
-			
-			@Override
-			public boolean isMouseOver(double mouseX, double mouseY) {
-				return active; // Return always true here to mouseRelease is always called to the slider
-			}
-		});
+		}));
 		
 		final int textRenderWidth = middleX - (2 * buttonSize + halfButtonSize + 10) - (small ? 15 : 35);
 		final int textRenderY = small ? y : y + 2;
@@ -179,6 +173,11 @@ public class GuiControls extends FocusableGui implements BetterNestedGui, IRende
 		
 		titleRender.render(matrixStack, mouseX, mouseY, partialTicks);
 		authorRender.render(matrixStack, mouseX, mouseY, partialTicks);
+	}
+	
+	@Override
+	public boolean mouseReleased(double mouseX, double mouseY, int button) {
+		return super.mouseReleased(mouseX, mouseY, button);
 	}
 	
 	private <B extends Widget> B addButton(B button) {
