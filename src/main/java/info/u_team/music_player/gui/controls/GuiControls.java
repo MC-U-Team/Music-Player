@@ -37,8 +37,8 @@ public class GuiControls extends FocusableGui implements BetterNestedGui, IRende
 	
 	private final GuiMusicProgressBar songProgress;
 	
-	private ScrollingTextRenderer titleRender;
-	private ScrollingTextRenderer authorRender;
+	private final ScrollingTextRenderer titleRender;
+	private final ScrollingTextRenderer authorRender;
 	
 	public GuiControls(Screen gui, int y, int width) {
 		this.y = y;
