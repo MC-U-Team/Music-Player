@@ -1,7 +1,7 @@
 apply plugin: "java"
 
 repositories {
-	jcenter()
+	jcenter() // Change when an other option is available
 }
 
 java {
