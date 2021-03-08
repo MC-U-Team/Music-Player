@@ -10,9 +10,9 @@ java {
 	}
 }
 
-configurations { 
-    musicplayer
-    compile.extendsFrom(musicplayer)
+configurations {
+	musicplayer
+	compile.extendsFrom(musicplayer)
 }
 
 task deleteOldDep(type: Delete) {
