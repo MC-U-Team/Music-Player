@@ -74,7 +74,7 @@ public class AudioOutput extends Thread {
 					sleep(frameDuration);
 				}
 			}
-		} catch (Exception ex) {
+		} catch (final Exception ex) {
 			ex.printStackTrace();
 		}
 	}
@@ -113,7 +113,7 @@ public class AudioOutput extends Thread {
 				line.start();
 				souceLine = line;
 				return true;
-			} catch (LineUnavailableException ex) {
+			} catch (final LineUnavailableException ex) {
 			}
 		}
 		return false;
@@ -129,7 +129,7 @@ public class AudioOutput extends Thread {
 	
 	private Mixer findMixer(String name, Line.Info lineInfo) {
 		Mixer defaultMixer = null;
-		for (Mixer.Info mixerInfo : AudioSystem.getMixerInfo()) {
+		for (final Mixer.Info mixerInfo : AudioSystem.getMixerInfo()) {
 			final Mixer mixer = AudioSystem.getMixer(mixerInfo);
 			if (mixer.isLineSupported(lineInfo)) {
 				if (mixerInfo.getName().equals(name)) {
