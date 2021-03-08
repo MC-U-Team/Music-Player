@@ -202,8 +202,28 @@ compileJava {
     options.encoding = "UTF-8"
 }
 
+def getValue(name) {
+	def envVariable = System.getenv(name)
+	if(envVariable != null) {
+		return envVariable
+	} else {
+		if (project.hasProperty(name)) {
+			return project.getProperty(name)
+		}
+	}
+	return null;
+}
+
+def getValueDefault(name) {
+	def value = getValue(name)
+	if(value == null) {
+		return "noValue"
+	}
+	return value
+}
+
 curseforge {
-	apiKey = project.getProperty("token")
+	apiKey = getValueDefault("token")
 	
 	tasks.curseforge.dependsOn build
 	
