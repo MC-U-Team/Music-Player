@@ -1,7 +1,9 @@
 apply plugin: "java"
 
 repositories {
-	jcenter() // Change when an other option is available
+	maven {
+		url "https://m2.dv8tion.net/releases"
+	}
 }
 
 java {
