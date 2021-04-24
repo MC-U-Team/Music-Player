@@ -308,7 +308,7 @@ task uploadBoth {
 }
 
 gradle.taskGraph.whenReady {
-	if (gradle.taskGraph.hasTask(":curseforge${config.curse.id}") || gradle.taskGraph.hasTask(":uploadArchives")) {
+	if (gradle.taskGraph.hasTask(":curseforge${config.curse.id}") || gradle.taskGraph.hasTask(":publish")) {
 		validateBuild()
 	}
 }
