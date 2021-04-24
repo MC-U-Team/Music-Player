@@ -1,8 +1,11 @@
 package info.u_team.music_player.lavaplayer.api.util;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
-import javax.sound.sampled.*;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Line;
+import javax.sound.sampled.Mixer;
 
 public class AudioUtil {
 	

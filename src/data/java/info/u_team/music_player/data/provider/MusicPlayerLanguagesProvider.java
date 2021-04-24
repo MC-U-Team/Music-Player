@@ -1,8 +1,41 @@
 package info.u_team.music_player.data.provider;
 
-import static info.u_team.music_player.init.MusicPlayerLocalization.*;
+import static info.u_team.music_player.init.MusicPlayerLocalization.GUI_CONTROLS_VOLUME;
+import static info.u_team.music_player.init.MusicPlayerLocalization.GUI_CREATE_PLAYLIST_ADD_LIST;
+import static info.u_team.music_player.init.MusicPlayerLocalization.GUI_CREATE_PLAYLIST_INSERT_NAME;
+import static info.u_team.music_player.init.MusicPlayerLocalization.GUI_PLAYLISTS_ENTRIES;
+import static info.u_team.music_player.init.MusicPlayerLocalization.GUI_PLAYLISTS_ENTRY;
+import static info.u_team.music_player.init.MusicPlayerLocalization.GUI_PLAYLISTS_NO_NAME;
+import static info.u_team.music_player.init.MusicPlayerLocalization.GUI_PLAYLIST_LOADING;
+import static info.u_team.music_player.init.MusicPlayerLocalization.GUI_SEARCH_ADDED;
+import static info.u_team.music_player.init.MusicPlayerLocalization.GUI_SEARCH_ADDED_ALL;
+import static info.u_team.music_player.init.MusicPlayerLocalization.GUI_SEARCH_ADDED_LIST;
+import static info.u_team.music_player.init.MusicPlayerLocalization.GUI_SEARCH_ADD_ALL;
+import static info.u_team.music_player.init.MusicPlayerLocalization.GUI_SEARCH_HEADER;
+import static info.u_team.music_player.init.MusicPlayerLocalization.GUI_SEARCH_LOAD_FILE;
+import static info.u_team.music_player.init.MusicPlayerLocalization.GUI_SEARCH_LOAD_FOLDER;
+import static info.u_team.music_player.init.MusicPlayerLocalization.GUI_SEARCH_MUSIC_FILES;
+import static info.u_team.music_player.init.MusicPlayerLocalization.GUI_SEARCH_SEARCH_FILE;
+import static info.u_team.music_player.init.MusicPlayerLocalization.GUI_SEARCH_SEARCH_SEARCH;
+import static info.u_team.music_player.init.MusicPlayerLocalization.GUI_SEARCH_SEARCH_URI;
+import static info.u_team.music_player.init.MusicPlayerLocalization.GUI_SETTINGS_MIXER_DEVICE_SELECTION;
+import static info.u_team.music_player.init.MusicPlayerLocalization.GUI_SETTINGS_POSITION_DOWN_LEFT;
+import static info.u_team.music_player.init.MusicPlayerLocalization.GUI_SETTINGS_POSITION_DOWN_RIGHT;
+import static info.u_team.music_player.init.MusicPlayerLocalization.GUI_SETTINGS_POSITION_OVERLAY;
+import static info.u_team.music_player.init.MusicPlayerLocalization.GUI_SETTINGS_POSITION_UP_LEFT;
+import static info.u_team.music_player.init.MusicPlayerLocalization.GUI_SETTINGS_POSITION_UP_RIGHT;
+import static info.u_team.music_player.init.MusicPlayerLocalization.GUI_SETTINGS_TOGGLE_INGAME_OVERLAY;
+import static info.u_team.music_player.init.MusicPlayerLocalization.GUI_SETTINGS_TOGGLE_KEY_IN_GUI;
+import static info.u_team.music_player.init.MusicPlayerLocalization.GUI_SETTINGS_TOGGLE_MENUE_OVERLAY;
+import static info.u_team.music_player.init.MusicPlayerLocalization.GUI_TRACK_DURATION_UNDEFINED;
+import static info.u_team.music_player.init.MusicPlayerLocalization.KEY_CATEGORY;
+import static info.u_team.music_player.init.MusicPlayerLocalization.KEY_OPEN;
+import static info.u_team.music_player.init.MusicPlayerLocalization.KEY_PAUSE;
+import static info.u_team.music_player.init.MusicPlayerLocalization.KEY_SKIP_BACK;
+import static info.u_team.music_player.init.MusicPlayerLocalization.KEY_SKIP_FORWARD;
 
-import info.u_team.u_team_core.data.*;
+import info.u_team.u_team_core.data.CommonLanguagesProvider;
+import info.u_team.u_team_core.data.GenerationData;
 
 public class MusicPlayerLanguagesProvider extends CommonLanguagesProvider {
 	

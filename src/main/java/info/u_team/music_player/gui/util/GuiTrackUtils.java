@@ -1,17 +1,20 @@
 package info.u_team.music_player.gui.util;
 
-import static info.u_team.music_player.init.MusicPlayerLocalization.*;
+import static info.u_team.music_player.init.MusicPlayerLocalization.GUI_TRACK_DURATION_UNDEFINED;
+import static info.u_team.music_player.init.MusicPlayerLocalization.getTranslation;
 
 import java.net.URI;
 import java.util.function.Function;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 
-import info.u_team.music_player.lavaplayer.api.audio.*;
+import info.u_team.music_player.lavaplayer.api.audio.IAudioTrack;
+import info.u_team.music_player.lavaplayer.api.audio.IAudioTrackInfo;
 import info.u_team.music_player.musicplayer.MusicPlayerManager;
 import info.u_team.music_player.util.TimeUtil;
 import net.minecraft.client.Minecraft;
-import net.minecraft.util.text.*;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.Style;
 import net.minecraft.util.text.event.ClickEvent;
 import net.minecraft.util.text.event.ClickEvent.Action;
 

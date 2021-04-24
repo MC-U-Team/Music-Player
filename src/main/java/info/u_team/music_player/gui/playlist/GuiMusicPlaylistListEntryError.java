@@ -2,7 +2,9 @@ package info.u_team.music_player.gui.playlist;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 
-import info.u_team.music_player.musicplayer.playlist.*;
+import info.u_team.music_player.musicplayer.playlist.LoadedTracks;
+import info.u_team.music_player.musicplayer.playlist.Playlist;
+import info.u_team.music_player.musicplayer.playlist.Playlists;
 
 public class GuiMusicPlaylistListEntryError extends GuiMusicPlaylistListEntryFunctions {
 	

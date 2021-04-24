@@ -1,6 +1,7 @@
 package info.u_team.music_player.dependency.classloader;
 
-import java.net.*;
+import java.net.URL;
+import java.net.URLClassLoader;
 
 public class DependencyClassLoader extends URLClassLoader {
 	

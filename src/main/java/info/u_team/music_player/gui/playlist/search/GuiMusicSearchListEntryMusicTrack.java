@@ -1,6 +1,7 @@
 package info.u_team.music_player.gui.playlist.search;
 
-import static info.u_team.music_player.init.MusicPlayerLocalization.*;
+import static info.u_team.music_player.init.MusicPlayerLocalization.GUI_SEARCH_ADDED;
+import static info.u_team.music_player.init.MusicPlayerLocalization.getTranslation;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 

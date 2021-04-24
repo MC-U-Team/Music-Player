@@ -1,11 +1,23 @@
 package info.u_team.music_player.gui.playlist.search;
 
-import static info.u_team.music_player.init.MusicPlayerLocalization.*;
+import static info.u_team.music_player.init.MusicPlayerLocalization.GUI_SEARCH_ADDED_ALL;
+import static info.u_team.music_player.init.MusicPlayerLocalization.GUI_SEARCH_ADD_ALL;
+import static info.u_team.music_player.init.MusicPlayerLocalization.GUI_SEARCH_HEADER;
+import static info.u_team.music_player.init.MusicPlayerLocalization.GUI_SEARCH_LOAD_FILE;
+import static info.u_team.music_player.init.MusicPlayerLocalization.GUI_SEARCH_LOAD_FOLDER;
+import static info.u_team.music_player.init.MusicPlayerLocalization.GUI_SEARCH_MUSIC_FILES;
+import static info.u_team.music_player.init.MusicPlayerLocalization.GUI_SEARCH_SEARCH_FILE;
+import static info.u_team.music_player.init.MusicPlayerLocalization.GUI_SEARCH_SEARCH_SEARCH;
+import static info.u_team.music_player.init.MusicPlayerLocalization.GUI_SEARCH_SEARCH_URI;
+import static info.u_team.music_player.init.MusicPlayerLocalization.getTranslation;
 
 import java.io.IOException;
-import java.nio.file.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
-import java.util.stream.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.util.tinyfd.TinyFileDialogs;
@@ -15,13 +27,17 @@ import com.mojang.blaze3d.matrix.MatrixStack;
 import info.u_team.music_player.gui.BetterScreen;
 import info.u_team.music_player.gui.playlist.GuiMusicPlaylist;
 import info.u_team.music_player.init.MusicPlayerResources;
-import info.u_team.music_player.lavaplayer.api.audio.*;
+import info.u_team.music_player.lavaplayer.api.audio.IAudioTrack;
+import info.u_team.music_player.lavaplayer.api.audio.IAudioTrackList;
 import info.u_team.music_player.musicplayer.MusicPlayerManager;
 import info.u_team.music_player.musicplayer.playlist.Playlist;
-import info.u_team.u_team_core.gui.elements.*;
+import info.u_team.u_team_core.gui.elements.ImageButton;
+import info.u_team.u_team_core.gui.elements.UButton;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.widget.TextFieldWidget;
-import net.minecraft.util.text.*;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.TextFormatting;
 
 public class GuiMusicSearch extends BetterScreen {
 	

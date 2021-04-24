@@ -1,10 +1,13 @@
 package info.u_team.music_player.gui.playlist;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 import info.u_team.music_player.gui.BetterScrollableList;
 import info.u_team.music_player.musicplayer.MusicPlayerManager;
-import info.u_team.music_player.musicplayer.playlist.*;
+import info.u_team.music_player.musicplayer.playlist.LoadedTracks;
+import info.u_team.music_player.musicplayer.playlist.Playlist;
+import info.u_team.music_player.musicplayer.playlist.Playlists;
 
 public class GuiMusicPlaylistList extends BetterScrollableList<GuiMusicPlaylistListEntry> {
 	

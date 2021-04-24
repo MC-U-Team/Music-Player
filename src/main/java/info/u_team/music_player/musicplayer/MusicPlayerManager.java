@@ -1,8 +1,10 @@
 package info.u_team.music_player.musicplayer;
 
-import org.apache.logging.log4j.*;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
-import com.google.gson.*;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import info.u_team.music_player.dependency.DependencyManager;
 import info.u_team.music_player.lavaplayer.api.IMusicPlayer;

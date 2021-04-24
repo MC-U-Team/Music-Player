@@ -1,19 +1,29 @@
 package info.u_team.music_player.gui.settings;
 
-import static info.u_team.music_player.init.MusicPlayerLocalization.*;
+import static info.u_team.music_player.init.MusicPlayerLocalization.GUI_SETTINGS_MIXER_DEVICE_SELECTION;
+import static info.u_team.music_player.init.MusicPlayerLocalization.GUI_SETTINGS_POSITION_OVERLAY;
+import static info.u_team.music_player.init.MusicPlayerLocalization.GUI_SETTINGS_TOGGLE_INGAME_OVERLAY;
+import static info.u_team.music_player.init.MusicPlayerLocalization.GUI_SETTINGS_TOGGLE_KEY_IN_GUI;
+import static info.u_team.music_player.init.MusicPlayerLocalization.GUI_SETTINGS_TOGGLE_MENUE_OVERLAY;
+import static info.u_team.music_player.init.MusicPlayerLocalization.getTranslation;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 
 import info.u_team.music_player.gui.BetterScreen;
 import info.u_team.music_player.gui.controls.GuiControls;
-import info.u_team.music_player.init.*;
+import info.u_team.music_player.init.MusicPlayerColors;
+import info.u_team.music_player.init.MusicPlayerResources;
 import info.u_team.music_player.musicplayer.MusicPlayerManager;
-import info.u_team.music_player.musicplayer.settings.*;
-import info.u_team.u_team_core.gui.elements.*;
+import info.u_team.music_player.musicplayer.settings.IngameOverlayPosition;
+import info.u_team.music_player.musicplayer.settings.Settings;
+import info.u_team.u_team_core.gui.elements.ImageButton;
+import info.u_team.u_team_core.gui.elements.ScalableActivatableButton;
+import info.u_team.u_team_core.gui.elements.UButton;
 import info.u_team.u_team_core.gui.renderer.ScrollingTextRenderer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.util.text.*;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
 
 public class GuiMusicPlayerSettings extends BetterScreen {
 	

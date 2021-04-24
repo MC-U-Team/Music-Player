@@ -1,13 +1,18 @@
 package info.u_team.music_player.lavaplayer.testimpl;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Random;
+import java.util.Scanner;
 
-import org.slf4j.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import info.u_team.music_player.lavaplayer.MusicPlayer;
 import info.u_team.music_player.lavaplayer.api.IMusicPlayer;
 import info.u_team.music_player.lavaplayer.api.audio.IAudioTrack;
-import info.u_team.music_player.lavaplayer.api.queue.*;
+import info.u_team.music_player.lavaplayer.api.queue.ITrackManager;
+import info.u_team.music_player.lavaplayer.api.queue.ITrackQueue;
 
 public class Main {
 	

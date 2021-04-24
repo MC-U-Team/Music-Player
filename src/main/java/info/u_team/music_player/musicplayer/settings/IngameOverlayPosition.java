@@ -1,6 +1,9 @@
 package info.u_team.music_player.musicplayer.settings;
 
-import static info.u_team.music_player.init.MusicPlayerLocalization.*;
+import static info.u_team.music_player.init.MusicPlayerLocalization.GUI_SETTINGS_POSITION_DOWN_LEFT;
+import static info.u_team.music_player.init.MusicPlayerLocalization.GUI_SETTINGS_POSITION_DOWN_RIGHT;
+import static info.u_team.music_player.init.MusicPlayerLocalization.GUI_SETTINGS_POSITION_UP_LEFT;
+import static info.u_team.music_player.init.MusicPlayerLocalization.GUI_SETTINGS_POSITION_UP_RIGHT;
 
 public enum IngameOverlayPosition {
 	

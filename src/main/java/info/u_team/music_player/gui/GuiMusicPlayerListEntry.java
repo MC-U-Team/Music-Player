@@ -1,6 +1,9 @@
 package info.u_team.music_player.gui;
 
-import static info.u_team.music_player.init.MusicPlayerLocalization.*;
+import static info.u_team.music_player.init.MusicPlayerLocalization.GUI_PLAYLISTS_ENTRIES;
+import static info.u_team.music_player.init.MusicPlayerLocalization.GUI_PLAYLISTS_ENTRY;
+import static info.u_team.music_player.init.MusicPlayerLocalization.GUI_PLAYLISTS_NO_NAME;
+import static info.u_team.music_player.init.MusicPlayerLocalization.getTranslation;
 
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -11,8 +14,12 @@ import info.u_team.music_player.init.MusicPlayerResources;
 import info.u_team.music_player.lavaplayer.api.audio.IAudioTrack;
 import info.u_team.music_player.lavaplayer.api.queue.ITrackManager;
 import info.u_team.music_player.musicplayer.MusicPlayerManager;
-import info.u_team.music_player.musicplayer.playlist.*;
-import info.u_team.u_team_core.gui.elements.*;
+import info.u_team.music_player.musicplayer.playlist.LoadedTracks;
+import info.u_team.music_player.musicplayer.playlist.Playlist;
+import info.u_team.music_player.musicplayer.playlist.Playlists;
+import info.u_team.music_player.musicplayer.playlist.Skip;
+import info.u_team.u_team_core.gui.elements.ImageButton;
+import info.u_team.u_team_core.gui.elements.ImageToggleButton;
 
 class GuiMusicPlayerListEntry extends BetterScrollableListEntry<GuiMusicPlayerListEntry> {
 	

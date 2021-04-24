@@ -1,6 +1,8 @@
 package info.u_team.music_player.gui;
 
-import static info.u_team.music_player.init.MusicPlayerLocalization.*;
+import static info.u_team.music_player.init.MusicPlayerLocalization.GUI_CREATE_PLAYLIST_ADD_LIST;
+import static info.u_team.music_player.init.MusicPlayerLocalization.GUI_CREATE_PLAYLIST_INSERT_NAME;
+import static info.u_team.music_player.init.MusicPlayerLocalization.getTranslation;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -12,7 +14,8 @@ import info.u_team.u_team_core.gui.elements.ImageButton;
 import info.u_team.u_team_core.gui.renderer.ScrollingTextRenderer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.widget.TextFieldWidget;
-import net.minecraft.util.text.*;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
 
 public class GuiMusicPlayer extends BetterScreen {
 	

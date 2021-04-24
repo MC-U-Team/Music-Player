@@ -7,9 +7,12 @@ import info.u_team.music_player.init.MusicPlayerColors;
 import info.u_team.music_player.lavaplayer.api.audio.IAudioTrack;
 import info.u_team.music_player.lavaplayer.api.queue.ITrackManager;
 import info.u_team.music_player.musicplayer.MusicPlayerManager;
-import info.u_team.u_team_core.gui.renderer.*;
+import info.u_team.u_team_core.gui.renderer.ScalingTextRenderer;
+import info.u_team.u_team_core.gui.renderer.ScrollingTextRenderer;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.*;
+import net.minecraft.client.gui.AbstractGui;
+import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.gui.IRenderable;
 
 public class RenderOverlayMusicDisplay implements IRenderable {
 	

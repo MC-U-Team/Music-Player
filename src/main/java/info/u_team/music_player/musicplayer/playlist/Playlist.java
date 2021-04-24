@@ -1,13 +1,20 @@
 package info.u_team.music_player.musicplayer.playlist;
 
-import java.util.*;
-import java.util.concurrent.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.Random;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.function.*;
+import java.util.function.Function;
+import java.util.function.IntPredicate;
 
 import org.apache.commons.lang3.tuple.Pair;
 
-import info.u_team.music_player.lavaplayer.api.audio.*;
+import info.u_team.music_player.lavaplayer.api.audio.IAudioTrack;
+import info.u_team.music_player.lavaplayer.api.audio.IAudioTrackList;
 import info.u_team.music_player.lavaplayer.api.queue.ITrackQueue;
 import info.u_team.music_player.lavaplayer.api.search.ITrackSearch;
 import info.u_team.music_player.musicplayer.MusicPlayerManager;

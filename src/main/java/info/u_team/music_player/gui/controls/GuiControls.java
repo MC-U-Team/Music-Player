@@ -1,23 +1,34 @@
 package info.u_team.music_player.gui.controls;
 
-import static info.u_team.music_player.init.MusicPlayerLocalization.*;
+import static info.u_team.music_player.init.MusicPlayerLocalization.GUI_CONTROLS_VOLUME;
+import static info.u_team.music_player.init.MusicPlayerLocalization.getTranslation;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 
-import info.u_team.music_player.gui.*;
+import info.u_team.music_player.gui.BetterNestedGui;
+import info.u_team.music_player.gui.GuiMusicPlayer;
 import info.u_team.music_player.gui.settings.GuiMusicPlayerSettings;
 import info.u_team.music_player.gui.util.GuiTrackUtils;
-import info.u_team.music_player.init.*;
+import info.u_team.music_player.init.MusicPlayerColors;
+import info.u_team.music_player.init.MusicPlayerResources;
 import info.u_team.music_player.lavaplayer.api.queue.ITrackManager;
-import info.u_team.music_player.musicplayer.*;
-import info.u_team.music_player.musicplayer.settings.*;
-import info.u_team.u_team_core.gui.elements.*;
+import info.u_team.music_player.musicplayer.MusicPlayerManager;
+import info.u_team.music_player.musicplayer.MusicPlayerUtils;
+import info.u_team.music_player.musicplayer.settings.Repeat;
+import info.u_team.music_player.musicplayer.settings.Settings;
+import info.u_team.u_team_core.gui.elements.ImageActivatableButton;
+import info.u_team.u_team_core.gui.elements.ImageButton;
+import info.u_team.u_team_core.gui.elements.ImageToggleButton;
 import info.u_team.u_team_core.gui.renderer.ScrollingTextRenderer;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.*;
-import net.minecraft.client.gui.screen.*;
+import net.minecraft.client.gui.FocusableGui;
+import net.minecraft.client.gui.IGuiEventListener;
+import net.minecraft.client.gui.IRenderable;
+import net.minecraft.client.gui.screen.IngameMenuScreen;
+import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.Widget;
 import net.minecraft.util.text.ITextComponent;
 

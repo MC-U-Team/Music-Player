@@ -1,8 +1,11 @@
 package info.u_team.music_player.init;
 
-import java.nio.file.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
-import org.apache.logging.log4j.*;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import info.u_team.music_player.config.ClientConfig;
 import net.harawata.appdirs.AppDirsFactory;

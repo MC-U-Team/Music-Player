@@ -1,6 +1,8 @@
 package info.u_team.music_player.musicplayer.playlist;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 import com.google.common.collect.Iterators;
 
