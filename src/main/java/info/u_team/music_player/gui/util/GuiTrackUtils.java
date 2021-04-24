@@ -20,7 +20,7 @@ public final class GuiTrackUtils {
 	private static final Minecraft MINECRAFT = Minecraft.getInstance();
 	
 	public static String trimToWith(String string, int width) {
-		String newString = MINECRAFT.fontRenderer.func_238412_a_(string, width);
+		String newString = MINECRAFT.fontRenderer.trimStringToWidth(string, width);
 		if (!newString.equals(string)) {
 			newString += "...";
 		}
