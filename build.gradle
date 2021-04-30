@@ -8,7 +8,7 @@ buildscript {
 	dependencies {
 		classpath group: "net.minecraftforge.gradle", name: "ForgeGradle", version: "3.+", changing: true
 		classpath "gradle.plugin.com.matthewprenger:CurseGradle:1.4.0"
-		classpath group: "com.github.jengelman.gradle.plugins", name: "shadow", version: "4.0.4"
+		classpath group: "com.github.jengelman.gradle.plugins", name: "shadow", version: "6.1.0"
 	}
 }
 
