@@ -302,6 +302,7 @@ task uploadBoth {
 	tasks.uploadBoth.dependsOn publish
 	tasks.uploadBoth.dependsOn "curseforge${config.curse.id}"
 	tasks.uploadBoth.dependsOn setBuildNumber
+	tasks.uploadBoth.dependsOn tagRelease
 	doLast {
 		println "Published both"
 	}
