@@ -39,6 +39,6 @@ sourceSets {
 
 dependencies {
 	compile "com.sedmelluq:lavaplayer:1.3.77"
-	compile "org.slf4j:slf4j-simple:1.7.25"
+	compile "org.slf4j:slf4j-simple:1.7.31"
 	compile project(":musicplayer-lavaplayer-api")
 }
