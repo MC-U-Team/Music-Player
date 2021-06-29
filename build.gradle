@@ -251,17 +251,9 @@ uploadArchives {
 
 	repositories {
 		mavenDeployer {
-			String mavenPass = System.getenv("mavenpass")
-			if(mavenPass == null) {
-				if (project.hasProperty("mavenpass")) {
-					mavenPass = project.getProperty("token")
-				} else {
-					mavenPass = "mrTroble" //We dont have one lol ¯\_(ツ)_/¯
-				}
-			}
-			if (mavenPass != null) {
+			if (project.hasProperty("mavenpass")) {
 				repository(url: "https://repo.u-team.info") {
-					authentication(userName: "maven", password: mavenPass)
+					authentication(userName: "maven", password: project.getProperty("mavenpass"))
 				}
 			}
 			pom {
