@@ -64,8 +64,8 @@ public class GuiMusicPlaylistList extends BetterScrollableList<GuiMusicPlaylistL
 	}
 	
 	public void setSelectedEntryWhenMove(GuiMusicPlaylistListEntry entry, int indexOffset) {
-		final int index = getEventListeners().lastIndexOf(entry) + indexOffset;
-		if (index >= 0 && index < getEventListeners().size()) {
+		final int index = children().lastIndexOf(entry) + indexOffset;
+		if (index >= 0 && index < children().size()) {
 			selectIndex = index;
 		}
 	}
@@ -78,12 +78,12 @@ public class GuiMusicPlaylistList extends BetterScrollableList<GuiMusicPlaylistL
 	@Override
 	public void setSelected(GuiMusicPlaylistListEntry entry) {
 		if (entry != null) {
-			selectIndex = getEventListeners().indexOf(entry);
+			selectIndex = children().indexOf(entry);
 		}
 		super.setSelected(entry);
 	}
 	
 	public void tick() {
-		getEventListeners().forEach(GuiMusicPlaylistListEntry::tick);
+		children().forEach(GuiMusicPlaylistListEntry::tick);
 	}
 }

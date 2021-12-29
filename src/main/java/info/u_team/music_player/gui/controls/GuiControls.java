@@ -6,7 +6,7 @@ import static info.u_team.music_player.init.MusicPlayerLocalization.getTranslati
 import java.util.ArrayList;
 import java.util.List;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 
 import info.u_team.music_player.gui.BetterNestedGui;
 import info.u_team.music_player.gui.GuiMusicPlayer;
@@ -24,23 +24,23 @@ import info.u_team.u_team_core.gui.elements.ImageButton;
 import info.u_team.u_team_core.gui.elements.ImageToggleButton;
 import info.u_team.u_team_core.gui.renderer.ScrollingTextRenderer;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.FocusableGui;
-import net.minecraft.client.gui.IGuiEventListener;
-import net.minecraft.client.gui.IRenderable;
-import net.minecraft.client.gui.screen.IngameMenuScreen;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.widget.Widget;
-import net.minecraft.util.text.ITextComponent;
+import net.minecraft.client.gui.components.events.AbstractContainerEventHandler;
+import net.minecraft.client.gui.components.events.GuiEventListener;
+import net.minecraft.client.gui.components.Widget;
+import net.minecraft.client.gui.screens.PauseScreen;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.gui.components.AbstractWidget;
+import net.minecraft.network.chat.Component;
 
-public class GuiControls extends FocusableGui implements BetterNestedGui, IRenderable {
+public class GuiControls extends AbstractContainerEventHandler implements BetterNestedGui, Widget {
 	
 	private final int middleX;
 	private final int y, width;
 	private final int buttonSize, halfButtonSize;
 	
-	private final List<Widget> buttons;
-	private final List<Widget> disableButtons;
-	private final List<IGuiEventListener> children;
+	private final List<AbstractWidget> buttons;
+	private final List<AbstractWidget> disableButtons;
+	private final List<GuiEventListener> children;
 	
 	private final ITrackManager manager;
 	
@@ -64,7 +64,7 @@ public class GuiControls extends FocusableGui implements BetterNestedGui, IRende
 		final Minecraft mc = Minecraft.getInstance();
 		
 		final boolean isSettings = gui instanceof GuiMusicPlayerSettings;
-		final boolean isIngame = gui instanceof IngameMenuScreen;
+		final boolean isIngame = gui instanceof PauseScreen;
 		
 		final boolean small = isIngame;
 		
@@ -117,18 +117,18 @@ public class GuiControls extends FocusableGui implements BetterNestedGui, IRende
 		// Open Settings
 		if (!isSettings) {
 			final ImageButton settingsButton = addButtonNonDisable(new ImageButton(width - (15 + 1), 1, 15, 15, MusicPlayerResources.TEXTURE_SETTINGS));
-			settingsButton.setPressable(() -> mc.displayGuiScreen(new GuiMusicPlayerSettings(gui)));
+			settingsButton.setPressable(() -> mc.setScreen(new GuiMusicPlayerSettings(gui)));
 		}
 		
 		// Open musicplayer gui
 		if (isIngame) {
 			final ImageButton guiButton = addButtonNonDisable(new ImageButton(width - (15 * 2 + 2), 1, 15, 15, MusicPlayerResources.TEXTURE_OPEN));
-			guiButton.setPressable(() -> mc.displayGuiScreen(new GuiMusicPlayer()));
+			guiButton.setPressable(() -> mc.setScreen(new GuiMusicPlayer()));
 		}
 		
 		// Volume
 		final int volumeY = width - (70 + (isIngame ? 15 * 2 + 3 : (!isSettings ? 15 + 2 : 1)));
-		addButtonNonDisable(new GuiVolumeSlider(volumeY, 1, 70, 15, ITextComponent.getTextComponentOrEmpty(getTranslation(GUI_CONTROLS_VOLUME) + ": "), ITextComponent.getTextComponentOrEmpty("%"), 0, 100, settings.getVolume(), false, true, false, 0.7F, slider -> {
+		addButtonNonDisable(new GuiVolumeSlider(volumeY, 1, 70, 15, Component.nullToEmpty(getTranslation(GUI_CONTROLS_VOLUME) + ": "), Component.nullToEmpty("%"), 0, 100, settings.getVolume(), false, true, false, 0.7F, slider -> {
 			settings.setVolume(slider.getValueInt());
 			MusicPlayerManager.getPlayer().setVolume(settings.getVolume());
 		}));
@@ -138,13 +138,13 @@ public class GuiControls extends FocusableGui implements BetterNestedGui, IRende
 		
 		// Render playing track
 		// Title and author
-		titleRender = new ScrollingTextRenderer(mc.fontRenderer, () -> GuiTrackUtils.getValueOfPlayingTrack(track -> track.getInfo().getFixedTitle()), small ? 10 : 25, textRenderY);
+		titleRender = new ScrollingTextRenderer(mc.font, () -> GuiTrackUtils.getValueOfPlayingTrack(track -> track.getInfo().getFixedTitle()), small ? 10 : 25, textRenderY);
 		titleRender.setWidth(textRenderWidth);
 		titleRender.setStepSize(0.5F);
 		titleRender.setColor(MusicPlayerColors.YELLOW);
 		titleRender.setSpeedTime(35);
 		
-		authorRender = new ScrollingTextRenderer(mc.fontRenderer, () -> GuiTrackUtils.getValueOfPlayingTrack(track -> track.getInfo().getFixedAuthor()), small ? 10 : 25, textRenderY + 10);
+		authorRender = new ScrollingTextRenderer(mc.font, () -> GuiTrackUtils.getValueOfPlayingTrack(track -> track.getInfo().getFixedAuthor()), small ? 10 : 25, textRenderY + 10);
 		authorRender.setWidth(textRenderWidth);
 		authorRender.setStepSize(0.5F);
 		authorRender.setColor(MusicPlayerColors.YELLOW);
@@ -173,12 +173,12 @@ public class GuiControls extends FocusableGui implements BetterNestedGui, IRende
 	}
 	
 	@Override
-	public List<? extends IGuiEventListener> getEventListeners() {
+	public List<? extends GuiEventListener> children() {
 		return children;
 	}
 	
 	@Override
-	public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
+	public void render(PoseStack matrixStack, int mouseX, int mouseY, float partialTicks) {
 		buttons.forEach(button -> button.render(matrixStack, mouseX, mouseY, partialTicks));
 		songProgress.render(matrixStack, mouseX, mouseY, partialTicks);
 		
@@ -197,16 +197,16 @@ public class GuiControls extends FocusableGui implements BetterNestedGui, IRende
 	}
 	
 	private boolean checkClick(ScrollingTextRenderer renderer, double mouseX, double mouseY) {
-		return mouseX >= renderer.getX() && mouseY >= renderer.getY() && mouseX < renderer.getX() + renderer.getWidth() && mouseY < renderer.getY() + (Minecraft.getInstance().fontRenderer.FONT_HEIGHT + 1) * renderer.getScale();
+		return mouseX >= renderer.getX() && mouseY >= renderer.getY() && mouseX < renderer.getX() + renderer.getWidth() && mouseY < renderer.getY() + (Minecraft.getInstance().font.lineHeight + 1) * renderer.getScale();
 	}
 	
-	private <B extends Widget> B addButton(B button) {
+	private <B extends AbstractWidget> B addButton(B button) {
 		buttons.add(button);
 		disableButtons.add(button);
 		return button;
 	}
 	
-	private <B extends Widget> B addButtonNonDisable(B button) {
+	private <B extends AbstractWidget> B addButtonNonDisable(B button) {
 		buttons.add(button);
 		return button;
 	}

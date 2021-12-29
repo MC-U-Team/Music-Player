@@ -6,7 +6,7 @@ import static info.u_team.music_player.init.MusicPlayerLocalization.getTranslati
 import java.util.ArrayList;
 import java.util.List;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 
 import info.u_team.music_player.lavaplayer.api.audio.IAudioTrack;
 import info.u_team.music_player.musicplayer.playlist.LoadedTracks;
@@ -37,9 +37,9 @@ public class GuiMusicPlaylistListEntryPlaylistStart extends GuiMusicPlaylistList
 	}
 	
 	@Override
-	public void drawEntryExtended(MatrixStack matrixStack, int entryX, int entryY, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean mouseInList, float partialTicks) {
-		minecraft.fontRenderer.drawString(matrixStack, name, entryX + 5, entryY + 15, 0xF4E242);
-		minecraft.fontRenderer.drawString(matrixStack, duration, entryX + entryWidth - 140, entryY + 15, 0xFFFF00);
+	public void drawEntryExtended(PoseStack matrixStack, int entryX, int entryY, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean mouseInList, float partialTicks) {
+		minecraft.font.draw(matrixStack, name, entryX + 5, entryY + 15, 0xF4E242);
+		minecraft.font.draw(matrixStack, duration, entryX + entryWidth - 140, entryY + 15, 0xFFFF00);
 	}
 	
 	public void addEntry(GuiMusicPlaylistListEntryPlaylistTrack entry) {

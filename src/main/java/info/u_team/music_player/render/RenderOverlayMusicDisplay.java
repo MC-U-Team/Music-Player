@@ -1,6 +1,6 @@
 package info.u_team.music_player.render;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 
 import info.u_team.music_player.gui.util.GuiTrackUtils;
 import info.u_team.music_player.init.MusicPlayerColors;
@@ -10,11 +10,11 @@ import info.u_team.music_player.musicplayer.MusicPlayerManager;
 import info.u_team.u_team_core.gui.renderer.ScalingTextRenderer;
 import info.u_team.u_team_core.gui.renderer.ScrollingTextRenderer;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.AbstractGui;
-import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.gui.IRenderable;
+import net.minecraft.client.gui.GuiComponent;
+import net.minecraft.client.gui.Font;
+import net.minecraft.client.gui.components.Widget;
 
-public class RenderOverlayMusicDisplay implements IRenderable {
+public class RenderOverlayMusicDisplay implements Widget {
 	
 	private final ITrackManager manager;
 	
@@ -33,7 +33,7 @@ public class RenderOverlayMusicDisplay implements IRenderable {
 		height = 35;
 		width = 120;
 		
-		final FontRenderer fontRender = Minecraft.getInstance().fontRenderer;
+		final Font fontRender = Minecraft.getInstance().font;
 		
 		title = new ScrollingTextRenderer(fontRender, () -> GuiTrackUtils.getValueOfPlayingTrack(track -> track.getInfo().getFixedTitle()), 3, 2);
 		title.setStepSize(0.5F);
@@ -62,13 +62,13 @@ public class RenderOverlayMusicDisplay implements IRenderable {
 	}
 	
 	@Override
-	public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
+	public void render(PoseStack matrixStack, int mouseX, int mouseY, float partialTicks) {
 		final IAudioTrack track = manager.getCurrentTrack();
 		if (track == null) {
 			return;
 		}
 		// Background
-		AbstractGui.fill(matrixStack, 0, 0, width, height, 0xFF212121);
+		GuiComponent.fill(matrixStack, 0, 0, width, height, 0xFF212121);
 		
 		// Progressbar
 		final double progress;
@@ -78,8 +78,8 @@ public class RenderOverlayMusicDisplay implements IRenderable {
 			progress = (double) track.getPosition() / track.getDuration();
 		}
 		
-		AbstractGui.fill(matrixStack, 6, 23, width - 6, 26, 0xFF555555);
-		AbstractGui.fill(matrixStack, 6, 23, 6 + (int) ((width - 12) * progress), 26, 0xFF3E9100);
+		GuiComponent.fill(matrixStack, 6, 23, width - 6, 26, 0xFF555555);
+		GuiComponent.fill(matrixStack, 6, 23, 6 + (int) ((width - 12) * progress), 26, 0xFF3E9100);
 		
 		// Draw strings
 		title.render(matrixStack, mouseX, mouseY, partialTicks);

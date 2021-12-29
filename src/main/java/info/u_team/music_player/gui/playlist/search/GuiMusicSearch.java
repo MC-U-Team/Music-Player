@@ -22,7 +22,7 @@ import java.util.stream.Stream;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.util.tinyfd.TinyFileDialogs;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 
 import info.u_team.music_player.gui.BetterScreen;
 import info.u_team.music_player.gui.playlist.GuiMusicPlaylist;
@@ -34,17 +34,17 @@ import info.u_team.music_player.musicplayer.playlist.Playlist;
 import info.u_team.u_team_core.gui.elements.ImageButton;
 import info.u_team.u_team_core.gui.elements.UButton;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.widget.TextFieldWidget;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TextFormatting;
+import net.minecraft.client.gui.components.EditBox;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.ChatFormatting;
 
 public class GuiMusicSearch extends BetterScreen {
 	
 	private final Playlist playlist;
 	
-	private TextFieldWidget urlField;
-	private TextFieldWidget searchField;
+	private EditBox urlField;
+	private EditBox searchField;
 	
 	private final GuiMusicSearchList searchList;
 	
@@ -55,7 +55,7 @@ public class GuiMusicSearch extends BetterScreen {
 	private int maxTicksInformation;
 	
 	public GuiMusicSearch(Playlist playlist) {
-		super(new StringTextComponent("musicsearch"));
+		super(new TextComponent("musicsearch"));
 		this.playlist = playlist;
 		searchList = new GuiMusicSearchList();
 		searchProvider = SearchProvider.YOUTUBE;
@@ -64,20 +64,20 @@ public class GuiMusicSearch extends BetterScreen {
 	@Override
 	protected void init() {
 		final ImageButton backButton = addButton(new ImageButton(1, 1, 15, 15, MusicPlayerResources.TEXTURE_BACK));
-		backButton.setPressable(() -> minecraft.displayGuiScreen(new GuiMusicPlaylist(playlist)));
+		backButton.setPressable(() -> minecraft.setScreen(new GuiMusicPlaylist(playlist)));
 		
-		urlField = new TextFieldWidget(font, 10, 35, width / 2 - 10, 20, ITextComponent.getTextComponentOrEmpty("")) {
+		urlField = new EditBox(font, 10, 35, width / 2 - 10, 20, Component.nullToEmpty("")) {
 			
 			@Override
 			public boolean keyPressed(int key, int p_keyPressed_2_, int p_keyPressed_3_) {
-				keyFromTextField(this, getText(), key);
+				keyFromTextField(this, getValue(), key);
 				return super.keyPressed(key, p_keyPressed_2_, p_keyPressed_3_);
 			}
 		};
-		urlField.setMaxStringLength(10000);
+		urlField.setMaxLength(10000);
 		children.add(urlField);
 		
-		final UButton openFileButton = addButton(new UButton(width / 2 + 10, 34, width / 4 - 15, 22, ITextComponent.getTextComponentOrEmpty(getTranslation(GUI_SEARCH_LOAD_FILE))));
+		final UButton openFileButton = addButton(new UButton(width / 2 + 10, 34, width / 4 - 15, 22, Component.nullToEmpty(getTranslation(GUI_SEARCH_LOAD_FILE))));
 		openFileButton.setPressable(() -> {
 			final String response = TinyFileDialogs.tinyfd_openFileDialog(getTranslation(GUI_SEARCH_LOAD_FILE), null, null, getTranslation(GUI_SEARCH_MUSIC_FILES), false);
 			if (response != null) {
@@ -86,7 +86,7 @@ public class GuiMusicSearch extends BetterScreen {
 			}
 		});
 		
-		final UButton openFolderButton = addButton(new UButton((int) (width * 0.75) + 5, 34, width / 4 - 15, 22, ITextComponent.getTextComponentOrEmpty(getTranslation(GUI_SEARCH_LOAD_FOLDER))));
+		final UButton openFolderButton = addButton(new UButton((int) (width * 0.75) + 5, 34, width / 4 - 15, 22, Component.nullToEmpty(getTranslation(GUI_SEARCH_LOAD_FOLDER))));
 		openFolderButton.setPressable(() -> {
 			final String response = TinyFileDialogs.tinyfd_selectFolderDialog(getTranslation(GUI_SEARCH_LOAD_FOLDER), System.getProperty("user.home"));
 			if (response != null) {
@@ -94,7 +94,7 @@ public class GuiMusicSearch extends BetterScreen {
 				try (Stream<Path> stream = Files.list(Paths.get(response))) {
 					stream.filter(path -> !Files.isDirectory(path)).forEach(path -> addTrack(path.toString()));
 				} catch (final IOException ex) {
-					setInformation(TextFormatting.RED + ex.getMessage(), 150);
+					setInformation(ChatFormatting.RED + ex.getMessage(), 150);
 				}
 			}
 		});
@@ -105,11 +105,11 @@ public class GuiMusicSearch extends BetterScreen {
 			searchButton.setImage(searchProvider.getLogo());
 		});
 		
-		searchField = new TextFieldWidget(font, 40, 78, width - 51, 20, ITextComponent.getTextComponentOrEmpty("")) {
+		searchField = new EditBox(font, 40, 78, width - 51, 20, Component.nullToEmpty("")) {
 			
 			@Override
 			public boolean keyPressed(int key, int p_keyPressed_2_, int p_keyPressed_3_) {
-				keyFromTextField(this, searchProvider.getPrefix() + getText(), key);
+				keyFromTextField(this, searchProvider.getPrefix() + getValue(), key);
 				return super.keyPressed(key, p_keyPressed_2_, p_keyPressed_3_);
 			}
 			
@@ -120,24 +120,24 @@ public class GuiMusicSearch extends BetterScreen {
 			}
 			
 		};
-		searchField.setMaxStringLength(1000);
-		searchField.setFocused2(true);
-		setListener(searchField);
+		searchField.setMaxLength(1000);
+		searchField.setFocus(true);
+		setFocused(searchField);
 		children.add(searchField);
 		
-		final UButton addAllButton = addButton(new UButton(width - 110, 105, 100, 20, ITextComponent.getTextComponentOrEmpty(getTranslation(GUI_SEARCH_ADD_ALL))));
+		final UButton addAllButton = addButton(new UButton(width - 110, 105, 100, 20, Component.nullToEmpty(getTranslation(GUI_SEARCH_ADD_ALL))));
 		addAllButton.setPressable(() -> {
-			final List<GuiMusicSearchListEntryPlaylist> list = searchList.getEventListeners().stream().filter(entry -> entry instanceof GuiMusicSearchListEntryPlaylist).map(entry -> (GuiMusicSearchListEntryPlaylist) entry).collect(Collectors.toList());
+			final List<GuiMusicSearchListEntryPlaylist> list = searchList.children().stream().filter(entry -> entry instanceof GuiMusicSearchListEntryPlaylist).map(entry -> (GuiMusicSearchListEntryPlaylist) entry).collect(Collectors.toList());
 			if (list.size() > 0) {
 				list.forEach(entry -> {
 					playlist.add(entry.getTrackList());
 				});
 			} else {
-				searchList.getEventListeners().stream().filter(entry -> entry instanceof GuiMusicSearchListEntryMusicTrack).map(entry -> (GuiMusicSearchListEntryMusicTrack) entry).filter(entry -> !entry.isPlaylistEntry()).forEach(entry -> {
+				searchList.children().stream().filter(entry -> entry instanceof GuiMusicSearchListEntryMusicTrack).map(entry -> (GuiMusicSearchListEntryMusicTrack) entry).filter(entry -> !entry.isPlaylistEntry()).forEach(entry -> {
 					playlist.add(entry.getTrack());
 				});
 			}
-			setInformation(TextFormatting.GREEN + getTranslation(GUI_SEARCH_ADDED_ALL), 150);
+			setInformation(ChatFormatting.GREEN + getTranslation(GUI_SEARCH_ADDED_ALL), 150);
 		});
 		
 		searchList.updateSettings(width - 24, height, 130, height - 10, 12, width - 12);
@@ -146,24 +146,24 @@ public class GuiMusicSearch extends BetterScreen {
 	
 	@Override
 	public void resize(Minecraft minecraft, int width, int height) {
-		final String urlFieldText = urlField.getText();
-		final boolean urlFieldFocus = urlField.isFocused() && getListener() == urlField;
+		final String urlFieldText = urlField.getValue();
+		final boolean urlFieldFocus = urlField.isFocused() && getFocused() == urlField;
 		
-		final String searchFieldText = searchField.getText();
-		final boolean searchFieldFocus = searchField.isFocused() && getListener() == searchField;
+		final String searchFieldText = searchField.getValue();
+		final boolean searchFieldFocus = searchField.isFocused() && getFocused() == searchField;
 		
 		init(minecraft, width, height);
 		
-		urlField.setText(urlFieldText);
-		urlField.setFocused2(urlFieldFocus);
+		urlField.setValue(urlFieldText);
+		urlField.setFocus(urlFieldFocus);
 		if (urlFieldFocus) {
-			setListener(urlField);
+			setFocused(urlField);
 		}
 		
-		searchField.setText(searchFieldText);
-		searchField.setFocused2(searchFieldFocus);
+		searchField.setValue(searchFieldText);
+		searchField.setFocus(searchFieldFocus);
 		if (searchFieldFocus) {
-			setListener(searchField);
+			setFocused(searchField);
 		}
 		
 	}
@@ -176,17 +176,17 @@ public class GuiMusicSearch extends BetterScreen {
 	}
 	
 	@Override
-	public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
+	public void render(PoseStack matrixStack, int mouseX, int mouseY, float partialTicks) {
 		renderDirtBackground(0);
 		searchList.render(matrixStack, mouseX, mouseY, partialTicks);
 		
-		drawCenteredString(matrixStack, minecraft.fontRenderer, getTranslation(GUI_SEARCH_HEADER), width / 2, 5, 0xFFFFFF);
-		drawString(matrixStack, minecraft.fontRenderer, getTranslation(GUI_SEARCH_SEARCH_URI), 10, 20, 0xFFFFFF);
-		drawString(matrixStack, minecraft.fontRenderer, getTranslation(GUI_SEARCH_SEARCH_FILE), 10 + width / 2, 20, 0xFFFFFF);
-		drawString(matrixStack, minecraft.fontRenderer, getTranslation(GUI_SEARCH_SEARCH_SEARCH), 10, 63, 0xFFFFFF);
+		drawCenteredString(matrixStack, minecraft.font, getTranslation(GUI_SEARCH_HEADER), width / 2, 5, 0xFFFFFF);
+		drawString(matrixStack, minecraft.font, getTranslation(GUI_SEARCH_SEARCH_URI), 10, 20, 0xFFFFFF);
+		drawString(matrixStack, minecraft.font, getTranslation(GUI_SEARCH_SEARCH_FILE), 10 + width / 2, 20, 0xFFFFFF);
+		drawString(matrixStack, minecraft.font, getTranslation(GUI_SEARCH_SEARCH_SEARCH), 10, 63, 0xFFFFFF);
 		
 		if (information != null && informationTicks <= maxTicksInformation) {
-			drawString(matrixStack, minecraft.fontRenderer, information, 15, 110, 0xFFFFFF);
+			drawString(matrixStack, minecraft.font, information, 15, 110, 0xFFFFFF);
 		}
 		
 		urlField.render(matrixStack, mouseX, mouseY, partialTicks);
@@ -197,14 +197,14 @@ public class GuiMusicSearch extends BetterScreen {
 	@Override
 	public boolean mouseClicked(double mouseX, double mouseY, int button) {
 		if (urlField.mouseClicked(mouseX, mouseY, button)) {
-			setListener(urlField);
-			urlField.setFocused2(true);
-			searchField.setFocused2(false);
+			setFocused(urlField);
+			urlField.setFocus(true);
+			searchField.setFocus(false);
 			return true;
 		} else if (searchField.mouseClicked(mouseX, mouseY, button)) {
-			setListener(searchField);
-			searchField.setFocused2(true);
-			urlField.setFocused2(false);
+			setFocused(searchField);
+			searchField.setFocus(true);
+			urlField.setFocus(false);
 			return true;
 		}
 		return super.mouseClicked(mouseX, mouseY, button);
@@ -216,11 +216,11 @@ public class GuiMusicSearch extends BetterScreen {
 		informationTicks = 0;
 	}
 	
-	private void keyFromTextField(TextFieldWidget field, String text, int key) {
-		if (field.getVisible() && field.isFocused() && (key == GLFW.GLFW_KEY_ENTER || key == GLFW.GLFW_KEY_KP_ENTER)) {
+	private void keyFromTextField(EditBox field, String text, int key) {
+		if (field.isVisible() && field.isFocused() && (key == GLFW.GLFW_KEY_ENTER || key == GLFW.GLFW_KEY_KP_ENTER)) {
 			searchList.clear();
 			addTrack(text);
-			field.setText("");
+			field.setValue("");
 		}
 	}
 	
@@ -228,7 +228,7 @@ public class GuiMusicSearch extends BetterScreen {
 		MusicPlayerManager.getPlayer().getTrackSearch().getTracks(uri, result -> {
 			minecraft.execute(() -> {
 				if (result.hasError()) {
-					setInformation(TextFormatting.RED + result.getErrorMessage(), 150);
+					setInformation(ChatFormatting.RED + result.getErrorMessage(), 150);
 				} else if (result.isList()) {
 					final IAudioTrackList list = result.getTrackList();
 					if (!list.isSearch()) {

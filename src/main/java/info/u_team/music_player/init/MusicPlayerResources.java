@@ -1,7 +1,7 @@
 package info.u_team.music_player.init;
 
 import info.u_team.music_player.MusicPlayerMod;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 
 public class MusicPlayerResources {
 	

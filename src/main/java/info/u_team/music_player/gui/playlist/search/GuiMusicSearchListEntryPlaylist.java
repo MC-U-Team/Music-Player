@@ -6,14 +6,14 @@ import static info.u_team.music_player.init.MusicPlayerLocalization.getTranslati
 
 import java.util.List;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 
 import info.u_team.music_player.gui.util.GuiTrackUtils;
 import info.u_team.music_player.lavaplayer.api.audio.IAudioTrack;
 import info.u_team.music_player.lavaplayer.api.audio.IAudioTrackList;
 import info.u_team.music_player.musicplayer.playlist.Playlist;
 import info.u_team.music_player.util.TimeUtil;
-import net.minecraft.util.text.TextFormatting;
+import net.minecraft.ChatFormatting;
 
 public class GuiMusicSearchListEntryPlaylist extends GuiMusicSearchListEntry {
 	
@@ -36,15 +36,15 @@ public class GuiMusicSearchListEntryPlaylist extends GuiMusicSearchListEntry {
 		
 		addTrackButton.setPressable(() -> {
 			playlist.add(trackList);
-			gui.setInformation(TextFormatting.GREEN + getTranslation(GUI_SEARCH_ADDED_LIST), 150);
+			gui.setInformation(ChatFormatting.GREEN + getTranslation(GUI_SEARCH_ADDED_LIST), 150);
 		});
 	}
 	
 	@Override
-	public void render(MatrixStack matrixStack, int slotIndex, int entryY, int entryX, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float partialTicks) {
+	public void render(PoseStack matrixStack, int slotIndex, int entryY, int entryX, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float partialTicks) {
 		super.render(matrixStack, slotIndex, entryY, entryX, entryWidth, entryHeight, mouseX, mouseY, hovered, partialTicks);
-		minecraft.fontRenderer.drawString(matrixStack, name, entryX + 5, entryY + 15, 0xF4E242);
-		minecraft.fontRenderer.drawString(matrixStack, duration, entryX + entryWidth - 135, entryY + 5, 0xFFFF00);
+		minecraft.font.draw(matrixStack, name, entryX + 5, entryY + 15, 0xF4E242);
+		minecraft.font.draw(matrixStack, duration, entryX + entryWidth - 135, entryY + 5, 0xFFFF00);
 	}
 	
 	public IAudioTrackList getTrackList() {

@@ -6,46 +6,46 @@ import static info.u_team.music_player.init.MusicPlayerLocalization.getTranslati
 
 import org.apache.commons.lang3.StringUtils;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 
 import info.u_team.music_player.gui.controls.GuiControls;
 import info.u_team.music_player.init.MusicPlayerResources;
 import info.u_team.u_team_core.gui.elements.ImageButton;
 import info.u_team.u_team_core.gui.renderer.ScrollingTextRenderer;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.widget.TextFieldWidget;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.client.gui.components.EditBox;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
 
 public class GuiMusicPlayer extends BetterScreen {
 	
-	private TextFieldWidget namePlaylistField;
+	private EditBox namePlaylistField;
 	
 	private GuiMusicPlayerList playlistsList;
 	
 	private GuiControls controls;
 	
 	public GuiMusicPlayer() {
-		super(new StringTextComponent("musicplayer"));
+		super(new TextComponent("musicplayer"));
 	}
 	
 	@Override
 	protected void init() {
-		addButton(new ImageButton(1, 1, 15, 15, MusicPlayerResources.TEXTURE_BACK, button -> minecraft.displayGuiScreen(null)));
+		addButton(new ImageButton(1, 1, 15, 15, MusicPlayerResources.TEXTURE_BACK, button -> minecraft.setScreen(null)));
 		
-		namePlaylistField = new TextFieldWidget(font, 100, 60, width - 150, 20, ITextComponent.getTextComponentOrEmpty(null));
-		namePlaylistField.setMaxStringLength(500);
+		namePlaylistField = new EditBox(font, 100, 60, width - 150, 20, Component.nullToEmpty(null));
+		namePlaylistField.setMaxLength(500);
 		children.add(namePlaylistField);
 		
 		final ImageButton addPlaylistButton = addButton(new ImageButton(width - 41, 59, 22, 22, MusicPlayerResources.TEXTURE_CREATE));
 		addPlaylistButton.setPressable(() -> {
-			final String name = namePlaylistField.getText();
+			final String name = namePlaylistField.getValue();
 			if (StringUtils.isBlank(name) || name.equals(getTranslation(GUI_CREATE_PLAYLIST_INSERT_NAME))) {
-				namePlaylistField.setText(getTranslation(GUI_CREATE_PLAYLIST_INSERT_NAME));
+				namePlaylistField.setValue(getTranslation(GUI_CREATE_PLAYLIST_INSERT_NAME));
 				return;
 			}
 			playlistsList.addPlaylist(name);
-			namePlaylistField.setText("");
+			namePlaylistField.setValue("");
 		});
 		
 		playlistsList = new GuiMusicPlayerList(width - 24, height, 90, height - 10, 12, width - 12);
@@ -57,11 +57,11 @@ public class GuiMusicPlayer extends BetterScreen {
 	
 	@Override
 	public void resize(Minecraft minecraft, int width, int height) {
-		final String text = namePlaylistField.getText();
+		final String text = namePlaylistField.getValue();
 		final ScrollingTextRenderer titleRender = controls.getTitleRender();
 		final ScrollingTextRenderer authorRender = controls.getAuthorRender();
 		this.init(minecraft, width, height);
-		namePlaylistField.setText(text);
+		namePlaylistField.setValue(text);
 		controls.copyTitleRendererState(titleRender);
 		controls.copyAuthorRendererState(authorRender);
 	}
@@ -73,10 +73,10 @@ public class GuiMusicPlayer extends BetterScreen {
 	}
 	
 	@Override
-	public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
+	public void render(PoseStack matrixStack, int mouseX, int mouseY, float partialTicks) {
 		renderDirtBackground(0);
 		playlistsList.render(matrixStack, mouseX, mouseY, partialTicks);
-		font.drawString(matrixStack, getTranslation(GUI_CREATE_PLAYLIST_ADD_LIST), 20, 65, 0xFFFFFF);
+		font.draw(matrixStack, getTranslation(GUI_CREATE_PLAYLIST_ADD_LIST), 20, 65, 0xFFFFFF);
 		namePlaylistField.render(matrixStack, mouseX, mouseY, partialTicks);
 		controls.render(matrixStack, mouseX, mouseY, partialTicks);
 		super.render(matrixStack, mouseX, mouseY, partialTicks);

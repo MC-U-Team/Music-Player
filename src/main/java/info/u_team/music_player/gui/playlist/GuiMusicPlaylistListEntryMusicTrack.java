@@ -1,6 +1,6 @@
 package info.u_team.music_player.gui.playlist;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 
 import info.u_team.music_player.lavaplayer.api.audio.IAudioTrack;
 import info.u_team.music_player.musicplayer.playlist.LoadedTracks;
@@ -17,7 +17,7 @@ public class GuiMusicPlaylistListEntryMusicTrack extends GuiMusicPlaylistListEnt
 	}
 	
 	@Override
-	public void drawEntryExtended(MatrixStack matrixStack, int entryX, int entryY, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean mouseInList, float partialTicks) {
+	public void drawEntryExtended(PoseStack matrixStack, int entryX, int entryY, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean mouseInList, float partialTicks) {
 		addTrackInfo(matrixStack, track, entryX, entryY, entryWidth, 5, isPlaying() ? 0xe02626 : 0x419BF4);
 	}
 }

@@ -2,15 +2,17 @@ package info.u_team.music_player.gui.controls;
 
 import info.u_team.u_team_core.gui.elements.ScalableSlider;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.audio.SimpleSound;
-import net.minecraft.util.SoundEvents;
-import net.minecraft.util.text.ITextComponent;
+import net.minecraft.client.resources.sounds.SimpleSoundInstance;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.network.chat.Component;
+
+import net.minecraftforge.fml.client.gui.widget.Slider.ISlider;
 
 public class GuiVolumeSlider extends ScalableSlider {
 	
 	private boolean clicked;
 	
-	public GuiVolumeSlider(int x, int y, int width, int height, ITextComponent prefix, ITextComponent suffix, double minValue, double maxValue, double value, boolean decimalPrecision, boolean drawDescription, boolean isInContainer, float scale, ISlider slider) {
+	public GuiVolumeSlider(int x, int y, int width, int height, Component prefix, Component suffix, double minValue, double maxValue, double value, boolean decimalPrecision, boolean drawDescription, boolean isInContainer, float scale, ISlider slider) {
 		super(x, y, width, height, prefix, suffix, minValue, maxValue, value, decimalPrecision, drawDescription, isInContainer, scale, slider);
 	}
 	
@@ -23,7 +25,7 @@ public class GuiVolumeSlider extends ScalableSlider {
 	@Override
 	public void onRelease(double mouseX, double mouseY) {
 		if (isHovered() && clicked) {
-			Minecraft.getInstance().getSoundHandler().play(SimpleSound.master(SoundEvents.UI_BUTTON_CLICK, 1));
+			Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_BUTTON_CLICK, 1));
 		}
 		clicked = false;
 	}

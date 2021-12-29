@@ -1,22 +1,22 @@
 package info.u_team.music_player.gui;
 
 import info.u_team.u_team_core.gui.elements.ScrollableList;
-import net.minecraft.client.gui.widget.list.AbstractList;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.client.gui.components.AbstractSelectionList;
+import net.minecraft.util.Mth;
 
-public class BetterScrollableList<T extends AbstractList.AbstractListEntry<T>> extends ScrollableList<T> {
+public class BetterScrollableList<T extends AbstractSelectionList.Entry<T>> extends ScrollableList<T> {
 	
 	public BetterScrollableList(int width, int height, int top, int bottom, int left, int right, int slotHeight, int sideDistance) {
 		super(width, height, top, bottom, left, right, slotHeight, sideDistance);
-		func_244606_c(false);
+		setRenderTopAndBottom(false);
 		setShouldUseScissor(true);
 		setShouldRenderTransparentBorder(true);
 	}
 	
 	@Override
 	public boolean mouseDragged(double mouseX, double mouseY, int button, double dragX, double dragY) {
-		if (getListener() != null && isDragging() && button == 0) {
-			getListener().mouseDragged(mouseX, mouseY, button, dragX, dragY);
+		if (getFocused() != null && isDragging() && button == 0) {
+			getFocused().mouseDragged(mouseX, mouseY, button, dragX, dragY);
 		}
 		if (button == 0 && scrolling) {
 			if (mouseY < y0) {
@@ -26,7 +26,7 @@ public class BetterScrollableList<T extends AbstractList.AbstractListEntry<T>> e
 			} else {
 				final double clampedMaxScroll = Math.max(1, getMaxScroll());
 				final int diff = y1 - y0;
-				final int clamped = MathHelper.clamp((diff * diff) / getMaxPosition(), 32, diff - 8);
+				final int clamped = Mth.clamp((diff * diff) / getMaxPosition(), 32, diff - 8);
 				setScrollAmount(getScrollAmount() + dragY * Math.max(1.0D, clampedMaxScroll / (diff - clamped)));
 			}
 			return true;

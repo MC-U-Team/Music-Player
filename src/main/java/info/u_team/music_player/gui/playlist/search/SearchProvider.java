@@ -1,7 +1,7 @@
 package info.u_team.music_player.gui.playlist.search;
 
 import info.u_team.music_player.init.MusicPlayerResources;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 
 public enum SearchProvider {
 	

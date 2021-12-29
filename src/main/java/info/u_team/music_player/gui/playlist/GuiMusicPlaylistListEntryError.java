@@ -1,6 +1,6 @@
 package info.u_team.music_player.gui.playlist;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 
 import info.u_team.music_player.musicplayer.playlist.LoadedTracks;
 import info.u_team.music_player.musicplayer.playlist.Playlist;
@@ -16,8 +16,8 @@ public class GuiMusicPlaylistListEntryError extends GuiMusicPlaylistListEntryFun
 	}
 	
 	@Override
-	public void drawEntryExtended(MatrixStack matrixStack, int entryX, int entryY, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean mouseInList, float partialTicks) {
-		minecraft.fontRenderer.drawString(matrixStack, error, entryX + 5, entryY + 5, 0xFF0000);
-		minecraft.fontRenderer.drawString(matrixStack, uri.get(), entryX + 5, entryY + 25, 0xFF0000);
+	public void drawEntryExtended(PoseStack matrixStack, int entryX, int entryY, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean mouseInList, float partialTicks) {
+		minecraft.font.draw(matrixStack, error, entryX + 5, entryY + 5, 0xFF0000);
+		minecraft.font.draw(matrixStack, uri.get(), entryX + 5, entryY + 25, 0xFF0000);
 	}
 }

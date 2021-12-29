@@ -1,6 +1,6 @@
 package info.u_team.music_player.gui.controls;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 
 import info.u_team.music_player.gui.util.GuiTrackUtils;
 import info.u_team.music_player.init.MusicPlayerColors;
@@ -9,7 +9,7 @@ import info.u_team.music_player.lavaplayer.api.queue.ITrackManager;
 import info.u_team.u_team_core.gui.elements.ProgressBar;
 import info.u_team.u_team_core.gui.renderer.ScalingTextRenderer;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.gui.Font;
 
 public class GuiMusicProgressBar extends ProgressBar {
 	
@@ -18,7 +18,7 @@ public class GuiMusicProgressBar extends ProgressBar {
 	
 	public GuiMusicProgressBar(ITrackManager manager, int x, int y, int width, int height, float scale) {
 		super(x, y, width, height, MusicPlayerColors.GREY, MusicPlayerColors.GREEN, () -> getProgress(manager), (value) -> updateProgress(manager, value));
-		final FontRenderer fontRender = Minecraft.getInstance().fontRenderer;
+		final Font fontRender = Minecraft.getInstance().font;
 		positionRender = new ScalingTextRenderer(fontRender, () -> GuiTrackUtils.getFormattedPosition(manager.getCurrentTrack()), x, y);
 		positionRender.setScale(scale);
 		positionRender.setColor(MusicPlayerColors.YELLOW);
@@ -36,7 +36,7 @@ public class GuiMusicProgressBar extends ProgressBar {
 	}
 	
 	@Override
-	public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
+	public void render(PoseStack matrixStack, int mouseX, int mouseY, float partialTicks) {
 		super.render(matrixStack, mouseX, mouseY, partialTicks);
 		
 		positionRender.render(matrixStack, mouseX, mouseY, partialTicks);

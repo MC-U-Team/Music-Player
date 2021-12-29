@@ -2,7 +2,7 @@ package info.u_team.music_player.init;
 
 import java.util.List;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 
 import info.u_team.music_player.gui.GuiMusicPlayer;
 import info.u_team.music_player.gui.controls.GuiControls;
@@ -13,13 +13,13 @@ import info.u_team.music_player.musicplayer.SettingsManager;
 import info.u_team.music_player.musicplayer.settings.IngameOverlayPosition;
 import info.u_team.music_player.render.RenderOverlayMusicDisplay;
 import info.u_team.u_team_core.gui.renderer.ScrollingTextRenderer;
-import net.minecraft.client.MainWindow;
+import com.mojang.blaze3d.platform.Window;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.IGuiEventListener;
-import net.minecraft.client.gui.screen.IngameMenuScreen;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.settings.KeyBinding;
-import net.minecraft.client.util.InputMappings;
+import net.minecraft.client.gui.components.events.GuiEventListener;
+import net.minecraft.client.gui.screens.PauseScreen;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.KeyMapping;
+import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraftforge.client.event.GuiScreenEvent;
 import net.minecraftforge.client.event.GuiScreenEvent.KeyboardKeyPressedEvent;
 import net.minecraftforge.client.event.InputEvent.KeyInputEvent;
@@ -50,8 +50,8 @@ public class MusicPlayerEventHandler {
 		final ITrackManager manager = MusicPlayerManager.getPlayer().getTrackManager();
 		if (isKeyDown(MusicPlayerKeys.OPEN, gui, keyCode, scanCode)) {
 			final Minecraft mc = Minecraft.getInstance();
-			if (!(mc.currentScreen instanceof GuiMusicPlayer)) {
-				mc.displayGuiScreen(new GuiMusicPlayer());
+			if (!(mc.screen instanceof GuiMusicPlayer)) {
+				mc.setScreen(new GuiMusicPlayer());
 			}
 			handled = true;
 		} else if (isKeyDown(MusicPlayerKeys.PAUSE, gui, keyCode, scanCode)) {
@@ -73,11 +73,11 @@ public class MusicPlayerEventHandler {
 		return handled;
 	}
 	
-	private static boolean isKeyDown(KeyBinding binding, boolean gui, int keyCode, int scanCode) {
+	private static boolean isKeyDown(KeyMapping binding, boolean gui, int keyCode, int scanCode) {
 		if (gui) {
-			return binding.isActiveAndMatches(InputMappings.getInputByCode(keyCode, scanCode));
+			return binding.isActiveAndMatches(InputConstants.getKey(keyCode, scanCode));
 		} else {
-			return binding.isPressed();
+			return binding.consumeClick();
 		}
 	}
 	
@@ -96,9 +96,9 @@ public class MusicPlayerEventHandler {
 					overlayRender = new RenderOverlayMusicDisplay();
 				}
 				
-				final MainWindow window = mc.getMainWindow();
-				final int screenWidth = window.getScaledWidth();
-				final int screenHeight = window.getScaledHeight();
+				final Window window = mc.getWindow();
+				final int screenWidth = window.getGuiScaledWidth();
+				final int screenHeight = window.getGuiScaledHeight();
 				
 				final int height = overlayRender.getHeight();
 				final int width = overlayRender.getWidth();
@@ -117,12 +117,12 @@ public class MusicPlayerEventHandler {
 					y = screenHeight - 3 - height;
 				}
 				
-				final MatrixStack matrixStack = event.getMatrixStack();
+				final PoseStack matrixStack = event.getMatrixStack();
 				
-				matrixStack.push();
+				matrixStack.pushPose();
 				matrixStack.translate(x, y, 500);
 				overlayRender.render(matrixStack, 0, 0, event.getPartialTicks());
-				matrixStack.pop();
+				matrixStack.popPose();
 			}
 		}
 		// }
@@ -134,9 +134,9 @@ public class MusicPlayerEventHandler {
 	
 	private static void onInitGuiPre(GuiScreenEvent.InitGuiEvent.Pre event) {
 		final Screen gui = event.getGui();
-		if (gui instanceof IngameMenuScreen) {
+		if (gui instanceof PauseScreen) {
 			if (SETTINGS_MANAGER.getSettings().isShowIngameMenueOverlay()) {
-				gui.getEventListeners().stream() //
+				gui.children().stream() //
 						.filter(element -> element instanceof GuiControls) //
 						.map(element -> ((GuiControls) element)).findAny() //
 						.ifPresent(controls -> {
@@ -149,7 +149,7 @@ public class MusicPlayerEventHandler {
 	
 	private static void onInitGuiPost(GuiScreenEvent.InitGuiEvent.Post event) {
 		final Screen gui = event.getGui();
-		if (gui instanceof IngameMenuScreen) {
+		if (gui instanceof PauseScreen) {
 			if (SETTINGS_MANAGER.getSettings().isShowIngameMenueOverlay()) {
 				final GuiControls controls = new GuiControls(gui, 3, gui.width);
 				if (titleRender != null) {
@@ -161,7 +161,7 @@ public class MusicPlayerEventHandler {
 					authorRender = null;
 				}
 				@SuppressWarnings("unchecked")
-				final List<IGuiEventListener> list = (List<IGuiEventListener>) gui.getEventListeners();
+				final List<GuiEventListener> list = (List<GuiEventListener>) gui.children();
 				list.add(controls);
 			}
 		}
@@ -169,9 +169,9 @@ public class MusicPlayerEventHandler {
 	
 	private static void onDrawScreenPost(GuiScreenEvent.DrawScreenEvent.Post event) {
 		final Screen gui = event.getGui();
-		if (gui instanceof IngameMenuScreen) {
+		if (gui instanceof PauseScreen) {
 			if (SETTINGS_MANAGER.getSettings().isShowIngameMenueOverlay()) {
-				gui.getEventListeners().stream() //
+				gui.children().stream() //
 						.filter(element -> element instanceof GuiControls) //
 						.map(element -> ((GuiControls) element)).findAny() //
 						.ifPresent(controls -> controls.render(event.getMatrixStack(), event.getMouseX(), event.getMouseY(), event.getRenderPartialTicks()));
@@ -181,9 +181,9 @@ public class MusicPlayerEventHandler {
 	
 	private static void onMouseReleasePre(GuiScreenEvent.MouseReleasedEvent.Pre event) {
 		final Screen gui = event.getGui();
-		if (gui instanceof IngameMenuScreen) {
+		if (gui instanceof PauseScreen) {
 			if (SETTINGS_MANAGER.getSettings().isShowIngameMenueOverlay()) {
-				gui.getEventListeners().stream() //
+				gui.children().stream() //
 						.filter(element -> element instanceof GuiControls) //
 						.map(element -> ((GuiControls) element)).findAny() //
 						.ifPresent(controls -> controls.mouseReleased(event.getMouseX(), event.getMouseY(), event.getButton()));
@@ -193,10 +193,10 @@ public class MusicPlayerEventHandler {
 	
 	private static void onClientTick(ClientTickEvent event) {
 		if (event.phase == Phase.END) {
-			final Screen gui = Minecraft.getInstance().currentScreen;
-			if (gui instanceof IngameMenuScreen) {
+			final Screen gui = Minecraft.getInstance().screen;
+			if (gui instanceof PauseScreen) {
 				if (SETTINGS_MANAGER.getSettings().isShowIngameMenueOverlay()) {
-					gui.getEventListeners().stream() //
+					gui.children().stream() //
 							.filter(element -> element instanceof GuiControls) //
 							.map(element -> ((GuiControls) element)).findAny() //
 							.ifPresent(GuiControls::tick);

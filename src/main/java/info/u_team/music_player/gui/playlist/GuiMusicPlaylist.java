@@ -1,6 +1,6 @@
 package info.u_team.music_player.gui.playlist;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 
 import info.u_team.music_player.gui.BetterScreen;
 import info.u_team.music_player.gui.GuiMusicPlayer;
@@ -11,7 +11,7 @@ import info.u_team.music_player.musicplayer.playlist.Playlist;
 import info.u_team.u_team_core.gui.elements.ImageButton;
 import info.u_team.u_team_core.gui.renderer.ScrollingTextRenderer;
 import net.minecraft.client.Minecraft;
-import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.network.chat.TextComponent;
 
 public class GuiMusicPlaylist extends BetterScreen {
 	
@@ -24,16 +24,16 @@ public class GuiMusicPlaylist extends BetterScreen {
 	private GuiControls controls;
 	
 	public GuiMusicPlaylist(Playlist playlist) {
-		super(new StringTextComponent("musicplaylist"));
+		super(new TextComponent("musicplaylist"));
 		this.playlist = playlist;
 		
 		trackList = new GuiMusicPlaylistList(playlist);
 		
 		if (!playlist.isLoaded()) {
 			playlist.load(() -> {
-				if (minecraft.currentScreen == this) { // Check if gui is still open
+				if (minecraft.screen == this) { // Check if gui is still open
 					minecraft.execute(() -> {
-						if (minecraft.currentScreen == this) { // Recheck gui because this is async on the main thread.
+						if (minecraft.screen == this) { // Recheck gui because this is async on the main thread.
 							trackList.addAllEntries();
 							if (addTracksButton != null) {
 								addTracksButton.active = true;
@@ -48,10 +48,10 @@ public class GuiMusicPlaylist extends BetterScreen {
 	@Override
 	protected void init() {
 		final ImageButton backButton = addButton(new ImageButton(1, 1, 15, 15, MusicPlayerResources.TEXTURE_BACK));
-		backButton.setPressable(() -> minecraft.displayGuiScreen(new GuiMusicPlayer()));
+		backButton.setPressable(() -> minecraft.setScreen(new GuiMusicPlayer()));
 		
 		addTracksButton = addButton(new ImageButton(width - 35, 20, 22, 22, MusicPlayerResources.TEXTURE_ADD));
-		addTracksButton.setPressable(() -> minecraft.displayGuiScreen(new GuiMusicSearch(playlist)));
+		addTracksButton.setPressable(() -> minecraft.setScreen(new GuiMusicSearch(playlist)));
 		
 		if (!playlist.isLoaded()) {
 			addTracksButton.active = false;
@@ -81,7 +81,7 @@ public class GuiMusicPlaylist extends BetterScreen {
 	}
 	
 	@Override
-	public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
+	public void render(PoseStack matrixStack, int mouseX, int mouseY, float partialTicks) {
 		renderDirtBackground(0);
 		trackList.render(matrixStack, mouseX, mouseY, partialTicks);
 		controls.render(matrixStack, mouseX, mouseY, partialTicks);

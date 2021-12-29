@@ -1,6 +1,6 @@
 package info.u_team.music_player.gui.playlist;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 
 import info.u_team.music_player.gui.util.GuiTrackUtils;
 import info.u_team.music_player.init.MusicPlayerResources;
@@ -62,7 +62,7 @@ public abstract class GuiMusicPlaylistListEntryPlayable extends GuiMusicPlaylist
 	}
 	
 	@Override
-	public void render(MatrixStack matrixStack, int slotIndex, int entryY, int entryX, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float partialTicks) {
+	public void render(PoseStack matrixStack, int slotIndex, int entryY, int entryX, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float partialTicks) {
 		playTrackButton.x = entryWidth - 65;
 		playTrackButton.y = entryY + 8;
 		playTrackButton.render(matrixStack, mouseX, mouseY, partialTicks);

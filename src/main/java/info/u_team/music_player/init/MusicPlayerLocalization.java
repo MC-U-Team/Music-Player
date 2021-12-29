@@ -1,6 +1,6 @@
 package info.u_team.music_player.init;
 
-import net.minecraft.client.resources.I18n;
+import net.minecraft.client.resources.language.I18n;
 
 public class MusicPlayerLocalization {
 	
@@ -48,7 +48,7 @@ public class MusicPlayerLocalization {
 	public static final String GUI_SETTINGS_MIXER_DEVICE_SELECTION = "gui.settings.mixer_device_selection";
 	
 	public static String getTranslation(String key, Object... parameters) {
-		return I18n.format(key, parameters);
+		return I18n.get(key, parameters);
 	}
 	
 }

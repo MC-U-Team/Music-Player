@@ -6,31 +6,31 @@ import static info.u_team.music_player.init.MusicPlayerLocalization.getTranslati
 import java.net.URI;
 import java.util.function.Function;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 
 import info.u_team.music_player.lavaplayer.api.audio.IAudioTrack;
 import info.u_team.music_player.lavaplayer.api.audio.IAudioTrackInfo;
 import info.u_team.music_player.musicplayer.MusicPlayerManager;
 import info.u_team.music_player.util.TimeUtil;
 import net.minecraft.client.Minecraft;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.Style;
-import net.minecraft.util.text.event.ClickEvent;
-import net.minecraft.util.text.event.ClickEvent.Action;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.Style;
+import net.minecraft.network.chat.ClickEvent;
+import net.minecraft.network.chat.ClickEvent.Action;
 
 public final class GuiTrackUtils {
 	
 	private static final Minecraft MINECRAFT = Minecraft.getInstance();
 	
 	public static String trimToWith(String string, int width) {
-		String newString = MINECRAFT.fontRenderer.trimStringToWidth(string, width);
+		String newString = MINECRAFT.font.plainSubstrByWidth(string, width);
 		if (!newString.equals(string)) {
 			newString += "...";
 		}
 		return newString;
 	}
 	
-	public static void addTrackInfo(MatrixStack matrixStack, IAudioTrack track, int x, int y, int entryWidth, int leftMargin, int titleColor) {
+	public static void addTrackInfo(PoseStack matrixStack, IAudioTrack track, int x, int y, int entryWidth, int leftMargin, int titleColor) {
 		final int textSize = entryWidth - 150 - leftMargin;
 		
 		final IAudioTrackInfo info = track.getInfo();
@@ -39,20 +39,20 @@ public final class GuiTrackUtils {
 		final String author = trimToWith(info.getFixedAuthor(), textSize);
 		final String duration = getFormattedDuration(track);
 		
-		MINECRAFT.fontRenderer.drawString(matrixStack, title, x + leftMargin, y + 5, titleColor);
-		MINECRAFT.fontRenderer.drawString(matrixStack, author, x + leftMargin + 4, y + 25, 0xD86D1C);
-		MINECRAFT.fontRenderer.drawString(matrixStack, duration, x + entryWidth - 140, y + 15, 0xFFFF00);
+		MINECRAFT.font.draw(matrixStack, title, x + leftMargin, y + 5, titleColor);
+		MINECRAFT.font.draw(matrixStack, author, x + leftMargin + 4, y + 25, 0xD86D1C);
+		MINECRAFT.font.draw(matrixStack, duration, x + entryWidth - 140, y + 15, 0xFFFF00);
 	}
 	
 	public static boolean openURI(String uri) {
-		Style style = ITextComponent.getTextComponentOrEmpty(null).getStyle();
+		Style style = Component.nullToEmpty(null).getStyle();
 		try {
 			new URI(uri);
-			style = style.setClickEvent(new ClickEvent(Action.OPEN_URL, uri));
+			style = style.withClickEvent(new ClickEvent(Action.OPEN_URL, uri));
 		} catch (final Exception ex) {
-			style = style.setClickEvent(new ClickEvent(Action.OPEN_FILE, uri));
+			style = style.withClickEvent(new ClickEvent(Action.OPEN_FILE, uri));
 		}
-		return MINECRAFT.currentScreen.handleComponentClicked(style);
+		return MINECRAFT.screen.handleComponentClicked(style);
 	}
 	
 	public static String getFormattedDuration(IAudioTrack track) {
