@@ -10,8 +10,8 @@ buildscript {
 			url = "https://repo.u-team.info"
 		}
 		maven {
-      			url "https://plugins.gradle.org/m2/"
-    		}
+			url "https://plugins.gradle.org/m2/"
+		}
 		mavenCentral()
 	}
 	dependencies {
@@ -50,7 +50,7 @@ minecraft {
 		client = {
 			workingDirectory file("run/client")
 			property "musicplayer.dev", "${project.rootDir}"
-
+			
 			mods {
 				"${config.mod.modid}" {
 					source sourceSets.main
@@ -60,7 +60,7 @@ minecraft {
 		server = {
 			workingDirectory file("run/server")
 			property "musicplayer.dev", "${project.rootDir}"
-
+			
 			mods {
 				"${config.mod.modid}" {
 					source sourceSets.main
@@ -70,13 +70,13 @@ minecraft {
 		data = {
 			workingDirectory file("run/data")
 			property "musicplayer.dev", "${project.rootDir}"
-
+			
 			args "--mod", config.mod.modid
 			args "--all"
 			args "--output", file("src/generated/resources")
 			args "--validate"
 			args "--existing", file("src/main/resources")
-
+			
 			mods {
 				"${config.mod.modid}" {
 					source sourceSets.main
@@ -201,9 +201,15 @@ dependencies {
 	minecraft "net.minecraftforge:forge:${config.forge.mcversion}-${config.forge.version}"
 	implementation fg.deobf("info.u-team:u_team_core-1.18.1:4.0.0.201-SNAPSHOT")
 	implementation project(":musicplayer-lavaplayer-api")
-	shade ("org.slf4j:slf4j-simple:1.7.26")
+	//shade ("org.slf4j:slf4j-simple:1.7.26")
 	shade ("net.harawata:appdirs:1.0.0") {
 		transitive=false
+	}
+}
+
+minecraft.runs.all {
+	lazyToken('minecraft_classpath') {
+		configurations.shade.copyRecursive().resolve().collect { it.absolutePath }.join(File.pathSeparator)
 	}
 }
 
