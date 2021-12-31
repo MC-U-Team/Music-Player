@@ -10,8 +10,8 @@ import info.u_team.music_player.musicplayer.MusicPlayerManager;
 import info.u_team.u_team_core.gui.renderer.ScalingTextRenderer;
 import info.u_team.u_team_core.gui.renderer.ScrollingTextRenderer;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.client.gui.Font;
+import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.client.gui.components.Widget;
 
 public class RenderOverlayMusicDisplay implements Widget {

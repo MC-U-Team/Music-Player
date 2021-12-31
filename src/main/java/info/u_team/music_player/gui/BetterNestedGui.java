@@ -3,8 +3,8 @@ package info.u_team.music_player.gui;
 import java.util.Collection;
 import java.util.stream.Collectors;
 
-import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.components.events.ContainerEventHandler;
+import net.minecraft.client.gui.components.events.GuiEventListener;
 
 public interface BetterNestedGui extends ContainerEventHandler {
 	

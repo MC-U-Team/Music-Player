@@ -24,12 +24,12 @@ import info.u_team.u_team_core.gui.elements.ImageButton;
 import info.u_team.u_team_core.gui.elements.ImageToggleButton;
 import info.u_team.u_team_core.gui.renderer.ScrollingTextRenderer;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.components.AbstractWidget;
+import net.minecraft.client.gui.components.Widget;
 import net.minecraft.client.gui.components.events.AbstractContainerEventHandler;
 import net.minecraft.client.gui.components.events.GuiEventListener;
-import net.minecraft.client.gui.components.Widget;
 import net.minecraft.client.gui.screens.PauseScreen;
 import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.network.chat.Component;
 
 public class GuiControls extends AbstractContainerEventHandler implements BetterNestedGui, Widget {

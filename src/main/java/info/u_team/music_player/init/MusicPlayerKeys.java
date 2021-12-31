@@ -8,9 +8,10 @@ import static info.u_team.music_player.init.MusicPlayerLocalization.KEY_SKIP_FOR
 
 import org.lwjgl.glfw.GLFW;
 
-import info.u_team.u_team_core.util.registry.ClientRegistry;
-import net.minecraft.client.KeyMapping;
 import com.mojang.blaze3d.platform.InputConstants;
+
+import net.minecraft.client.KeyMapping;
+import net.minecraftforge.client.ClientRegistry;
 import net.minecraftforge.client.settings.KeyConflictContext;
 import net.minecraftforge.client.settings.KeyModifier;
 import net.minecraftforge.eventbus.api.IEventBus;

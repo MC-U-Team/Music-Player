@@ -2,6 +2,8 @@ package info.u_team.music_player.init;
 
 import java.util.List;
 
+import com.mojang.blaze3d.platform.InputConstants;
+import com.mojang.blaze3d.platform.Window;
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import info.u_team.music_player.gui.GuiMusicPlayer;
@@ -13,18 +15,16 @@ import info.u_team.music_player.musicplayer.SettingsManager;
 import info.u_team.music_player.musicplayer.settings.IngameOverlayPosition;
 import info.u_team.music_player.render.RenderOverlayMusicDisplay;
 import info.u_team.u_team_core.gui.renderer.ScrollingTextRenderer;
-import com.mojang.blaze3d.platform.Window;
+import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.screens.PauseScreen;
 import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.client.KeyMapping;
-import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraftforge.client.event.GuiScreenEvent;
-import net.minecraftforge.client.event.GuiScreenEvent.KeyboardKeyPressedEvent;
 import net.minecraftforge.client.event.InputEvent.KeyInputEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
+import net.minecraftforge.client.event.ScreenEvent.KeyboardKeyPressedEvent;
 import net.minecraftforge.event.TickEvent.ClientTickEvent;
 import net.minecraftforge.event.TickEvent.Phase;
 import net.minecraftforge.eventbus.api.IEventBus;

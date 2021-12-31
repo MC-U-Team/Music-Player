@@ -3,10 +3,8 @@ package info.u_team.music_player.gui.controls;
 import info.u_team.u_team_core.gui.elements.ScalableSlider;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.network.chat.Component;
-
-import net.minecraftforge.fml.client.gui.widget.Slider.ISlider;
+import net.minecraft.sounds.SoundEvents;
 
 public class GuiVolumeSlider extends ScalableSlider {
 	

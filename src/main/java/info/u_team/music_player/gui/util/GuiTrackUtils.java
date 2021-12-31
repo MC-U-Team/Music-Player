@@ -13,10 +13,10 @@ import info.u_team.music_player.lavaplayer.api.audio.IAudioTrackInfo;
 import info.u_team.music_player.musicplayer.MusicPlayerManager;
 import info.u_team.music_player.util.TimeUtil;
 import net.minecraft.client.Minecraft;
-import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.Style;
 import net.minecraft.network.chat.ClickEvent;
 import net.minecraft.network.chat.ClickEvent.Action;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.Style;
 
 public final class GuiTrackUtils {
 	

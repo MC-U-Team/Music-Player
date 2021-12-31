@@ -6,7 +6,7 @@ import info.u_team.u_team_core.data.GenerationData;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
-import net.minecraftforge.fml.event.lifecycle.GatherDataEvent;
+import net.minecraftforge.forge.event.lifecycle.GatherDataEvent;
 
 @EventBusSubscriber(modid = MusicPlayerMod.MODID, bus = Bus.MOD)
 public class MusicPlayerDataGenerator {
