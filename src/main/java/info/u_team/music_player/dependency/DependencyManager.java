@@ -76,7 +76,7 @@ public class DependencyManager {
 	}
 	
 	private static URL createInternalURL(Path path) {
-		final String url = "jarlookup://" + MusicPlayerMod.MODID + path;
+		final String url = "jarlookup://" + MusicPlayerMod.MODID + "/" + path;
 		LOGGER.debug(MARKER_LOAD, "Create mod jar url ({}) from path ({}).", url, path);
 		try {
 			return new URL(url);
@@ -90,7 +90,7 @@ public class DependencyManager {
 	
 	private static void addToMusicPlayerDependencies(URL url) {
 		MUSICPLAYER_CLASSLOADER.addURL(url);
-		LOGGER.info(MARKER_ADD, "Added new jar file ({}) to the musicplayer dependency classloader.", url); // TODO change to debug
+		LOGGER.debug(MARKER_ADD, "Added new jar file ({}) to the musicplayer dependency classloader.", url);
 	}
 	
 	// TODO replace this with a less hacky solution
@@ -112,7 +112,11 @@ public class DependencyManager {
 				public Function<URL, InputStream> inputStreamFunction() {
 					return url -> {
 						try {
-							final var path = FMLLoader.getLoadingModList().getModFileById(url.getHost()).getFile().findResource(url.getPath().substring(1));
+							final var info = FMLLoader.getLoadingModList().getModFileById(url.getHost());
+							if (info == null) {
+								throw new IOException("Modid " + url.getHost() + " does not exists");
+							}
+							final var path = info.getFile().findResource(url.getPath().substring(1));
 							return Files.newInputStream(path);
 						} catch (IOException ex) {
 							LOGGER.error("Could not find resource {}", url);
