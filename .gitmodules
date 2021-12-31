@@ -1,0 +1,3 @@
+[submodule "gradle_files"]
+	path = gradle_files
+	url = https://github.com/MC-U-Team/Gradle-Files
