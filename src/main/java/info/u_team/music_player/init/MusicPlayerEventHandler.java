@@ -14,16 +14,16 @@ import info.u_team.music_player.musicplayer.MusicPlayerUtils;
 import info.u_team.music_player.musicplayer.SettingsManager;
 import info.u_team.music_player.musicplayer.settings.IngameOverlayPosition;
 import info.u_team.music_player.render.RenderOverlayMusicDisplay;
-import info.u_team.u_team_core.gui.renderer.ScrollingTextRenderer;
+import info.u_team.u_team_core.gui.elements.ScrollingText;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.screens.PauseScreen;
 import net.minecraft.client.gui.screens.Screen;
-import net.minecraftforge.client.event.GuiScreenEvent;
 import net.minecraftforge.client.event.InputEvent.KeyInputEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
+import net.minecraftforge.client.event.ScreenEvent;
 import net.minecraftforge.client.event.ScreenEvent.KeyboardKeyPressedEvent;
 import net.minecraftforge.event.TickEvent.ClientTickEvent;
 import net.minecraftforge.event.TickEvent.Phase;
@@ -130,10 +130,10 @@ public class MusicPlayerEventHandler {
 	
 	// Used to add buttons and gui controls to main ingame gui
 	
-	private static ScrollingTextRenderer titleRender, authorRender;
+	private static ScrollingText titleRender, authorRender;
 	
-	private static void onInitGuiPre(GuiScreenEvent.InitGuiEvent.Pre event) {
-		final Screen gui = event.getGui();
+	private static void onInitGuiPre(ScreenEvent.InitScreenEvent.Pre event) {
+		final Screen gui = event.getScreen();
 		if (gui instanceof PauseScreen) {
 			if (SETTINGS_MANAGER.getSettings().isShowIngameMenueOverlay()) {
 				gui.children().stream() //
@@ -147,8 +147,8 @@ public class MusicPlayerEventHandler {
 		}
 	}
 	
-	private static void onInitGuiPost(GuiScreenEvent.InitGuiEvent.Post event) {
-		final Screen gui = event.getGui();
+	private static void onInitGuiPost(ScreenEvent.InitScreenEvent.Post event) {
+		final Screen gui = event.getScreen();
 		if (gui instanceof PauseScreen) {
 			if (SETTINGS_MANAGER.getSettings().isShowIngameMenueOverlay()) {
 				final GuiControls controls = new GuiControls(gui, 3, gui.width);
@@ -167,20 +167,20 @@ public class MusicPlayerEventHandler {
 		}
 	}
 	
-	private static void onDrawScreenPost(GuiScreenEvent.DrawScreenEvent.Post event) {
-		final Screen gui = event.getGui();
+	private static void onDrawScreenPost(ScreenEvent.DrawScreenEvent.Post event) {
+		final Screen gui = event.getScreen();
 		if (gui instanceof PauseScreen) {
 			if (SETTINGS_MANAGER.getSettings().isShowIngameMenueOverlay()) {
 				gui.children().stream() //
 						.filter(element -> element instanceof GuiControls) //
 						.map(element -> ((GuiControls) element)).findAny() //
-						.ifPresent(controls -> controls.render(event.getMatrixStack(), event.getMouseX(), event.getMouseY(), event.getRenderPartialTicks()));
+						.ifPresent(controls -> controls.render(event.getPoseStack(), event.getMouseX(), event.getMouseY(), event.getPartialTicks()));
 			}
 		}
 	}
 	
-	private static void onMouseReleasePre(GuiScreenEvent.MouseReleasedEvent.Pre event) {
-		final Screen gui = event.getGui();
+	private static void onMouseReleasePre(ScreenEvent.MouseReleasedEvent.Pre event) {
+		final Screen gui = event.getScreen();
 		if (gui instanceof PauseScreen) {
 			if (SETTINGS_MANAGER.getSettings().isShowIngameMenueOverlay()) {
 				gui.children().stream() //

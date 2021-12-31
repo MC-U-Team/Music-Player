@@ -1,16 +1,16 @@
 package info.u_team.music_player.gui;
 
 import info.u_team.u_team_core.gui.elements.ScrollableList;
-import net.minecraft.client.gui.components.AbstractSelectionList;
+import net.minecraft.client.gui.components.ObjectSelectionList;
 import net.minecraft.util.Mth;
 
-public class BetterScrollableList<T extends AbstractSelectionList.Entry<T>> extends ScrollableList<T> {
+public class BetterScrollableList<T extends ObjectSelectionList.Entry<T>> extends ScrollableList<T> {
 	
 	public BetterScrollableList(int width, int height, int top, int bottom, int left, int right, int slotHeight, int sideDistance) {
 		super(width, height, top, bottom, left, right, slotHeight, sideDistance);
 		setRenderTopAndBottom(false);
-		setShouldUseScissor(true);
-		setShouldRenderTransparentBorder(true);
+		setUseScissor(true);
+		setRenderTransparentBorder(true);
 	}
 	
 	@Override

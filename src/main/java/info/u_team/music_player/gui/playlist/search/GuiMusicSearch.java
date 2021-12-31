@@ -63,7 +63,7 @@ public class GuiMusicSearch extends BetterScreen {
 	
 	@Override
 	protected void init() {
-		final ImageButton backButton = addButton(new ImageButton(1, 1, 15, 15, MusicPlayerResources.TEXTURE_BACK));
+		final ImageButton backButton = addRenderableWidget(new ImageButton(1, 1, 15, 15, MusicPlayerResources.TEXTURE_BACK));
 		backButton.setPressable(() -> minecraft.setScreen(new GuiMusicPlaylist(playlist)));
 		
 		urlField = new EditBox(font, 10, 35, width / 2 - 10, 20, Component.nullToEmpty("")) {
@@ -75,9 +75,9 @@ public class GuiMusicSearch extends BetterScreen {
 			}
 		};
 		urlField.setMaxLength(10000);
-		children.add(urlField);
+		addWidget(urlField);
 		
-		final UButton openFileButton = addButton(new UButton(width / 2 + 10, 34, width / 4 - 15, 22, Component.nullToEmpty(getTranslation(GUI_SEARCH_LOAD_FILE))));
+		final UButton openFileButton = addRenderableWidget(new UButton(width / 2 + 10, 34, width / 4 - 15, 22, Component.nullToEmpty(getTranslation(GUI_SEARCH_LOAD_FILE))));
 		openFileButton.setPressable(() -> {
 			final String response = TinyFileDialogs.tinyfd_openFileDialog(getTranslation(GUI_SEARCH_LOAD_FILE), null, null, getTranslation(GUI_SEARCH_MUSIC_FILES), false);
 			if (response != null) {
@@ -86,7 +86,7 @@ public class GuiMusicSearch extends BetterScreen {
 			}
 		});
 		
-		final UButton openFolderButton = addButton(new UButton((int) (width * 0.75) + 5, 34, width / 4 - 15, 22, Component.nullToEmpty(getTranslation(GUI_SEARCH_LOAD_FOLDER))));
+		final UButton openFolderButton = addRenderableWidget(new UButton((int) (width * 0.75) + 5, 34, width / 4 - 15, 22, Component.nullToEmpty(getTranslation(GUI_SEARCH_LOAD_FOLDER))));
 		openFolderButton.setPressable(() -> {
 			final String response = TinyFileDialogs.tinyfd_selectFolderDialog(getTranslation(GUI_SEARCH_LOAD_FOLDER), System.getProperty("user.home"));
 			if (response != null) {
@@ -99,7 +99,7 @@ public class GuiMusicSearch extends BetterScreen {
 			}
 		});
 		
-		final ImageButton searchButton = addButton(new ImageButton(10, 76, 24, 24, searchProvider.getLogo()));
+		final ImageButton searchButton = addRenderableWidget(new ImageButton(10, 76, 24, 24, searchProvider.getLogo()));
 		searchButton.setPressable(() -> {
 			searchProvider = SearchProvider.toggle(searchProvider);
 			searchButton.setImage(searchProvider.getLogo());
@@ -123,9 +123,9 @@ public class GuiMusicSearch extends BetterScreen {
 		searchField.setMaxLength(1000);
 		searchField.setFocus(true);
 		setFocused(searchField);
-		children.add(searchField);
+		addWidget(searchField);
 		
-		final UButton addAllButton = addButton(new UButton(width - 110, 105, 100, 20, Component.nullToEmpty(getTranslation(GUI_SEARCH_ADD_ALL))));
+		final UButton addAllButton = addRenderableWidget(new UButton(width - 110, 105, 100, 20, Component.nullToEmpty(getTranslation(GUI_SEARCH_ADD_ALL))));
 		addAllButton.setPressable(() -> {
 			final List<GuiMusicSearchListEntryPlaylist> list = searchList.children().stream().filter(entry -> entry instanceof GuiMusicSearchListEntryPlaylist).map(entry -> (GuiMusicSearchListEntryPlaylist) entry).collect(Collectors.toList());
 			if (list.size() > 0) {
@@ -141,7 +141,7 @@ public class GuiMusicSearch extends BetterScreen {
 		});
 		
 		searchList.updateSettings(width - 24, height, 130, height - 10, 12, width - 12);
-		children.add(searchList);
+		addWidget(searchList);
 	}
 	
 	@Override

@@ -19,7 +19,7 @@ import cpw.mods.modlauncher.api.LamdbaExceptionUtils;
 import info.u_team.music_player.MusicPlayerMod;
 import info.u_team.music_player.dependency.classloader.DependencyClassLoader;
 import net.minecraftforge.fml.ModList;
-import net.minecraftforge.fml.loading.moddiscovery.ModFile;
+import net.minecraftforge.forgespi.locating.IModFile;
 
 public class DependencyManager {
 	
@@ -58,7 +58,7 @@ public class DependencyManager {
 	}
 	
 	private static void findJarFilesInJar(String folder, Consumer<Path> consumer) {
-		final ModFile modfile = ModList.get().getModFileById(MusicPlayerMod.MODID).getFile();
+		final IModFile modfile = ModList.get().getModFileById(MusicPlayerMod.MODID).getFile();
 		try (Stream<Path> stream = Files.walk(modfile.findResource("/" + folder))) {
 			stream.filter(file -> file.toString().endsWith(FILE_ENDING)).forEach(consumer);
 		} catch (final IOException ex) {

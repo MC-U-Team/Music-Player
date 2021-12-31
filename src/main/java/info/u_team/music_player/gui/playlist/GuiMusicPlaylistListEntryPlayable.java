@@ -26,7 +26,7 @@ public abstract class GuiMusicPlaylistListEntryPlayable extends GuiMusicPlaylist
 		this.loadedTrack = loadedTrack;
 		manager = MusicPlayerManager.getPlayer().getTrackManager();
 		
-		playTrackButton = addButton(new ImageToggleButton(0, 0, 20, 20, MusicPlayerResources.TEXTURE_PLAY, MusicPlayerResources.TEXTURE_PAUSE, false));
+		playTrackButton = addChildren(new ImageToggleButton(0, 0, 20, 20, MusicPlayerResources.TEXTURE_PLAY, MusicPlayerResources.TEXTURE_PAUSE, false));
 		
 		if (loadedTrack.hasError() || track == null) {
 			playTrackButton.visible = false;

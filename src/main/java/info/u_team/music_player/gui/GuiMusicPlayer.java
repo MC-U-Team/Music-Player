@@ -11,7 +11,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import info.u_team.music_player.gui.controls.GuiControls;
 import info.u_team.music_player.init.MusicPlayerResources;
 import info.u_team.u_team_core.gui.elements.ImageButton;
-import info.u_team.u_team_core.gui.renderer.ScrollingTextRenderer;
+import info.u_team.u_team_core.gui.elements.ScrollingText;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.network.chat.Component;
@@ -31,13 +31,13 @@ public class GuiMusicPlayer extends BetterScreen {
 	
 	@Override
 	protected void init() {
-		addButton(new ImageButton(1, 1, 15, 15, MusicPlayerResources.TEXTURE_BACK, button -> minecraft.setScreen(null)));
+		addRenderableWidget(new ImageButton(1, 1, 15, 15, MusicPlayerResources.TEXTURE_BACK, button -> minecraft.setScreen(null)));
 		
 		namePlaylistField = new EditBox(font, 100, 60, width - 150, 20, Component.nullToEmpty(null));
 		namePlaylistField.setMaxLength(500);
-		children.add(namePlaylistField);
+		addWidget(namePlaylistField);
 		
-		final ImageButton addPlaylistButton = addButton(new ImageButton(width - 41, 59, 22, 22, MusicPlayerResources.TEXTURE_CREATE));
+		final ImageButton addPlaylistButton = addRenderableWidget(new ImageButton(width - 41, 59, 22, 22, MusicPlayerResources.TEXTURE_CREATE));
 		addPlaylistButton.setPressable(() -> {
 			final String name = namePlaylistField.getValue();
 			if (StringUtils.isBlank(name) || name.equals(getTranslation(GUI_CREATE_PLAYLIST_INSERT_NAME))) {
@@ -49,17 +49,17 @@ public class GuiMusicPlayer extends BetterScreen {
 		});
 		
 		playlistsList = new GuiMusicPlayerList(width - 24, height, 90, height - 10, 12, width - 12);
-		children.add(playlistsList);
+		addWidget(playlistsList);
 		
 		controls = new GuiControls(this, 5, width);
-		children.add(controls);
+		addWidget(controls);
 	}
 	
 	@Override
 	public void resize(Minecraft minecraft, int width, int height) {
 		final String text = namePlaylistField.getValue();
-		final ScrollingTextRenderer titleRender = controls.getTitleRender();
-		final ScrollingTextRenderer authorRender = controls.getAuthorRender();
+		final ScrollingText titleRender = controls.getTitleRender();
+		final ScrollingText authorRender = controls.getAuthorRender();
 		this.init(minecraft, width, height);
 		namePlaylistField.setValue(text);
 		controls.copyTitleRendererState(titleRender);

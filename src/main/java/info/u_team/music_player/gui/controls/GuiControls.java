@@ -22,17 +22,19 @@ import info.u_team.music_player.musicplayer.settings.Settings;
 import info.u_team.u_team_core.gui.elements.ImageActivatableButton;
 import info.u_team.u_team_core.gui.elements.ImageButton;
 import info.u_team.u_team_core.gui.elements.ImageToggleButton;
-import info.u_team.u_team_core.gui.renderer.ScrollingTextRenderer;
+import info.u_team.u_team_core.gui.elements.ScrollingText;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.Widget;
 import net.minecraft.client.gui.components.events.AbstractContainerEventHandler;
 import net.minecraft.client.gui.components.events.GuiEventListener;
+import net.minecraft.client.gui.narration.NarratableEntry;
+import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.gui.screens.PauseScreen;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 
-public class GuiControls extends AbstractContainerEventHandler implements BetterNestedGui, Widget {
+public class GuiControls extends AbstractContainerEventHandler implements BetterNestedGui, Widget, NarratableEntry {
 	
 	private final int middleX;
 	private final int y, width;
@@ -48,8 +50,8 @@ public class GuiControls extends AbstractContainerEventHandler implements Better
 	
 	private final GuiMusicProgressBar songProgress;
 	
-	private final ScrollingTextRenderer titleRender;
-	private final ScrollingTextRenderer authorRender;
+	private final ScrollingText titleRender;
+	private final ScrollingText authorRender;
 	
 	public GuiControls(Screen gui, int y, int width) {
 		this.y = y;
@@ -138,13 +140,13 @@ public class GuiControls extends AbstractContainerEventHandler implements Better
 		
 		// Render playing track
 		// Title and author
-		titleRender = new ScrollingTextRenderer(mc.font, () -> GuiTrackUtils.getValueOfPlayingTrack(track -> track.getInfo().getFixedTitle()), small ? 10 : 25, textRenderY);
+		titleRender = new ScrollingText(mc.font, () -> GuiTrackUtils.getValueOfPlayingTrack(track -> track.getInfo().getFixedTitle()), small ? 10 : 25, textRenderY);
 		titleRender.setWidth(textRenderWidth);
 		titleRender.setStepSize(0.5F);
 		titleRender.setColor(MusicPlayerColors.YELLOW);
 		titleRender.setSpeedTime(35);
 		
-		authorRender = new ScrollingTextRenderer(mc.font, () -> GuiTrackUtils.getValueOfPlayingTrack(track -> track.getInfo().getFixedAuthor()), small ? 10 : 25, textRenderY + 10);
+		authorRender = new ScrollingText(mc.font, () -> GuiTrackUtils.getValueOfPlayingTrack(track -> track.getInfo().getFixedAuthor()), small ? 10 : 25, textRenderY + 10);
 		authorRender.setWidth(textRenderWidth);
 		authorRender.setStepSize(0.5F);
 		authorRender.setColor(MusicPlayerColors.YELLOW);
@@ -196,7 +198,7 @@ public class GuiControls extends AbstractContainerEventHandler implements Better
 		return super.mouseClicked(mouseX, mouseY, button);
 	}
 	
-	private boolean checkClick(ScrollingTextRenderer renderer, double mouseX, double mouseY) {
+	private boolean checkClick(ScrollingText renderer, double mouseX, double mouseY) {
 		return mouseX >= renderer.getX() && mouseY >= renderer.getY() && mouseX < renderer.getX() + renderer.getWidth() && mouseY < renderer.getY() + (Minecraft.getInstance().font.lineHeight + 1) * renderer.getScale();
 	}
 	
@@ -219,20 +221,35 @@ public class GuiControls extends AbstractContainerEventHandler implements Better
 		return width;
 	}
 	
-	public ScrollingTextRenderer getTitleRender() {
+	public ScrollingText getTitleRender() {
 		return titleRender;
 	}
 	
-	public ScrollingTextRenderer getAuthorRender() {
+	public ScrollingText getAuthorRender() {
 		return authorRender;
 	}
 	
-	public void copyTitleRendererState(ScrollingTextRenderer renderer) {
+	public void copyTitleRendererState(ScrollingText renderer) {
 		titleRender.copyState(renderer);
 	}
 	
-	public void copyAuthorRendererState(ScrollingTextRenderer renderer) {
+	public void copyAuthorRendererState(ScrollingText renderer) {
 		authorRender.copyState(renderer);
+	}
+	
+	// Narration stuff
+	@Override
+	public void updateNarration(NarrationElementOutput p_169152_) {
+	}
+	
+	@Override
+	public boolean isActive() {
+		return false;
+	}
+	
+	@Override
+	public NarrationPriority narrationPriority() {
+		return NarrationPriority.NONE;
 	}
 	
 }

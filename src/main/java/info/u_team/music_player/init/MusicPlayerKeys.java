@@ -26,10 +26,10 @@ public class MusicPlayerKeys {
 	public static final KeyMapping SKIP_BACK = new KeyMapping(KEY_SKIP_BACK, KeyConflictContext.UNIVERSAL, KeyModifier.ALT, InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_KP_7, KEY_CATEGORY);
 	
 	private static void setup(FMLClientSetupEvent event) {
-		ClientRegistry.registerKeybinding(OPEN);
-		ClientRegistry.registerKeybinding(PAUSE);
-		ClientRegistry.registerKeybinding(SKIP_FORWARD);
-		ClientRegistry.registerKeybinding(SKIP_BACK);
+		ClientRegistry.registerKeyBinding(OPEN);
+		ClientRegistry.registerKeyBinding(PAUSE);
+		ClientRegistry.registerKeyBinding(SKIP_FORWARD);
+		ClientRegistry.registerKeyBinding(SKIP_BACK);
 	}
 	
 	public static void registerMod(IEventBus bus) {

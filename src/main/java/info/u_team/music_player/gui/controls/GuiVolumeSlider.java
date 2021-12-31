@@ -22,7 +22,7 @@ public class GuiVolumeSlider extends ScalableSlider {
 	
 	@Override
 	public void onRelease(double mouseX, double mouseY) {
-		if (isHovered() && clicked) {
+		if (isHoveredOrFocused() && clicked) {
 			Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_BUTTON_CLICK, 1));
 		}
 		clicked = false;

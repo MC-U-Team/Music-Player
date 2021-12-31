@@ -20,6 +20,8 @@ import info.u_team.music_player.musicplayer.playlist.Playlists;
 import info.u_team.music_player.musicplayer.playlist.Skip;
 import info.u_team.u_team_core.gui.elements.ImageButton;
 import info.u_team.u_team_core.gui.elements.ImageToggleButton;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
 
 class GuiMusicPlayerListEntry extends BetterScrollableListEntry<GuiMusicPlayerListEntry> {
 	
@@ -34,7 +36,7 @@ class GuiMusicPlayerListEntry extends BetterScrollableListEntry<GuiMusicPlayerLi
 		this.playlists = playlists;
 		this.playlist = playlist;
 		
-		playPlaylistButton = addButton(new ImageToggleButton(0, 0, 20, 20, MusicPlayerResources.TEXTURE_PLAY, MusicPlayerResources.TEXTURE_STOP, playlist.equals(playlists.getPlaying())));
+		playPlaylistButton = addChildren(new ImageToggleButton(0, 0, 20, 20, MusicPlayerResources.TEXTURE_PLAY, MusicPlayerResources.TEXTURE_STOP, playlist.equals(playlists.getPlaying())));
 		playPlaylistButton.active = !playlists.isPlayingLock();
 		
 		playPlaylistButton.setPressable(() -> {
@@ -91,10 +93,10 @@ class GuiMusicPlayerListEntry extends BetterScrollableListEntry<GuiMusicPlayerLi
 			}
 		});
 		
-		openPlaylistButton = addButton(new ImageButton(0, 0, 20, 20, MusicPlayerResources.TEXTURE_OPEN));
+		openPlaylistButton = addChildren(new ImageButton(0, 0, 20, 20, MusicPlayerResources.TEXTURE_OPEN));
 		openPlaylistButton.setPressable(() -> minecraft.setScreen(new GuiMusicPlaylist(playlist)));
 		
-		deletePlaylistButton = addButton(new ImageButton(0, 0, 20, 20, MusicPlayerResources.TEXTURE_CLEAR));
+		deletePlaylistButton = addChildren(new ImageButton(0, 0, 20, 20, MusicPlayerResources.TEXTURE_CLEAR));
 		deletePlaylistButton.setPressable(() -> gui.removePlaylist(this));
 	}
 	
@@ -122,5 +124,10 @@ class GuiMusicPlayerListEntry extends BetterScrollableListEntry<GuiMusicPlayerLi
 	
 	public Playlist getPlaylist() {
 		return playlist;
+	}
+	
+	@Override
+	public Component getNarration() {
+		return TextComponent.EMPTY;
 	}
 }

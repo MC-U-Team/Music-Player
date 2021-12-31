@@ -7,8 +7,8 @@ import info.u_team.music_player.init.MusicPlayerColors;
 import info.u_team.music_player.lavaplayer.api.audio.IAudioTrack;
 import info.u_team.music_player.lavaplayer.api.queue.ITrackManager;
 import info.u_team.music_player.musicplayer.MusicPlayerManager;
-import info.u_team.u_team_core.gui.renderer.ScalingTextRenderer;
-import info.u_team.u_team_core.gui.renderer.ScrollingTextRenderer;
+import info.u_team.u_team_core.gui.elements.ScalableText;
+import info.u_team.u_team_core.gui.elements.ScrollingText;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiComponent;
@@ -21,11 +21,11 @@ public class RenderOverlayMusicDisplay implements Widget {
 	private final int width;
 	private final int height;
 	
-	private final ScrollingTextRenderer title;
-	private final ScrollingTextRenderer author;
+	private final ScrollingText title;
+	private final ScrollingText author;
 	
-	private final ScalingTextRenderer position;
-	private final ScalingTextRenderer duration;
+	private final ScalableText position;
+	private final ScalableText duration;
 	
 	public RenderOverlayMusicDisplay() {
 		manager = MusicPlayerManager.getPlayer().getTrackManager();
@@ -35,24 +35,24 @@ public class RenderOverlayMusicDisplay implements Widget {
 		
 		final Font fontRender = Minecraft.getInstance().font;
 		
-		title = new ScrollingTextRenderer(fontRender, () -> GuiTrackUtils.getValueOfPlayingTrack(track -> track.getInfo().getFixedTitle()), 3, 2);
+		title = new ScrollingText(fontRender, () -> GuiTrackUtils.getValueOfPlayingTrack(track -> track.getInfo().getFixedTitle()), 3, 2);
 		title.setStepSize(0.5F);
 		title.setColor(MusicPlayerColors.YELLOW);
 		title.setWidth(114);
 		title.setSpeedTime(35);
 		
-		author = new ScrollingTextRenderer(fontRender, () -> GuiTrackUtils.getValueOfPlayingTrack(track -> track.getInfo().getFixedAuthor()), 3, 12);
+		author = new ScrollingText(fontRender, () -> GuiTrackUtils.getValueOfPlayingTrack(track -> track.getInfo().getFixedAuthor()), 3, 12);
 		author.setStepSize(0.5F);
 		author.setColor(MusicPlayerColors.YELLOW);
 		author.setScale(0.75F);
 		author.setWidth(114);
 		author.setSpeedTime(35);
 		
-		position = new ScalingTextRenderer(fontRender, () -> GuiTrackUtils.getValueOfPlayingTrack(GuiTrackUtils::getFormattedPosition), 6, 28);
+		position = new ScalableText(fontRender, () -> GuiTrackUtils.getValueOfPlayingTrack(GuiTrackUtils::getFormattedPosition), 6, 28);
 		position.setColor(MusicPlayerColors.YELLOW);
 		position.setScale(0.5F);
 		
-		duration = new ScalingTextRenderer(fontRender, () -> GuiTrackUtils.getValueOfPlayingTrack(GuiTrackUtils::getFormattedDuration), width - 6, 28);
+		duration = new ScalableText(fontRender, () -> GuiTrackUtils.getValueOfPlayingTrack(GuiTrackUtils::getFormattedDuration), width - 6, 28);
 		duration.setTextChanged(renderer -> {
 			duration.setX(width - 6 - renderer.getTextWidth());
 		});

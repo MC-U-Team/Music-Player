@@ -9,7 +9,7 @@ import info.u_team.music_player.gui.playlist.search.GuiMusicSearch;
 import info.u_team.music_player.init.MusicPlayerResources;
 import info.u_team.music_player.musicplayer.playlist.Playlist;
 import info.u_team.u_team_core.gui.elements.ImageButton;
-import info.u_team.u_team_core.gui.renderer.ScrollingTextRenderer;
+import info.u_team.u_team_core.gui.elements.ScrollingText;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.TextComponent;
 
@@ -47,10 +47,10 @@ public class GuiMusicPlaylist extends BetterScreen {
 	
 	@Override
 	protected void init() {
-		final ImageButton backButton = addButton(new ImageButton(1, 1, 15, 15, MusicPlayerResources.TEXTURE_BACK));
+		final ImageButton backButton = addRenderableWidget(new ImageButton(1, 1, 15, 15, MusicPlayerResources.TEXTURE_BACK));
 		backButton.setPressable(() -> minecraft.setScreen(new GuiMusicPlayer()));
 		
-		addTracksButton = addButton(new ImageButton(width - 35, 20, 22, 22, MusicPlayerResources.TEXTURE_ADD));
+		addTracksButton = addRenderableWidget(new ImageButton(width - 35, 20, 22, 22, MusicPlayerResources.TEXTURE_ADD));
 		addTracksButton.setPressable(() -> minecraft.setScreen(new GuiMusicSearch(playlist)));
 		
 		if (!playlist.isLoaded()) {
@@ -59,10 +59,10 @@ public class GuiMusicPlaylist extends BetterScreen {
 		
 		trackList.updateSettings(width - 24, height, 50, height - 10, 12, width - 12);
 		trackList.addAllEntries();
-		children.add(trackList);
+		addWidget(trackList);
 		
 		controls = new GuiControls(this, 5, width);
-		children.add(controls);
+		addWidget(controls);
 	}
 	
 	@Override
@@ -73,8 +73,8 @@ public class GuiMusicPlaylist extends BetterScreen {
 	
 	@Override
 	public void resize(Minecraft minecraft, int width, int height) {
-		final ScrollingTextRenderer titleRender = controls.getTitleRender();
-		final ScrollingTextRenderer authorRender = controls.getAuthorRender();
+		final ScrollingText titleRender = controls.getTitleRender();
+		final ScrollingText authorRender = controls.getAuthorRender();
 		this.init(minecraft, width, height);
 		controls.copyTitleRendererState(titleRender);
 		controls.copyAuthorRendererState(authorRender);
