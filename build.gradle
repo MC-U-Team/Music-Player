@@ -4,23 +4,25 @@ buildscript {
 			url = "https://maven.minecraftforge.net"
 		}
 		maven {
-			url = "https://repo.u-team.info"
+			url = "https://maven.parchmentmc.org"
 		}
 		maven {
-			url = "https://plugins.gradle.org/m2/"
+			url = "https://repo.u-team.info"
 		}
 		mavenCentral()
 	}
 	dependencies {
-		classpath group: "net.minecraftforge.gradle", name: "ForgeGradle", version: "4.1.+", changing: true
+		classpath group: "net.minecraftforge.gradle", name: "ForgeGradle", version: "5.1.+", changing: true
+		classpath group: "org.parchmentmc", name: "librarian", version: "1.+", changing: true
 		classpath group: "info.u-team.curse_gradle_uploader", name: "curse_gradle_uploader", version: "1.4.1"
 		classpath group: "com.github.jengelman.gradle.plugins", name: "shadow", version: "6.1.0"
 	}
 }
 
-apply from: "https://gradle-files.u-team.info/default-project.gradle"
+apply from: "gradle_files/default-project-fg-5.groovy"
 
 apply plugin: "net.minecraftforge.gradle"
+apply plugin: "org.parchmentmc.librarian.forgegradle"
 apply plugin: "eclipse"
 apply plugin: "info.u_team.curse_gradle_uploader"
 apply plugin: "maven-publish"
@@ -32,7 +34,7 @@ version = generateVersion()
 
 java {
 	toolchain {
-		languageVersion = JavaLanguageVersion.of(8)
+		languageVersion = JavaLanguageVersion.of(17)
 	}
 }
 
@@ -43,9 +45,9 @@ minecraft {
 	
 	runs {
 		client = {
-			workingDirectory project.file("run/client").canonicalPath
-			property "mixin.env.disableRefMap", "true"
+			workingDirectory file("run/client")
 			property "musicplayer.dev", "${project.rootDir}"
+
 			mods {
 				"${config.mod.modid}" {
 					source sourceSets.main
@@ -53,9 +55,9 @@ minecraft {
 			}
 		}
 		server = {
-			workingDirectory project.file("run/server").canonicalPath
-			property "mixin.env.disableRefMap", "true"
+			workingDirectory file("run/server")
 			property "musicplayer.dev", "${project.rootDir}"
+
 			mods {
 				"${config.mod.modid}" {
 					source sourceSets.main
@@ -63,10 +65,15 @@ minecraft {
 			}
 		}
 		data = {
-			workingDirectory project.file("run/data").canonicalPath
-			property "mixin.env.disableRefMap", "true"
+			workingDirectory file("run/data")
 			property "musicplayer.dev", "${project.rootDir}"
-			args "--mod", config.mod.modid, "--all", "--output", "\"" + file("src/generated/resources").toString() + "\"", "--validate", "--existing", "\"" + sourceSets.main.resources.srcDirs[0] + "\""
+
+			args "--mod", config.mod.modid
+			args "--all"
+			args "--output", file("src/generated/resources")
+			args "--validate"
+			args "--existing", file("src/main/resources")
+
 			mods {
 				"${config.mod.modid}" {
 					source sourceSets.main
@@ -78,7 +85,7 @@ minecraft {
 
 configurations {
 	shade
-	compile.extendsFrom(shade)
+	implementation.extendsFrom(shade)
 }
 
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
@@ -188,9 +195,9 @@ sourceSets {
 }
 
 dependencies {
-	minecraft getForgeDependency()
-	compileOnly getUTeamCoreDependency()
-	compileOnly project(":musicplayer-lavaplayer-api")
+	minecraft "net.minecraftforge:forge:${config.forge.mcversion}-${config.forge.version}"
+	implementation fg.deobf("info.u-team:u_team_core-1.18.1:4.0.0.201-SNAPSHOT")
+	implementation project(":musicplayer-lavaplayer-api")
 	shade ("org.slf4j:slf4j-simple:1.7.26")
 	shade ("net.harawata:appdirs:1.0.0") {
 		transitive=false
@@ -214,9 +221,7 @@ curseforge {
 		
 		addGameVersion config.forge.mcversion
 		addGameVersion "Forge"
-		addGameVersion "Java 8"
-		addGameVersion "Java 9"
-		addGameVersion "Java 10"
+		addGameVersion "Java 17"
 		
 		relations {
 			requiredDependency "u-team-core"
@@ -226,11 +231,11 @@ curseforge {
 		mainArtifact(jar) {
 			displayName = "${config.curse.display}-${config.forge.mcversion}-${project.version}"
 			changelogType = "html"
-			changelog = "<a href=\"" + generateChangelogUrl() + "\">Changelog of ${project.version}</a>"
+			changelog = "<a href=\"${generateChangelogUrl()}\">Changelog of ${project.version}</a>"
 		}
 		
 		addArtifact(deobfJar) {
-			displayName = "${config.curse.display}-${config.forge.mcversion}-${project.version}-dev"
+			displayName = "(For development use) ${config.curse.display}-${config.forge.mcversion}-${project.version}-dev"
 			changelogType = "text"
 			changelog = "ONLY for development environment!\nMappings: ${config.forge.mapping_channel}_${config.forge.mapping}"
 		}
