@@ -119,7 +119,7 @@ task normalJar(type: ShadowJar) {
 	
 	manifest normalManifest
 	
-	relocate "org.slf4j", "info.u_team.music_player.shade.org.slf4j"
+	//relocate "org.slf4j", "info.u_team.music_player.shade.org.slf4j"
 	relocate "net.harawata.appdirs", "info.u_team.music_player.shade.net.harawata.appdirs"
 	
 	exclude "META-INF/maven/**"
@@ -149,7 +149,7 @@ task deobfJar(type: ShadowJar) {
 	
 	manifest normalManifest
 	
-	relocate "org.slf4j", "info.u_team.music_player.shade.org.slf4j"
+	//relocate "org.slf4j", "info.u_team.music_player.shade.org.slf4j"
 	relocate "net.harawata.appdirs", "info.u_team.music_player.shade.net.harawata.appdirs"
 	
 	exclude "META-INF/maven/**"
@@ -203,7 +203,6 @@ dependencies {
 	minecraft "net.minecraftforge:forge:${config.forge.mcversion}-${config.forge.version}"
 	implementation fg.deobf("info.u-team:u_team_core-1.18.1:4.0.0.201-SNAPSHOT")
 	library project(":musicplayer-lavaplayer-api")
-	//shade ("org.slf4j:slf4j-simple:1.7.26")
 	shade ("net.harawata:appdirs:1.0.0") {
 		transitive=false
 	}
