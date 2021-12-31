@@ -69,7 +69,7 @@ public class DependencyManager {
 	private static URL createInternalURL(Path path) {
 		try {
 			final URL url = path.toUri().toURL();
-			LOGGER.debug(MARKER_LOAD, "Create mod jar url ({}) from path ({}).", url, path);
+			LOGGER.info(MARKER_LOAD, "Create mod jar url ({}) from path ({}).", url, path);
 			return path.toUri().toURL();
 		} catch (final MalformedURLException ex) {
 			LOGGER.error(MARKER_LOAD, "Could not create url from internal path.", ex);
