@@ -8,7 +8,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.function.Consumer;
 import java.util.function.Function;
-import java.util.jar.JarFile;
 import java.util.stream.Stream;
 
 import org.apache.logging.log4j.LogManager;
@@ -82,13 +81,6 @@ public class DependencyManager {
 	
 	private static void addToMusicPlayerDependencies(URL url) {
 		MUSICPLAYER_CLASSLOADER.addURL(url);
-		
-		try {
-			System.out.println(new String(url.openStream().readNBytes(50)));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		
 		LOGGER.info(MARKER_ADD, "Added new jar file ({}) to the musicplayer dependency classloader.", url); // TODO change to debug
 	}
 }
