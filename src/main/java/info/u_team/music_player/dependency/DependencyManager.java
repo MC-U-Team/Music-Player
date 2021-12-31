@@ -8,6 +8,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.jar.JarFile;
 import java.util.stream.Stream;
 
 import org.apache.logging.log4j.LogManager;
@@ -69,7 +70,7 @@ public class DependencyManager {
 	private static URL createInternalURL(Path path) {
 		try {
 			final URL url = path.toUri().toURL();
-			LOGGER.info(MARKER_LOAD, "Create mod jar url ({}) from path ({}).", url, path);
+			LOGGER.info(MARKER_LOAD, "Create mod jar url ({}) from path ({}).", url, path); // TODO change to debug
 			return path.toUri().toURL();
 		} catch (final MalformedURLException ex) {
 			LOGGER.error(MARKER_LOAD, "Could not create url from internal path.", ex);
@@ -81,6 +82,13 @@ public class DependencyManager {
 	
 	private static void addToMusicPlayerDependencies(URL url) {
 		MUSICPLAYER_CLASSLOADER.addURL(url);
-		LOGGER.debug(MARKER_ADD, "Added new jar file ({}) to the musicplayer dependency classloader.", url);
+		
+		try {
+			System.out.println(new String(url.openStream().readNBytes(50)));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		LOGGER.info(MARKER_ADD, "Added new jar file ({}) to the musicplayer dependency classloader.", url); // TODO change to debug
 	}
 }
