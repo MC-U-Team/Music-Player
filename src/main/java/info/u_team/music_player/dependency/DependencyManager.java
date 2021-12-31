@@ -67,10 +67,10 @@ public class DependencyManager {
 	}
 	
 	private static URL createInternalURL(Path path) {
+		final String url = "modjar://" + MusicPlayerMod.MODID + path;
+		LOGGER.debug(MARKER_LOAD, "Create mod jar url ({}) from path ({}).", url, path);
 		try {
-			final URL url = path.toUri().toURL();
-			LOGGER.info(MARKER_LOAD, "Create mod jar url ({}) from path ({}).", url, path); // TODO change to debug
-			return path.toUri().toURL();
+			return new URL(url);
 		} catch (final MalformedURLException ex) {
 			LOGGER.error(MARKER_LOAD, "Could not create url from internal path.", ex);
 		}
