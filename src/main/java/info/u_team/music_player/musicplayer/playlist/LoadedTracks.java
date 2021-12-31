@@ -19,7 +19,7 @@ public class LoadedTracks {
 	
 	/**
 	 * Dummy
-	 * 
+	 *
 	 * @param uri
 	 */
 	public LoadedTracks(WrappedObject<String> uri) {
@@ -105,10 +105,7 @@ public class LoadedTracks {
 	}
 	
 	public IAudioTrack getOtherTrack(IAudioTrack track, Skip skip) {
-		if (isTrack()) {
-			return null;
-		}
-		if (!isTrackList()) {
+		if (isTrack() || !isTrackList()) {
 			return null;
 		}
 		final List<IAudioTrack> list = trackList.getTracks();

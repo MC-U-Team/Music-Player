@@ -9,7 +9,7 @@ import com.google.gson.annotations.SerializedName;
  * default implementation of {@link #hashCode()} and {@link #equals(Object)}. This ensures there can't be
  * {@link WrappedObject} which are equals. This can be used in the Collection Framework {@link Collection} for some
  * special use.
- * 
+ *
  * @author HyCraftHD
  * @param <T>
  */
@@ -24,7 +24,7 @@ public class WrappedObject<T> {
 	
 	/**
 	 * Creates a new {@link WrappedObject}
-	 * 
+	 *
 	 * @param object The object you want to wrap. Must match the generic type
 	 */
 	public WrappedObject(T object) {
@@ -33,7 +33,7 @@ public class WrappedObject<T> {
 	
 	/**
 	 * Retrieves the wrapped object
-	 * 
+	 *
 	 * @return Wrapped object
 	 */
 	public T get() {

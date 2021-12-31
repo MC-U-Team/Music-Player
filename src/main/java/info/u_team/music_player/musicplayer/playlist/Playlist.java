@@ -25,7 +25,7 @@ import info.u_team.music_player.util.WrappedObject;
  * This class represents a playlist. This list can be serialized or deserialized. After a serialization the tracks must
  * be loaded, because only the uris are saved. {@link IAudioTrack} and {@link IAudioTrackList} can be added. Tracks can
  * be removed. Tracks can be moved in the order. Any changes to the serializable fields are saved
- * 
+ *
  * @author HyCraftHD
  */
 public class Playlist implements ITrackQueue {
@@ -51,7 +51,7 @@ public class Playlist implements ITrackQueue {
 	
 	/**
 	 * Create a new playlist object with a name
-	 * 
+	 *
 	 * @param name The playlist's name
 	 */
 	public Playlist(String name) {
@@ -74,7 +74,7 @@ public class Playlist implements ITrackQueue {
 	 * Loads this playlist. This will go through all uris and search with {@link ITrackSearch} for the {@link IAudioTrack}
 	 * and {@link IAudioTrackList} for {@link LoadedTracks}. This method is async. This method calls the
 	 * {@link Runnable#run()} method when everything is loaded and the playlist was not loaded before.
-	 * 
+	 *
 	 * @param runnable A runnable that should be executed when the playlist is loaded
 	 */
 	public void load(Runnable runnable) {
@@ -122,7 +122,7 @@ public class Playlist implements ITrackQueue {
 	
 	/**
 	 * Is this playlist loaded
-	 * 
+	 *
 	 * @return Playlist loaded
 	 */
 	public boolean isLoaded() {
@@ -131,7 +131,7 @@ public class Playlist implements ITrackQueue {
 	
 	/**
 	 * Adds an {@link IAudioTrack} to the uri list and the loaded tracks. This playlist must be loaded.
-	 * 
+	 *
 	 * @param track The track that should be added
 	 * @return The {@link WrappedObject} with the uri as a string
 	 */
@@ -150,7 +150,7 @@ public class Playlist implements ITrackQueue {
 	/**
 	 * Adds an {@link IAudioTrackList} to the uri list and the loaded tracks if it has a valid uri and is not a search
 	 * result. This playlist must be loaded.
-	 * 
+	 *
 	 * @param trackList The tracklist that should be added
 	 * @return The {@link WrappedObject} with the uri as a string
 	 */
@@ -171,7 +171,7 @@ public class Playlist implements ITrackQueue {
 	
 	/**
 	 * Removes an uri from the uri list and the loaded tracks. This playlist must be loaded.
-	 * 
+	 *
 	 * @param uri The {@link WrappedObject} with the uri as a string
 	 * @return If the uri was removed
 	 */
@@ -191,7 +191,7 @@ public class Playlist implements ITrackQueue {
 	
 	/**
 	 * Move the uri and loaded track in the list up or down. This playlist must be loaded.
-	 * 
+	 *
 	 * @param uri The {@link WrappedObject} with the uri as a string
 	 * @param value Positive value to move the uri up the value, and the other way around for a negative value
 	 * @return If move was successful
@@ -214,7 +214,7 @@ public class Playlist implements ITrackQueue {
 	
 	/**
 	 * Sets the name of this playlist
-	 * 
+	 *
 	 * @param name Name
 	 */
 	public void setName(String name) {
@@ -224,7 +224,7 @@ public class Playlist implements ITrackQueue {
 	
 	/**
 	 * Gets the name of this playlist
-	 * 
+	 *
 	 * @return Name of this playlist
 	 */
 	public String getName() {
@@ -233,7 +233,7 @@ public class Playlist implements ITrackQueue {
 	
 	/**
 	 * Gets the size of uri entries
-	 * 
+	 *
 	 * @return Size of uri entries
 	 */
 	public int getEntrySize() {
@@ -243,7 +243,7 @@ public class Playlist implements ITrackQueue {
 	/**
 	 * Gets a {@link Collection} of {@link LoadedTracks}. Should only be used if this playlist is already loaded. This
 	 * collection is immutable
-	 * 
+	 *
 	 * @return Collection with all loaded tracks
 	 */
 	public Collection<LoadedTracks> getLoadedTracks() {
@@ -252,7 +252,7 @@ public class Playlist implements ITrackQueue {
 	
 	/**
 	 * Returns true if the playlist is empty and don't contain any uris.
-	 * 
+	 *
 	 * @return true if empty
 	 */
 	public boolean isEmpty() {
@@ -298,7 +298,7 @@ public class Playlist implements ITrackQueue {
 	
 	/**
 	 * Skip the current song in the {@link Skip} direction
-	 * 
+	 *
 	 * @param skip Should be skipped forward or backward
 	 * @return If skip was executed
 	 */
@@ -310,7 +310,7 @@ public class Playlist implements ITrackQueue {
 	/**
 	 * Gets the first track {@link Pair} with {@link LoadedTracks} and {@link IAudioTrack} in this playlist. Values in the
 	 * pair might be null if there are no tracks.
-	 * 
+	 *
 	 * @return Pair of {@link LoadedTracks} and {@link IAudioTrack}. Can't be null, but elements can be null.
 	 */
 	public Pair<LoadedTracks, IAudioTrack> getFirstTrack() {
@@ -320,7 +320,7 @@ public class Playlist implements ITrackQueue {
 	/**
 	 * Gets the last track {@link Pair} with {@link LoadedTracks} and {@link IAudioTrack} in this playlist. Values in the
 	 * pair might be null if there are no tracks.
-	 * 
+	 *
 	 * @return Pair of {@link LoadedTracks} and {@link IAudioTrack}. Can't be null, but elements can be null.
 	 */
 	public Pair<LoadedTracks, IAudioTrack> getLastTrack() {
@@ -330,7 +330,7 @@ public class Playlist implements ITrackQueue {
 	/**
 	 * Gets a {@link LoadedTracks} at the index of the loaded tracks list in this playlist. The supplied function must then
 	 * select the right {@link IAudioTrack}
-	 * 
+	 *
 	 * @param index The index of the {@link LoadedTracks} entry. Must be in bound
 	 * @param function A function that returns an {@link IAudioTrack} based on the passed {@link LoadedTracks}
 	 * @return Pair of {@link LoadedTracks} and {@link IAudioTrack}. Can't be null, but elements can be null.
@@ -349,7 +349,7 @@ public class Playlist implements ITrackQueue {
 	
 	/**
 	 * Sets the start {@link LoadedTracks} with the contained {@link IAudioTrack}
-	 * 
+	 *
 	 * @param loadedTrack {@link LoadedTracks} which must be in this playlist
 	 * @param track {@link IAudioTrack} which must be in the passed loadedTrack
 	 */
@@ -371,7 +371,7 @@ public class Playlist implements ITrackQueue {
 	 * {@link Skip#FORWARD} or one behind. If the next song is invalid which is tested with
 	 * {@link #getTrackAndValidate(int)} then the next valid song is chosen. If the end or start of the playlist is reached
 	 * the pair contains null values.
-	 * 
+	 *
 	 * @param loadedTrack The currently loaded track {@link LoadedTracks}
 	 * @param track The currently playing {@link IAudioTrack}
 	 * @param skip In which direction we want to skip
@@ -407,7 +407,7 @@ public class Playlist implements ITrackQueue {
 	 * Get the index of a {@link LoadedTracks} in the playlist and tests if the index is valid and the {@link LoadedTracks}
 	 * has no errors and contains a valid {@link IAudioTrack} or a valid {@link IAudioTrackList}. Returns null if the test
 	 * above failed.
-	 * 
+	 *
 	 * @param index The index to search for in the playlist
 	 * @return The loaded track or null if the index is out of bounds or the {@link LoadedTracks} has an error
 	 */
@@ -424,7 +424,7 @@ public class Playlist implements ITrackQueue {
 	
 	/**
 	 * Sets the {@link #loadedTracks} and {@link #next} variable to the passed arguments
-	 * 
+	 *
 	 * @param loadedTrack {@link LoadedTracks} which must be in this playlist
 	 * @param track {@link IAudioTrack} which must be in the passed loadedTrack
 	 */
@@ -435,7 +435,7 @@ public class Playlist implements ITrackQueue {
 	
 	/**
 	 * Find a next song and set it to the {@link #nextLoadedTrack} and {@link #next} track variable
-	 * 
+	 *
 	 * @param settings The current settings
 	 * @param skip In which direction we want to find the song
 	 * @return Return true if a valid next song could be found. Otherwise return false
@@ -474,7 +474,7 @@ public class Playlist implements ITrackQueue {
 	
 	/**
 	 * Select a random track
-	 * 
+	 *
 	 * @return If a new random track was found
 	 */
 	private boolean selectRandomTrack() {

@@ -73,12 +73,10 @@ class GuiMusicPlayerListEntry extends BetterScrollableListEntry<GuiMusicPlayerLi
 				
 				playlists.removePlayingLock();
 				
-				if (minecraft.screen instanceof GuiMusicPlayer) {
-					final GuiMusicPlayer musicplayergui = (GuiMusicPlayer) minecraft.screen;
+				if (minecraft.screen instanceof GuiMusicPlayer musicplayergui) {
 					final GuiMusicPlayerList newGui = musicplayergui.getPlaylistsList();
 					newGui.children().forEach(entry -> entry.playPlaylistButton.active = true);
-				} else if (minecraft.screen instanceof GuiMusicPlaylist) {
-					final GuiMusicPlaylist musicplaylistgui = (GuiMusicPlaylist) minecraft.screen;
+				} else if (minecraft.screen instanceof GuiMusicPlaylist musicplaylistgui) {
 					musicplaylistgui.getTrackList().updateAllEntries();
 				}
 			};
