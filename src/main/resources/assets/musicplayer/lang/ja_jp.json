@@ -24,7 +24,7 @@
   "gui.settings.position.up_left": "左上",
   "gui.settings.position.up_right": "右上",
   "gui.settings.toggle.ingame_overlay": "ゲーム中のオーバーレイの切り替え",
-  "gui.settings.toggle.key_in_gui": "Guiを開いているときのキーバインドの切り替え",
+  "gui.settings.toggle.key_in_gui": "Guiを開いている時のキーバインドの切り替え",
   "gui.settings.toggle.menue_overlay": "メニューオーバーレイの切り替え",
   "gui.track.duration_undefined": "未定義",
   "key.musicplayer.category": "ミュージックプレイヤー",
