@@ -41,7 +41,7 @@ public class DependencyManager {
 	public static void load() {
 		LOGGER.info(MARKER_LOAD, "Load dependencies");
 		
-		setupURLStreamHack();
+		//setupURLStreamHack();
 		
 		final String devPath = System.getProperty("musicplayer.dev");
 		if (devPath != null) {

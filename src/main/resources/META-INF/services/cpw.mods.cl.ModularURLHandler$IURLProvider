@@ -1,0 +1,7 @@
+# When using ServiceLoader, loading file name with package_name.class_name.
+# This means When invoked ServiceLoader.load(ModuleLayer, IURLProvider.class), load file services/cpw.mods.cl.ModularURLHandler$IURLProvider.
+# So should be named to cpw.mods.cl.ModularURLHandler$IURLProvider.
+# (And don't forget the extends or implement classes!)
+
+# Initialize and loading DependencyURLProvider
+info.u_team.music_player.dependency.urlprovider.DependencyURLProvider

@@ -1,5 +1,7 @@
 package info.u_team.music_player.dependency.classloader;
 
+import cpw.mods.cl.ModularURLHandler;
+
 import java.net.URL;
 import java.net.URLClassLoader;
 
@@ -7,6 +9,11 @@ public class DependencyClassLoader extends URLClassLoader {
 	
 	static {
 		ClassLoader.registerAsParallelCapable();
+		/*
+		 Call ServiceLoader.load(ModuleLayer, IURLProvider.class) and put to private Map<String, IURLProvider> handlers
+		 (See resources/META-INF/services/cpw.mods.cl.ModularURLHandler$IURLProvider and cpw.mods.cl.ModularURLHandler#initFrom)
+		 */
+		ModularURLHandler.initFrom(DependencyClassLoader.class.getModule().getLayer());
 	}
 	
 	private final ClassLoader ourClassLoader;
