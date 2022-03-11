@@ -201,7 +201,7 @@ sourceSets {
 
 dependencies {
 	minecraft "net.minecraftforge:forge:${config.forge.mcversion}-${config.forge.version}"
-	implementation fg.deobf("info.u-team:u_team_core-1.18.1:4.0.0.201-SNAPSHOT")
+	implementation fg.deobf("info.u-team:u_team_core-1.18.1:4.0.0.203")
 	library project(":musicplayer-lavaplayer-api")
 	shade ("net.harawata:appdirs:1.0.0") {
 		transitive=false
