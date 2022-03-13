@@ -105,48 +105,66 @@ tasks.shadowJar.enabled(false)
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 
 tasks.create("dependencyJar", ShadowJar) {
-	archiveClassifier = "dependencies"
-	
+	archiveClassifier = ""
+
 	configurations = [project.configurations.shade]
 
+	dependsOn("jar")
+
+	from sourceSets.main.output
 	from "musicplayer-lavaplayer/src/main/resources/LICENSE-DEPENDENCIES"
 
 	dependsOn ":musicplayer-lavaplayer-api:build"
 	dependsOn ":musicplayer-lavaplayer:build"
-	
+
 	from "musicplayer-lavaplayer-api/build/classes/java/main"
-	
+
 	into ("dependencies") {
 		from "musicplayer-lavaplayer/build/libs/musicplayer-lavaplayer.jar.packed"
 		from "musicplayer-lavaplayer/build/dependencies"
 	}
 
 	relocate "net.harawata.appdirs", "info.u_team.music_player.shade.net.harawata.appdirs"
-	
+
+	exclude "META-INF/maven/**"
+}
+
+tasks.create("dependencyDeobfJar", ShadowJar) {
+	archiveClassifier = "deobf"
+
+	configurations = [project.configurations.shade]
+
+	dependsOn("deobfJar")
+
+	from sourceSets.main.output
+	from "musicplayer-lavaplayer/src/main/resources/LICENSE-DEPENDENCIES"
+
+	dependsOn ":musicplayer-lavaplayer-api:build"
+	dependsOn ":musicplayer-lavaplayer:build"
+
+	from "musicplayer-lavaplayer-api/build/classes/java/main"
+
+	into ("dependencies") {
+		from "musicplayer-lavaplayer/build/libs/musicplayer-lavaplayer.jar.packed"
+		from "musicplayer-lavaplayer/build/dependencies"
+	}
+
+	relocate "net.harawata.appdirs", "info.u_team.music_player.shade.net.harawata.appdirs"
+
 	exclude "META-INF/maven/**"
 }
 
 tasks.whenTaskAdded { task ->
-	if(task.name == "signDependencyJar") {
+	if(task.name == "signDependencyJar" || task.name == "signDependencyDeobfJar") {
 		task.onlyIf {
 			false
 		}
 	}
-}
-
-tasks.named("jar") {task ->
-	task.dependsOn("dependencyJar")
-	task.from(zipTree(tasks.named("dependencyJar").get().outputs.files.singleFile))
-}
-
-tasks.named("deobfJar") {task ->
-	task.dependsOn("dependencyJar")
-	task.from(zipTree(tasks.named("dependencyJar").get().outputs.files.singleFile))
-}
-
-tasks.withType(Jar) { task ->
-	if(task.name != "dependencyJar") {
-		gradlefiles.defaultJar(task)
+	if(task.name == "reobfJar") {
+		task.dependsOn("dependencyJar")
+	}
+	if(task.name == "signDeobfJar") {
+		task.dependsOn("dependencyDeobfJar")
 	}
 }
 
