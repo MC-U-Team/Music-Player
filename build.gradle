@@ -10,35 +10,43 @@ buildscript {
 			url = "https://repo.u-team.info"
 		}
 		maven {
-			url "https://plugins.gradle.org/m2/"
+			url "https://plugins.gradle.org/m2"
 		}
 		mavenCentral()
 	}
 	dependencies {
 		classpath group: "net.minecraftforge.gradle", name: "ForgeGradle", version: "5.1.+", changing: true
 		classpath group: "org.parchmentmc", name: "librarian", version: "1.+", changing: true
-		classpath group: "info.u-team.curse_gradle_uploader", name: "curse_gradle_uploader", version: "1.4.1"
+		classpath group: "info.u-team.gradle_files", name: "gradle_files", version: "1.0.2"
+		classpath group: "info.u-team.curse_gradle_uploader", name: "curse_gradle_uploader", version: "1.5.0"
 		classpath group: "gradle.plugin.com.github.johnrengelman", name: "shadow", version: "7.1.2"
 	}
 }
 
-apply from: "gradle_files/default-project-fg-5.groovy"
-
 apply plugin: "net.minecraftforge.gradle"
 apply plugin: "org.parchmentmc.librarian.forgegradle"
-apply plugin: "eclipse"
+apply plugin: "info.u_team.gradle_files"
 apply plugin: "info.u_team.curse_gradle_uploader"
 apply plugin: "maven-publish"
 apply plugin: "com.github.johnrengelman.shadow"
 
 group = "info.u-team"
-archivesBaseName = generateArchivesBaseName()
-version = generateVersion()
+archivesBaseName = gradlefiles.archivesBaseName()
+version = gradlefiles.version()
+
+gradlefiles {
+	vendor "Team UTeam"
+	
+	signJars true
+}
 
 java {
 	toolchain {
 		languageVersion = JavaLanguageVersion.of(17)
 	}
+	withDeobfJar()
+	withSourcesJar()
+	withJavadocJar()
 }
 
 minecraft {
@@ -116,77 +124,24 @@ task normalJar(type: ShadowJar) {
 	}
 	
 	exclude(".cache")
-	
-	manifest normalManifest
-	
+		
 	//relocate "org.slf4j", "info.u_team.music_player.shade.org.slf4j"
 	relocate "net.harawata.appdirs", "info.u_team.music_player.shade.net.harawata.appdirs"
 	
 	exclude "META-INF/maven/**"
-}
-
-task deobfJar(type: ShadowJar) {
-	classifier = "dev"
-	
-	configurations = [project.configurations.shade]
-	
-	from sourceSets.main.output
-	
-	from "LICENSE"
-	from "musicplayer-lavaplayer/src/main/resources/LICENSE-DEPENDENCIES"
-	
-	deobfJar.dependsOn ":musicplayer-lavaplayer-api:build"
-	deobfJar.dependsOn ":musicplayer-lavaplayer:build"
-	
-	from "musicplayer-lavaplayer-api/build/classes/java/main"
-	
-	into ("dependencies") {
-		from "musicplayer-lavaplayer/build/libs/musicplayer-lavaplayer.jar.packed"
-		from "musicplayer-lavaplayer/build/dependencies"
-	}
-	
-	exclude(".cache")
-	
-	manifest normalManifest
-	
-	//relocate "org.slf4j", "info.u_team.music_player.shade.org.slf4j"
-	relocate "net.harawata.appdirs", "info.u_team.music_player.shade.net.harawata.appdirs"
-	
-	exclude "META-INF/maven/**"
-}
-
-task sourcesJar(type: Jar) {
-	classifier = "sources"
-	
-	from sourceSets.main.allJava
-	from "LICENSE"
-}
-
-task docJar(type: Jar) {
-	classifier = "javadoc"
-	
-	from javadoc
-	from "LICENSE"
-	
-	tasks.withType(Javadoc) {
-		options.addStringOption('Xdoclint:none', '-quiet')
-		options.addStringOption('encoding', 'UTF-8')
-		options.addStringOption('charSet', 'UTF-8')
-	}
 }
 
 reobf {
 	normalJar
 }
 
-artifacts {
-	archives normalJar
-	archives deobfJar
-	archives sourcesJar
-	archives docJar
+tasks.withType(Jar) { task ->
+	gradlefiles.defaultJar(task)
 }
 
-signAllJars()
+tasks.withType(Javadoc) { task ->
+	task.options.addStringOption("Xdoclint:none", "-quiet")
+}
 
 sourceSets {
 	main {
@@ -200,8 +155,10 @@ sourceSets {
 }
 
 dependencies {
-	minecraft "net.minecraftforge:forge:${config.forge.mcversion}-${config.forge.version}"
-	implementation fg.deobf("info.u-team:u_team_core-1.18.1:4.0.0.201-SNAPSHOT")
+	minecraft gradlefiles.forgeDependency()
+	
+	implementation fg.deobf("info.u-team:u_team_core-1.18.2:4.0.0.204")
+	
 	library project(":musicplayer-lavaplayer-api")
 	shade ("net.harawata:appdirs:1.0.0") {
 		transitive=false
@@ -215,15 +172,7 @@ minecraft.runs.all {
 }
 
 curseforge {
-	afterEvaluate {
-		tasks."curseforge${config.curse.id}".onlyIf {
-			getValue("token") != null
-		}
-	}
-	
-	tasks.curseforge.dependsOn build
-	
-	apiKey = getValueDefault("token")
+	apiKey = defaultPropertyValue("curseforge.token")
 	
 	project {
 		id = config.curse.id
@@ -238,48 +187,29 @@ curseforge {
 			optionalDependency "voice-chat"
 		}
 		
-		mainArtifact(jar) {
+		mainArtifact(tasks.getByName("jar")) {
 			displayName = "${config.curse.display}-${config.forge.mcversion}-${project.version}"
 			changelogType = "html"
-			changelog = "<a href=\"${generateChangelogUrl()}\">Changelog of ${project.version}</a>"
+			changelog = "<a href=\"${gradlefiles.changelogUrl()}\">Changelog of ${project.version}</a>"
 		}
-		
-		addArtifact(deobfJar) {
-			displayName = "(For development use) ${config.curse.display}-${config.forge.mcversion}-${project.version}-dev"
-			changelogType = "text"
-			changelog = "ONLY for development environment!\nMappings: ${config.forge.mapping_channel}_${config.forge.mapping}"
-		}
-	}
-}
-
-tasks.withType(PublishToMavenRepository) {
-	onlyIf {
-		getValue("mavenpass") != null
 	}
 }
 
 publishing {
-	publish.dependsOn build
-	
 	repositories {
 		maven {
 			url "https://repo.u-team.info"
 			credentials {
 				username = "maven"
-				password = getValue("mavenpass")
+				password = defaultPropertyValue("maven.password")
 			}
 		}
 	}
 	publications {
 		mavenJava(MavenPublication) {
-			artifact jar
-			artifact deobfJar
-			artifact sourcesJar
-			artifact docJar
+			artifactId archivesBaseName
 			
-			groupId = project.group
-			artifactId = project.archivesBaseName
-			version = project.version
+			from components.java
 			
 			pom {
 				name = project.archivesBaseName
@@ -309,22 +239,5 @@ publishing {
 				}
 			}
 		}
-	}
-}
-
-task uploadBoth {
-	tasks.uploadBoth.dependsOn build
-	tasks.uploadBoth.dependsOn publish
-	tasks.uploadBoth.dependsOn "curseforge${config.curse.id}"
-	tasks.uploadBoth.dependsOn setBuildNumber
-	tasks.uploadBoth.dependsOn tagRelease
-	doLast {
-		println "Published both"
-	}
-}
-
-gradle.taskGraph.whenReady {
-	if (gradle.taskGraph.hasTask(":curseforge${config.curse.id}") || gradle.taskGraph.hasTask(":publish")) {
-		validateBuild()
 	}
 }
