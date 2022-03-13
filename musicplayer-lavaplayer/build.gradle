@@ -23,8 +23,9 @@ task deleteOldDep(type: Delete) {
 }
 
 task copyNewDep(type: Copy) {
-	tasks.copyNewDep.dependsOn deleteOldDep
-	destinationDir = file("build")
+	dependsOn deleteOldDep
+
+	destinationDir = project.buildDir
 	into ("dependencies") {
 		from configurations.musicplayer
 	}
@@ -33,7 +34,7 @@ task copyNewDep(type: Copy) {
 	}
 }
 
-tasks.build.dependsOn copyNewDep
+tasks.jar.dependsOn copyNewDep
 
 jar {
 	archiveName += ".packed"
