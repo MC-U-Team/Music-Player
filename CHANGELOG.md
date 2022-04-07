@@ -1,6 +1,10 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [1.15.2-2.2.1.146] - 2022-04-07
+### Changed
+ - Update lavaplayer (lavaplayer-fork by Walkyst) to 1.3.97
+
 ## [1.15.2-2.2.1.139] - 2021-06-29
 ### Changed
  - Update lavaplayer to 1.3.78
