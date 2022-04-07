@@ -4,6 +4,7 @@ All notable changes to this project will be documented in this file.
 ## [1.8.9-2.1.1.143] - 2022-04-07
 ### Changed
  - Update lavaplayer (lavaplayer-fork by Walkyst) to 1.3.97
+ - Fix language translation not working bug
 
 ## [1.8.9-2.1.1.136] - 2021-06-29
 ### Changed
