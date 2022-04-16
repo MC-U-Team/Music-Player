@@ -17,7 +17,7 @@ buildscript {
 	dependencies {
 		classpath group: "net.minecraftforge.gradle", name: "ForgeGradle", version: "5.1.+", changing: true
 		classpath group: "org.parchmentmc", name: "librarian", version: "1.+", changing: true
-		classpath group: "info.u-team.gradle_files", name: "gradle_files", version: "1.0.3"
+		classpath group: "info.u-team.gradle_files", name: "gradle_files", version: "1.1.1"
 		classpath group: "info.u-team.curse_gradle_uploader", name: "curse_gradle_uploader", version: "1.5.0"
 		classpath group: "gradle.plugin.com.github.johnrengelman", name: "shadow", version: "7.1.2"
 	}
@@ -211,7 +211,7 @@ curseforge {
 		id = config.curse.id
 		releaseType = config.curse.type
 		
-		addGameVersion config.forge.mcversion
+		addGameVersion config.minecraft.version
 		addGameVersion "Forge"
 		addGameVersion "Java 17"
 		
@@ -221,7 +221,7 @@ curseforge {
 		}
 		
 		mainArtifact(tasks.getByName("jar")) {
-			displayName = "${config.curse.display}-${config.forge.mcversion}-${project.version}"
+			displayName = "${config.curse.display}-${config.minecraft.version}-${project.version}"
 			changelogType = "html"
 			changelog = "<a href=\"${gradlefiles.changelogUrl()}\">Changelog of ${project.version}</a>"
 		}
