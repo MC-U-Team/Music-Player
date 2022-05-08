@@ -106,51 +106,51 @@ import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 
 tasks.create("dependencyJar", ShadowJar) {
 	archiveClassifier = ""
-
+	
 	configurations = [project.configurations.shade]
-
+	
 	dependsOn("jar")
-
+	
 	from sourceSets.main.output
 	from "musicplayer-lavaplayer/src/main/resources/LICENSE-DEPENDENCIES"
-
+	
 	dependsOn ":musicplayer-lavaplayer-api:build"
 	dependsOn ":musicplayer-lavaplayer:build"
-
+	
 	from "musicplayer-lavaplayer-api/build/classes/java/main"
-
+	
 	into ("dependencies") {
 		from "musicplayer-lavaplayer/build/libs/musicplayer-lavaplayer.jar.packed"
 		from "musicplayer-lavaplayer/build/dependencies"
 	}
-
+	
 	relocate "net.harawata.appdirs", "info.u_team.music_player.shade.net.harawata.appdirs"
-
+	
 	exclude "META-INF/maven/**"
 }
 
 tasks.create("dependencyDeobfJar", ShadowJar) {
 	archiveClassifier = "deobf"
-
+	
 	configurations = [project.configurations.shade]
-
+	
 	dependsOn("deobfJar")
-
+	
 	from sourceSets.main.output
 	from "musicplayer-lavaplayer/src/main/resources/LICENSE-DEPENDENCIES"
-
+	
 	dependsOn ":musicplayer-lavaplayer-api:build"
 	dependsOn ":musicplayer-lavaplayer:build"
-
+	
 	from "musicplayer-lavaplayer-api/build/classes/java/main"
-
+	
 	into ("dependencies") {
 		from "musicplayer-lavaplayer/build/libs/musicplayer-lavaplayer.jar.packed"
 		from "musicplayer-lavaplayer/build/dependencies"
 	}
-
+	
 	relocate "net.harawata.appdirs", "info.u_team.music_player.shade.net.harawata.appdirs"
-
+	
 	exclude "META-INF/maven/**"
 }
 
@@ -220,7 +220,7 @@ curseforge {
 			optionalDependency "voice-chat"
 		}
 		
-		mainArtifact(tasks.getByName("jar")) {
+		mainArtifact(tasks.getByName("signJar")) {
 			displayName = "${config.curse.display}-${config.minecraft.version}-${project.version}"
 			changelogType = "html"
 			changelog = "<a href=\"${gradlefiles.changelogUrl()}\">Changelog of ${project.version}</a>"
