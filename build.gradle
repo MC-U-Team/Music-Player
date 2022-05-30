@@ -36,15 +36,12 @@ version = gradlefiles.version()
 
 gradlefiles {
 	vendor "Team UTeam"
-	
-	signJars true
 }
 
 java {
 	toolchain {
 		languageVersion = JavaLanguageVersion.of(17)
 	}
-	withDeobfJar()
 	withSourcesJar()
 	withJavadocJar()
 }
@@ -101,21 +98,17 @@ configurations {
 	implementation.extendsFrom(library)
 }
 
-tasks.shadowJar.enabled(false)
-import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
-
-tasks.create("dependencyJar", ShadowJar) {
+tasks.named("shadowJar") {
 	archiveClassifier = ""
 	
 	configurations = [project.configurations.shade]
 	
-	dependsOn("jar")
+	dependsOn "jar"
+	dependsOn ":musicplayer-lavaplayer-api:assemble"
+	dependsOn ":musicplayer-lavaplayer:assemble"
 	
 	from sourceSets.main.output
 	from "musicplayer-lavaplayer/src/main/resources/LICENSE-DEPENDENCIES"
-	
-	dependsOn ":musicplayer-lavaplayer-api:build"
-	dependsOn ":musicplayer-lavaplayer:build"
 	
 	from "musicplayer-lavaplayer-api/build/classes/java/main"
 	
@@ -129,43 +122,10 @@ tasks.create("dependencyJar", ShadowJar) {
 	exclude "META-INF/maven/**"
 }
 
-tasks.create("dependencyDeobfJar", ShadowJar) {
-	archiveClassifier = "deobf"
-	
-	configurations = [project.configurations.shade]
-	
-	dependsOn("deobfJar")
-	
-	from sourceSets.main.output
-	from "musicplayer-lavaplayer/src/main/resources/LICENSE-DEPENDENCIES"
-	
-	dependsOn ":musicplayer-lavaplayer-api:build"
-	dependsOn ":musicplayer-lavaplayer:build"
-	
-	from "musicplayer-lavaplayer-api/build/classes/java/main"
-	
-	into ("dependencies") {
-		from "musicplayer-lavaplayer/build/libs/musicplayer-lavaplayer.jar.packed"
-		from "musicplayer-lavaplayer/build/dependencies"
-	}
-	
-	relocate "net.harawata.appdirs", "info.u_team.music_player.shade.net.harawata.appdirs"
-	
-	exclude "META-INF/maven/**"
-}
-
-tasks.whenTaskAdded { task ->
-	if(task.name == "signDependencyJar" || task.name == "signDependencyDeobfJar") {
-		task.onlyIf {
-			false
-		}
-	}
-	if(task.name == "reobfJar") {
-		task.dependsOn("dependencyJar")
-	}
-	if(task.name == "signDeobfJar") {
-		task.dependsOn("dependencyDeobfJar")
-	}
+tasks.matching { task ->
+	task.name == "reobfJar"
+}.configureEach { task ->
+	task.dependsOn("shadowJar")
 }
 
 tasks.withType(Jar) { task ->
@@ -175,6 +135,8 @@ tasks.withType(Jar) { task ->
 tasks.withType(Javadoc) { task ->
 	task.options.addStringOption("Xdoclint:none", "-quiet")
 }
+
+gradlefiles.signDefaultForgeJar()
 
 sourceSets {
 	main {
@@ -199,7 +161,7 @@ dependencies {
 }
 
 minecraft.runs.all {
-	lazyToken('minecraft_classpath') {
+	lazyToken("minecraft_classpath") {
 		configurations.library.copyRecursive().resolve().collect { it.absolutePath }.join(File.pathSeparator)
 	}
 }
