@@ -49,12 +49,12 @@ java {
 minecraft {
 	mappings channel: config.forge.mapping_channel, version: config.forge.mapping
 	
-	accessTransformer = file("$rootDir/src/main/resources/META-INF/accesstransformer.cfg")
+	accessTransformer = file("src/main/resources/META-INF/accesstransformer.cfg")
 	
 	runs {
 		client = {
 			workingDirectory file("run/client")
-			property "musicplayer.dev", "${project.rootDir}"
+			property "musicplayer.dev", devPath()
 			
 			mods {
 				"${config.mod.modid}" {
@@ -64,7 +64,7 @@ minecraft {
 		}
 		server = {
 			workingDirectory file("run/server")
-			property "musicplayer.dev", "${project.rootDir}"
+			property "musicplayer.dev", devPath()
 			
 			mods {
 				"${config.mod.modid}" {
@@ -74,7 +74,7 @@ minecraft {
 		}
 		data = {
 			workingDirectory file("run/data")
-			property "musicplayer.dev", "${project.rootDir}"
+			property "musicplayer.dev", devPath()
 			
 			args "--mod", config.mod.modid
 			args "--all"
@@ -89,6 +89,13 @@ minecraft {
 			}
 		}
 	}
+}
+
+def devPath() {
+	def buildDir = project(":musicplayer-lavaplayer").buildDir
+	def libs = new File(buildDir, "libs").absolutePath
+	def dependencies = new File(buildDir, "dependencies").absolutePath
+	return "${libs};${dependencies}"
 }
 
 configurations {
