@@ -62,6 +62,6 @@ dependencies {
 		exclude group: "commons-logging", module: "commons-logging"
 	}
 	musicplayer "org.slf4j:slf4j-simple:1.7.25"
-	musicplayer "org.slf4j:jcl-over-slf4j:1.7.25"
+	musicplayer "org.slf4j:jcl-over-slf4j:1.7.36"
 	implementation project(":musicplayer-lavaplayer-api")
 }
