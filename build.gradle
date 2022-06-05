@@ -104,13 +104,15 @@ tasks.named("shadowJar") {
 	configurations = [project.configurations.shade]
 	
 	dependsOn "jar"
-	dependsOn ":musicplayer-lavaplayer-api:assemble"
-	dependsOn ":musicplayer-lavaplayer:assemble"
+	dependsOn ":musicplayer-lavaplayer-api:build"
+	dependsOn ":musicplayer-lavaplayer:build"
 	
 	from sourceSets.main.output
 	from "musicplayer-lavaplayer/src/main/resources/LICENSE-DEPENDENCIES"
 	
-	from "musicplayer-lavaplayer-api/build/classes/java/main"
+	doFirst {
+		from project(":musicplayer-lavaplayer-api").sourceSets.main.output
+	}
 	
 	into ("dependencies") {
 		from "musicplayer-lavaplayer/build/libs/musicplayer-lavaplayer.jar.packed"
@@ -120,6 +122,12 @@ tasks.named("shadowJar") {
 	relocate "net.harawata.appdirs", "info.u_team.music_player.shade.net.harawata.appdirs"
 	
 	exclude "META-INF/maven/**"
+}
+
+tasks.matching { task ->
+	task.name == "prepareRuns"
+}.configureEach { task ->
+	task.dependsOn(":musicplayer-lavaplayer:assemble")
 }
 
 tasks.matching { task ->
