@@ -15,7 +15,6 @@ import info.u_team.u_team_core.gui.elements.ScrollingText;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
 
 public class GuiMusicPlayer extends BetterScreen {
 	
@@ -26,7 +25,7 @@ public class GuiMusicPlayer extends BetterScreen {
 	private GuiControls controls;
 	
 	public GuiMusicPlayer() {
-		super(new TextComponent("musicplayer"));
+		super(Component.literal("musicplayer"));
 	}
 	
 	@Override

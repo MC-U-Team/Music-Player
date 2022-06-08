@@ -23,7 +23,6 @@ import info.u_team.u_team_core.gui.elements.UButton;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
 
 public class GuiMusicPlayerSettings extends BetterScreen {
 	
@@ -34,7 +33,7 @@ public class GuiMusicPlayerSettings extends BetterScreen {
 	private GuiControls controls;
 	
 	public GuiMusicPlayerSettings(Screen previousGui) {
-		super(new TextComponent("musicplayersettings"));
+		super(Component.literal("musicplayersettings"));
 		this.previousGui = previousGui;
 	}
 	

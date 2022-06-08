@@ -11,7 +11,7 @@ import info.u_team.music_player.musicplayer.playlist.Playlist;
 import info.u_team.u_team_core.gui.elements.ImageButton;
 import info.u_team.u_team_core.gui.elements.ScrollingText;
 import net.minecraft.client.Minecraft;
-import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.Component;
 
 public class GuiMusicPlaylist extends BetterScreen {
 	
@@ -24,7 +24,7 @@ public class GuiMusicPlaylist extends BetterScreen {
 	private GuiControls controls;
 	
 	public GuiMusicPlaylist(Playlist playlist) {
-		super(new TextComponent("musicplaylist"));
+		super(Component.literal("musicplaylist"));
 		this.playlist = playlist;
 		
 		trackList = new GuiMusicPlaylistList(playlist);

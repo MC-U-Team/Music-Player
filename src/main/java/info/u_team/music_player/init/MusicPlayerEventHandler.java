@@ -117,12 +117,12 @@ public class MusicPlayerEventHandler {
 					y = screenHeight - 3 - height;
 				}
 				
-				final PoseStack matrixStack = event.getMatrixStack();
+				final PoseStack poseStack = event.getPoseStack();
 				
-				matrixStack.pushPose();
-				matrixStack.translate(x, y, 500);
-				overlayRender.render(matrixStack, 0, 0, event.getPartialTicks());
-				matrixStack.popPose();
+				poseStack.pushPose();
+				poseStack.translate(x, y, 500);
+				overlayRender.render(poseStack, 0, 0, event.getPartialTick());
+				poseStack.popPose();
 			}
 		}
 		// }
@@ -174,7 +174,7 @@ public class MusicPlayerEventHandler {
 				gui.children().stream() //
 						.filter(element -> element instanceof GuiControls) //
 						.map(element -> ((GuiControls) element)).findAny() //
-						.ifPresent(controls -> controls.render(event.getPoseStack(), event.getMouseX(), event.getMouseY(), event.getPartialTicks()));
+						.ifPresent(controls -> controls.render(event.getPoseStack(), event.getMouseX(), event.getMouseY(), event.getPartialTick()));
 			}
 		}
 	}

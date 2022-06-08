@@ -3,8 +3,8 @@ package info.u_team.music_player.gui.settings;
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import info.u_team.music_player.gui.BetterScrollableListEntry;
+import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
 
 class GuiMusicPlayerSettingsMixerDeviceListEntry extends BetterScrollableListEntry<GuiMusicPlayerSettingsMixerDeviceListEntry> {
 	
@@ -25,7 +25,7 @@ class GuiMusicPlayerSettingsMixerDeviceListEntry extends BetterScrollableListEnt
 	
 	@Override
 	public Component getNarration() {
-		return TextComponent.EMPTY;
+		return CommonComponents.EMPTY;
 	}
 	
 }

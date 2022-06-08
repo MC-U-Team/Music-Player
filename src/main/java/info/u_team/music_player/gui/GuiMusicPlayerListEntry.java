@@ -20,8 +20,8 @@ import info.u_team.music_player.musicplayer.playlist.Playlists;
 import info.u_team.music_player.musicplayer.playlist.Skip;
 import info.u_team.u_team_core.gui.elements.ImageButton;
 import info.u_team.u_team_core.gui.elements.ImageToggleButton;
+import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
 
 class GuiMusicPlayerListEntry extends BetterScrollableListEntry<GuiMusicPlayerListEntry> {
 	
@@ -128,6 +128,6 @@ class GuiMusicPlayerListEntry extends BetterScrollableListEntry<GuiMusicPlayerLi
 	
 	@Override
 	public Component getNarration() {
-		return TextComponent.EMPTY;
+		return CommonComponents.EMPTY;
 	}
 }

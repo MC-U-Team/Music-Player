@@ -37,7 +37,6 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
 
 public class GuiMusicSearch extends BetterScreen {
 	
@@ -55,7 +54,7 @@ public class GuiMusicSearch extends BetterScreen {
 	private int maxTicksInformation;
 	
 	public GuiMusicSearch(Playlist playlist) {
-		super(new TextComponent("musicsearch"));
+		super(Component.literal("musicsearch"));
 		this.playlist = playlist;
 		searchList = new GuiMusicSearchList();
 		searchProvider = SearchProvider.YOUTUBE;
