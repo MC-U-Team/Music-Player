@@ -7,45 +7,50 @@ buildscript {
 			url = "https://repo.u-team.info"
 		}
 		maven {
-			url = "https://plugins.gradle.org/m2/"
+			url "https://plugins.gradle.org/m2"
 		}
 		mavenCentral()
 	}
 	dependencies {
-		classpath group: "net.minecraftforge.gradle", name: "ForgeGradle", version: "4.1.+", changing: true
-		classpath group: "info.u-team.curse_gradle_uploader", name: "curse_gradle_uploader", version: "1.4.1"
-		classpath group: "com.github.jengelman.gradle.plugins", name: "shadow", version: "6.1.0"
+		classpath group: "net.minecraftforge.gradle", name: "ForgeGradle", version: "5.1.+", changing: true
+		classpath group: "info.u-team.gradle_files", name: "gradle_files", version: "1.2.1"
+		classpath group: "info.u-team.curse_gradle_uploader", name: "curse_gradle_uploader", version: "1.5.1"
+		classpath group: "gradle.plugin.com.github.johnrengelman", name: "shadow", version: "7.1.2"
 	}
 }
 
-apply from: "https://gradle-files.u-team.info/default-project.gradle"
-
 apply plugin: "net.minecraftforge.gradle"
-apply plugin: "eclipse"
+apply plugin: "info.u_team.gradle_files"
 apply plugin: "info.u_team.curse_gradle_uploader"
 apply plugin: "maven-publish"
 apply plugin: "com.github.johnrengelman.shadow"
 
 group = "info.u-team"
-archivesBaseName = generateArchivesBaseName()
-version = generateVersion()
+archivesBaseName = gradlefiles.archivesBaseName()
+version = gradlefiles.version()
+
+gradlefiles {
+	vendor "Team UTeam"
+}
 
 java {
 	toolchain {
 		languageVersion = JavaLanguageVersion.of(8)
 	}
+	withSourcesJar()
+	withJavadocJar()
 }
 
 minecraft {
 	mappings channel: config.forge.mapping_channel, version: config.forge.mapping
 	
-	accessTransformer = file("$rootDir/src/main/resources/META-INF/accesstransformer.cfg")
+	accessTransformer = file("src/main/resources/META-INF/accesstransformer.cfg")
 	
 	runs {
 		client = {
-			workingDirectory project.file("run/client").canonicalPath
-			property "mixin.env.disableRefMap", "true"
-			property "musicplayer.dev", "${project.rootDir}"
+			workingDirectory file("run/client")
+			property "musicplayer.dev", devPath()
+			
 			mods {
 				"${config.mod.modid}" {
 					source sourceSets.main
@@ -53,9 +58,9 @@ minecraft {
 			}
 		}
 		server = {
-			workingDirectory project.file("run/server").canonicalPath
-			property "mixin.env.disableRefMap", "true"
-			property "musicplayer.dev", "${project.rootDir}"
+			workingDirectory file("run/server")
+			property "musicplayer.dev", devPath()
+			
 			mods {
 				"${config.mod.modid}" {
 					source sourceSets.main
@@ -63,10 +68,15 @@ minecraft {
 			}
 		}
 		data = {
-			workingDirectory project.file("run/data").canonicalPath
-			property "mixin.env.disableRefMap", "true"
-			property "musicplayer.dev", "${project.rootDir}"
-			args "--mod", config.mod.modid, "--all", "--output", "\"" + file("src/generated/resources").toString() + "\"", "--validate", "--existing", "\"" + sourceSets.main.resources.srcDirs[0] + "\""
+			workingDirectory file("run/data")
+			property "musicplayer.dev", devPath()
+			
+			args "--mod", config.mod.modid
+			args "--all"
+			args "--output", file("src/generated/resources")
+			args "--validate"
+			args "--existing", file("src/main/resources")
+			
 			mods {
 				"${config.mod.modid}" {
 					source sourceSets.main
@@ -76,105 +86,67 @@ minecraft {
 	}
 }
 
+def devPath() {
+	def buildDir = project(":musicplayer-lavaplayer").buildDir
+	def libs = new File(buildDir, "libs").absolutePath
+	def dependencies = new File(buildDir, "dependencies").absolutePath
+	return "${libs};${dependencies}"
+}
+
 configurations {
 	shade
-	compile.extendsFrom(shade)
+	library
+	library.extendsFrom(shade)
+	implementation.extendsFrom(library)
 }
 
-import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
-
-task normalJar(type: ShadowJar) {
-	classifier = ""
+tasks.named("shadowJar") {
+	archiveClassifier = ""
 	
 	configurations = [project.configurations.shade]
 	
-	from sourceSets.main.output
+	dependsOn "jar"
+	dependsOn ":musicplayer-lavaplayer-api:build"
+	dependsOn ":musicplayer-lavaplayer:build"
 	
-	from "LICENSE"
+	from sourceSets.main.output
 	from "musicplayer-lavaplayer/src/main/resources/LICENSE-DEPENDENCIES"
 	
-	normalJar.dependsOn ":musicplayer-lavaplayer-api:build"
-	normalJar.dependsOn ":musicplayer-lavaplayer:build"
-	
-	from "musicplayer-lavaplayer-api/build/classes/java/main"
+	doFirst {
+		from project(":musicplayer-lavaplayer-api").sourceSets.main.output
+	}
 	
 	into ("dependencies") {
 		from "musicplayer-lavaplayer/build/libs/musicplayer-lavaplayer.jar.packed"
 		from "musicplayer-lavaplayer/build/dependencies"
 	}
 	
-	exclude(".cache")
-	
-	manifest normalManifest
-	
-	relocate "org.slf4j", "info.u_team.music_player.shade.org.slf4j"
 	relocate "net.harawata.appdirs", "info.u_team.music_player.shade.net.harawata.appdirs"
 	
 	exclude "META-INF/maven/**"
 }
 
-task deobfJar(type: ShadowJar) {
-	classifier = "dev"
-	
-	configurations = [project.configurations.shade]
-	
-	from sourceSets.main.output
-	
-	from "LICENSE"
-	from "musicplayer-lavaplayer/src/main/resources/LICENSE-DEPENDENCIES"
-	
-	deobfJar.dependsOn ":musicplayer-lavaplayer-api:build"
-	deobfJar.dependsOn ":musicplayer-lavaplayer:build"
-	
-	from "musicplayer-lavaplayer-api/build/classes/java/main"
-	
-	into ("dependencies") {
-		from "musicplayer-lavaplayer/build/libs/musicplayer-lavaplayer.jar.packed"
-		from "musicplayer-lavaplayer/build/dependencies"
-	}
-	
-	exclude(".cache")
-	
-	manifest normalManifest
-	
-	relocate "org.slf4j", "info.u_team.music_player.shade.org.slf4j"
-	relocate "net.harawata.appdirs", "info.u_team.music_player.shade.net.harawata.appdirs"
-	
-	exclude "META-INF/maven/**"
+tasks.matching { task ->
+	task.name == "prepareRuns"
+}.configureEach { task ->
+	task.dependsOn(":musicplayer-lavaplayer:assemble")
 }
 
-task sourcesJar(type: Jar) {
-	classifier = "sources"
-	
-	from sourceSets.main.allJava
-	from "LICENSE"
+tasks.matching { task ->
+	task.name == "reobfJar"
+}.configureEach { task ->
+	task.dependsOn("shadowJar")
 }
 
-task docJar(type: Jar) {
-	classifier = "javadoc"
-	
-	from javadoc
-	from "LICENSE"
-	
-	tasks.withType(Javadoc) {
-		options.addStringOption('Xdoclint:none', '-quiet')
-		options.addStringOption('encoding', 'UTF-8')
-		options.addStringOption('charSet', 'UTF-8')
-	}
+tasks.withType(Jar) { task ->
+	gradlefiles.defaultJar(task)
 }
 
-reobf {
-	normalJar
+tasks.withType(Javadoc) { task ->
+	task.options.addStringOption("Xdoclint:none", "-quiet")
 }
 
-artifacts {
-	archives normalJar
-	archives deobfJar
-	archives sourcesJar
-	archives docJar
-}
-
-signAllJars()
+gradlefiles.signDefaultForgeJar()
 
 sourceSets {
 	main {
@@ -188,83 +160,61 @@ sourceSets {
 }
 
 dependencies {
-	minecraft getForgeDependency()
-	compileOnly getUTeamCoreDependency()
-	compileOnly project(":musicplayer-lavaplayer-api")
-	shade ("org.slf4j:slf4j-simple:1.7.26")
+	minecraft gradlefiles.forgeDependency()
+	
+	implementation fg.deobf("info.u-team:u_team_core-1.16.5:3.2.1.208")
+	
+	library project(":musicplayer-lavaplayer-api")
 	shade ("net.harawata:appdirs:1.0.0") {
 		transitive=false
 	}
 }
 
-curseforge {
-	afterEvaluate {
-		tasks."curseforge${config.curse.id}".onlyIf {
-			getValue("token") != null
-		}
+minecraft.runs.all {
+	lazyToken("minecraft_classpath") {
+		configurations.library.copyRecursive().resolve().collect { it.absolutePath }.join(File.pathSeparator)
 	}
-	
-	tasks.curseforge.dependsOn build
-	
-	apiKey = getValueDefault("token")
+}
+
+curseforge {
+	apiKey = defaultPropertyValue("curseforge.token")
 	
 	project {
 		id = config.curse.id
 		releaseType = config.curse.type
 		
-		addGameVersion config.forge.mcversion
+		addGameVersion config.minecraft.version
 		addGameVersion "Forge"
 		addGameVersion "Java 8"
-		addGameVersion "Java 9"
-		addGameVersion "Java 10"
 		
 		relations {
 			requiredDependency "u-team-core"
 			optionalDependency "voice-chat"
 		}
 		
-		mainArtifact(jar) {
-			displayName = "${config.curse.display}-${config.forge.mcversion}-${project.version}"
+		mainArtifact(tasks.getByName("jar")) {
+			displayName = "${config.curse.display}-${config.minecraft.version}-${project.version}"
 			changelogType = "html"
-			changelog = "<a href=\"" + generateChangelogUrl() + "\">Changelog of ${project.version}</a>"
+			changelog = "<a href=\"${gradlefiles.changelogUrl()}\">Changelog of ${project.version}</a>"
 		}
-		
-		addArtifact(deobfJar) {
-			displayName = "${config.curse.display}-${config.forge.mcversion}-${project.version}-dev"
-			changelogType = "text"
-			changelog = "ONLY for development environment!\nMappings: ${config.forge.mapping_channel}_${config.forge.mapping}"
-		}
-	}
-}
-
-tasks.withType(PublishToMavenRepository) {
-	onlyIf {
-		getValue("mavenpass") != null
 	}
 }
 
 publishing {
-	publish.dependsOn build
-	
 	repositories {
 		maven {
 			url "https://repo.u-team.info"
 			credentials {
 				username = "maven"
-				password = getValue("mavenpass")
+				password = defaultPropertyValue("maven.password")
 			}
 		}
 	}
 	publications {
 		mavenJava(MavenPublication) {
-			artifact jar
-			artifact deobfJar
-			artifact sourcesJar
-			artifact docJar
+			artifactId archivesBaseName
 			
-			groupId = project.group
-			artifactId = project.archivesBaseName
-			version = project.version
+			from components.java
 			
 			pom {
 				name = project.archivesBaseName
@@ -294,22 +244,5 @@ publishing {
 				}
 			}
 		}
-	}
-}
-
-task uploadBoth {
-	tasks.uploadBoth.dependsOn build
-	tasks.uploadBoth.dependsOn publish
-	tasks.uploadBoth.dependsOn "curseforge${config.curse.id}"
-	tasks.uploadBoth.dependsOn setBuildNumber
-	tasks.uploadBoth.dependsOn tagRelease
-	doLast {
-		println "Published both"
-	}
-}
-
-gradle.taskGraph.whenReady {
-	if (gradle.taskGraph.hasTask(":curseforge${config.curse.id}") || gradle.taskGraph.hasTask(":publish")) {
-		validateBuild()
 	}
 }
