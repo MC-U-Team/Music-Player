@@ -15,6 +15,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.Marker;
@@ -48,12 +49,12 @@ public class DependencyManager {
 		final String devPath = System.getProperty("musicplayer.dev");
 		final Set<Path> paths;
 		if (devPath != null) {
-			paths = Stream.of(devPath.split(";")) //
+			paths = Collections.unmodifiableSet(Stream.of(devPath.split(";")) //
 					.filter(Predicates.not(StringUtils::isNullOrEmpty)) //
 					.map(Paths::get) //
 					.map(DependencyManager::findJarFilesInDev) //
 					.flatMap(Set::stream) //
-					.collect(Collectors.toUnmodifiableSet());
+					.collect(Collectors.toSet()));
 		} else {
 			paths = findJarFilesInJar("dependencies");
 		}
@@ -88,7 +89,7 @@ public class DependencyManager {
 		final Path extractPath = extractDirectory.resolve(path.getFileName().toString());
 		try (final InputStream inputStream = Files.newInputStream(path); //
 				final OutputStream outputStream = Files.newOutputStream(extractPath, StandardOpenOption.CREATE);) {
-			inputStream.transferTo(outputStream);
+			IOUtils.copy(inputStream, outputStream);
 			LOGGER.debug(MARKER_LOAD, "Copied file from ({}) to ({})", path, extractPath);
 		} catch (final IOException ex) {
 			throw new RuntimeException("Cannot extract file " + path + " to " + extractPath, ex);
