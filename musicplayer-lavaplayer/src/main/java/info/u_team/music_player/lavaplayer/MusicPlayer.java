@@ -2,9 +2,12 @@ package info.u_team.music_player.lavaplayer;
 
 import javax.sound.sampled.DataLine.Info;
 
-import com.sedmelluq.discord.lavaplayer.format.*;
-import com.sedmelluq.discord.lavaplayer.player.*;
+import com.sedmelluq.discord.lavaplayer.format.AudioDataFormat;
+import com.sedmelluq.discord.lavaplayer.format.Pcm16AudioDataFormat;
 import com.sedmelluq.discord.lavaplayer.player.AudioConfiguration.ResamplingQuality;
+import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
+import com.sedmelluq.discord.lavaplayer.player.AudioPlayerManager;
+import com.sedmelluq.discord.lavaplayer.player.DefaultAudioPlayerManager;
 
 import info.u_team.music_player.lavaplayer.api.IMusicPlayer;
 import info.u_team.music_player.lavaplayer.api.output.IOutputConsumer;

@@ -2,7 +2,8 @@ package info.u_team.music_player.lavaplayer.impl;
 
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 
-import info.u_team.music_player.lavaplayer.api.audio.*;
+import info.u_team.music_player.lavaplayer.api.audio.IAudioTrack;
+import info.u_team.music_player.lavaplayer.api.audio.IAudioTrackInfo;
 
 public class AudioTrackImpl implements IAudioTrack {
 	

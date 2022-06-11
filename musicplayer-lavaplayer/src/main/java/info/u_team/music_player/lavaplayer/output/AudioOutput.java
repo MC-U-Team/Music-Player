@@ -16,9 +16,18 @@ package info.u_team.music_player.lavaplayer.output;
 
 import java.util.Arrays;
 
-import javax.sound.sampled.*;
+import javax.sound.sampled.AudioFormat;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.DataLine;
+import javax.sound.sampled.Line;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.Mixer;
+import javax.sound.sampled.SourceDataLine;
 
-import com.sedmelluq.discord.lavaplayer.format.*;
+import com.sedmelluq.discord.lavaplayer.format.AudioDataFormat;
+import com.sedmelluq.discord.lavaplayer.format.AudioDataFormatTools;
+import com.sedmelluq.discord.lavaplayer.format.AudioPlayerInputStream;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 
 import info.u_team.music_player.lavaplayer.MusicPlayer;
@@ -74,7 +83,7 @@ public class AudioOutput extends Thread {
 					sleep(frameDuration);
 				}
 			}
-		} catch (Exception ex) {
+		} catch (final Exception ex) {
 			ex.printStackTrace();
 		}
 	}
@@ -113,7 +122,7 @@ public class AudioOutput extends Thread {
 				line.start();
 				souceLine = line;
 				return true;
-			} catch (LineUnavailableException ex) {
+			} catch (final LineUnavailableException ex) {
 			}
 		}
 		return false;
@@ -129,7 +138,7 @@ public class AudioOutput extends Thread {
 	
 	private Mixer findMixer(String name, Line.Info lineInfo) {
 		Mixer defaultMixer = null;
-		for (Mixer.Info mixerInfo : AudioSystem.getMixerInfo()) {
+		for (final Mixer.Info mixerInfo : AudioSystem.getMixerInfo()) {
 			final Mixer mixer = AudioSystem.getMixer(mixerInfo);
 			if (mixer.isLineSupported(lineInfo)) {
 				if (mixerInfo.getName().equals(name)) {

@@ -1,13 +1,18 @@
 package info.u_team.music_player.lavaplayer.testimpl;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Random;
+import java.util.Scanner;
 
-import org.slf4j.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import info.u_team.music_player.lavaplayer.MusicPlayer;
 import info.u_team.music_player.lavaplayer.api.IMusicPlayer;
 import info.u_team.music_player.lavaplayer.api.audio.IAudioTrack;
-import info.u_team.music_player.lavaplayer.api.queue.*;
+import info.u_team.music_player.lavaplayer.api.queue.ITrackManager;
+import info.u_team.music_player.lavaplayer.api.queue.ITrackQueue;
 
 public class Main {
 	
@@ -18,24 +23,27 @@ public class Main {
 	}
 	
 	public Main() {
-		IMusicPlayer musicPlayer = new MusicPlayer();
+		final IMusicPlayer musicPlayer = new MusicPlayer();
 		musicPlayer.startAudioOutput();
 		
 		musicPlayer.setVolume(10);
 		
-		ITrackManager manager = musicPlayer.getTrackManager();
+		final ITrackManager manager = musicPlayer.getTrackManager();
 		
 		musicPlayer.getTrackSearch().getTracks("https://www.youtube.com/playlist?list=PLyseegEZ84-drkYTkLldkiIBPHRJd7Xgd", result -> {
-			
-			manager.setTrackQueue(new TrackQueue(result.getTrackList().getTracks()));
+			if (result.isList()) {
+				manager.setTrackQueue(new TrackQueue(result.getTrackList().getTracks()));
+			} else {
+				manager.setTrackQueue(new TrackQueue(Arrays.asList(result.getTrack())));
+			}
 			log.info("Loaded all tracks -> starting now");
 			manager.start();
 		});
 		
 		new Thread(() -> {
-			Scanner scanner = new Scanner(System.in);
+			final Scanner scanner = new Scanner(System.in);
 			while (scanner.hasNext()) {
-				String line = scanner.nextLine();
+				final String line = scanner.nextLine();
 				if (line.startsWith("pause")) {
 					manager.setPaused(true);
 				} else if (line.startsWith("unpause")) {
@@ -45,8 +53,11 @@ public class Main {
 				} else if (line.startsWith("stop")) {
 					manager.stop();
 				} else if (line.startsWith("setending")) {
-					IAudioTrack audiotrack = manager.getCurrentTrack();
-					audiotrack.setPosition(audiotrack.getDuration() - 10000);
+					final IAudioTrack audioTrack = manager.getCurrentTrack();
+					audioTrack.setPosition(audioTrack.getDuration() - 10000);
+				} else if (line.startsWith("playing")) {
+					final IAudioTrack audioTrack = manager.getCurrentTrack();
+					System.out.println(audioTrack.getInfo().getAuthor() + " - " + audioTrack.getInfo().getTitle());
 				}
 			}
 			scanner.close();
@@ -56,9 +67,12 @@ public class Main {
 	
 	private class TrackQueue implements ITrackQueue {
 		
+		private final Random random = new Random();
+		
 		private final List<IAudioTrack> tracks;
 		
 		public TrackQueue(List<IAudioTrack> tracks) {
+			System.out.println("Init track queue with " + tracks.size() + " tracks.");
 			this.tracks = tracks;
 		}
 		
@@ -69,7 +83,7 @@ public class Main {
 		
 		@Override
 		public IAudioTrack getNext() {
-			return tracks.get(new Random().nextInt(tracks.size()));
+			return tracks.get(random.nextInt(tracks.size()));
 		}
 		
 	}

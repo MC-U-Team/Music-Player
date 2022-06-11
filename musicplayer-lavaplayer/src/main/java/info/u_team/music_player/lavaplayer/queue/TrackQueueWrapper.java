@@ -19,11 +19,11 @@ public class TrackQueueWrapper {
 	}
 	
 	public AudioTrack getNext() {
-		IAudioTrack track = queue.getNext();
+		final IAudioTrack track = queue.getNext();
 		if (track == null) {
 			return null;
 		} else {
-			AudioTrack audiotrack = ((AudioTrackImpl) track).getImplTrack().makeClone(); // We know this cast must work because this interface is only implemented by AudioTrackImpl. Still not the best.
+			final AudioTrack audiotrack = ((AudioTrackImpl) track).getImplTrack().makeClone(); // We know this cast must work because this interface is only implemented by AudioTrackImpl. Still not the best.
 			audiotrack.setUserData(track);
 			return audiotrack;
 		}
