@@ -18,7 +18,8 @@ java {
 
 configurations {
 	musicplayer
-	compile.extendsFrom(musicplayer)
+	musicplayer.exclude group: "commons-logging", module: "commons-logging"
+	implementation.extendsFrom(musicplayer)
 }
 
 task deleteOldDep(type: Delete) {
@@ -26,8 +27,9 @@ task deleteOldDep(type: Delete) {
 }
 
 task copyNewDep(type: Copy) {
-	tasks.copyNewDep.dependsOn deleteOldDep
-	destinationDir = file("build")
+	dependsOn deleteOldDep
+	
+	destinationDir = project.buildDir
 	into ("dependencies") {
 		from configurations.musicplayer
 	}
@@ -36,7 +38,7 @@ task copyNewDep(type: Copy) {
 	}
 }
 
-tasks.build.dependsOn copyNewDep
+tasks.jar.dependsOn copyNewDep
 
 jar {
 	archiveName += ".packed"
@@ -56,7 +58,20 @@ sourceSets {
 }
 
 dependencies {
+	// musicplayer "com.sedmelluq:lavaplayer:1.3.78" (Currently unmaintained)
 	musicplayer "com.github.walkyst:lavaplayer-fork:1.3.97.1"
-	musicplayer "org.slf4j:slf4j-simple:1.7.25"
-	compileOnly project(":musicplayer-lavaplayer-api")
+	
+	musicplayer "org.slf4j:slf4j-simple:1.7.36"
+	musicplayer "org.slf4j:jcl-over-slf4j:1.7.36"
+	
+	musicplayer "org.apache.httpcomponents:httpclient:4.5.13"
+	musicplayer "org.apache.httpcomponents:httpcore:4.4.15"
+	musicplayer "commons-codec:commons-codec:1.15"
+	musicplayer "commons-io:commons-io:2.11.0"
+	
+	musicplayer "com.fasterxml.jackson.core:jackson-databind:2.13.3"
+	
+	musicplayer "org.jsoup:jsoup:1.15.1"
+	
+	implementation project(":musicplayer-lavaplayer-api")
 }
