@@ -1,2 +1,4 @@
+rootProject.name = "Music-Player"
+
 include "musicplayer-lavaplayer-api"
 include "musicplayer-lavaplayer"
