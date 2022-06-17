@@ -154,6 +154,18 @@ dependencies {
 	shade ("net.harawata:appdirs:1.0.0") {
 		transitive=false
 	}
+	shade ("org.lwjgl:lwjgl-tinyfd:3.2.2") {
+		transitive=false
+	}
+	shade ("org.lwjgl:lwjgl-tinyfd:3.2.2:natives-linux") {
+		transitive=false
+	}
+	shade ("org.lwjgl:lwjgl-tinyfd:3.2.2:natives-macos") {
+		transitive=false
+	}
+	shade ("org.lwjgl:lwjgl-tinyfd:3.2.2:natives-windows") {
+		transitive=false
+	}
 }
 
 minecraft.runs.all {
