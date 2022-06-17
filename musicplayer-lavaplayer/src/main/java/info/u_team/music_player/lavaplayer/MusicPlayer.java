@@ -1,8 +1,13 @@
 package info.u_team.music_player.lavaplayer;
 
-import com.sedmelluq.discord.lavaplayer.format.*;
-import com.sedmelluq.discord.lavaplayer.player.*;
+import javax.sound.sampled.DataLine.Info;
+
+import com.sedmelluq.discord.lavaplayer.format.AudioDataFormat;
+import com.sedmelluq.discord.lavaplayer.format.Pcm16AudioDataFormat;
 import com.sedmelluq.discord.lavaplayer.player.AudioConfiguration.ResamplingQuality;
+import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
+import com.sedmelluq.discord.lavaplayer.player.AudioPlayerManager;
+import com.sedmelluq.discord.lavaplayer.player.DefaultAudioPlayerManager;
 
 import info.u_team.music_player.lavaplayer.api.IMusicPlayer;
 import info.u_team.music_player.lavaplayer.api.output.IOutputConsumer;
@@ -17,7 +22,7 @@ public class MusicPlayer implements IMusicPlayer {
 	
 	private final AudioPlayerManager audioPlayerManager;
 	private final AudioDataFormat audioDataFormat;
-	private final AudioPlayer audioPlazer;
+	private final AudioPlayer audioPlayer;
 	private final AudioOutput audioOutput;
 	
 	private final TrackSearch trackSearch;
@@ -28,11 +33,11 @@ public class MusicPlayer implements IMusicPlayer {
 	public MusicPlayer() {
 		audioPlayerManager = new DefaultAudioPlayerManager();
 		audioDataFormat = new Pcm16AudioDataFormat(2, 48000, 960, true);
-		audioPlazer = audioPlayerManager.createPlayer();
+		audioPlayer = audioPlayerManager.createPlayer();
 		audioOutput = new AudioOutput(this);
 		
 		trackSearch = new TrackSearch(audioPlayerManager);
-		trackManager = new TrackManager(audioPlazer);
+		trackManager = new TrackManager(audioPlayer);
 		
 		setup();
 	}
@@ -57,7 +62,7 @@ public class MusicPlayer implements IMusicPlayer {
 	}
 	
 	public AudioPlayer getAudioPlayer() {
-		return audioPlazer;
+		return audioPlayer;
 	}
 	
 	public IOutputConsumer getOutputConsumer() {
@@ -80,13 +85,28 @@ public class MusicPlayer implements IMusicPlayer {
 	}
 	
 	@Override
+	public void setMixer(String name) {
+		audioOutput.setMixer(name);
+	}
+	
+	@Override
+	public String getMixer() {
+		return audioOutput.getMixer();
+	}
+	
+	@Override
+	public Info getSpeakerInfo() {
+		return audioOutput.getSpeakerInfo();
+	}
+	
+	@Override
 	public void setVolume(int volume) {
-		audioPlazer.setVolume(volume);
+		audioPlayer.setVolume(volume);
 	}
 	
 	@Override
 	public int getVolume() {
-		return audioPlazer.getVolume();
+		return audioPlayer.getVolume();
 	}
 	
 	@Override

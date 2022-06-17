@@ -2,10 +2,12 @@ package info.u_team.music_player.lavaplayer.queue;
 
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import com.sedmelluq.discord.lavaplayer.player.event.AudioEventAdapter;
-import com.sedmelluq.discord.lavaplayer.track.*;
+import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
+import com.sedmelluq.discord.lavaplayer.track.AudioTrackEndReason;
 
 import info.u_team.music_player.lavaplayer.api.audio.IPlayingTrack;
-import info.u_team.music_player.lavaplayer.api.queue.*;
+import info.u_team.music_player.lavaplayer.api.queue.ITrackManager;
+import info.u_team.music_player.lavaplayer.api.queue.ITrackQueue;
 import info.u_team.music_player.lavaplayer.impl.PlayingTrackImpl;
 
 public class TrackManager extends AudioEventAdapter implements ITrackManager {

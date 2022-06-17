@@ -2,12 +2,16 @@ package info.u_team.music_player.lavaplayer.search;
 
 import java.util.function.Consumer;
 
-import com.sedmelluq.discord.lavaplayer.player.*;
+import com.sedmelluq.discord.lavaplayer.player.AudioLoadResultHandler;
+import com.sedmelluq.discord.lavaplayer.player.AudioPlayerManager;
 import com.sedmelluq.discord.lavaplayer.tools.FriendlyException;
-import com.sedmelluq.discord.lavaplayer.track.*;
+import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
+import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 
-import info.u_team.music_player.lavaplayer.api.search.*;
-import info.u_team.music_player.lavaplayer.impl.*;
+import info.u_team.music_player.lavaplayer.api.search.ISearchResult;
+import info.u_team.music_player.lavaplayer.api.search.ITrackSearch;
+import info.u_team.music_player.lavaplayer.impl.AudioTrackImpl;
+import info.u_team.music_player.lavaplayer.impl.AudioTrackListImpl;
 
 public class TrackSearch implements ITrackSearch {
 	
