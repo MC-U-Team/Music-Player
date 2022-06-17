@@ -1,6 +1,7 @@
 package info.u_team.music_player.dependency.classloader;
 
-import java.net.*;
+import java.net.URL;
+import java.net.URLClassLoader;
 
 public class DependencyClassLoader extends URLClassLoader {
 	
@@ -8,8 +9,11 @@ public class DependencyClassLoader extends URLClassLoader {
 		ClassLoader.registerAsParallelCapable();
 	}
 	
+	private final ClassLoader ourClassLoader;
+	
 	public DependencyClassLoader() {
 		super(new URL[] {}, null);
+		this.ourClassLoader = getClass().getClassLoader();
 	}
 	
 	@Override
@@ -18,7 +22,7 @@ public class DependencyClassLoader extends URLClassLoader {
 			return super.loadClass(name);
 		} catch (final ClassNotFoundException ex) {
 			if (name.startsWith("info.u_team.music_player.lavaplayer.api")) {
-				return getClass().getClassLoader().loadClass(name);
+				return ourClassLoader.loadClass(name);
 			}
 			throw ex;
 		}

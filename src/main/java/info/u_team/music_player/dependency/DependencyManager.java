@@ -1,23 +1,33 @@
 package info.u_team.music_player.dependency;
 
 import java.io.IOException;
-import java.lang.invoke.*;
-import java.lang.invoke.MethodHandles.Lookup;
-import java.lang.reflect.*;
-import java.net.*;
-import java.nio.file.*;
-import java.util.function.*;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
+import java.util.Collections;
+import java.util.Set;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import org.apache.logging.log4j.*;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.Marker;
+import org.apache.logging.log4j.MarkerManager;
 
-import cpw.mods.modlauncher.TransformingClassLoader;
-import cpw.mods.modlauncher.api.LamdbaExceptionUtils;
+import com.google.common.base.Predicates;
+
 import info.u_team.music_player.MusicPlayerMod;
 import info.u_team.music_player.dependency.classloader.DependencyClassLoader;
+import net.minecraft.util.StringUtils;
 import net.minecraftforge.fml.ModList;
-import net.minecraftforge.fml.loading.moddiscovery.ModFile;
-import net.minecraftforge.fml.unsafe.UnsafeHacks;
+import net.minecraftforge.forgespi.locating.IModFile;
 
 public class DependencyManager {
 	
@@ -25,75 +35,102 @@ public class DependencyManager {
 	private static final Marker MARKER_LOAD = MarkerManager.getMarker("Load");
 	private static final Marker MARKER_ADD = MarkerManager.getMarker("Add");
 	
+	private static final String FILE_ENDING = ".jar.packed";
+	
 	public static final DependencyClassLoader MUSICPLAYER_CLASSLOADER = new DependencyClassLoader();
 	
-	public static void construct() {
+	public static void load() {
 		LOGGER.info(MARKER_LOAD, "Load dependencies");
 		
+		final Path tmpPath = createExtractDirectory();
+		
+		LOGGER.info(MARKER_LOAD, "Extraction directory for jar files is {} ", tmpPath.toAbsolutePath());
+		
 		final String devPath = System.getProperty("musicplayer.dev");
+		final Set<Path> paths;
 		if (devPath != null) {
-			findJarFilesInDev(Paths.get(devPath, "musicplayer-lavaplayer/build/libs"), path -> addToMusicPlayerDependencies(pathToUrl().apply(path)));
-			findJarFilesInDev(Paths.get(devPath, "musicplayer-lavaplayer/build/dependencies"), path -> addToMusicPlayerDependencies(pathToUrl().apply(path)));
+			paths = Collections.unmodifiableSet(Stream.of(devPath.split(";")) //
+					.filter(Predicates.not(StringUtils::isNullOrEmpty)) //
+					.map(Paths::get) //
+					.map(DependencyManager::findJarFilesInDev) //
+					.flatMap(Set::stream) //
+					.collect(Collectors.toSet()));
 		} else {
-			findJarFilesInJar("dependencies/internal", path -> addToInternalDependencies(createInternalURL(path)));
-			findJarFilesInJar("dependencies/musicplayer", path -> addToMusicPlayerDependencies(createInternalURL(path)));
+			paths = findJarFilesInJar("dependencies");
 		}
+		
+		paths.stream() //
+				.map(path -> extractFile(tmpPath, path)) //
+				.map(DependencyManager::pathToUrl) //
+				.forEach(DependencyManager::addToMusicPlayerDependencies);
 		
 		LOGGER.info(MARKER_LOAD, "Finished loading dependencies");
 	}
 	
-	private static Function<Path, URL> pathToUrl() {
-		return LamdbaExceptionUtils.rethrowFunction(path -> path.toUri().toURL());
+	private static Path createExtractDirectory() {
+		try {
+			final Path baseDirectory = Paths.get(System.getProperty("java.io.tmpdir", "/tmp"), MusicPlayerMod.MODID + "-extraction-tmp");
+			final Path specificDirectory = baseDirectory.resolve(String.valueOf(System.currentTimeMillis()));
+			
+			// Try to clean base directory before
+			try {
+				FileUtils.deleteDirectory(baseDirectory.toFile());
+			} catch (Exception ex) {
+			}
+			
+			Files.createDirectories(specificDirectory);
+			return specificDirectory;
+		} catch (final IOException ex) {
+			throw new RuntimeException("Cannot create extract directory for musicplayer files", ex);
+		}
 	}
 	
-	private static void findJarFilesInDev(Path path, Consumer<Path> consumer) {
-		try (Stream<Path> stream = Files.walk(path)) {
-			stream.filter(file -> file.toString().endsWith(".jar")).forEach(consumer);
+	private static Path extractFile(Path extractDirectory, Path path) {
+		final Path extractPath = extractDirectory.resolve(path.getFileName().toString());
+		try (final InputStream inputStream = Files.newInputStream(path); //
+				final OutputStream outputStream = Files.newOutputStream(extractPath, StandardOpenOption.CREATE);) {
+			IOUtils.copy(inputStream, outputStream);
+			LOGGER.debug(MARKER_LOAD, "Copied file from ({}) to ({})", path, extractPath);
+		} catch (final IOException ex) {
+			throw new RuntimeException("Cannot extract file " + path + " to " + extractPath, ex);
+		}
+		return extractPath;
+	}
+	
+	private static URL pathToUrl(Path path) {
+		try {
+			return path.toUri().toURL();
+		} catch (final MalformedURLException ex) {
+			throw new RuntimeException(ex);
+		}
+	}
+	
+	private static Set<Path> findJarFilesInDev(Path path) {
+		try (final Stream<Path> stream = Files.walk(path)) {
+			return filterPackedFiles(stream);
 		} catch (final IOException ex) {
 			LOGGER.error(MARKER_LOAD, "When searching for jar files in dev an exception occured.", ex);
 		}
+		return Collections.emptySet();
 	}
 	
-	private static void findJarFilesInJar(String folder, Consumer<Path> consumer) {
-		final ModFile modfile = ModList.get().getModFileById(MusicPlayerMod.MODID).getFile();
-		try (Stream<Path> stream = Files.walk(modfile.findResource("/" + folder))) {
-			stream.filter(file -> file.toString().endsWith(".jar")).forEach(consumer);
-		} catch (final IOException ex) {
+	private static Set<Path> findJarFilesInJar(String folder) {
+		final IModFile modfile = ModList.get().getModFileById(MusicPlayerMod.MODID).getFile();
+		
+		try (final Stream<Path> stream = Files.walk(modfile.findResource(folder))) {
+			return filterPackedFiles(stream);
+		} catch (final IOException | IllegalStateException ex) {
 			LOGGER.error(MARKER_LOAD, "When searching for jar files in jar an exception occured.", ex);
 		}
+		return Collections.emptySet();
 	}
 	
-	private static URL createInternalURL(Path path) {
-		final String url = "modjar://" + MusicPlayerMod.MODID + path;
-		LOGGER.debug(MARKER_LOAD, "Create mod jar url ({}) from path ({}).", url, path);
-		try {
-			return new URL(url);
-		} catch (final MalformedURLException ex) {
-			LOGGER.error(MARKER_LOAD, "Could not create url from internal path.", ex);
-		}
-		return null;
+	private static Set<Path> filterPackedFiles(Stream<Path> stream) {
+		return stream.filter(file -> file.toString().endsWith(FILE_ENDING)).collect(Collectors.toSet());
 	}
-	
-	// Add to different classloader
 	
 	private static void addToMusicPlayerDependencies(URL url) {
 		MUSICPLAYER_CLASSLOADER.addURL(url);
 		LOGGER.debug(MARKER_ADD, "Added new jar file ({}) to the musicplayer dependency classloader.", url);
-	}
-	
-	private static void addToInternalDependencies(URL url) {
-		try {
-			final Field field = TransformingClassLoader.class.getDeclaredField("delegatedClassLoader");
-			field.setAccessible(true);
-			final URLClassLoader delegatedUrlClassLoader = (URLClassLoader) field.get(Thread.currentThread().getContextClassLoader());
-			final Method method = URLClassLoader.class.getDeclaredMethod("addURL", URL.class);
-			final Lookup lookup = MethodHandles.lookup();
-			UnsafeHacks.setIntField(Lookup.class.getDeclaredField("allowedModes"), lookup, -1); // This is a hack to change our lookup to trusted
-			final MethodHandle methodHandle = lookup.unreflectSpecial(method, URLClassLoader.class);
-			methodHandle.invoke(delegatedUrlClassLoader, url);
-			LOGGER.debug(MARKER_ADD, "Added new jar file ({}) to the transforming / delegated classloader.", url);
-		} catch (final Throwable ex) {
-			LOGGER.error(MARKER_LOAD, "Method addURL on transforming / delegated classloader could not be invoked.", ex);
-		}
 	}
 }
