@@ -131,9 +131,9 @@ public class TinyFdHelper {
 		final Method mapLibraryNameMethod = Platform.class.getDeclaredMethod("mapLibraryName", String.class);
 		mapLibraryNameMethod.setAccessible(true);
 		final MethodHandle mapLibraryNameHandle = lookup.unreflect(mapLibraryNameMethod);
-		final String libaryName = (String) mapLibraryNameHandle.invoke(Platform.get(), Platform.mapLibraryNameBundled("lwjgl_tinyfd"));
+		final String libraryName = (String) mapLibraryNameHandle.invoke(Platform.get(), Platform.mapLibraryNameBundled("lwjgl_tinyfd"));
 		
-		final URL libraryUrl = classLoader.getResource(libaryName);
+		final URL libraryUrl = classLoader.getResource(libraryName);
 		
 		if (libraryUrl == null) {
 			throw new IllegalStateException("Cannot bind tinyfd native library");
@@ -145,7 +145,7 @@ public class TinyFdHelper {
 			FileUtils.deleteDirectory(baseDirectory.toFile());
 		} catch (Exception ex) {
 		}
-		final Path libraryPath = baseDirectory.resolve(System.currentTimeMillis() + "_" + libaryName);
+		final Path libraryPath = baseDirectory.resolve(System.currentTimeMillis() + "_" + libraryName);
 		final File libraryFile = libraryPath.toFile();
 		
 		FileUtils.copyURLToFile(libraryUrl, libraryFile);
