@@ -14,7 +14,7 @@ public class AudioSources {
 	
 	public static void registerSources(AudioPlayerManager audioPlayerManager) {
 		final YoutubeAudioSourceManager youtube = new YoutubeAudioSourceManager(true);
-		youtube.setPlaylistPageCount(20);
+		youtube.setPlaylistPageCount(100);
 		audioPlayerManager.registerSourceManager(youtube);
 		audioPlayerManager.registerSourceManager(SoundCloudAudioSourceManager.createDefault());
 		audioPlayerManager.registerSourceManager(new BandcampAudioSourceManager());
