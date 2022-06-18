@@ -10,10 +10,8 @@ import java.lang.invoke.MethodHandles.Lookup;
 import java.lang.invoke.MethodType;
 import java.net.URL;
 import java.net.URLClassLoader;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.StandardOpenOption;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
@@ -199,11 +197,6 @@ public class TinyFdHelper {
 			if (syntheticClass != null) {
 				final byte[] generatedClass = syntheticClass(syntheticClass, name);
 				LOGGER.info("Defined synthetic {} class successfully", name);
-				try {
-					Files.write(Paths.get("D:\\debug.class"), generatedClass, StandardOpenOption.CREATE);
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
 				return defineClass(name, generatedClass, 0, generatedClass.length);
 			}
 			
