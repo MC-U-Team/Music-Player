@@ -164,13 +164,13 @@ public class TinyFdHelper {
 		private final Map<String, Consumer<ClassNode>> transformers;
 		private final ClassLoader ourClassLoader;
 		
-		public TinyFdClassLoader(Set<URL> url) {
+		TinyFdClassLoader(Set<URL> url) {
 			super(url.stream().toArray(URL[]::new), null);
 			transformers = new HashMap<>();
 			ourClassLoader = getClass().getClassLoader();
 		}
 		
-		public void addTransformer(String className, Consumer<ClassNode> node) {
+		void addTransformer(String className, Consumer<ClassNode> node) {
 			transformers.put(className, node);
 		}
 		
