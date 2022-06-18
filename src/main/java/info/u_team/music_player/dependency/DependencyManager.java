@@ -48,6 +48,18 @@ public class DependencyManager {
 		LOGGER.info(MARKER_LOAD, "Extraction directory for jar files is {} ", tmpPath.toAbsolutePath());
 		
 		final String devPath = System.getProperty("musicplayer.dev");
+		
+		final FileSystem fileSystem;
+		if (devPath == null) {
+			try {
+				fileSystem = FileSystems.newFileSystem(DependencyManager.class.getResource("/dependencies").toURI(), Collections.emptyMap());
+			} catch (IOException | URISyntaxException ex) {
+				throw new RuntimeException("Cannot create file system for jar file", ex);
+			}
+		} else {
+			fileSystem = null;
+		}
+		
 		final Set<Path> paths;
 		if (devPath != null) {
 			paths = Collections.unmodifiableSet(Stream.of(devPath.split(";")) //
@@ -57,7 +69,7 @@ public class DependencyManager {
 					.flatMap(Set::stream) //
 					.collect(Collectors.toSet()));
 		} else {
-			paths = findJarFilesInJar("dependencies");
+			paths = findJarFilesInJar(fileSystem, "dependencies");
 		}
 		
 		paths.stream() //
@@ -68,7 +80,7 @@ public class DependencyManager {
 		if (devPath != null) {
 			TinyFdHelper.load(Collections.emptySet());
 		} else {
-			final Set<URL> url = findJarFilesInJar("tinyfd").stream() //
+			final Set<URL> url = findJarFilesInJar(fileSystem, "tinyfd").stream() //
 					.map(path -> extractFile(tmpPath, path)) //
 					.map(DependencyManager::pathToUrl) //
 					.collect(Collectors.toSet());
@@ -125,11 +137,10 @@ public class DependencyManager {
 		return Collections.emptySet();
 	}
 	
-	private static Set<Path> findJarFilesInJar(String folder) {
-		try (final FileSystem fileSystem = FileSystems.newFileSystem(DependencyManager.class.getResource("/dependencies").toURI(), Collections.emptyMap()); //
-				final Stream<Path> stream = Files.walk(fileSystem.getPath(folder))) {
+	private static Set<Path> findJarFilesInJar(FileSystem fileSystem, String folder) {
+		try (final Stream<Path> stream = Files.walk(fileSystem.getPath("/" + folder))) {
 			return filterPackedFiles(stream);
-		} catch (final IOException | IllegalStateException | URISyntaxException ex) {
+		} catch (final IOException | IllegalStateException ex) {
 			LOGGER.error(MARKER_LOAD, "When searching for jar files in jar an exception occured.", ex);
 		}
 		return Collections.emptySet();
