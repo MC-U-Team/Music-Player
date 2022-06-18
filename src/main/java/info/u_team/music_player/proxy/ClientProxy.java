@@ -16,7 +16,7 @@ public class ClientProxy extends CommonProxy {
 		super.preinit(event);
 		System.setProperty("http.agent", "Chrome");
 		
-		DependencyManager.construct();
+		DependencyManager.load();
 		MusicPlayerKeys.construct();
 	}
 	
