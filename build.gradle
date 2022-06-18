@@ -77,6 +77,10 @@ def devPath() {
 	return "${libs};${dependencies}"
 }
 
+minecraft.getRuns().each { task ->
+	task.environment "MC_VERSION", "{mc_version}"
+}
+
 configurations {
 	shade
 	library
@@ -131,6 +135,31 @@ tasks.withType(Javadoc) { task ->
 	task.options.addStringOption("Xdoclint:none", "-quiet")
 }
 
+tasks.create("prepareSources", Copy) {
+	from sourceSets.main.java
+	into file("${buildDir}/prepareSources")
+	filter (org.apache.tools.ant.filters.ReplaceTokens, tokens: [
+		"VERSION": project.version.toString(),
+		"MCVERSION": config.minecraft.version.toString()
+	])
+	outputs.upToDateWhen { false }
+}
+
+tasks.getByName("compileJava") { task ->
+	final def prepareResources = tasks.getByName("prepareSources")
+	task.dependsOn prepareResources
+	task.source = prepareResources.destinationDir
+}
+
+processResources {
+	inputs.property "version", project.version
+	inputs.property "mcversion", config.minecraft.version
+	
+	filesMatching("mcmod.info") {
+		expand "version": project.version, "mcversion": config.minecraft.version
+	}
+}
+
 gradlefiles.signDefaultForgeJar()
 
 sourceSets {
@@ -171,7 +200,6 @@ curseforge {
 		
 		relations {
 			requiredDependency "u-team-core"
-			optionalDependency "voice-chat"
 		}
 		
 		mainArtifact(tasks.getByName("jar")) {
