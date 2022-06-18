@@ -176,7 +176,7 @@ dependencies {
 	shade ("net.harawata:appdirs:1.0.0") {
 		transitive=false
 	}
-	tinyfd ("org.lwjgl:lwjgl-tinyfd:3.2.2") {
+	tinyfd ("org.lwjgl:lwjgl-tinyfd:3.3.1") {
 		transitive=false
 	}
 	tinyfd ("org.lwjgl:lwjgl-tinyfd:3.2.2:natives-linux") {
