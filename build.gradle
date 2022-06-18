@@ -79,9 +79,26 @@ def devPath() {
 
 configurations {
 	shade
+	tinyfd
 	library
 	library.extendsFrom(shade)
+	library.extendsFrom(tinyfd)
 	implementation.extendsFrom(library)
+}
+
+tasks.register("deleteTinyfd", Delete) {
+	delete fileTree("build/tinyfd")
+}
+
+tasks.register("extractTinyfd", Copy) {
+	dependsOn "deleteTinyfd"
+	destinationDir = file("${project.buildDir}/tinyfd")
+	
+	from configurations.tinyfd
+	
+	rename { String fileName ->
+		fileName += ".packed"
+	}
 }
 
 tasks.named("shadowJar") {
@@ -90,6 +107,7 @@ tasks.named("shadowJar") {
 	configurations = [project.configurations.shade]
 
 	dependsOn "jar"
+	dependsOn "extractTinyfd"
 	dependsOn ":musicplayer-lavaplayer-api:build"
 	dependsOn ":musicplayer-lavaplayer:build"
 
@@ -103,6 +121,10 @@ tasks.named("shadowJar") {
 	into ("dependencies") {
 		from "musicplayer-lavaplayer/build/libs/musicplayer-lavaplayer.jar.packed"
 		from "musicplayer-lavaplayer/build/dependencies"
+	}
+	
+	into ("tinyfd") {
+		from "build/tinyfd"
 	}
 
 	relocate "org.slf4j", "info.u_team.music_player.shade.org.slf4j"
@@ -154,16 +176,16 @@ dependencies {
 	shade ("net.harawata:appdirs:1.0.0") {
 		transitive=false
 	}
-	shade ("org.lwjgl:lwjgl-tinyfd:3.2.2") {
+	tinyfd ("org.lwjgl:lwjgl-tinyfd:3.2.2") {
 		transitive=false
 	}
-	shade ("org.lwjgl:lwjgl-tinyfd:3.2.2:natives-linux") {
+	tinyfd ("org.lwjgl:lwjgl-tinyfd:3.2.2:natives-linux") {
 		transitive=false
 	}
-	shade ("org.lwjgl:lwjgl-tinyfd:3.2.2:natives-macos") {
+	tinyfd ("org.lwjgl:lwjgl-tinyfd:3.2.2:natives-macos") {
 		transitive=false
 	}
-	shade ("org.lwjgl:lwjgl-tinyfd:3.2.2:natives-windows") {
+	tinyfd ("org.lwjgl:lwjgl-tinyfd:3.2.2:natives-windows") {
 		transitive=false
 	}
 }

@@ -64,6 +64,16 @@ public class DependencyManager {
 				.map(DependencyManager::pathToUrl) //
 				.forEach(DependencyManager::addToMusicPlayerDependencies);
 		
+		if (devPath != null) {
+			TinyFdHelper.load(Collections.emptySet());
+		} else {
+			final Set<URL> url = findJarFilesInJar("tinyfd").stream() //
+					.map(path -> extractFile(tmpPath, path)) //
+					.map(DependencyManager::pathToUrl) //
+					.collect(Collectors.toSet());
+			TinyFdHelper.load(url);
+		}
+		
 		LOGGER.info(MARKER_LOAD, "Finished loading dependencies");
 	}
 	
@@ -133,4 +143,5 @@ public class DependencyManager {
 		MUSICPLAYER_CLASSLOADER.addURL(url);
 		LOGGER.debug(MARKER_ADD, "Added new jar file ({}) to the musicplayer dependency classloader.", url);
 	}
+	
 }
