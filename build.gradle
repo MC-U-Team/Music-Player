@@ -43,14 +43,14 @@ java {
 
 minecraft {
 	mappings channel: config.forge.mapping_channel, version: config.forge.mapping
-
+	
 	accessTransformer = file("src/main/resources/META-INF/accesstransformer.cfg")
-
+	
 	runs {
 		client = {
 			workingDirectory file("run/client")
 			property "musicplayer.dev", devPath()
-
+			
 			mods {
 				"${config.mod.modid}" {
 					source sourceSets.main
@@ -60,7 +60,7 @@ minecraft {
 		server = {
 			workingDirectory file("run/server")
 			property "musicplayer.dev", devPath()
-
+			
 			mods {
 				"${config.mod.modid}" {
 					source sourceSets.main
@@ -103,21 +103,21 @@ tasks.register("extractTinyfd", Copy) {
 
 tasks.named("shadowJar") {
 	archiveClassifier = ""
-
+	
 	configurations = [project.configurations.shade]
-
+	
 	dependsOn "jar"
 	dependsOn "extractTinyfd"
 	dependsOn ":musicplayer-lavaplayer-api:build"
 	dependsOn ":musicplayer-lavaplayer:build"
-
+	
 	from sourceSets.main.output
 	from "musicplayer-lavaplayer/src/main/resources/LICENSE-DEPENDENCIES"
-
+	
 	doFirst {
 		from project(":musicplayer-lavaplayer-api").sourceSets.main.output
 	}
-
+	
 	into ("dependencies") {
 		from "musicplayer-lavaplayer/build/libs/musicplayer-lavaplayer.jar.packed"
 		from "musicplayer-lavaplayer/build/dependencies"
@@ -126,10 +126,10 @@ tasks.named("shadowJar") {
 	into ("tinyfd") {
 		from "build/tinyfd"
 	}
-
+	
 	relocate "org.slf4j", "info.u_team.music_player.shade.org.slf4j"
 	relocate "net.harawata.appdirs", "info.u_team.music_player.shade.net.harawata.appdirs"
-
+	
 	exclude "META-INF/maven/**"
 }
 
@@ -168,9 +168,9 @@ sourceSets {
 
 dependencies {
 	minecraft gradlefiles.forgeDependency()
-
+	
 	implementation fg.deobf("info.u-team:u_team_core-1.14.4:2.8.2.206")
-
+	
 	library project(":musicplayer-lavaplayer-api")
 	shade "org.slf4j:slf4j-simple:1.7.36"
 	shade ("net.harawata:appdirs:1.0.0") {
@@ -198,20 +198,19 @@ minecraft.runs.all {
 
 curseforge {
 	apiKey = defaultPropertyValue("curseforge.token")
-
+	
 	project {
 		id = config.curse.id
 		releaseType = config.curse.type
-
+		
 		addGameVersion config.minecraft.version
 		addGameVersion "Forge"
 		addGameVersion "Java 8"
-
+		
 		relations {
 			requiredDependency "u-team-core"
-			optionalDependency "voice-chat"
 		}
-
+		
 		mainArtifact(tasks.getByName("jar")) {
 			displayName = "${config.curse.display}-${config.minecraft.version}-${project.version}"
 			changelogType = "html"
@@ -233,9 +232,9 @@ publishing {
 	publications {
 		mavenJava(MavenPublication) {
 			artifactId archivesBaseName
-
+			
 			from components.java
-
+			
 			pom {
 				name = project.archivesBaseName
 				description = "${config.github.name}"
@@ -245,7 +244,7 @@ publishing {
 					connection = "scm:git:git://github.com/MC-U-Team/${config.github.name}.git"
 					developerConnection = "scm:git:git@github.com:MC-U-Team/${config.github.name}.git"
 				}
-
+				
 				issueManagement {
 					system = "github"
 					url = "https://github.com/MC-U-Team/${config.github.name}/issues"
