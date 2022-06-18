@@ -8,8 +8,8 @@ import java.util.List;
 import java.util.stream.*;
 
 import org.lwjgl.input.Keyboard;
-import org.lwjgl.util.tinyfd.TinyFileDialogs;
 
+import info.u_team.music_player.dependency.TinyFdHelper;
 import info.u_team.music_player.gui.playlist.GuiMusicPlaylist;
 import info.u_team.music_player.init.MusicPlayerResources;
 import info.u_team.music_player.lavaplayer.api.audio.*;
@@ -59,7 +59,7 @@ public class GuiMusicSearch extends GuiScreen1_13 {
 		
 		final GuiButtonClick openFileButton = addNewButton(new GuiButtonClick(width / 2 + 10, 34, width / 4 - 15, 22, getTranslation(gui_search_load_file)));
 		openFileButton.setClickAction(() -> {
-			String response = TinyFileDialogs.openFileDialog(getTranslation(gui_search_load_file), null, getTranslation(gui_search_music_files), false);
+			String response = TinyFdHelper.openFileDialog(getTranslation(gui_search_load_file), null, null, getTranslation(gui_search_music_files), false);
 			if (response != null) {
 				searchList.clear();
 				addTrack(response);
@@ -68,7 +68,7 @@ public class GuiMusicSearch extends GuiScreen1_13 {
 		
 		final GuiButtonClick openFolderButton = addNewButton(new GuiButtonClick((int) (width * 0.75) + 5, 34, width / 4 - 15, 22, getTranslation(gui_search_load_folder)));
 		openFolderButton.setClickAction(() -> {
-			String response = TinyFileDialogs.selectFolderDialog(getTranslation(gui_search_load_folder), System.getProperty("user.home"));
+			String response = TinyFdHelper.selectFolderDialog(getTranslation(gui_search_load_folder), System.getProperty("user.home"));
 			if (response != null) {
 				searchList.clear();
 				try (Stream<Path> stream = Files.list(Paths.get(response))) {
