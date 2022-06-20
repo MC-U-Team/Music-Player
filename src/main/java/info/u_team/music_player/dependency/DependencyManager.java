@@ -87,6 +87,13 @@ public class DependencyManager {
 			TinyFdHelper.load(url);
 		}
 		
+		if (fileSystem != null) {
+			try {
+				fileSystem.close();
+			} catch (IOException ex) {
+			}
+		}
+		
 		LOGGER.info(MARKER_LOAD, "Finished loading dependencies");
 	}
 	
