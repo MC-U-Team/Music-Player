@@ -258,7 +258,7 @@ curseforge {
 		id = config.curse.id
 		releaseType = config.curse.type
 		
-		addGameVersion config.minecraft.version
+		addGameVersion minecraft.version
 		addGameVersion "Forge"
 		addGameVersion "Java 8"
 		
