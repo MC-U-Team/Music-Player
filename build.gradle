@@ -249,10 +249,10 @@ def getValueDefault(name) {
 	return value
 }
 
+curseforge.dependsOn "reobfJar"
+
 curseforge {
 	apiKey = getValueDefault("curseforge.token")
-	
-	dependsOn "reobfJar"
 	
 	project {
 		id = config.curse.id
