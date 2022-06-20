@@ -1,6 +1,11 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [1.8.9-2.1.1.153] - 2022-06-20
+### Changed
+ - Update lavaplayer to 1.3.97.1
+ - Shade some dependencies and define tinyfd java wrapper at runtime.
+
 ## [1.8.9-2.1.1.143] - 2022-04-07
 ### Changed
  - Update lavaplayer (lavaplayer-fork by Walkyst) to 1.3.97
