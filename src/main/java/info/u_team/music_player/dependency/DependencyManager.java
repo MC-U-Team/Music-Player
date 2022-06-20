@@ -1,159 +1,163 @@
 package info.u_team.music_player.dependency;
 
 import java.io.IOException;
-import java.lang.reflect.Field;
-import java.net.*;
-import java.nio.file.*;
-import java.util.*;
-import java.util.function.Consumer;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.MalformedURLException;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.nio.file.FileSystem;
+import java.nio.file.FileSystems;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
+import java.util.Collections;
+import java.util.Set;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import org.apache.logging.log4j.*;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.Marker;
+import org.apache.logging.log4j.MarkerManager;
 
+import info.u_team.music_player.MusicPlayerMod;
 import info.u_team.music_player.dependency.classloader.DependencyClassLoader;
-import info.u_team.music_player.dependency.url.URLStreamHandlerMusicPlayer;
-import net.minecraft.launchwrapper.LaunchClassLoader;
-import net.minecraftforge.fml.relauncher.ReflectionHelper;
+import net.minecraft.util.StringUtils;
 
 public class DependencyManager {
 	
-	private static final Logger logger = LogManager.getLogger();
-	private static final Marker load = MarkerManager.getMarker("Load");
+	private static final Logger LOGGER = LogManager.getLogger();
+	private static final Marker MARKER_LOAD = MarkerManager.getMarker("Load");
+	private static final Marker MARKER_ADD = MarkerManager.getMarker("Add");
 	
-	private static final DependencyClassLoader musicplayerclassloader = new DependencyClassLoader();
+	private static final String FILE_ENDING = ".jar.packed";
 	
-	public static void construct() {
-		logger.info(load, "Load dependencies");
+	public static final DependencyClassLoader MUSICPLAYER_CLASSLOADER = new DependencyClassLoader();
+	
+	public static void load() {
+		LOGGER.info(MARKER_LOAD, "Load dependencies");
+		
+		final Path tmpPath = createExtractDirectory();
+		
+		LOGGER.info(MARKER_LOAD, "Extraction directory for jar files is {} ", tmpPath.toAbsolutePath());
 		
 		final String devPath = System.getProperty("musicplayer.dev");
-		if (devPath != null) {
-			getJarFilesInDev(Paths.get(devPath, "musicplayer-lavaplayer/build/libs"), DependencyManager::addToMusicPlayerDependencies);
-			getJarFilesInDev(Paths.get(devPath, "musicplayer-lavaplayer/build/dependencies"), DependencyManager::addToMusicPlayerDependencies);
+		
+		final FileSystem fileSystem;
+		if (devPath == null) {
+			try {
+				fileSystem = FileSystems.newFileSystem(DependencyManager.class.getResource("/dependencies").toURI(), Collections.emptyMap());
+			} catch (IOException | URISyntaxException ex) {
+				throw new RuntimeException("Cannot create file system for jar file", ex);
+			}
 		} else {
-			tryUrlHandlerFactory();
-			getJarFilesInJar("dependencies/internal", path -> addToInternalDependencies(createInternalURL(path)));
-			getJarFilesInJar("dependencies/musicplayer", path -> addToMusicPlayerDependencies(createInternalURL(path)));
-			fixSLF4JLogger();
-			fixTinyFDLoadLWJGL();
+			fileSystem = null;
 		}
 		
-		logger.info(load, "Finished loading dependencies");
-	}
-	
-	public static DependencyClassLoader getClassLoader() {
-		return musicplayerclassloader;
-	}
-	
-	private static void getJarFilesInDev(Path path, Consumer<Path> consumer) {
-		try (Stream<Path> stream = Files.walk(path)) {
-			stream.filter(file -> file.toString().endsWith(".jar")).forEach(consumer);
-		} catch (IOException ex) {
-			logger.error(load, "When searching for jar files in dev an exception occured.", ex);
+		final Set<Path> paths;
+		if (devPath != null) {
+			paths = Collections.unmodifiableSet(Stream.of(devPath.split(";")) //
+					.filter(string -> !StringUtils.isNullOrEmpty(string)) //
+					.map(Paths::get) //
+					.map(DependencyManager::findJarFilesInDev) //
+					.flatMap(Set::stream) //
+					.collect(Collectors.toSet()));
+		} else {
+			paths = findJarFilesInJar(fileSystem, "dependencies");
 		}
-	}
-	
-	private static void getJarFilesInJar(String folder, Consumer<Path> consumer) {
-		try (FileSystem fileSystem = FileSystems.newFileSystem(DependencyManager.class.getResource("/dependencies").toURI(), Collections.<String, Object> emptyMap())) {
-			try (Stream<Path> stream = Files.walk(fileSystem.getPath("/" + folder))) {
-				stream.filter(file -> file.toString().endsWith(".jar")).forEach(consumer);
+		
+		paths.stream() //
+				.map(path -> extractFile(tmpPath, path)) //
+				.map(DependencyManager::pathToUrl) //
+				.forEach(DependencyManager::addToMusicPlayerDependencies);
+		
+		if (devPath != null) {
+			TinyFdHelper.load(Collections.emptySet());
+		} else {
+			final Set<URL> url = findJarFilesInJar(fileSystem, "tinyfd").stream() //
+					.map(path -> extractFile(tmpPath, path)) //
+					.map(DependencyManager::pathToUrl) //
+					.collect(Collectors.toSet());
+			TinyFdHelper.load(url);
+		}
+		
+		if (fileSystem != null) {
+			try {
+				fileSystem.close();
+			} catch (IOException ex) {
 			}
-		} catch (Exception ex) {
-			logger.error(load, "When searching for jar files in jar an exception occured.", ex);
 		}
+		
+		LOGGER.info(MARKER_LOAD, "Finished loading dependencies");
 	}
 	
-	private static URL createInternalURL(Path path) {
-		final String url = "musicplayer:" + path.toString().substring(1);
-		logger.debug(load, "Load url " + url);
+	private static Path createExtractDirectory() {
 		try {
-			return new URL(url);
-		} catch (MalformedURLException ex) {
-			logger.error(load, "Could not create url from internal path", ex);
+			final Path baseDirectory = Paths.get(System.getProperty("java.io.tmpdir", "/tmp"), MusicPlayerMod.modid + "-extraction-tmp");
+			final Path specificDirectory = baseDirectory.resolve(String.valueOf(System.currentTimeMillis()));
+			
+			// Try to clean base directory before
+			try {
+				FileUtils.deleteDirectory(baseDirectory.toFile());
+			} catch (Exception ex) {
+			}
+			
+			Files.createDirectories(specificDirectory);
+			return specificDirectory;
+		} catch (final IOException ex) {
+			throw new RuntimeException("Cannot create extract directory for musicplayer files", ex);
 		}
-		return null;
 	}
 	
-	// Add to different classloader
+	private static Path extractFile(Path extractDirectory, Path path) {
+		final Path extractPath = extractDirectory.resolve(path.getFileName().toString());
+		try (final InputStream inputStream = Files.newInputStream(path); //
+				final OutputStream outputStream = Files.newOutputStream(extractPath, StandardOpenOption.CREATE);) {
+			IOUtils.copy(inputStream, outputStream);
+			LOGGER.debug(MARKER_LOAD, "Copied file from ({}) to ({})", path, extractPath);
+		} catch (final IOException ex) {
+			throw new RuntimeException("Cannot extract file " + path + " to " + extractPath, ex);
+		}
+		return extractPath;
+	}
+	
+	private static URL pathToUrl(Path path) {
+		try {
+			return path.toUri().toURL();
+		} catch (final MalformedURLException ex) {
+			throw new RuntimeException(ex);
+		}
+	}
+	
+	private static Set<Path> findJarFilesInDev(Path path) {
+		try (final Stream<Path> stream = Files.walk(path)) {
+			return filterPackedFiles(stream);
+		} catch (final IOException ex) {
+			LOGGER.error(MARKER_LOAD, "When searching for jar files in dev an exception occured.", ex);
+		}
+		return Collections.emptySet();
+	}
+	
+	private static Set<Path> findJarFilesInJar(FileSystem fileSystem, String folder) {
+		try (final Stream<Path> stream = Files.walk(fileSystem.getPath("/" + folder))) {
+			return filterPackedFiles(stream);
+		} catch (final IOException | IllegalStateException ex) {
+			LOGGER.error(MARKER_LOAD, "When searching for jar files in jar an exception occured.", ex);
+		}
+		return Collections.emptySet();
+	}
+	
+	private static Set<Path> filterPackedFiles(Stream<Path> stream) {
+		return stream.filter(file -> file.toString().endsWith(FILE_ENDING)).collect(Collectors.toSet());
+	}
 	
 	private static void addToMusicPlayerDependencies(URL url) {
-		musicplayerclassloader.addURL(url);
+		MUSICPLAYER_CLASSLOADER.addURL(url);
+		LOGGER.debug(MARKER_ADD, "Added new jar file ({}) to the musicplayer dependency classloader.", url);
 	}
 	
-	private static void addToMusicPlayerDependencies(Path path) {
-		musicplayerclassloader.addPath(path);
-	}
-	
-	private static void addToInternalDependencies(URL url) {
-		try {
-			final LaunchClassLoader launchclassloader = (LaunchClassLoader) DependencyManager.class.getClassLoader();
-			launchclassloader.addURL(url);
-		} catch (Exception ex) {
-			logger.error(load, "Method addURL on launch class loader could not be invoked", ex);
-		}
-	}
-	
-	/**
-	 * Really hackery. First tries to set the {@link URL#setURLStreamHandlerFactory(URLStreamHandlerFactory)} normally. If
-	 * that failed because it is already defined, then use reflections to apply it nevertheless. All urls protocols with
-	 * musicplayer are using {@link URLStreamHandlerMusicPlayer} every other protocol is redirected to the url handler that
-	 * was set before. If there was non we return null.
-	 */
-	private static void tryUrlHandlerFactory() {
-		try {
-			URL.setURLStreamHandlerFactory(protocol -> "musicplayer".equals(protocol) ? new URLStreamHandlerMusicPlayer() : null);
-		} catch (Error error) { // Catch error if the handler already is defined. Then try with reflections
-			try {
-				final Field field = URL.class.getDeclaredField("factory");
-				field.setAccessible(true);
-				final URLStreamHandlerFactory oldFactory = (URLStreamHandlerFactory) field.get(null);
-				final URLStreamHandlerFactory newFactory = protocol -> "musicplayer".equals(protocol) ? new URLStreamHandlerMusicPlayer() : oldFactory != null ? oldFactory.createURLStreamHandler(protocol) : null;
-				field.set(null, newFactory);
-			} catch (Exception ex) {
-				logger.error(load, "Could not replace url stream handler because reflections failed.", ex);
-			}
-		}
-	}
-	
-	/**
-	 * Really hackery. We need to remove all loaded tries of org.slf4j.LoggerFactory from {@link LaunchClassLoader}. Netty
-	 * tried to load org.slf4j.LoggerFactory before we can provide our slf4j-api jar. So the {@link LaunchClassLoader}
-	 * thinks its an invalid class and prevents it from being loaded again. We remove org.slf4j.LoggerFactory of
-	 * {@link LaunchClassLoader#invalidClasses} and {@link LaunchClassLoader#negativeResourceCache} set
-	 */
-	private static void fixSLF4JLogger() {
-		try {
-			final String slf4jLoggerFactory = "org.slf4j.LoggerFactory";
-			
-			final LaunchClassLoader launchClassLoader = (LaunchClassLoader) DependencyManager.class.getClassLoader();
-			
-			final Set<String> invalidClasses = ReflectionHelper.getPrivateValue(LaunchClassLoader.class, launchClassLoader, "invalidClasses");
-			final Set<String> negativeResourceCache = ReflectionHelper.getPrivateValue(LaunchClassLoader.class, launchClassLoader, "negativeResourceCache");
-			
-			invalidClasses.remove(slf4jLoggerFactory);
-			negativeResourceCache.remove(slf4jLoggerFactory);
-		} catch (Exception ex) {
-			logger.error(load, "Can't fix slf4j logger.", ex);
-		}
-	}
-	
-	/**
-	 * Really hackery. We remove the lwjgl pack from classloader exceptions, so it can load our class. Then we load our
-	 * class and reset the classloader exceptions.
-	 */
-	private static void fixTinyFDLoadLWJGL() {
-		try {
-			final String tinyFDClass = "org.lwjgl.util.tinyfd.TinyFileDialogs";
-			final String lwjglExclusion = "org.lwjgl.";
-			
-			final LaunchClassLoader launchClassLoader = (LaunchClassLoader) DependencyManager.class.getClassLoader();
-			
-			final Set<String> classLoaderExceptions = ReflectionHelper.getPrivateValue(LaunchClassLoader.class, launchClassLoader, "classLoaderExceptions");
-			
-			classLoaderExceptions.remove(lwjglExclusion);
-			launchClassLoader.loadClass(tinyFDClass);
-			classLoaderExceptions.add(lwjglExclusion);
-		} catch (Exception ex) {
-			logger.error(load, "Can't fix tinyfd load lwjgl", ex);
-		}
-	}
 }
