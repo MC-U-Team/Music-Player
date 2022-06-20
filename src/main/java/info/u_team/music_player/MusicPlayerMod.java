@@ -10,8 +10,8 @@ public class MusicPlayerMod {
 	
 	public static final String modid = "musicplayer";
 	public static final String name = "Music Player";
-	public static final String version = "${version}";
-	public static final String mcversion = "${mcversion}";
+	public static final String version = "@VERSION@";
+	public static final String mcversion = "@MCVERSION@";
 	public static final String dependencies = "required:forge@[14.23.5.2768,);required-after:uteamcore@[2.2.5.147,);";
 	public static final String updateurl = "https://api.u-team.info/update/musicplayer.json";
 	
