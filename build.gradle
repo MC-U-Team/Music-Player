@@ -249,7 +249,7 @@ def getValueDefault(name) {
 	return value
 }
 
-curseforge.dependsOn "reobfJar"
+tasks.curseforge.dependsOn "reobfJar"
 
 curseforge {
 	apiKey = getValueDefault("curseforge.token")
