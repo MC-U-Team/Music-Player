@@ -1,6 +1,10 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [1.18.2-2.3.4.158] - 2022-06-20
+### Changed
+ - Update lavaplayer to 1.3.97.1
+
 ## [1.18.2-2.3.4.151] - 2022-06-07
 ### Changed
  - Update lavaplayer to 1.3.97.1 to fix youtube search issue
