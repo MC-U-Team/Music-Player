@@ -31,6 +31,6 @@ authors="HyCraftHD"
 	[[dependencies.musicplayer]]
 	    modId="uteamcore"
 	    mandatory=true
-	    versionRange="[3.2.1.196,)"
+	    versionRange="[3.2.1.215,)"
 	    ordering="NONE"
 	    side="BOTH"
