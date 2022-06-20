@@ -252,6 +252,8 @@ def getValueDefault(name) {
 curseforge {
 	apiKey = getValueDefault("curseforge.token")
 	
+	dependsOn "reobfJar"
+	
 	project {
 		id = config.curse.id
 		releaseType = config.curse.type
@@ -264,7 +266,7 @@ curseforge {
 			forgeGradleIntegration = false
 		}
 		
-		mainArtifact(tasks.getByName("reobfJar")) {
+		mainArtifact(tasks.getByName("jar")) {
 			displayName = "${config.curse.display}-${minecraft.version}-${project.version}"
 			changelogType = "html"
 			changelog = "<a href=\"${config.curse.changelog}\">Changelog of ${project.version}</a>"
