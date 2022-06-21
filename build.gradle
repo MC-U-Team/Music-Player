@@ -230,7 +230,6 @@ publishing {
 					connection = "scm:git:git://github.com/MC-U-Team/${config.github.name}.git"
 					developerConnection = "scm:git:git@github.com:MC-U-Team/${config.github.name}.git"
 				}
-				
 				issueManagement {
 					system = "github"
 					url = "https://github.com/MC-U-Team/${config.github.name}/issues"
