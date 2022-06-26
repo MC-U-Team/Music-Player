@@ -7,7 +7,6 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import info.u_team.music_player.dependency.DependencyManager;
-import info.u_team.music_player.init.MusicPlayerFiles;
 import info.u_team.music_player.lavaplayer.api.IMusicPlayer;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
@@ -20,16 +19,19 @@ public class MusicPlayerManager {
 	
 	private static final Gson gson = new GsonBuilder().setPrettyPrinting().create();
 	
+	private static final MusicPlayerFiles files = new MusicPlayerFiles();
+	
 	private static final PlaylistManager playListManager = new PlaylistManager(gson);
 	private static final SettingsManager settingsManager = new SettingsManager(gson);
 	
 	private static void setup(FMLClientSetupEvent event) {
-		MusicPlayerFiles.load();
 		generatePlayer();
 		player.startAudioOutput();
 		
-		playListManager.setBasePath(MusicPlayerFiles.getDirectory());
-		settingsManager.setBasePath(MusicPlayerFiles.getDirectory());
+		files.load();
+		
+		playListManager.setBasePath(files.getDirectory());
+		settingsManager.setBasePath(files.getDirectory());
 		
 		playListManager.loadFromFile();
 		settingsManager.loadFromFile();
@@ -53,6 +55,10 @@ public class MusicPlayerManager {
 	
 	public static IMusicPlayer getPlayer() {
 		return player;
+	}
+	
+	public static MusicPlayerFiles getFiles() {
+		return files;
 	}
 	
 	public static PlaylistManager getPlaylistManager() {

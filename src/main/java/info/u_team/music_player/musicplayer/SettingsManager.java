@@ -23,7 +23,7 @@ public class SettingsManager implements IGsonLoadable {
 	
 	private Settings settings;
 	
-	public SettingsManager(Gson gson) {
+	SettingsManager(Gson gson) {
 		this.gson = gson;
 	}
 	

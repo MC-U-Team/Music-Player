@@ -28,7 +28,7 @@ public class PlaylistManager implements IGsonLoadable {
 	
 	private Playlists playlists;
 	
-	public PlaylistManager(Gson gson) {
+	PlaylistManager(Gson gson) {
 		this.gson = gson;
 	}
 	

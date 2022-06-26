@@ -1,4 +1,4 @@
-package info.u_team.music_player.init;
+package info.u_team.music_player.musicplayer;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -15,9 +15,12 @@ public class MusicPlayerFiles {
 	
 	private static final Logger LOGGER = LogManager.getLogger();
 	
-	private static Path directory;
+	private Path directory;
 	
-	public static void load() {
+	MusicPlayerFiles() {
+	}
+	
+	public void load() {
 		if (ClientConfig.getInstance().internalPlaylists.get()) {
 			directory = Paths.get(Minecraft.getInstance().gameDirectory.toString(), "config/musicplayer");
 		} else {
@@ -31,7 +34,7 @@ public class MusicPlayerFiles {
 		}
 	}
 	
-	public static Path getDirectory() {
+	public Path getDirectory() {
 		return directory;
 	}
 }
