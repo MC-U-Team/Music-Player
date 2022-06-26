@@ -21,8 +21,6 @@ public class MusicPlayerClientConstruct implements ModConstruct {
 		
 		DependencyManager.load();
 		
-		MusicPlayerFiles.load();
-		
 		BusRegister.registerMod(MusicPlayerManager::registerMod);
 		BusRegister.registerMod(MusicPlayerKeys::registerMod);
 		

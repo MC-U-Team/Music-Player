@@ -31,7 +31,7 @@ import net.minecraftforge.eventbus.api.IEventBus;
 
 public class MusicPlayerEventHandler {
 	
-	private static final SettingsManager SETTINGS_MANAGER = MusicPlayerManager.getSettingsManager();
+	private static final SettingsManager settingsManager = MusicPlayerManager.getSettingsManager();
 	
 	// Used to listen to keyboard events
 	
@@ -40,7 +40,7 @@ public class MusicPlayerEventHandler {
 	}
 	
 	private static void onKeyboardPressed(KeyboardKeyPressedEvent.Post event) {
-		if (SETTINGS_MANAGER.getSettings().isKeyWorkInGui()) {
+		if (settingsManager.getSettings().isKeyWorkInGui()) {
 			event.setCanceled(handleKeyboard(true, event.getKeyCode(), event.getScanCode()));
 		}
 	}
@@ -89,8 +89,8 @@ public class MusicPlayerEventHandler {
 		final Minecraft mc = Minecraft.getInstance();
 		// if (event.getType() == ElementType.TEXT && !mc.gameSettings.showDebugInfo && mc.currentScreen == null) {
 		if (event.getType() == ElementType.TEXT) {
-			if (SETTINGS_MANAGER.getSettings().isShowIngameOverlay()) {
-				final IngameOverlayPosition position = SETTINGS_MANAGER.getSettings().getIngameOverlayPosition();
+			if (settingsManager.getSettings().isShowIngameOverlay()) {
+				final IngameOverlayPosition position = settingsManager.getSettings().getIngameOverlayPosition();
 				
 				if (overlayRender == null) {
 					overlayRender = new RenderOverlayMusicDisplay();
@@ -135,7 +135,7 @@ public class MusicPlayerEventHandler {
 	private static void onInitGuiPre(ScreenEvent.InitScreenEvent.Pre event) {
 		final Screen gui = event.getScreen();
 		if (gui instanceof PauseScreen) {
-			if (SETTINGS_MANAGER.getSettings().isShowIngameMenueOverlay()) {
+			if (settingsManager.getSettings().isShowIngameMenueOverlay()) {
 				gui.children().stream() //
 						.filter(element -> element instanceof GuiControls) //
 						.map(element -> ((GuiControls) element)).findAny() //
@@ -150,7 +150,7 @@ public class MusicPlayerEventHandler {
 	private static void onInitGuiPost(ScreenEvent.InitScreenEvent.Post event) {
 		final Screen gui = event.getScreen();
 		if (gui instanceof PauseScreen) {
-			if (SETTINGS_MANAGER.getSettings().isShowIngameMenueOverlay()) {
+			if (settingsManager.getSettings().isShowIngameMenueOverlay()) {
 				final GuiControls controls = new GuiControls(gui, 3, gui.width);
 				if (titleRender != null) {
 					controls.copyTitleRendererState(titleRender);
@@ -170,7 +170,7 @@ public class MusicPlayerEventHandler {
 	private static void onDrawScreenPost(ScreenEvent.DrawScreenEvent.Post event) {
 		final Screen gui = event.getScreen();
 		if (gui instanceof PauseScreen) {
-			if (SETTINGS_MANAGER.getSettings().isShowIngameMenueOverlay()) {
+			if (settingsManager.getSettings().isShowIngameMenueOverlay()) {
 				gui.children().stream() //
 						.filter(element -> element instanceof GuiControls) //
 						.map(element -> ((GuiControls) element)).findAny() //
@@ -182,7 +182,7 @@ public class MusicPlayerEventHandler {
 	private static void onMouseReleasePre(ScreenEvent.MouseReleasedEvent.Pre event) {
 		final Screen gui = event.getScreen();
 		if (gui instanceof PauseScreen) {
-			if (SETTINGS_MANAGER.getSettings().isShowIngameMenueOverlay()) {
+			if (settingsManager.getSettings().isShowIngameMenueOverlay()) {
 				gui.children().stream() //
 						.filter(element -> element instanceof GuiControls) //
 						.map(element -> ((GuiControls) element)).findAny() //
@@ -195,7 +195,7 @@ public class MusicPlayerEventHandler {
 		if (event.phase == Phase.END) {
 			final Screen gui = Minecraft.getInstance().screen;
 			if (gui instanceof PauseScreen) {
-				if (SETTINGS_MANAGER.getSettings().isShowIngameMenueOverlay()) {
+				if (settingsManager.getSettings().isShowIngameMenueOverlay()) {
 					gui.children().stream() //
 							.filter(element -> element instanceof GuiControls) //
 							.map(element -> ((GuiControls) element)).findAny() //

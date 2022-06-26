@@ -11,7 +11,6 @@ import org.apache.logging.log4j.Logger;
 
 import com.google.gson.Gson;
 
-import info.u_team.music_player.init.MusicPlayerFiles;
 import info.u_team.music_player.musicplayer.settings.Settings;
 
 public class SettingsManager implements IGsonLoadable {
@@ -20,13 +19,17 @@ public class SettingsManager implements IGsonLoadable {
 	
 	private final Gson gson;
 	
-	private final Path path;
+	private Path path;
 	
 	private Settings settings;
 	
 	public SettingsManager(Gson gson) {
 		this.gson = gson;
-		path = MusicPlayerFiles.getDirectory().resolve("settings.json");
+	}
+	
+	@Override
+	public void setBasePath(Path basePath) {
+		path = basePath.resolve("settings.json");
 	}
 	
 	@Override
