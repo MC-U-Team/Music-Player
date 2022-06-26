@@ -1,7 +1,7 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
-## [1.19-2.3.5.160] - 2022-06-27
+## [1.19-2.3.6.160] - 2022-06-27
 ### Changed
  - Update to forge 41.0.45
  - Fix config file loading too early
