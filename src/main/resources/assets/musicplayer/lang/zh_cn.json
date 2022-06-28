@@ -25,7 +25,7 @@
 	"gui.settings.position.up_right": "右上",
 	"gui.settings.toggle.ingame_overlay": "显示/隐藏游戏内叠加层",
 	"gui.settings.toggle.key_in_gui": "启用/禁用 GUI 中的按键绑定",
-	"gui.settings.toggle.menue_overlay": "显示/隐藏菜单叠加层",
+	"gui.settings.toggle.menue_overlay": "显示/隐藏菜单中的叠加层",
 	"gui.track.duration_undefined": "未定义",
 	"key.musicplayer.category": "音乐播放器",
 	"key.musicplayer.open": "打开音乐播放器",
