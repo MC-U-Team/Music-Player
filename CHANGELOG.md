@@ -1,7 +1,7 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
-## [1.19-2.3.6.161] - 2022-07-09
+## [1.19-2.3.7.161] - 2022-07-09
 ### Added
  - Added chinese translation. Thanks qznfbnj
  - Added korean translation. Thanks gyular
