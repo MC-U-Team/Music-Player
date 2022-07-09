@@ -2,8 +2,12 @@ package info.u_team.music_player.dependency.classloader;
 
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.util.Arrays;
+import java.util.Collection;
 
 public class DependencyClassLoader extends URLClassLoader {
+	
+	private final Collection<String> ourClassLoaderPackages = Arrays.asList("info.u_team.music_player.lavaplayer.api", "javax");
 	
 	static {
 		ClassLoader.registerAsParallelCapable();
@@ -21,7 +25,7 @@ public class DependencyClassLoader extends URLClassLoader {
 		try {
 			return super.loadClass(name);
 		} catch (final ClassNotFoundException ex) {
-			if (name.startsWith("info.u_team.music_player.lavaplayer.api")) {
+			if (ourClassLoaderPackages.stream().anyMatch(name::startsWith)) {
 				return ourClassLoader.loadClass(name);
 			}
 			throw ex;
