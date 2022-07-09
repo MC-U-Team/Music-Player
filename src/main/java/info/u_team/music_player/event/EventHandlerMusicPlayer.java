@@ -61,7 +61,9 @@ public class EventHandlerMusicPlayer {
 			}
 			handled = true;
 		} else if (isKeyDown(MusicPlayerKeys.skipBack, gui, keyCode)) {
-			MusicPlayerUtils.skipBack();
+			if (manager.getCurrentTrack() != null) {
+				MusicPlayerUtils.skipBack();
+			}
 			handled = true;
 		} else {
 			handled = false;
