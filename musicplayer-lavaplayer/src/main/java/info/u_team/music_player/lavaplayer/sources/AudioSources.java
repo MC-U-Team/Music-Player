@@ -13,7 +13,7 @@ import com.sedmelluq.discord.lavaplayer.source.youtube.YoutubeAudioSourceManager
 public class AudioSources {
 	
 	public static void registerSources(AudioPlayerManager audioPlayerManager) {
-		final YoutubeAudioSourceManager youtube = new YoutubeAudioSourceManager(true);
+		final YoutubeAudioSourceManager youtube = new YoutubeAudioSourceManager(true, null, null);
 		youtube.setPlaylistPageCount(100);
 		audioPlayerManager.registerSourceManager(youtube);
 		audioPlayerManager.registerSourceManager(SoundCloudAudioSourceManager.createDefault());
