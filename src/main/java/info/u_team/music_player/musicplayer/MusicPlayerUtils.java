@@ -23,6 +23,10 @@ public final class MusicPlayerUtils {
 		if (playlist != null) {
 			final IAudioTrack currentlyPlaying = manager.getCurrentTrack();
 			
+			if (currentlyPlaying == null) {
+				return;
+			}
+			
 			long maxDuration = currentlyPlaying.getDuration() / 10;
 			if (maxDuration > 10000) {
 				maxDuration = 10000;
