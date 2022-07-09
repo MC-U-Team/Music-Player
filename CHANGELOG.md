@@ -1,6 +1,11 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [1.19-2.3.7.168] - 2022-07-09
+### Changed
+ - Update lavaplayer to 1.3.98.1
+ - Include arm natives
+
 ## [1.19-2.3.7.161] - 2022-07-09
 ### Added
  - Added chinese translation. Thanks qznfbnj
