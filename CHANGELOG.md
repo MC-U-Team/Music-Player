@@ -1,6 +1,14 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [1.19-2.3.6.161] - 2022-07-09
+### Added
+ - Added chinese translation. Thanks qznfbnj
+ - Added korean translation. Thanks gyular
+ - Update forge version to 41.0.63
+ - Fix data generators
+ - Minify jsons in jar now
+
 ## [1.19-2.3.6.160] - 2022-06-27
 ### Changed
  - Update to forge 41.0.45
