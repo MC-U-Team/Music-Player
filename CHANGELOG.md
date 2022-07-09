@@ -1,6 +1,12 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [1.12.2-2.1.1.163] - 2022-07-09
+### Changed
+ - Update lavaplayer to 1.3.98.1
+ - Include arm natives
+ - Fix some crashes
+
 ## [1.12.2-2.1.1.154] - 2022-06-20
 ### Changed
  - Update lavaplayer to 1.3.97.1
