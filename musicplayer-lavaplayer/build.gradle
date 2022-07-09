@@ -71,7 +71,7 @@ dependencies {
 	
 	musicplayer "com.fasterxml.jackson.core:jackson-databind:2.13.3"
 	
-	musicplayer "org.jsoup:jsoup:1.15.1"
+	musicplayer "org.jsoup:jsoup:1.15.2"
 	
 	implementation project(":musicplayer-lavaplayer-api")
 }
