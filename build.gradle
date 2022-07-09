@@ -82,6 +82,9 @@ minecraft {
 			args "--validate"
 			args "--existing", file("src/main/resources")
 			
+			property "coremod.uteamcore.dataprovider-set-indent", "coremod.uteamcore.dataprovider-set-indent.value"
+			property "coremod.uteamcore.dataprovider-set-indent.value", "true"
+			
 			mods {
 				"${config.mod.modid}" {
 					source sourceSets.main
