@@ -5,9 +5,12 @@ All notable changes to this project will be documented in this file.
 ### Added
  - Added chinese translation. Thanks qznfbnj
  - Added korean translation. Thanks gyular
+ 
+### Changed
  - Update forge version to 41.0.63
  - Fix data generators
  - Minify jsons in jar now
+ - Fix [#387](https://github.com/MC-U-Team/Music-Player/issues/387)
 
 ## [1.19-2.3.6.160] - 2022-06-27
 ### Changed
