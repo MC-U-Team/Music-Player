@@ -44,7 +44,7 @@ public class MusicPlayerLanguagesProvider extends CommonLanguagesProvider {
 	}
 	
 	@Override
-	public void addTranslations() {
+	public void register() {
 		// English
 		
 		// Keys

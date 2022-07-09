@@ -14,9 +14,7 @@ public class MusicPlayerDataGenerator {
 	@SubscribeEvent
 	public static void data(GatherDataEvent event) {
 		final GenerationData data = new GenerationData(MusicPlayerMod.MODID, event);
-		if (event.includeClient()) {
-			data.addProvider(MusicPlayerLanguagesProvider::new);
-		}
+		data.addProvider(event.includeClient(), MusicPlayerLanguagesProvider::new);
 	}
 	
 }
