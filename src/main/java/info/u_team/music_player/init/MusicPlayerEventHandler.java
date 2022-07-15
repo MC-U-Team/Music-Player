@@ -1,5 +1,6 @@
 package info.u_team.music_player.init;
 
+import java.lang.annotation.ElementType;
 import java.util.List;
 
 import com.mojang.blaze3d.platform.InputConstants;
@@ -20,11 +21,10 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.screens.PauseScreen;
 import net.minecraft.client.gui.screens.Screen;
-import net.minecraftforge.client.event.InputEvent.KeyInputEvent;
-import net.minecraftforge.client.event.RenderGameOverlayEvent;
-import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
+import net.minecraftforge.client.event.InputEvent.Key;
+import net.minecraftforge.client.event.RenderGuiOverlayEvent;
 import net.minecraftforge.client.event.ScreenEvent;
-import net.minecraftforge.client.event.ScreenEvent.KeyboardKeyPressedEvent;
+import net.minecraftforge.client.event.ScreenEvent.KeyPressed;
 import net.minecraftforge.event.TickEvent.ClientTickEvent;
 import net.minecraftforge.event.TickEvent.Phase;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -35,11 +35,11 @@ public class MusicPlayerEventHandler {
 	
 	// Used to listen to keyboard events
 	
-	private static void onKeyInput(KeyInputEvent event) {
+	private static void onKeyInput(Key event) {
 		handleKeyboard(false, -1, -1);
 	}
 	
-	private static void onKeyboardPressed(KeyboardKeyPressedEvent.Post event) {
+	private static void onKeyboardPressed(KeyPressed.Post event) {
 		if (settingsManager.getSettings().isKeyWorkInGui()) {
 			event.setCanceled(handleKeyboard(true, event.getKeyCode(), event.getScanCode()));
 		}
@@ -87,7 +87,7 @@ public class MusicPlayerEventHandler {
 	
 	// Render overlay
 	
-	private static void onRenderGameOverlay(RenderGameOverlayEvent.Pre event) {
+	private static void onRenderGameOverlay(RenderGuiOverlayEvent.Pre event) {
 		final Minecraft mc = Minecraft.getInstance();
 		// if (event.getType() == ElementType.TEXT && !mc.gameSettings.showDebugInfo && mc.currentScreen == null) {
 		if (event.getType() == ElementType.TEXT) {
@@ -134,7 +134,7 @@ public class MusicPlayerEventHandler {
 	
 	private static ScrollingText titleRender, authorRender;
 	
-	private static void onInitGuiPre(ScreenEvent.InitScreenEvent.Pre event) {
+	private static void onInitGuiPre(ScreenEvent.Init.Pre event) {
 		final Screen gui = event.getScreen();
 		if (gui instanceof PauseScreen) {
 			if (settingsManager.getSettings().isShowIngameMenueOverlay()) {
@@ -149,7 +149,7 @@ public class MusicPlayerEventHandler {
 		}
 	}
 	
-	private static void onInitGuiPost(ScreenEvent.InitScreenEvent.Post event) {
+	private static void onInitGuiPost(ScreenEvent.Init.Post event) {
 		final Screen gui = event.getScreen();
 		if (gui instanceof PauseScreen) {
 			if (settingsManager.getSettings().isShowIngameMenueOverlay()) {
@@ -169,7 +169,7 @@ public class MusicPlayerEventHandler {
 		}
 	}
 	
-	private static void onDrawScreenPost(ScreenEvent.DrawScreenEvent.Post event) {
+	private static void onDrawScreenPost(ScreenEvent.Render.Post event) {
 		final Screen gui = event.getScreen();
 		if (gui instanceof PauseScreen) {
 			if (settingsManager.getSettings().isShowIngameMenueOverlay()) {
@@ -181,7 +181,7 @@ public class MusicPlayerEventHandler {
 		}
 	}
 	
-	private static void onMouseReleasePre(ScreenEvent.MouseReleasedEvent.Pre event) {
+	private static void onMouseReleasePre(ScreenEvent.MouseButtonReleased.Pre event) {
 		final Screen gui = event.getScreen();
 		if (gui instanceof PauseScreen) {
 			if (settingsManager.getSettings().isShowIngameMenueOverlay()) {
