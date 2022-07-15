@@ -178,7 +178,7 @@ sourceSets {
 dependencies {
 	minecraft gradlefiles.forgeDependency()
 	
-	implementation fg.deobf("info.u-team:u_team_core-1.19:4.2.0.221")
+	implementation fg.deobf("info.u-team:u_team_core-1.19:4.3.0.222")
 	
 	library project(":musicplayer-lavaplayer-api")
 	shade ("net.harawata:appdirs:1.0.0") {
