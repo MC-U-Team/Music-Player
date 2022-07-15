@@ -1,6 +1,5 @@
 package info.u_team.music_player.init;
 
-import java.lang.annotation.ElementType;
 import java.util.List;
 
 import com.mojang.blaze3d.platform.InputConstants;
@@ -25,6 +24,7 @@ import net.minecraftforge.client.event.InputEvent.Key;
 import net.minecraftforge.client.event.RenderGuiOverlayEvent;
 import net.minecraftforge.client.event.ScreenEvent;
 import net.minecraftforge.client.event.ScreenEvent.KeyPressed;
+import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
 import net.minecraftforge.event.TickEvent.ClientTickEvent;
 import net.minecraftforge.event.TickEvent.Phase;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -90,7 +90,7 @@ public class MusicPlayerEventHandler {
 	private static void onRenderGameOverlay(RenderGuiOverlayEvent.Pre event) {
 		final Minecraft mc = Minecraft.getInstance();
 		// if (event.getType() == ElementType.TEXT && !mc.gameSettings.showDebugInfo && mc.currentScreen == null) {
-		if (event.getType() == ElementType.TEXT) {
+		if (event.getOverlay() == VanillaGuiOverlay.DEBUG_TEXT.type()) {
 			if (settingsManager.getSettings().isShowIngameOverlay()) {
 				final IngameOverlayPosition position = settingsManager.getSettings().getIngameOverlayPosition();
 				
