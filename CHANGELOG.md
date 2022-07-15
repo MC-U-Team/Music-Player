@@ -1,7 +1,11 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
-## [1.19-2.3.7.168] - 2022-07-09
+## [1.19-2.5.0.169] - 2022-07-15
+### Changed
+ - Update forge version to 41.0.98
+
+## [1.19-2.4.0.168] - 2022-07-09
 ### Changed
  - Update lavaplayer to 1.3.98.1
  - Include arm natives
