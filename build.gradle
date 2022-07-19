@@ -9,9 +9,7 @@ buildscript {
 		maven {
 			url = "https://repo.u-team.info"
 		}
-		maven {
-			url "https://plugins.gradle.org/m2"
-		}
+		gradlePluginPortal()
 		mavenCentral()
 	}
 	dependencies {
