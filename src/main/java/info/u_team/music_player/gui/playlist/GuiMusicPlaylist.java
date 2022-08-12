@@ -31,9 +31,9 @@ public class GuiMusicPlaylist extends BetterScreen {
 		
 		if (!playlist.isLoaded()) {
 			playlist.load(() -> {
-				if (minecraft.currentScreen == this) { // Check if gui is still open
-					minecraft.execute(() -> {
-						if (minecraft.currentScreen == this) { // Recheck gui because this is async on the main thread.
+				if (Minecraft.getInstance().currentScreen == this) { // Check if gui is still open
+					Minecraft.getInstance().execute(() -> {
+						if (Minecraft.getInstance().currentScreen == this) { // Recheck gui because this is async on the main thread.
 							trackList.addAllEntries();
 							if (addTracksButton != null) {
 								addTracksButton.active = true;
