@@ -10,6 +10,7 @@ import java.lang.invoke.MethodType;
 import java.lang.reflect.Method;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
@@ -139,12 +140,7 @@ public class TinyFdHelper {
 			throw new IllegalStateException("Cannot bind tinyfd native library");
 		}
 		
-		final Path baseDirectory = Paths.get(System.getProperty("java.io.tmpdir", "/tmp"), MusicPlayerMod.MODID + "-tinyfd-tmp");
-		// Try to clean base directory before
-		try {
-			FileUtils.deleteDirectory(baseDirectory.toFile());
-		} catch (Exception ex) {
-		}
+		final Path baseDirectory = createExtractDirectory();
 		final Path libraryPath = baseDirectory.resolve(System.currentTimeMillis() + "_" + libraryName);
 		final File libraryFile = libraryPath.toFile();
 		
@@ -157,6 +153,26 @@ public class TinyFdHelper {
 		
 		lookup.findStatic(clazz, "__$$_load_native_library", MethodType.methodType(void.class, String.class)).invoke(absolutePath);
 		lookup.findStatic(clazz, "__$$_clinit", MethodType.methodType(void.class)).invoke();
+	}
+	
+	private static Path createExtractDirectory() {
+		try {
+			final Path baseDirectory = Paths.get(System.getProperty("java.io.tmpdir", "/tmp"), MusicPlayerMod.MODID + "-tinyfd-tmp");
+			// Try to clean base directory before
+			try {
+				FileUtils.deleteDirectory(baseDirectory.toFile());
+			} catch (Exception ex) {
+			}
+			
+			Files.createDirectories(baseDirectory);
+			return baseDirectory;
+		} catch (final IOException unused) {
+			try {
+				return Files.createTempDirectory(MusicPlayerMod.MODID + "-tinyfd-tmp");
+			} catch (final IOException ex) {
+				throw new RuntimeException("Cannot create extract directory for tinyfd", ex);
+			}
+		}
 	}
 	
 	private static class TinyFdClassLoader extends URLClassLoader {
