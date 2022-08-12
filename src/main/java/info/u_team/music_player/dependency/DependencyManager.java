@@ -110,8 +110,12 @@ public class DependencyManager {
 			
 			Files.createDirectories(specificDirectory);
 			return specificDirectory;
-		} catch (final IOException ex) {
-			throw new RuntimeException("Cannot create extract directory for musicplayer files", ex);
+		} catch (final IOException unused) {
+			try {
+				return Files.createTempDirectory(MusicPlayerMod.modid + "-extraction-tmp");
+			} catch (final IOException ex) {
+				throw new RuntimeException("Cannot create extract directory for musicplayer files", ex);
+			}
 		}
 	}
 	
