@@ -26,9 +26,9 @@ public class GuiMusicPlaylist extends GuiScreen1_13 {
 		
 		if (!playlist.isLoaded()) {
 			playlist.load(() -> {
-				if (mc.currentScreen == this) { // Check if gui is still open
-					mc.addScheduledTask(() -> {
-						if (mc.currentScreen == this) { // Recheck gui because this is async on the main thread.
+				if (Minecraft.getMinecraft().currentScreen == this) { // Check if gui is still open
+					Minecraft.getMinecraft().addScheduledTask(() -> {
+						if (Minecraft.getMinecraft().currentScreen == this) { // Recheck gui because this is async on the main thread.
 							trackList.addAllEntries();
 							if (addTracksButton != null) {
 								addTracksButton.enabled = true;
