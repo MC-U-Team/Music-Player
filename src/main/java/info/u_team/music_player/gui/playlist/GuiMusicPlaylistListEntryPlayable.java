@@ -49,7 +49,7 @@ public abstract class GuiMusicPlaylistListEntryPlayable extends GuiMusicPlaylist
 	@Override
 	public boolean mouseClicked(double mouseX, double mouseY, int button) {
 		if (button == 2) {
-			final String uri = this instanceof GuiMusicPlaylistListEntryPlaylistStart ? loadedTrack.getUri().get() : track.getInfo().getURI();
+			final String uri = this instanceof GuiMusicPlaylistListEntryPlaylistStart || this instanceof GuiMusicPlaylistListEntryError ? loadedTrack.getUri().get() : track.getInfo().getURI();
 			if (GuiTrackUtils.openURI(uri)) {
 				return true;
 			}
