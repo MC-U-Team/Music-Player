@@ -197,7 +197,7 @@ sourceSets {
 
 dependencies {
 	library project(":musicplayer-lavaplayer-api")
-	shade "org.slf4j:slf4j-simple:1.7.36"
+	shade "org.slf4j:slf4j-simple:2.0.1"
 	shade ("net.harawata:appdirs:1.0.0") {
 		transitive=false
 	}
