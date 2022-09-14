@@ -169,7 +169,7 @@ sourceSets {
 dependencies {
 	minecraft gradlefiles.forgeDependency()
 	
-	implementation fg.deobf("info.u-team:u_team_core-1.16.5:3.2.1.215")
+	implementation fg.deobf("info.u-team:u_team_core-1.16.5:3.2.1.229")
 	
 	library project(":musicplayer-lavaplayer-api")
 	shade "org.slf4j:slf4j-simple:1.7.36"
