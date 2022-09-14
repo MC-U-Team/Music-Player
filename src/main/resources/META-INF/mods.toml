@@ -31,6 +31,6 @@ license="Apache-2.0 License"
 	[[dependencies.musicplayer]]
 		modId="uteamcore"
 		mandatory=true
-		versionRange="[4.3.1.225,)"
+		versionRange="[4.3.1.231,)"
 		ordering="NONE"
 		side="BOTH"
