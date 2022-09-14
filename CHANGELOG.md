@@ -1,6 +1,11 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [1.14.4-2.1.1.181] - 2022-09-14
+### Changed
+ - Update lavaplayer to 1.3.98.4
+ - Update required uteamcore
+
 ## [1.14.4-2.1.1.174] - 2022-08-12
 ### Changed
  - Update lavaplayer to 1.3.98.3
