@@ -17,7 +17,7 @@ public class DependencyClassLoader extends URLClassLoader {
 	
 	public DependencyClassLoader() {
 		super(new URL[] {}, null);
-		this.ourClassLoader = getClass().getClassLoader();
+		ourClassLoader = getClass().getClassLoader();
 	}
 	
 	@Override

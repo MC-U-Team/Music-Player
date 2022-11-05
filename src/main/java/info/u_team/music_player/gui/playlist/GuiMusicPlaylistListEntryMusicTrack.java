@@ -13,7 +13,7 @@ public class GuiMusicPlaylistListEntryMusicTrack extends GuiMusicPlaylistListEnt
 	
 	public GuiMusicPlaylistListEntryMusicTrack(GuiMusicPlaylistList guilist, Playlists playlists, Playlist playlist, LoadedTracks loadedTrack) {
 		super(guilist, playlists, playlist, loadedTrack, loadedTrack.getTrack());
-		this.track = loadedTrack.getTrack();
+		track = loadedTrack.getTrack();
 	}
 	
 	@Override

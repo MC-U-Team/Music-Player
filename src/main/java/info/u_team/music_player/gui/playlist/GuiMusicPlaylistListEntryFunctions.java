@@ -21,7 +21,7 @@ abstract class GuiMusicPlaylistListEntryFunctions extends GuiMusicPlaylistListEn
 	GuiMusicPlaylistListEntryFunctions(GuiMusicPlaylistList guilist, Playlists playlists, Playlist playlist, LoadedTracks loadedTrack, IAudioTrack track) {
 		super(playlists, playlist, loadedTrack, track);
 		this.playlist = playlist;
-		this.uri = loadedTrack.getUri();
+		uri = loadedTrack.getUri();
 		deleteTrackButton = addChildren(new ImageButton(0, 0, 20, 20, MusicPlayerResources.TEXTURE_CLEAR));
 		upButton = addChildren(new ImageButton(0, 0, 20, 10, MusicPlayerResources.TEXTURE_UP));
 		downButton = addChildren(new ImageButton(0, 0, 20, 10, MusicPlayerResources.TEXTURE_DOWN));

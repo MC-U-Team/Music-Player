@@ -30,7 +30,7 @@ public class LoadedTracks {
 	public LoadedTracks(WrappedObject<String> uri, ISearchResult result) {
 		this.uri = uri;
 		if (result.hasError()) {
-			this.errorMessage = result.getErrorMessage();
+			errorMessage = result.getErrorMessage();
 		} else {
 			if (!result.isList()) {
 				track = result.getTrack();
