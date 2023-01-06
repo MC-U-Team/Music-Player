@@ -69,7 +69,7 @@ dependencies {
 	musicplayer "commons-codec:commons-codec:1.15"
 	musicplayer "commons-io:commons-io:2.11.0"
 	
-	musicplayer "com.fasterxml.jackson.core:jackson-databind:2.13.4"
+	musicplayer "com.fasterxml.jackson.core:jackson-databind:2.14.1"
 	
 	musicplayer "org.jsoup:jsoup:1.15.3"
 	
