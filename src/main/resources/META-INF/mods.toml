@@ -1,5 +1,5 @@
 modLoader="javafml"
-loaderVersion="[43,)"
+loaderVersion="[44,)"
 issueTrackerURL="https://github.com/MC-U-Team/Music-Player/issues"
 license="Apache-2.0 License"
 
@@ -17,20 +17,20 @@ license="Apache-2.0 License"
 	[[dependencies.musicplayer]]
 		modId="forge"
 		mandatory=true
-		versionRange="[43.2.0,)"
+		versionRange="[44.1.0,)"
 		ordering="NONE"
 		side="BOTH"
 	
 	[[dependencies.musicplayer]]
 		modId="minecraft"
 		mandatory=true
-		versionRange="[1.19.2]"
+		versionRange="[1.19.3]"
 		ordering="NONE"
 		side="BOTH"
 	    
 	[[dependencies.musicplayer]]
 		modId="uteamcore"
 		mandatory=true
-		versionRange="[4.4.3.236,)"
+		versionRange="[4.5.0.237,)"
 		ordering="NONE"
 		side="BOTH"
