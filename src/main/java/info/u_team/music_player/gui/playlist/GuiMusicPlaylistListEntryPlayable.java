@@ -63,8 +63,8 @@ public abstract class GuiMusicPlaylistListEntryPlayable extends GuiMusicPlaylist
 	
 	@Override
 	public void render(PoseStack matrixStack, int slotIndex, int entryY, int entryX, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float partialTicks) {
-		playTrackButton.x = entryWidth - 65;
-		playTrackButton.y = entryY + 8;
+		playTrackButton.setX(entryWidth - 65);
+		playTrackButton.setY(entryY + 8);
 		playTrackButton.render(matrixStack, mouseX, mouseY, partialTicks);
 	}
 	

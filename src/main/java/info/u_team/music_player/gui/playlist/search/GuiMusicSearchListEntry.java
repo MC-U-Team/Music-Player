@@ -20,8 +20,8 @@ abstract class GuiMusicSearchListEntry extends BetterScrollableListEntry<GuiMusi
 	
 	@Override
 	public void render(PoseStack matrixStack, int slotIndex, int entryY, int entryX, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float partialTicks) {
-		addTrackButton.x = entryWidth - 20;
-		addTrackButton.y = entryY + 8;
+		addTrackButton.setX(entryWidth - 20);
+		addTrackButton.setY(entryY + 8);
 		addTrackButton.render(matrixStack, mouseX, mouseY, partialTicks);
 	}
 	

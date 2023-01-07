@@ -12,9 +12,9 @@ import info.u_team.u_team_core.gui.elements.ScrollingText;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiComponent;
-import net.minecraft.client.gui.components.Widget;
+import net.minecraft.client.gui.components.Renderable;
 
-public class RenderOverlayMusicDisplay implements Widget {
+public class RenderOverlayMusicDisplay implements Renderable {
 	
 	private final ITrackManager manager;
 	
