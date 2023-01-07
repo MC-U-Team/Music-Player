@@ -127,6 +127,10 @@ tasks.named("shadowJar") {
 	exclude "META-INF/maven/**"
 }
 
+components.java.withVariantsFromConfiguration(configurations.getByName("shadowRuntimeElements")) {
+	skip()
+}
+
 tasks.matching { task ->
 	task.name == "prepareRuns"
 }.configureEach { task ->
