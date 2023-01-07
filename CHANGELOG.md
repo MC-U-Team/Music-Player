@@ -1,6 +1,10 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [1.19.2-2.5.1.194] - 2023-01-07
+### Changed
+ - Update lavaplayer to 1.3.99.2
+
 ## [1.19.2-2.5.1.187] - 2022-10-16
 ### Changed
  - Update forge version to 43.1.43
