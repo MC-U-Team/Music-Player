@@ -148,10 +148,6 @@ shadowJar {
 	manifest normalManifest
 }
 
-components.java.withVariantsFromConfiguration(configurations.getByName("shadowRuntimeElements")) {
-	skip()
-}
-
 tasks.matching { task ->
 	task.name == "setupDecompWorkspace"
 }.configureEach { task ->
