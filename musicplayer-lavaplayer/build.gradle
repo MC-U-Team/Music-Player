@@ -62,7 +62,7 @@ dependencies {
 	musicplayer "com.github.walkyst:lavaplayer-fork:1.4.0"
 	
 	musicplayer "org.slf4j:slf4j-simple:1.7.36"
-	musicplayer "org.slf4j:jcl-over-slf4j:1.7.36"
+	musicplayer "org.slf4j:jcl-over-slf4j:2.0.6"
 	
 	musicplayer "org.apache.httpcomponents:httpclient:4.5.14"
 	musicplayer "org.apache.httpcomponents:httpcore:4.4.16"
