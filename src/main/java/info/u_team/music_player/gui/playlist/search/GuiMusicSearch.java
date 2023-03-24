@@ -112,15 +112,8 @@ public class GuiMusicSearch extends BetterScreen {
 				return super.keyPressed(key, p_keyPressed_2_, p_keyPressed_3_);
 			}
 			
-			@Override
-			public boolean changeFocus(boolean p_changeFocus_1_) {
-				System.out.println("CHANGEED FOR Search FIELD to " + p_changeFocus_1_);
-				return super.changeFocus(p_changeFocus_1_);
-			}
-			
 		};
 		searchField.setMaxLength(1000);
-		searchField.setFocus(true);
 		setFocused(searchField);
 		addWidget(searchField);
 		
@@ -154,13 +147,13 @@ public class GuiMusicSearch extends BetterScreen {
 		init(minecraft, width, height);
 		
 		urlField.setValue(urlFieldText);
-		urlField.setFocus(urlFieldFocus);
+		urlField.setFocused(urlFieldFocus);
 		if (urlFieldFocus) {
 			setFocused(urlField);
 		}
 		
 		searchField.setValue(searchFieldText);
-		searchField.setFocus(searchFieldFocus);
+		searchField.setFocused(searchFieldFocus);
 		if (searchFieldFocus) {
 			setFocused(searchField);
 		}
@@ -176,7 +169,7 @@ public class GuiMusicSearch extends BetterScreen {
 	
 	@Override
 	public void render(PoseStack matrixStack, int mouseX, int mouseY, float partialTicks) {
-		renderDirtBackground(0);
+		renderDirtBackground(matrixStack);
 		searchList.render(matrixStack, mouseX, mouseY, partialTicks);
 		
 		drawCenteredString(matrixStack, minecraft.font, getTranslation(GUI_SEARCH_HEADER), width / 2, 5, 0xFFFFFF);
@@ -197,13 +190,13 @@ public class GuiMusicSearch extends BetterScreen {
 	public boolean mouseClicked(double mouseX, double mouseY, int button) {
 		if (urlField.mouseClicked(mouseX, mouseY, button)) {
 			setFocused(urlField);
-			urlField.setFocus(true);
-			searchField.setFocus(false);
+			urlField.setFocused(true);
+			searchField.setFocused(false);
 			return true;
 		} else if (searchField.mouseClicked(mouseX, mouseY, button)) {
 			setFocused(searchField);
-			searchField.setFocus(true);
-			urlField.setFocus(false);
+			searchField.setFocused(true);
+			urlField.setFocused(false);
 			return true;
 		}
 		return super.mouseClicked(mouseX, mouseY, button);

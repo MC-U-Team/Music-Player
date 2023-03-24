@@ -16,8 +16,8 @@ import info.u_team.music_player.init.MusicPlayerResources;
 import info.u_team.music_player.musicplayer.MusicPlayerManager;
 import info.u_team.music_player.musicplayer.settings.IngameOverlayPosition;
 import info.u_team.music_player.musicplayer.settings.Settings;
+import info.u_team.u_team_core.gui.elements.ActivatableButton;
 import info.u_team.u_team_core.gui.elements.ImageButton;
-import info.u_team.u_team_core.gui.elements.ScalableActivatableButton;
 import info.u_team.u_team_core.gui.elements.ScrollingText;
 import info.u_team.u_team_core.gui.elements.UButton;
 import net.minecraft.client.Minecraft;
@@ -43,19 +43,19 @@ public class GuiMusicPlayerSettings extends BetterScreen {
 		
 		final Settings settings = MusicPlayerManager.getSettingsManager().getSettings();
 		
-		final ScalableActivatableButton toggleKeyWorkInGuiButton = addRenderableWidget(new ScalableActivatableButton(12, 60, width / 2 - 24, 20, Component.nullToEmpty(getTranslation(GUI_SETTINGS_TOGGLE_KEY_IN_GUI)), 1, settings.isKeyWorkInGui(), MusicPlayerColors.LIGHT_GREEN));
+		final ActivatableButton toggleKeyWorkInGuiButton = addRenderableWidget(new ActivatableButton(12, 60, width / 2 - 24, 20, Component.nullToEmpty(getTranslation(GUI_SETTINGS_TOGGLE_KEY_IN_GUI)), settings.isKeyWorkInGui(), MusicPlayerColors.LIGHT_GREEN));
 		toggleKeyWorkInGuiButton.setPressable(() -> {
 			settings.setKeyWorkInGui(!settings.isKeyWorkInGui());
 			toggleKeyWorkInGuiButton.setActivated(settings.isKeyWorkInGui());
 		});
 		
-		final ScalableActivatableButton toggleIngameMenueDisplayButton = addRenderableWidget(new ScalableActivatableButton(width / 2 + 14, 60, width / 2 - 24, 20, Component.nullToEmpty(getTranslation(GUI_SETTINGS_TOGGLE_MENUE_OVERLAY)), 1, settings.isShowIngameMenueOverlay(), MusicPlayerColors.LIGHT_GREEN));
+		final ActivatableButton toggleIngameMenueDisplayButton = addRenderableWidget(new ActivatableButton(width / 2 + 14, 60, width / 2 - 24, 20, Component.nullToEmpty(getTranslation(GUI_SETTINGS_TOGGLE_MENUE_OVERLAY)), settings.isShowIngameMenueOverlay(), MusicPlayerColors.LIGHT_GREEN));
 		toggleIngameMenueDisplayButton.setPressable(() -> {
 			settings.setShowIngameMenueOverlay(!settings.isShowIngameMenueOverlay());
 			toggleIngameMenueDisplayButton.setActivated(settings.isShowIngameMenueOverlay());
 		});
 		
-		final ScalableActivatableButton toggleIngameDisplayButton = addRenderableWidget(new ScalableActivatableButton(12, 90, width / 2 - 24, 20, Component.nullToEmpty(getTranslation(GUI_SETTINGS_TOGGLE_INGAME_OVERLAY)), 1, settings.isShowIngameOverlay(), MusicPlayerColors.LIGHT_GREEN));
+		final ActivatableButton toggleIngameDisplayButton = addRenderableWidget(new ActivatableButton(12, 90, width / 2 - 24, 20, Component.nullToEmpty(getTranslation(GUI_SETTINGS_TOGGLE_INGAME_OVERLAY)), settings.isShowIngameOverlay(), MusicPlayerColors.LIGHT_GREEN));
 		toggleIngameDisplayButton.setPressable(() -> {
 			settings.setShowIngameOverlay(!settings.isShowIngameOverlay());
 			toggleIngameDisplayButton.setActivated(settings.isShowIngameOverlay());
@@ -90,7 +90,7 @@ public class GuiMusicPlayerSettings extends BetterScreen {
 	
 	@Override
 	public void render(PoseStack matrixStack, int mouseX, int mouseY, float partialTicks) {
-		renderDirtBackground(0);
+		renderDirtBackground(matrixStack);
 		mixerDeviceList.render(matrixStack, mouseX, mouseY, partialTicks);
 		font.draw(matrixStack, getTranslation(GUI_SETTINGS_MIXER_DEVICE_SELECTION), 13, 117, 0xFFFFFF);
 		controls.render(matrixStack, mouseX, mouseY, partialTicks);
