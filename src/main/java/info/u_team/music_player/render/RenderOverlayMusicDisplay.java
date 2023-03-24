@@ -1,10 +1,5 @@
 package info.u_team.music_player.render;
 
-import java.util.function.Supplier;
-
-import org.joml.Matrix4f;
-import org.joml.Vector4f;
-
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import info.u_team.music_player.gui.util.GuiTrackUtils;
@@ -18,7 +13,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.client.gui.components.Renderable;
-import net.minecraft.util.Mth;
 
 public class RenderOverlayMusicDisplay implements Renderable {
 	
@@ -41,13 +35,13 @@ public class RenderOverlayMusicDisplay implements Renderable {
 		
 		final Font fontRender = Minecraft.getInstance().font;
 		
-		title = new TestScrollingRender(fontRender, () -> GuiTrackUtils.getValueOfPlayingTrack(track -> track.getInfo().getFixedTitle()), 3, 2);
+		title = new ScrollingText(fontRender, () -> GuiTrackUtils.getValueOfPlayingTrack(track -> track.getInfo().getFixedTitle()), 3, 2);
 		title.setStepSize(0.5F);
 		title.setColor(MusicPlayerColors.YELLOW);
 		title.setWidth(114);
 		title.setSpeedTime(35);
 		
-		author = new TestScrollingRender(fontRender, () -> GuiTrackUtils.getValueOfPlayingTrack(track -> track.getInfo().getFixedAuthor()), 3, 12);
+		author = new ScrollingText(fontRender, () -> GuiTrackUtils.getValueOfPlayingTrack(track -> track.getInfo().getFixedAuthor()), 3, 12);
 		author.setStepSize(0.5F);
 		author.setColor(MusicPlayerColors.YELLOW);
 		author.setScale(0.75F);
@@ -103,33 +97,4 @@ public class RenderOverlayMusicDisplay implements Renderable {
 		return height;
 	}
 	
-	private final class TestScrollingRender extends ScrollingText {
-		
-		public TestScrollingRender(Font font, Supplier<String> textSupplier, float x, float y) {
-			super(font, textSupplier, x, y);
-		}
-		
-		@Override
-		public void render(PoseStack poseStack, int mouseX, int mouseY, float partialTick) {
-			Matrix4f matrix = poseStack.last().pose();
-			
-			final Vector4f vectorXY = new Vector4f(x, y, 0, 1);
-			vectorXY.mul(matrix);
-			
-			GuiComponent.enableScissor(Mth.ceil(vectorXY.x), Mth.ceil(vectorXY.y), Mth.ceil(vectorXY.x + width), Mth.ceil(vectorXY.y + ((font.lineHeight + 1) * scale)));
-			
-			// Uncomment to test scissor
-			// poseStack.pushPose();
-			// poseStack.last().pose().identity();
-			// GuiComponent.fill(poseStack, 0, 0, Minecraft.getInstance().getWindow().getGuiScaledWidth(),
-			// Minecraft.getInstance().getWindow().getGuiScaledHeight(), 0x8F00FF00);
-			// poseStack.popPose();
-			
-			setText(textSupplier.get());
-			renderFont(poseStack, font, getMovingX(x), y + 2 * scale);
-			
-			GuiComponent.disableScissor();
-		}
-		
-	}
 }

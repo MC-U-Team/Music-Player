@@ -130,7 +130,7 @@ public class GuiControls extends AbstractContainerEventHandler implements Better
 		
 		// Volume
 		final int volumeY = width - (70 + (isIngame ? 15 * 2 + 3 : (!isSettings ? 15 + 2 : 1)));
-		final GuiVolumeSlider volumeSlider = addButtonNonDisable(new GuiVolumeSlider(volumeY, 1, 70, 15, Component.nullToEmpty(getTranslation(GUI_CONTROLS_VOLUME) + ": "), Component.nullToEmpty("%"), 0, 100, settings.getVolume(), false, true, false, slider -> {
+		final GuiVolumeSlider volumeSlider = addButtonNonDisable(new GuiVolumeSlider(volumeY, 1, 70, 15, Component.nullToEmpty(getTranslation(GUI_CONTROLS_VOLUME) + ": "), Component.nullToEmpty("%"), 0, 100, settings.getVolume(), false, true, slider -> {
 			settings.setVolume(slider.getValueInt());
 			MusicPlayerManager.getPlayer().setVolume(settings.getVolume());
 		}));
