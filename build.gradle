@@ -4,29 +4,16 @@ buildscript {
 			url = "https://maven.minecraftforge.net"
 		}
 		maven {
-			url = "https://maven.parchmentmc.org"
-		}
-		maven {
 			url = "https://repo.u-team.info"
 		}
-		gradlePluginPortal()
 		mavenCentral()
 	}
 	dependencies {
-		classpath group: "net.minecraftforge.gradle", name: "ForgeGradle", version: "5.1.+", changing: true
-		classpath group: "org.parchmentmc", name: "librarian", version: "1.+", changing: true
-		classpath group: "info.u-team.gradle_files", name: "gradle_files", version: "2.0.2"
-		classpath group: "info.u-team.curse_gradle_uploader", name: "curse_gradle_uploader", version: "1.5.1"
-		classpath group: "gradle.plugin.com.github.johnrengelman", name: "shadow", version: "7.1.2"
+		classpath group: "info.u-team.gradle_files", name: "gradle_files", version: "2.0.2", changing: true
 	}
 }
 
-apply plugin: "net.minecraftforge.gradle"
-apply plugin: "org.parchmentmc.librarian.forgegradle"
 apply plugin: "info.u_team.gradle_files"
-apply plugin: "info.u_team.curse_gradle_uploader"
-apply plugin: "maven-publish"
-apply plugin: "com.github.johnrengelman.shadow"
 
 group = "info.u-team"
 archivesBaseName = gradlefiles.archivesBaseName()
@@ -36,231 +23,16 @@ gradlefiles {
 	vendor "Team UTeam"
 }
 
-java {
-	toolchain {
-		languageVersion = JavaLanguageVersion.of(17)
+gradle.projectsEvaluated {
+	def forgeTasks = project(":forge").tasks.findAll { task ->
+		task.name.startsWith("curseforge")
 	}
-	withSourcesJar()
-	withJavadocJar()
-}
-
-minecraft {
-	mappings channel: config.forge.mapping_channel, version: config.forge.mapping
-	
-	accessTransformer = file("src/main/resources/META-INF/accesstransformer.cfg")
-	
-	runs {
-		client = {
-			workingDirectory file("run/client")
-			property "musicplayer.dev", devPath()
-			
-			mods {
-				"${config.mod.modid}" {
-					source sourceSets.main
-				}
-			}
-		}
-		server = {
-			workingDirectory file("run/server")
-			property "musicplayer.dev", devPath()
-			
-			mods {
-				"${config.mod.modid}" {
-					source sourceSets.main
-				}
-			}
-		}
-		data = {
-			workingDirectory file("run/data")
-			property "musicplayer.dev", devPath()
-			
-			args "--mod", config.mod.modid
-			args "--all"
-			args "--output", file("src/generated/resources")
-			args "--validate"
-			args "--existing", file("src/main/resources")
-			
-			property "coremod.uteamcore.dataprovider-set-indent", "coremod.uteamcore.dataprovider-set-indent.value"
-			property "coremod.uteamcore.dataprovider-set-indent.value", "true"
-			
-			mods {
-				"${config.mod.modid}" {
-					source sourceSets.main
-				}
-			}
-		}
+	def fabricTasks = project(":fabric").tasks.findAll { task ->
+		task.name.startsWith("curseforge")
 	}
-}
-
-def devPath() {
-	def buildDir = project(":musicplayer-lavaplayer").buildDir
-	def libs = new File(buildDir, "libs").absolutePath
-	def dependencies = new File(buildDir, "dependencies").absolutePath
-	return "${libs};${dependencies}"
-}
-
-configurations {
-	shade
-	library
-	library.extendsFrom(shade)
-	implementation.extendsFrom(library)
-}
-
-tasks.named("shadowJar") {
-	archiveClassifier = ""
-	
-	configurations = [project.configurations.shade]
-	
-	dependsOn "jar"
-	dependsOn ":musicplayer-lavaplayer-api:build"
-	dependsOn ":musicplayer-lavaplayer:build"
-	
-	from sourceSets.main.output
-	from "musicplayer-lavaplayer/src/main/resources/LICENSE-DEPENDENCIES"
-	
-	doFirst {
-		from project(":musicplayer-lavaplayer-api").sourceSets.main.output
-	}
-	
-	into ("dependencies") {
-		from "musicplayer-lavaplayer/build/libs/musicplayer-lavaplayer.jar.packed"
-		from "musicplayer-lavaplayer/build/dependencies"
-	}
-	
-	relocate "net.harawata.appdirs", "info.u_team.music_player.shade.net.harawata.appdirs"
-	
-	exclude "META-INF/maven/**"
-}
-
-components.java.withVariantsFromConfiguration(configurations.getByName("shadowRuntimeElements")) {
-	skip()
-}
-
-tasks.matching { task ->
-	task.name == "prepareRuns"
-}.configureEach { task ->
-	task.dependsOn(":musicplayer-lavaplayer:assemble")
-}
-
-tasks.matching { task ->
-	task.name == "reobfJar"
-}.configureEach { task ->
-	task.dependsOn("shadowJar")
-}
-
-tasks.withType(Jar) { task ->
-	gradlefiles.defaultJar(task)
-}
-
-tasks.withType(Javadoc) { task ->
-	task.options.addStringOption("Xdoclint:none", "-quiet")
-}
-
-gradlefiles.signDefaultForgeJar()
-
-processResources {
-	doLast {
-		fileTree(dir: outputs.files.asPath, include: "**/*.json").each { File file ->
-			file.text = groovy.json.JsonOutput.toJson(new groovy.json.JsonSlurper().parse(file))
-		}
-	}
-}
-
-sourceSets {
-	main {
-		java {
-			srcDirs += "src/data/java"
-		}
-		resources {
-			srcDirs += "src/generated/resources"
-		}
-	}
-}
-
-dependencies {
-	minecraft gradlefiles.forgeDependency()
-	
-	implementation fg.deobf("info.u-team:u_team_core-1.19.4:4.6.1.243")
-	
-	library project(":musicplayer-lavaplayer-api")
-	shade ("net.harawata:appdirs:1.0.0") {
-		transitive=false
-	}
-}
-
-minecraft.runs.all {
-	lazyToken("minecraft_classpath") {
-		configurations.library.copyRecursive().resolve().collect { it.absolutePath }.join(File.pathSeparator)
-	}
-}
-
-curseforge {
-	apiKey = defaultPropertyValue("curseforge.token")
-	
-	project {
-		id = config.curse.id
-		releaseType = config.curse.type
-		
-		addGameVersion config.minecraft.version
-		addGameVersion "Forge"
-		addGameVersion "Java 17"
-		
-		relations {
-			requiredDependency "u-team-core"
-			optionalDependency "voice-chat"
-		}
-		
-		mainArtifact(tasks.getByName("jar")) {
-			displayName = "${config.curse.display}-${config.minecraft.version}-${project.version}"
-			changelogType = "html"
-			changelog = "<a href=\"${gradlefiles.changelogUrl()}\">Changelog of ${project.version}</a>"
-		}
-	}
-}
-
-publishing {
-	repositories {
-		maven {
-			url "https://repo.u-team.info"
-			credentials {
-				username = "maven"
-				password = defaultPropertyValue("maven.password")
-			}
-		}
-	}
-	publications {
-		mavenJava(MavenPublication) {
-			artifactId archivesBaseName
-			
-			from components.java
-			
-			pom {
-				name = project.archivesBaseName
-				description = "${config.github.name}"
-				url = "https://github.com/MC-U-Team/${config.github.name}"
-				scm {
-					url = "https://github.com/MC-U-Team/${config.github.name}"
-					connection = "scm:git:git://github.com/MC-U-Team/${config.github.name}.git"
-					developerConnection = "scm:git:git@github.com:MC-U-Team/${config.github.name}.git"
-				}
-				
-				issueManagement {
-					system = "github"
-					url = "https://github.com/MC-U-Team/${config.github.name}/issues"
-				}
-				licenses {
-					license {
-						name = "Apache License 2.0"
-						url = "https://github.com/MC-U-Team/${config.github.name}/blob/${config.github.branch}/LICENSE"
-						distribution = "repo"
-					}
-				}
-				developers {
-					developer {
-						name = "HyCraftHD"
-					}
-				}
-			}
+	forgeTasks.each { task ->
+		fabricTasks.each { fabricTask ->
+			task.mustRunAfter(fabricTask)
 		}
 	}
 }
