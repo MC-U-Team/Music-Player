@@ -77,7 +77,7 @@ minecraft {
 			
 			args "--mod", config.mod.modid
 			args "--all"
-			args "--output", project(":common").file("src/generated/resources")
+			args "--output", project(":common").file("src/common-generated/resources")
 			args "--validate"
 			args "--existing", project(":common").file("src/common/resources")
 			

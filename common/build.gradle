@@ -37,7 +37,7 @@ java {
 
 minecraft {
 	version(config.minecraft.version)
-	accessWideners(project(":fabric").file("src/main/resources/uteamcore.accesswidener"))
+	accessWideners(project(":fabric").file("src/main/resources/musicplayer.accesswidener"))
 }
 
 tasks.withType(Jar) { task ->
@@ -62,7 +62,7 @@ sourceSets {
 	common {
 		java
 		resources {
-			srcDirs += "src/generated/resources"
+			srcDirs += "src/common-generated/resources"
 		}
 	}
 	main {
