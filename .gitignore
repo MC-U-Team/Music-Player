@@ -12,7 +12,6 @@ out
 .idea
 build
 .gradle
-gradle.properties
 eclipse
 run
 libs

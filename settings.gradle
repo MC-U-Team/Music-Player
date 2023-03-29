@@ -2,3 +2,9 @@ rootProject.name = "Music-Player"
 
 include "musicplayer-lavaplayer-api"
 include "musicplayer-lavaplayer"
+
+include("common", "forge", "fabric")
+
+gradle.allprojects {
+	extensions.extraProperties.multiLoaderMainProject = gradle.rootProject.path
+}
