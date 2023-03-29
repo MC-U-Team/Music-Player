@@ -75,6 +75,10 @@ sourceSets {
 	}
 }
 
+dependencies {
+	implementation "info.u-team:u_team_core-common-1.19.4:5.0.0.247-SNAPSHOT"
+}
+
 publishing {
 	repositories {
 		maven {
