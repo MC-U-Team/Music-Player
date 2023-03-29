@@ -87,15 +87,15 @@ tasks.named("shadowJar") {
 	dependsOn ":musicplayer-lavaplayer:build"
 	
 	from sourceSets.main.output
-	from "musicplayer-lavaplayer/src/main/resources/LICENSE-DEPENDENCIES"
+	from project(":musicplayer-lavaplayer").file("src/main/resources/LICENSE-DEPENDENCIES")
 	
 	doFirst {
 		from project(":musicplayer-lavaplayer-api").sourceSets.main.output
 	}
 	
 	into ("dependencies") {
-		from "musicplayer-lavaplayer/build/libs/musicplayer-lavaplayer.jar.packed"
-		from "musicplayer-lavaplayer/build/dependencies"
+		from project(":musicplayer-lavaplayer").file("build/libs/musicplayer-lavaplayer.jar.packed")
+		from project(":musicplayer-lavaplayer").file("build/dependencies")
 	}
 	
 	relocate "net.harawata.appdirs", "info.u_team.music_player.shade.net.harawata.appdirs"
