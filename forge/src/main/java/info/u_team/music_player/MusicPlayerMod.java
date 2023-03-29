@@ -7,7 +7,7 @@ import net.minecraftforge.fml.common.Mod;
 @Mod(MusicPlayerMod.MODID)
 public class MusicPlayerMod {
 	
-	public static final String MODID = "musicplayer";
+	public static final String MODID = MusicPlayerModReference.MODID;
 	
 	public MusicPlayerMod() {
 		JarSignVerifier.checkSigned(MODID);
