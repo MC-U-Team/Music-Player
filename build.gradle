@@ -9,7 +9,7 @@ buildscript {
 		mavenCentral()
 	}
 	dependencies {
-		classpath group: "info.u-team.gradle_files", name: "gradle_files", version: "2.0.2", changing: true
+		classpath group: "info.u-team.gradle_files", name: "gradle_files", version: "2.0.3", changing: true
 	}
 }
 
@@ -21,18 +21,5 @@ version = gradlefiles.version()
 
 gradlefiles {
 	vendor "Team UTeam"
-}
-
-gradle.projectsEvaluated {
-	def forgeTasks = project(":forge").tasks.findAll { task ->
-		task.name.startsWith("curseforge")
-	}
-	def fabricTasks = project(":fabric").tasks.findAll { task ->
-		task.name.startsWith("curseforge")
-	}
-	forgeTasks.each { task ->
-		fabricTasks.each { fabricTask ->
-			task.mustRunAfter(fabricTask)
-		}
-	}
+	orderCurseforgeTasks(project(":forge"), project(":fabric"))
 }
