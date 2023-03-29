@@ -182,11 +182,14 @@ public class GuiControls extends AbstractContainerEventHandler implements Better
 	
 	@Override
 	public void render(PoseStack matrixStack, int mouseX, int mouseY, float partialTicks) {
+		matrixStack.pushPose();
+		matrixStack.setIdentity();
 		buttons.forEach(button -> button.render(matrixStack, mouseX, mouseY, partialTicks));
 		songProgress.render(matrixStack, mouseX, mouseY, partialTicks);
 		
 		titleRender.render(matrixStack, mouseX, mouseY, partialTicks);
 		authorRender.render(matrixStack, mouseX, mouseY, partialTicks);
+		matrixStack.popPose();
 	}
 	
 	@Override
