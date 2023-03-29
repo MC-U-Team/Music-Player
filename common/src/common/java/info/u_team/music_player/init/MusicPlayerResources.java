@@ -1,6 +1,6 @@
 package info.u_team.music_player.init;
 
-import info.u_team.music_player.MusicPlayerMod;
+import info.u_team.music_player.MusicPlayerModReference;
 import net.minecraft.resources.ResourceLocation;
 
 public class MusicPlayerResources {
@@ -26,7 +26,7 @@ public class MusicPlayerResources {
 	public static final ResourceLocation TEXTURE_SOCIAL_SOUNDCLOUD = createResource("socialmedia/soundcloud-logo");
 	
 	private static ResourceLocation createResource(String name) {
-		return new ResourceLocation(MusicPlayerMod.MODID, "textures/gui/" + name + ".png");
+		return new ResourceLocation(MusicPlayerModReference.MODID, "textures/gui/" + name + ".png");
 	}
 	
 }

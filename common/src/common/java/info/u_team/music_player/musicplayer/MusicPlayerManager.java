@@ -6,10 +6,7 @@ import org.apache.logging.log4j.Logger;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import info.u_team.music_player.dependency.DependencyManager;
 import info.u_team.music_player.lavaplayer.api.IMusicPlayer;
-import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 
 public class MusicPlayerManager {
 	
@@ -24,11 +21,11 @@ public class MusicPlayerManager {
 	private static final PlaylistManager playListManager = new PlaylistManager(gson);
 	private static final SettingsManager settingsManager = new SettingsManager(gson);
 	
-	private static void setup(FMLClientSetupEvent event) {
-		generatePlayer();
+	static void setup(ClassLoader classLoader, boolean internalPlaylists) {
+		generatePlayer(classLoader);
 		player.startAudioOutput();
 		
-		files.load();
+		files.load(internalPlaylists);
 		
 		playListManager.setBasePath(files.getDirectory());
 		settingsManager.setBasePath(files.getDirectory());
@@ -39,9 +36,9 @@ public class MusicPlayerManager {
 		player.setVolume(settingsManager.getSettings().getVolume());
 	}
 	
-	private static void generatePlayer() {
+	private static void generatePlayer(ClassLoader classLoader) {
 		try {
-			final Class<?> clazz = Class.forName("info.u_team.music_player.lavaplayer.MusicPlayer", true, DependencyManager.MUSICPLAYER_CLASSLOADER);
+			final Class<?> clazz = Class.forName("info.u_team.music_player.lavaplayer.MusicPlayer", true, classLoader);
 			if (!IMusicPlayer.class.isAssignableFrom(clazz)) {
 				throw new IllegalAccessError("The class " + clazz + " does not implement IMusicPlayer! This should not happen?!");
 			}
@@ -69,7 +66,4 @@ public class MusicPlayerManager {
 		return settingsManager;
 	}
 	
-	public static void registerMod(IEventBus bus) {
-		bus.addListener(MusicPlayerManager::setup);
-	}
 }

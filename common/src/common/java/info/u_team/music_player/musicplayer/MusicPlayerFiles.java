@@ -7,7 +7,6 @@ import java.nio.file.Paths;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import info.u_team.music_player.config.ClientConfig;
 import net.harawata.appdirs.AppDirsFactory;
 import net.minecraft.client.Minecraft;
 
@@ -20,8 +19,8 @@ public class MusicPlayerFiles {
 	MusicPlayerFiles() {
 	}
 	
-	public void load() {
-		if (ClientConfig.getInstance().internalPlaylists.get()) {
+	public void load(boolean internalPlaylists) {
+		if (internalPlaylists) {
 			directory = Paths.get(Minecraft.getInstance().gameDirectory.toString(), "config/musicplayer");
 		} else {
 			directory = Paths.get(AppDirsFactory.getInstance().getUserConfigDir("musicplayer", null, "mc-u-team", true));
