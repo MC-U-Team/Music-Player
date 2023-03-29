@@ -60,10 +60,10 @@ processResources {
 
 sourceSets {
 	common {
-		java {
-			srcDirs += "src/common-api/java"
+		java
+		resources {
+			srcDirs += "src/generated/resources"
 		}
-		resources
 	}
 	main {
 		java {

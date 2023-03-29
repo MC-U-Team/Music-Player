@@ -77,9 +77,9 @@ minecraft {
 			
 			args "--mod", config.mod.modid
 			args "--all"
-			args "--output", file("src/generated/resources")
+			args "--output", project(":common").file("src/generated/resources")
 			args "--validate"
-			args "--existing", file("src/main/resources")
+			args "--existing", project(":common").file("src/common/resources")
 			
 			property "coremod.uteamcore.dataprovider-set-indent", "coremod.uteamcore.dataprovider-set-indent.value"
 			property "coremod.uteamcore.dataprovider-set-indent.value", "true"
@@ -174,7 +174,6 @@ sourceSets {
 			srcDirs += project(":common").sourceSets.common.java.srcDirs
 		}
 		resources {
-			srcDirs += "src/generated/resources"
 			srcDirs += project(":common").sourceSets.common.resources.srcDirs
 		}
 	}
