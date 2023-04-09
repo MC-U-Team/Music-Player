@@ -62,7 +62,6 @@ minecraft {
 		server {
 			taskName = "${config.mod.modid}_server"
 			workingDirectory file("run/server")
-			property "musicplayer.dev", devPath()
 			
 			mods {
 				"${config.mod.modid}" {
