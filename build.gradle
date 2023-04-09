@@ -23,3 +23,10 @@ gradlefiles {
 	vendor "Team UTeam"
 	orderCurseforgeTasks(project(":forge"), project(":fabric"))
 }
+
+def devPath() {
+	final def buildDir = project(":musicplayer-lavaplayer").buildDir
+	final def libs = new File(buildDir, "libs").canonicalPath
+	final def dependencies = new File(buildDir, "dependencies").canonicalPath
+	return "${libs};${dependencies}"
+}

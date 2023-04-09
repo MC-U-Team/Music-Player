@@ -49,9 +49,8 @@ minecraft {
 	
 	runs {
 		client {
-			taskName = "${config.mod.modid}_client"
 			workingDirectory file("run/client")
-			property "musicplayer.dev", devPath()
+			property "musicplayer.dev", getRootProject().devPath()
 			
 			mods {
 				"${config.mod.modid}" {
@@ -60,7 +59,6 @@ minecraft {
 			}
 		}
 		server {
-			taskName = "${config.mod.modid}_server"
 			workingDirectory file("run/server")
 			
 			mods {
@@ -70,9 +68,8 @@ minecraft {
 			}
 		}
 		data {
-			taskName = "${config.mod.modid}_data"
 			workingDirectory file("run/data")
-			property "musicplayer.dev", devPath()
+			property "musicplayer.dev", getRootProject().devPath()
 			
 			args "--mod", config.mod.modid
 			args "--all"
@@ -90,13 +87,6 @@ minecraft {
 			}
 		}
 	}
-}
-
-def devPath() {
-	def buildDir = project(":musicplayer-lavaplayer").buildDir
-	def libs = new File(buildDir, "libs").absolutePath
-	def dependencies = new File(buildDir, "dependencies").absolutePath
-	return "${libs};${dependencies}"
 }
 
 configurations {

@@ -44,29 +44,18 @@ loom {
 	accessWidenerPath = file("src/main/resources/musicplayer.accesswidener")
 	
 	runs {
-		"${config.mod.modid}_client" {
-			inherit client
+		client {
+			property "musicplayer.dev", getRootProject().devPath()
 			
-			property "musicplayer.dev", devPath()
-			
-			runDir = "run/client"
-			ideConfigGenerated = true
+			runDir "run/client"
+			ideConfigGenerated true
 		}
 		
-		"${config.mod.modid}_server" {
-			inherit server
-			
-			runDir = "run/server"
-			ideConfigGenerated = true
+		server {
+			runDir "run/server"
+			ideConfigGenerated true
 		}
 	}
-}
-
-def devPath() {
-	def buildDir = project(":musicplayer-lavaplayer").buildDir
-	def libs = new File(buildDir, "libs").absolutePath
-	def dependencies = new File(buildDir, "dependencies").absolutePath
-	return "${libs};${dependencies}"
 }
 
 configurations {
