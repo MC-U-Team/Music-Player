@@ -9,7 +9,7 @@ buildscript {
 		mavenCentral()
 	}
 	dependencies {
-		classpath group: "info.u-team.gradle_files", name: "gradle_files", version: "2.0.4", changing: true
+		classpath group: "info.u-team.gradle_files", name: "gradle_files", version: "2.0.5", changing: true
 	}
 }
 

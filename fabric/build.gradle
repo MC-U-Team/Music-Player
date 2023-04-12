@@ -14,7 +14,7 @@ buildscript {
 	}
 	dependencies {
 		classpath group: "fabric-loom", name: "fabric-loom.gradle.plugin", version: "1.1.+", changing: true
-		classpath group: "info.u-team.gradle_files", name: "gradle_files", version: "2.0.4"
+		classpath group: "info.u-team.gradle_files", name: "gradle_files", version: "2.0.5"
 		classpath group: "info.u-team.curse_gradle_uploader", name: "curse_gradle_uploader", version: "1.5.1"
 		classpath group: "gradle.plugin.com.github.johnrengelman", name: "shadow", version: "7.1.2"
 	}
