@@ -17,7 +17,7 @@ license="Apache-2.0 License"
 	[[dependencies.musicplayer]]
 		modId="forge"
 		mandatory=true
-		versionRange="[45.0.29,)"
+		versionRange="[45.0.43,)"
 		ordering="NONE"
 		side="BOTH"
 	
@@ -31,6 +31,6 @@ license="Apache-2.0 License"
 	[[dependencies.musicplayer]]
 		modId="uteamcore"
 		mandatory=true
-		versionRange="[5.0.0.247-SNAPSHOT,)"
+		versionRange="[5.0.0.248,)"
 		ordering="NONE"
 		side="BOTH"
