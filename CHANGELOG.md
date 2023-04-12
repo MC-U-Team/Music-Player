@@ -1,6 +1,12 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [1.19.4-2.6.0.206] - 2023-04-12
+### Changed
+ - Update forge and fabric versions
+ - Update to latest release version of uteamcore
+ - Cleanup release and build process
+
 ## [1.19.4-2.6.0.205-SNAPSHOT] - 2023-03-29
 ### Changed
  - Make multi loader project
