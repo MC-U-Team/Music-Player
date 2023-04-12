@@ -179,6 +179,10 @@ dependencies {
 	}
 }
 
+gradlefiles.removePublishingDependency { dependency ->
+	"appdirs".equals(dependency.name) || "musicplayer-lavaplayer-api".equals(dependency.name)
+}
+
 minecraft.runs.all {
 	lazyToken("minecraft_classpath") {
 		configurations.library.copyRecursive().resolve().collect { it.absolutePath }.join(File.pathSeparator)

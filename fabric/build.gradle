@@ -159,6 +159,10 @@ dependencies {
 	}
 }
 
+gradlefiles.removePublishingDependency { dependency ->
+	"appdirs".equals(dependency.name) || "musicplayer-lavaplayer-api".equals(dependency.name)
+}
+
 processResources {
 	inputs.property "version", project.version
 	
