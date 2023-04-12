@@ -151,7 +151,7 @@ dependencies {
 	modImplementation gradlefiles.fabricLoaderDependency()
 	modImplementation gradlefiles.fabricApiDependency()
 	
-	modImplementation "info.u-team:u_team_core-fabric-1.19.4:5.0.0.247-SNAPSHOT"
+	modImplementation "info.u-team:u_team_core-fabric-1.19.4:5.0.0.248"
 	
 	library project(":musicplayer-lavaplayer-api")
 	shade ("net.harawata:appdirs:1.0.0") {
