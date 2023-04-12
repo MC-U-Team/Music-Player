@@ -24,9 +24,9 @@
 		"musicplayer.mixins.json"
 	],
 	"depends": {
-		"uteamcore": ">=5.0.0.247-SNAPSHOT",
-		"fabricloader": ">=0.14.18",
-		"fabric": ">=0.76.0+1.19.4",
+		"uteamcore": ">=5.0.0.248",
+		"fabricloader": ">=0.14.19",
+		"fabric": ">=0.78.0+1.19.4",
 		"minecraft": "1.19.4",
 		"java": ">=17"
 	},
