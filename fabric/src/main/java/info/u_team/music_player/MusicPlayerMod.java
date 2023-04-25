@@ -9,7 +9,7 @@ import net.fabricmc.api.ClientModInitializer;
 
 public class MusicPlayerMod implements ClientModInitializer {
 	
-	public static final String MODID = MusicPlayerModReference.MODID;
+	public static final String MODID = MusicPlayerReference.MODID;
 	public static Logger LOGGER = LogUtils.getLogger();
 	
 	@Override
