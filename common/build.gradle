@@ -76,7 +76,7 @@ sourceSets {
 }
 
 dependencies {
-	implementation "info.u-team:u_team_core-common-1.19.4:5.0.0.248"
+	implementation "info.u-team:u_team_core-common-1.19.4:5.0.2.250"
 	
 	compileOnly project(":musicplayer-lavaplayer-api")
 	compileOnly ("net.harawata:appdirs:1.0.0") {
