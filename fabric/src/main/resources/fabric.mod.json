@@ -13,7 +13,7 @@
 	},
 	"license": "Apache-2.0 License",
 	"icon": "logo.png",
-	"environment": "*",
+	"environment": "client",
 	"entrypoints": {
 		"client": [
 			"info.u_team.music_player.MusicPlayerMod"
@@ -31,6 +31,11 @@
 		"java": ">=17"
 	},
 	"custom": {
-		"uteamcore:update_url": "https://api.u-team.info/update/musicplayer_fabric.json"
+		"uteamcore:update_url": "https://api.u-team.info/update/musicplayer_fabric.json",
+		"modmenu": {
+			"links": {
+				"modmenu.discord": "https://discord.hycrafthd.net"
+			}
+		}
 	}
 }
