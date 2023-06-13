@@ -1,7 +1,7 @@
 buildscript {
 	apply from: "https://raw.githubusercontent.com/HyCraftHD/Blank-Forge-Project/master/build.methods"
 	setup()
-	
+
 	repositories {
 		maven {
 			url = "https://maven.minecraftforge.net"
@@ -62,9 +62,9 @@ minecraft {
 	runDir = "run"
 	mappings = "${config.forge.mapping}"
 	makeObfSourceJar = false
-	
+
 	clientJvmArgs += "\"-Dmusicplayer.dev=${devPath()}\""
-	
+
 	replace '${version}', project.version
 	replace '${mcversion}', project.minecraft.version
 	replaceIn "info/u_team/music_player/MusicPlayerMod.java"
@@ -106,9 +106,9 @@ tasks.register("deleteTinyfd", Delete) {
 tasks.register("extractTinyfd", Copy) {
 	dependsOn "deleteTinyfd"
 	destinationDir = file("${project.buildDir}/tinyfd")
-	
+
 	from configurations.tinyfd
-	
+
 	rename { String fileName ->
 		fileName += ".packed"
 	}
@@ -116,35 +116,35 @@ tasks.register("extractTinyfd", Copy) {
 
 shadowJar {
 	classifier = ""
-	
+
 	configurations = [project.configurations.shade]
-	
+
 	dependsOn "jar"
 	dependsOn "extractTinyfd"
 	dependsOn ":musicplayer-lavaplayer-api:build"
 	dependsOn ":musicplayer-lavaplayer:build"
-	
+
 	from sourceSets.main.output
 	from "musicplayer-lavaplayer/src/main/resources/LICENSE-DEPENDENCIES"
-	
+
 	doFirst {
 		from project(":musicplayer-lavaplayer-api").sourceSets.main.output
 	}
-	
+
 	into ("dependencies") {
 		from "musicplayer-lavaplayer/build/libs/musicplayer-lavaplayer.jar.packed"
 		from "musicplayer-lavaplayer/build/dependencies"
 	}
-	
+
 	into ("tinyfd") {
 		from "build/tinyfd"
 	}
-	
+
 	relocate "org.slf4j", "info.u_team.music_player.shade.org.slf4j"
 	relocate "net.harawata.appdirs", "info.u_team.music_player.shade.net.harawata.appdirs"
-	
+
 	exclude "META-INF/maven/**"
-	
+
 	manifest normalManifest
 }
 
@@ -164,17 +164,17 @@ uploadArchives.dependsOn "reobfJar"
 
 task sourcesJar(type: Jar) {
 	classifier = "sources"
-	
+
 	from sourceSets.main.allJava
 	from "LICENSE"
 }
 
 task docJar(type: Jar) {
 	classifier = "javadoc"
-	
+
 	from javadoc
 	from "LICENSE"
-	
+
 	tasks.withType(Javadoc) {
 		options.addStringOption('Xdoclint:none', '-quiet')
 		options.addStringOption('encoding', 'UTF-8')
@@ -215,7 +215,7 @@ dependencies {
 processResources {
 	inputs.property "version", project.version
 	inputs.property "mcversion", project.minecraft.version
-	
+
 	from(sourceSets.main.resources.srcDirs) {
 		include "mcmod.info"
 		expand "version":project.version, "mcversion":project.minecraft.version
@@ -253,19 +253,19 @@ tasks.curseforge.dependsOn "reobfJar"
 
 curseforge {
 	apiKey = getValueDefault("curseforge.token")
-	
+
 	project {
 		id = config.curse.id
 		releaseType = config.curse.type
-		
+
 		addGameVersion minecraft.version
 		addGameVersion "Forge"
 		addGameVersion "Java 8"
-		
+
 		options {
 			forgeGradleIntegration = false
 		}
-		
+
 		mainArtifact(tasks.getByName("jar")) {
 			displayName = "${config.curse.display}-${minecraft.version}-${project.version}"
 			changelogType = "html"
@@ -307,7 +307,7 @@ uploadArchives {
 							distribution "repo"
 						}
 					}
-					
+
 					developers {
 						developer {
 							name "HyCraftHD"
