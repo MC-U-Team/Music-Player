@@ -72,9 +72,9 @@ dependencies {
 
 	modImplementation gradlefiles.fabricLoaderDependency()
 	modRuntimeOnly gradlefiles.fabricApiDependency()
-	
+
 	modImplementation "info.u-team:u_team_core-common-1.19.4:5.0.2.261"
-	
+
 	compileOnly project(":musicplayer-lavaplayer-api")
 	compileOnly ("net.harawata:appdirs:1.0.0") {
 		transitive=false
@@ -94,9 +94,9 @@ publishing {
 	publications {
 		mavenJava(MavenPublication) {
 			artifactId archivesBaseName
-			
+
 			from components.java
-			
+
 			pom {
 				name = project.archivesBaseName
 				description = "${config.github.name}"
