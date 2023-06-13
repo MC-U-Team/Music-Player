@@ -26,14 +26,14 @@ java {
 
 minecraft {
 	mappings channel: config.forge.mapping_channel, version: config.forge.mapping
-	
+
 	accessTransformer = file("src/main/resources/META-INF/accesstransformer.cfg")
-	
+
 	runs {
 		client = {
 			workingDirectory file("run/client")
 			property "musicplayer.dev", devPath()
-			
+
 			mods {
 				"${config.mod.modid}" {
 					source sourceSets.main
@@ -43,7 +43,7 @@ minecraft {
 		server = {
 			workingDirectory file("run/server")
 			property "musicplayer.dev", devPath()
-			
+
 			mods {
 				"${config.mod.modid}" {
 					source sourceSets.main
@@ -53,13 +53,13 @@ minecraft {
 		data = {
 			workingDirectory file("run/data")
 			property "musicplayer.dev", devPath()
-			
+
 			args "--mod", config.mod.modid
 			args "--all"
 			args "--output", file("src/generated/resources")
 			args "--validate"
 			args "--existing", file("src/main/resources")
-						
+
 			mods {
 				"${config.mod.modid}" {
 					source sourceSets.main
@@ -85,27 +85,27 @@ configurations {
 
 tasks.named("shadowJar").configure {
 	archiveClassifier = ""
-	
+
 	configurations = [project.configurations.shade]
-	
+
 	dependsOn tasks.named("jar")
 	dependsOn ":musicplayer-lavaplayer-api:assemble"
 	dependsOn ":musicplayer-lavaplayer:assemble"
-	
+
 	from sourceSets.main.output
 	from project(":musicplayer-lavaplayer").file("src/main/resources/LICENSE-DEPENDENCIES")
-	
+
 	doFirst {
 		from project(":musicplayer-lavaplayer-api").sourceSets.main.output
 	}
-	
+
 	into ("dependencies") {
 		from project(":musicplayer-lavaplayer").file("build/libs/musicplayer-lavaplayer.jar.packed")
 		from project(":musicplayer-lavaplayer").file("build/dependencies")
 	}
-	
+
 	relocate "net.harawata.appdirs", "info.u_team.music_player.shade.net.harawata.appdirs"
-	
+
 	exclude "META-INF/maven/**"
 }
 
@@ -156,9 +156,9 @@ sourceSets {
 
 dependencies {
 	minecraft gradlefiles.forgeDependency()
-	
+
 	implementation fg.deobf("info.u-team:u_team_core-1.18.2:4.0.1.259")
-	
+
 	library project(":musicplayer-lavaplayer-api")
 	shade ("net.harawata:appdirs:1.0.0") {
 		transitive=false
@@ -173,20 +173,20 @@ minecraft.runs.all {
 
 curseforge {
 	apiKey = defaultPropertyValue("curseforge.token")
-	
+
 	project {
 		id = config.curse.id
 		releaseType = config.curse.type
-		
+
 		addGameVersion config.minecraft.version
 		addGameVersion "Forge"
 		addGameVersion "Java 17"
-		
+
 		relations {
 			requiredDependency "u-team-core"
 			optionalDependency "voice-chat"
 		}
-		
+
 		mainArtifact(tasks.getByName("jar")) {
 			displayName = "${config.curse.display}-${config.minecraft.version}-${project.version}"
 			changelogType = "html"
@@ -208,9 +208,9 @@ publishing {
 	publications {
 		mavenJava(MavenPublication) {
 			artifactId archivesBaseName
-			
+
 			from components.java
-			
+
 			pom {
 				name = project.archivesBaseName
 				description = "${config.github.name}"
@@ -220,7 +220,7 @@ publishing {
 					connection = "scm:git:git://github.com/MC-U-Team/${config.github.name}.git"
 					developerConnection = "scm:git:git@github.com:MC-U-Team/${config.github.name}.git"
 				}
-				
+
 				issueManagement {
 					system = "github"
 					url = "https://github.com/MC-U-Team/${config.github.name}/issues"
