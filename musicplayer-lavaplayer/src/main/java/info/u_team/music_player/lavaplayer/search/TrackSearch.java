@@ -18,7 +18,7 @@ public class TrackSearch implements ITrackSearch {
 	private final AudioPlayerManager audioPlayerManager;
 	
 	public TrackSearch(AudioPlayerManager audioplayermanager) {
-		this.audioPlayerManager = audioplayermanager;
+		audioPlayerManager = audioplayermanager;
 	}
 	
 	@Override
