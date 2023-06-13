@@ -1,29 +1,13 @@
-buildscript {
-	repositories {
-		maven {
-			url = "https://maven.minecraftforge.net"
-		}
-		maven {
-			url = "https://repo.u-team.info"
-		}
-		maven {
-			url "https://plugins.gradle.org/m2"
-		}
-		mavenCentral()
-	}
-	dependencies {
-		classpath group: "net.minecraftforge.gradle", name: "ForgeGradle", version: "5.1.+", changing: true
-		classpath group: "info.u-team.gradle_files", name: "gradle_files", version: "2.0.5"
-		classpath group: "info.u-team.curse_gradle_uploader", name: "curse_gradle_uploader", version: "1.6.0"
-		classpath group: "gradle.plugin.com.github.johnrengelman", name: "shadow", version: "7.1.2"
-	}
+plugins {
+plugins {
+	id "net.minecraftforge.gradle"
+	id "org.parchmentmc.librarian.forgegradle"
+	id "org.spongepowered.mixin"
+	id "info.u_team.gradle_files"
+	id "info.u_team.curse_gradle_uploader"
+	id "maven-publish"
+	id "com.github.johnrengelman.shadow" version "7.1.2"
 }
-
-apply plugin: "net.minecraftforge.gradle"
-apply plugin: "info.u_team.gradle_files"
-apply plugin: "info.u_team.curse_gradle_uploader"
-apply plugin: "maven-publish"
-apply plugin: "com.github.johnrengelman.shadow"
 
 group = "info.u-team"
 archivesBaseName = gradlefiles.archivesBaseName()
@@ -110,21 +94,21 @@ tasks.named("shadowJar") {
 	
 	configurations = [project.configurations.shade]
 	
-	dependsOn "jar"
-	dependsOn "extractTinyfd"
-	dependsOn ":musicplayer-lavaplayer-api:build"
-	dependsOn ":musicplayer-lavaplayer:build"
+	dependsOn tasks.named("jar")
+	dependsOn tasks.named("extractTinyfd")
+	dependsOn ":musicplayer-lavaplayer-api:assemble"
+	dependsOn ":musicplayer-lavaplayer:assemble"
 	
 	from sourceSets.main.output
-	from "musicplayer-lavaplayer/src/main/resources/LICENSE-DEPENDENCIES"
+	from project(":musicplayer-lavaplayer").file("src/main/resources/LICENSE-DEPENDENCIES")
 	
 	doFirst {
 		from project(":musicplayer-lavaplayer-api").sourceSets.main.output
 	}
 	
 	into ("dependencies") {
-		from "musicplayer-lavaplayer/build/libs/musicplayer-lavaplayer.jar.packed"
-		from "musicplayer-lavaplayer/build/dependencies"
+		from project(":musicplayer-lavaplayer").file("build/libs/musicplayer-lavaplayer.jar.packed")
+		from project(":musicplayer-lavaplayer").file("build/dependencies")
 	}
 	
 	into ("tinyfd") {
@@ -153,15 +137,15 @@ tasks.matching { task ->
 	task.dependsOn("shadowJar")
 }
 
-tasks.withType(Jar) { task ->
+tasks.withType(Jar).configureEach { task ->
 	gradlefiles.defaultJar(task)
 }
 
-tasks.withType(Javadoc) { task ->
+tasks.withType(Javadoc).configureEach { task ->
 	task.options.addStringOption("Xdoclint:none", "-quiet")
 }
 
-tasks.create("prepareSources", Copy) {
+tasks.register("prepareSources", Copy) {
 	from sourceSets.main.java
 	into file("${buildDir}/prepareSources")
 	filter (org.apache.tools.ant.filters.ReplaceTokens, tokens: [
@@ -171,7 +155,7 @@ tasks.create("prepareSources", Copy) {
 	outputs.upToDateWhen { false }
 }
 
-tasks.getByName("compileJava") { task ->
+tasks.named("compileJava").configure { task ->
 	final def prepareResources = tasks.getByName("prepareSources")
 	task.dependsOn prepareResources
 	task.source = prepareResources.destinationDir
