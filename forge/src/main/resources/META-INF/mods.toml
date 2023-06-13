@@ -17,7 +17,7 @@ license="Apache-2.0 License"
 	[[dependencies.musicplayer]]
 		modId="forge"
 		mandatory=true
-		versionRange="[45.0.43,)"
+		versionRange="[45.1.0,)"
 		ordering="NONE"
 		side="BOTH"
 	
