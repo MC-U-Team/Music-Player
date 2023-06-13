@@ -52,8 +52,8 @@ tasks.named("shadowJar").configure {
 	configurations = [project.configurations.shade]
 	
 	dependsOn tasks.named("jar")
-	dependsOn ":musicplayer-lavaplayer-api:build"
-	dependsOn ":musicplayer-lavaplayer:build"
+	dependsOn ":musicplayer-lavaplayer-api:assemble"
+	dependsOn ":musicplayer-lavaplayer:assemble"
 	
 	from sourceSets.main.output
 	from project(":musicplayer-lavaplayer").file("src/main/resources/LICENSE-DEPENDENCIES")
@@ -78,7 +78,7 @@ components.java.withVariantsFromConfiguration(configurations.getByName("shadowRu
 
 afterEvaluate {
 	net.fabricmc.loom.task.LoomTasks.getIDELaunchConfigureTaskName(project).get().configure {
-		dependsOn ":musicplayer-lavaplayer:build"
+		dependsOn ":musicplayer-lavaplayer:assemble"
 	}
 }
 
