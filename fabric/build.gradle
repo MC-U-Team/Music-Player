@@ -1,30 +1,10 @@
-buildscript {
-	repositories {
-		maven {
-			url = "https://maven.fabricmc.net"
-		}
-		maven {
-			url = "https://maven.minecraftforge.net"
-		}
-		maven {
-			url = "https://repo.u-team.info"
-		}
-		gradlePluginPortal()
-		mavenCentral()
-	}
-	dependencies {
-		classpath group: "fabric-loom", name: "fabric-loom.gradle.plugin", version: "1.1.+", changing: true
-		classpath group: "info.u-team.gradle_files", name: "gradle_files", version: "2.0.5"
-		classpath group: "info.u-team.curse_gradle_uploader", name: "curse_gradle_uploader", version: "1.5.1"
-		classpath group: "gradle.plugin.com.github.johnrengelman", name: "shadow", version: "7.1.2"
-	}
+plugins {
+	id "fabric-loom"
+	id "info.u_team.gradle_files"
+	id "info.u_team.curse_gradle_uploader"
+	id "maven-publish"
+	id "com.github.johnrengelman.shadow" version "8.1.1"
 }
-
-apply plugin: "fabric-loom"
-apply plugin: "info.u_team.gradle_files"
-apply plugin: "info.u_team.curse_gradle_uploader"
-apply plugin: "maven-publish"
-apply plugin: "com.github.johnrengelman.shadow"
 
 gradlefiles.loaderSuffix = "fabric"
 
@@ -65,13 +45,13 @@ configurations {
 	implementation.extendsFrom(library)
 }
 
-tasks.named("shadowJar") {
+tasks.named("shadowJar").configure {
 	archiveClassifier = tasks.getByName("jar").archiveClassifier
 	destinationDirectory = tasks.getByName("jar").destinationDirectory
 	
 	configurations = [project.configurations.shade]
 	
-	dependsOn "jar"
+	dependsOn tasks.named("jar")
 	dependsOn ":musicplayer-lavaplayer-api:build"
 	dependsOn ":musicplayer-lavaplayer:build"
 	
@@ -98,19 +78,19 @@ components.java.withVariantsFromConfiguration(configurations.getByName("shadowRu
 
 afterEvaluate {
 	net.fabricmc.loom.task.LoomTasks.getIDELaunchConfigureTaskName(project).get().configure {
-		dependsOn ":musicplayer-lavaplayer:assemble"
+		dependsOn ":musicplayer-lavaplayer:build"
 	}
 }
 
-tasks.named("remapJar") {
-	dependsOn "shadowJar"
+tasks.named("remapJar").configure {
+	dependsOn tasks.named("shadowJar")
 }
 
-tasks.withType(Jar) { task ->
+tasks.withType(Jar).configureEach { task ->
 	gradlefiles.defaultJar(task)
 }
 
-tasks.withType(Javadoc) { task ->
+tasks.withType(Javadoc).configureEach { task ->
 	task.options.addStringOption("Xdoclint:none", "-quiet")
 }
 

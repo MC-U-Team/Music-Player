@@ -1,19 +1,7 @@
-buildscript {
-	repositories {
-		maven {
-			url = "https://maven.minecraftforge.net"
-		}
-		maven {
-			url = "https://repo.u-team.info"
-		}
-		mavenCentral()
-	}
-	dependencies {
-		classpath group: "info.u-team.gradle_files", name: "gradle_files", version: "2.0.5", changing: true
-	}
+plugins {
+	id "fabric-loom" apply false
+	id "info.u_team.gradle_files"
 }
-
-apply plugin: "info.u_team.gradle_files"
 
 group = "info.u-team"
 archivesBaseName = gradlefiles.archivesBaseName()
