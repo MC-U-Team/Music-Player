@@ -57,6 +57,12 @@ sourceSets {
 	}
 }
 
+repositories {
+	maven {
+		url = "https://maven.parchmentmc.org"
+	}
+}
+
 dependencies {
 	minecraft gradlefiles.fabricMinecraftDependency()
 	mappings loom.layered() {
