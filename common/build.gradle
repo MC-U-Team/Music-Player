@@ -69,12 +69,12 @@ dependencies {
 		officialMojangMappings()
 		parchment(config.fabric.mapping_layer)
 	}
-
+	
 	modImplementation gradlefiles.fabricLoaderDependency()
 	modRuntimeOnly gradlefiles.fabricApiDependency()
-
-	modImplementation "info.u-team:u_team_core-common-1.20:5.1.2.262"
-
+	
+	modImplementation "info.u-team:u_team_core-common-1.20.1:5.1.2.263"
+	
 	compileOnly project(":musicplayer-lavaplayer-api")
 	compileOnly ("net.harawata:appdirs:1.0.0") {
 		transitive=false
@@ -94,9 +94,9 @@ publishing {
 	publications {
 		mavenJava(MavenPublication) {
 			artifactId archivesBaseName
-
+			
 			from components.java
-
+			
 			pom {
 				name = project.archivesBaseName
 				description = "${config.github.name}"

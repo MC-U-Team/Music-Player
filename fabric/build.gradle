@@ -22,15 +22,15 @@ java {
 
 loom {
 	accessWidenerPath = file("src/main/resources/musicplayer.accesswidener")
-
+	
 	runs {
 		client {
 			property "musicplayer.dev", getRootProject().devPath()
-
+			
 			runDir "run/client"
 			ideConfigGenerated true
 		}
-
+		
 		server {
 			runDir "run/server"
 			ideConfigGenerated true
@@ -48,27 +48,27 @@ configurations {
 tasks.named("shadowJar").configure {
 	archiveClassifier = tasks.getByName("jar").archiveClassifier
 	destinationDirectory = tasks.getByName("jar").destinationDirectory
-
+	
 	configurations = [project.configurations.shade]
-
+	
 	dependsOn tasks.named("jar")
 	dependsOn ":musicplayer-lavaplayer-api:assemble"
 	dependsOn ":musicplayer-lavaplayer:assemble"
-
+	
 	from sourceSets.main.output
 	from project(":musicplayer-lavaplayer").file("src/main/resources/LICENSE-DEPENDENCIES")
-
+	
 	doFirst {
 		from project(":musicplayer-lavaplayer-api").sourceSets.main.output
 	}
-
+	
 	into ("dependencies") {
 		from project(":musicplayer-lavaplayer").file("build/libs/musicplayer-lavaplayer.jar.packed")
 		from project(":musicplayer-lavaplayer").file("build/dependencies")
 	}
-
+	
 	relocate "net.harawata.appdirs", "info.u_team.music_player.shade.net.harawata.appdirs"
-
+	
 	exclude "META-INF/maven/**"
 }
 
@@ -127,12 +127,12 @@ dependencies {
 		officialMojangMappings()
 		parchment(config.fabric.mapping_layer)
 	}
-
+	
 	modImplementation gradlefiles.fabricLoaderDependency()
 	modImplementation gradlefiles.fabricApiDependency()
-
-	modImplementation "info.u-team:u_team_core-fabric-1.20:5.1.2.262"
-
+	
+	modImplementation "info.u-team:u_team_core-fabric-1.20.1:5.1.2.263"
+	
 	library project(":musicplayer-lavaplayer-api")
 	shade ("net.harawata:appdirs:1.0.0") {
 		transitive=false
@@ -145,7 +145,7 @@ gradlefiles.removePublishingDependency { dependency ->
 
 processResources {
 	inputs.property "version", project.version
-
+	
 	filesMatching("fabric.mod.json") {
 		expand "version": project.version
 	}
@@ -153,20 +153,20 @@ processResources {
 
 curseforge {
 	apiKey = defaultPropertyValue("curseforge.token")
-
+	
 	project {
 		id = config.curse.id
 		releaseType = config.curse.type
-
+		
 		addGameVersion config.minecraft.version
 		addGameVersion "Fabric"
 		addGameVersion "Java 17"
-
+		
 		relations {
 			requiredDependency "u-team-core"
 			requiredDependency "fabric-api"
 		}
-
+		
 		mainArtifact(tasks.getByName("remapJar")) {
 			displayName = "${config.curse.display}-Fabric-${config.minecraft.version}-${project.version}"
 			changelogType = "html"
@@ -188,9 +188,9 @@ publishing {
 	publications {
 		mavenJava(MavenPublication) {
 			artifactId archivesBaseName
-
+			
 			from components.java
-
+			
 			pom {
 				name = project.archivesBaseName
 				description = "${config.github.name}"
