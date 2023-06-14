@@ -15,6 +15,7 @@ import info.u_team.music_player.musicplayer.MusicPlayerUtils;
 import info.u_team.music_player.musicplayer.SettingsManager;
 import info.u_team.music_player.musicplayer.settings.IngameOverlayPosition;
 import info.u_team.music_player.render.RenderOverlayMusicDisplay;
+import info.u_team.u_team_core.api.event.ClientEvents;
 import info.u_team.u_team_core.gui.elements.ScrollingText;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.fabricmc.fabric.api.client.screen.v1.ScreenEvents;
@@ -36,7 +37,7 @@ public class MusicPlayerEventHandler {
 		handleKeyboard(false, -1, -1);
 	}
 	
-	public static boolean onKeyboardPressed(int keyCode, int scanCode) {
+	public static boolean onKeyboardPressed(Screen screen, int keyCode, int scanCode, int modifiers) {
 		if (SETTINGS_MANAGER.getSettings().isKeyWorkInGui()) {
 			return handleKeyboard(true, keyCode, scanCode);
 		}
@@ -200,6 +201,8 @@ public class MusicPlayerEventHandler {
 				ScreenEvents.afterTick(screen).register(MusicPlayerEventHandler::onClientTick);
 			}
 		});
+		
+		ClientEvents.registerScreenAfterKeyPressed(MusicPlayerEventHandler::onKeyboardPressed);
 	}
 	
 }
