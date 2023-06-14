@@ -74,7 +74,7 @@ public class DependencyManager {
 			// Try to clean base directory before
 			try {
 				FileUtils.deleteDirectory(baseDirectory.toFile());
-			} catch (Exception ex) {
+			} catch (final Exception ex) {
 			}
 			
 			Files.createDirectories(specificDirectory);
