@@ -17,6 +17,7 @@ import info.u_team.music_player.render.RenderOverlayMusicDisplay;
 import info.u_team.u_team_core.gui.elements.ScrollingText;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.screens.PauseScreen;
 import net.minecraft.client.gui.screens.Screen;
@@ -119,11 +120,12 @@ public class MusicPlayerEventHandler {
 					y = screenHeight - 3 - height;
 				}
 				
-				final PoseStack poseStack = event.getPoseStack();
+				final GuiGraphics guiGraphics = event.getGuiGraphics();
+				final PoseStack poseStack = guiGraphics.pose();
 				
 				poseStack.pushPose();
 				poseStack.translate(x, y, 500);
-				overlayRender.render(poseStack, 0, 0, event.getPartialTick());
+				overlayRender.render(guiGraphics, 0, 0, event.getPartialTick());
 				poseStack.popPose();
 			}
 		}
@@ -176,7 +178,7 @@ public class MusicPlayerEventHandler {
 				gui.children().stream() //
 						.filter(element -> element instanceof GuiControls) //
 						.map(element -> ((GuiControls) element)).findAny() //
-						.ifPresent(controls -> controls.render(event.getPoseStack(), event.getMouseX(), event.getMouseY(), event.getPartialTick()));
+						.ifPresent(controls -> controls.render(event.getGuiGraphics(), event.getMouseX(), event.getMouseY(), event.getPartialTick()));
 			}
 		}
 	}

@@ -21,6 +21,7 @@ import net.fabricmc.fabric.api.client.screen.v1.ScreenEvents;
 import net.fabricmc.fabric.api.client.screen.v1.ScreenMouseEvents;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.screens.PauseScreen;
 import net.minecraft.client.gui.screens.Screen;
@@ -85,7 +86,7 @@ public class MusicPlayerEventHandler {
 	
 	// Render overlay
 	
-	public static void onRenderGameOverlay(PoseStack poseStack, float partialTick) {
+	public static void onRenderGameOverlay(GuiGraphics guiGraphics, float partialTick) {
 		final Minecraft mc = Minecraft.getInstance();
 		if (SETTINGS_MANAGER.getSettings().isShowIngameOverlay()) {
 			final IngameOverlayPosition position = SETTINGS_MANAGER.getSettings().getIngameOverlayPosition();
@@ -115,9 +116,11 @@ public class MusicPlayerEventHandler {
 				y = screenHeight - 3 - height;
 			}
 			
+			final PoseStack poseStack = guiGraphics.pose();
+			
 			poseStack.pushPose();
 			poseStack.translate(x, y, 500);
-			overlayRender.render(poseStack, 0, 0, partialTick);
+			overlayRender.render(guiGraphics, 0, 0, partialTick);
 			poseStack.popPose();
 		}
 	}
@@ -159,12 +162,12 @@ public class MusicPlayerEventHandler {
 		}
 	}
 	
-	private static void onDrawScreenPost(Screen screen, PoseStack poseStack, int mouseX, int mouseY, float partialTick) {
+	private static void onDrawScreenPost(Screen screen, GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
 		if (SETTINGS_MANAGER.getSettings().isShowIngameMenueOverlay()) {
 			screen.children().stream() //
 					.filter(element -> element instanceof GuiControls) //
 					.map(element -> ((GuiControls) element)).findAny() //
-					.ifPresent(controls -> controls.render(poseStack, mouseX, mouseY, partialTick));
+					.ifPresent(controls -> controls.render(guiGraphics, mouseX, mouseY, partialTick));
 		}
 	}
 	
