@@ -1,0 +1,64 @@
+name: Bug Report
+description: Create a bug report
+labels: ["bug"]
+title: "[MC-Version] "
+assignees:
+  - hycrafthd
+body:
+  - type: textarea
+    id: bug_description
+    attributes:
+      label: Bug description and reproduction steps
+      description: What is not working correctly? How can we trigger this bug?
+      placeholder: |
+        1.
+        2.
+        3.
+    validations:
+      required: true
+      
+  - type: textarea
+    id: logs
+    attributes:
+      label: Log files and Screenshots
+      description: Please upload logs, crashlogs and screenshots
+      placeholder: Logs and screenshots
+    validations:
+      required: true
+      
+  - type: dropdown
+    id: minecraft_version
+    attributes:
+      label: Used minecraft version
+      options:
+        - 1.20.x
+        - 1.19.x
+        - 1.18.x
+        - 1.17.x
+        - 1.16.x
+        - 1.15.x
+        - 1.14.x
+        - 1.13.x
+        - 1.12.x
+        - 1.11.x
+        - 1.10.x
+        - 1.9.x
+        - 1.8.x
+    validations:
+      required: false
+      
+  - type: input
+    id: modloader_version
+    attributes:
+      label: Used forge or fabric version
+      placeholder: "e.g. 37.0.103"
+    validations:
+      required: true
+      
+  - type: input
+    id: mod_version
+    attributes:
+      label: Used mod version
+      placeholder: "e.g. 4.0.0.198"
+    validations:
+      required: true
