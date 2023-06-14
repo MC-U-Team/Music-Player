@@ -6,13 +6,12 @@ import static info.u_team.music_player.init.MusicPlayerLocalization.getTranslati
 import java.net.URI;
 import java.util.function.Function;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-
 import info.u_team.music_player.lavaplayer.api.audio.IAudioTrack;
 import info.u_team.music_player.lavaplayer.api.audio.IAudioTrackInfo;
 import info.u_team.music_player.musicplayer.MusicPlayerManager;
 import info.u_team.music_player.util.TimeUtil;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.ClickEvent;
 import net.minecraft.network.chat.ClickEvent.Action;
 import net.minecraft.network.chat.Component;
@@ -30,7 +29,7 @@ public final class GuiTrackUtils {
 		return newString;
 	}
 	
-	public static void addTrackInfo(PoseStack matrixStack, IAudioTrack track, int x, int y, int entryWidth, int leftMargin, int titleColor) {
+	public static void addTrackInfo(GuiGraphics guiGraphics, IAudioTrack track, int x, int y, int entryWidth, int leftMargin, int titleColor) {
 		final int textSize = entryWidth - 150 - leftMargin;
 		
 		final IAudioTrackInfo info = track.getInfo();
@@ -39,9 +38,9 @@ public final class GuiTrackUtils {
 		final String author = trimToWith(info.getFixedAuthor(), textSize);
 		final String duration = getFormattedDuration(track);
 		
-		MINECRAFT.font.draw(matrixStack, title, x + leftMargin, y + 5, titleColor);
-		MINECRAFT.font.draw(matrixStack, author, x + leftMargin + 4, y + 25, 0xD86D1C);
-		MINECRAFT.font.draw(matrixStack, duration, x + entryWidth - 140, y + 15, 0xFFFF00);
+		guiGraphics.drawString(MINECRAFT.font, title, x + leftMargin, y + 5, titleColor, false);
+		guiGraphics.drawString(MINECRAFT.font, author, x + leftMargin + 4, y + 25, 0xD86D1C, false);
+		guiGraphics.drawString(MINECRAFT.font, duration, x + entryWidth - 140, y + 15, 0xFFFF00, false);
 	}
 	
 	public static boolean openURI(String uri) {

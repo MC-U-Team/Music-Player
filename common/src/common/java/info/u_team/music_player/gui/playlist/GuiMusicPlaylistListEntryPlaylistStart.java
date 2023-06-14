@@ -6,13 +6,12 @@ import static info.u_team.music_player.init.MusicPlayerLocalization.getTranslati
 import java.util.ArrayList;
 import java.util.List;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-
 import info.u_team.music_player.lavaplayer.api.audio.IAudioTrack;
 import info.u_team.music_player.musicplayer.playlist.LoadedTracks;
 import info.u_team.music_player.musicplayer.playlist.Playlist;
 import info.u_team.music_player.musicplayer.playlist.Playlists;
 import info.u_team.music_player.util.TimeUtil;
+import net.minecraft.client.gui.GuiGraphics;
 
 public class GuiMusicPlaylistListEntryPlaylistStart extends GuiMusicPlaylistListEntryFunctions {
 	
@@ -37,9 +36,9 @@ public class GuiMusicPlaylistListEntryPlaylistStart extends GuiMusicPlaylistList
 	}
 	
 	@Override
-	public void drawEntryExtended(PoseStack matrixStack, int entryX, int entryY, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean mouseInList, float partialTicks) {
-		minecraft.font.draw(matrixStack, name, entryX + 5, entryY + 15, 0xF4E242);
-		minecraft.font.draw(matrixStack, duration, entryX + entryWidth - 140, entryY + 15, 0xFFFF00);
+	public void drawEntryExtended(GuiGraphics guiGraphics, int entryX, int entryY, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean mouseInList, float partialTicks) {
+		guiGraphics.drawString(minecraft.font, name, entryX + 5, entryY + 15, 0xF4E242, false);
+		guiGraphics.drawString(minecraft.font, duration, entryX + entryWidth - 140, entryY + 15, 0xFFFF00, false);
 	}
 	
 	public void addEntry(GuiMusicPlaylistListEntryPlaylistTrack entry) {

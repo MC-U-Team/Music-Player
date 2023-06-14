@@ -1,7 +1,5 @@
 package info.u_team.music_player.gui.playlist;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-
 import info.u_team.music_player.gui.util.GuiTrackUtils;
 import info.u_team.music_player.init.MusicPlayerResources;
 import info.u_team.music_player.lavaplayer.api.audio.IAudioTrack;
@@ -11,6 +9,7 @@ import info.u_team.music_player.musicplayer.playlist.LoadedTracks;
 import info.u_team.music_player.musicplayer.playlist.Playlist;
 import info.u_team.music_player.musicplayer.playlist.Playlists;
 import info.u_team.u_team_core.gui.elements.ImageToggleButton;
+import net.minecraft.client.gui.GuiGraphics;
 
 public abstract class GuiMusicPlaylistListEntryPlayable extends GuiMusicPlaylistListEntry {
 	
@@ -62,10 +61,10 @@ public abstract class GuiMusicPlaylistListEntryPlayable extends GuiMusicPlaylist
 	}
 	
 	@Override
-	public void render(PoseStack matrixStack, int slotIndex, int entryY, int entryX, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float partialTicks) {
+	public void render(GuiGraphics guiGraphics, int slotIndex, int entryY, int entryX, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float partialTicks) {
 		playTrackButton.setX(entryWidth - 65);
 		playTrackButton.setY(entryY + 8);
-		playTrackButton.render(matrixStack, mouseX, mouseY, partialTicks);
+		playTrackButton.render(guiGraphics, mouseX, mouseY, partialTicks);
 	}
 	
 	@Override

@@ -22,8 +22,6 @@ import java.util.stream.Stream;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.util.tinyfd.TinyFileDialogs;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-
 import info.u_team.music_player.gui.BetterScreen;
 import info.u_team.music_player.gui.playlist.GuiMusicPlaylist;
 import info.u_team.music_player.init.MusicPlayerResources;
@@ -35,6 +33,7 @@ import info.u_team.u_team_core.gui.elements.ImageButton;
 import info.u_team.u_team_core.gui.elements.UButton;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.network.chat.Component;
 
@@ -168,22 +167,22 @@ public class GuiMusicSearch extends BetterScreen {
 	}
 	
 	@Override
-	public void render(PoseStack matrixStack, int mouseX, int mouseY, float partialTicks) {
-		renderDirtBackground(matrixStack);
-		searchList.render(matrixStack, mouseX, mouseY, partialTicks);
+	public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
+		renderDirtBackground(guiGraphics);
+		searchList.render(guiGraphics, mouseX, mouseY, partialTicks);
 		
-		drawCenteredString(matrixStack, minecraft.font, getTranslation(GUI_SEARCH_HEADER), width / 2, 5, 0xFFFFFF);
-		drawString(matrixStack, minecraft.font, getTranslation(GUI_SEARCH_SEARCH_URI), 10, 20, 0xFFFFFF);
-		drawString(matrixStack, minecraft.font, getTranslation(GUI_SEARCH_SEARCH_FILE), 10 + width / 2, 20, 0xFFFFFF);
-		drawString(matrixStack, minecraft.font, getTranslation(GUI_SEARCH_SEARCH_SEARCH), 10, 63, 0xFFFFFF);
+		guiGraphics.drawCenteredString(minecraft.font, getTranslation(GUI_SEARCH_HEADER), width / 2, 5, 0xFFFFFF);
+		guiGraphics.drawString(minecraft.font, getTranslation(GUI_SEARCH_SEARCH_URI), 10, 20, 0xFFFFFF);
+		guiGraphics.drawString(minecraft.font, getTranslation(GUI_SEARCH_SEARCH_FILE), 10 + width / 2, 20, 0xFFFFFF);
+		guiGraphics.drawString(minecraft.font, getTranslation(GUI_SEARCH_SEARCH_SEARCH), 10, 63, 0xFFFFFF);
 		
 		if (information != null && informationTicks <= maxTicksInformation) {
-			drawString(matrixStack, minecraft.font, information, 15, 110, 0xFFFFFF);
+			guiGraphics.drawString(minecraft.font, information, 15, 110, 0xFFFFFF);
 		}
 		
-		urlField.render(matrixStack, mouseX, mouseY, partialTicks);
-		searchField.render(matrixStack, mouseX, mouseY, partialTicks);
-		super.render(matrixStack, mouseX, mouseY, partialTicks);
+		urlField.render(guiGraphics, mouseX, mouseY, partialTicks);
+		searchField.render(guiGraphics, mouseX, mouseY, partialTicks);
+		super.render(guiGraphics, mouseX, mouseY, partialTicks);
 	}
 	
 	@Override

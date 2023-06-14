@@ -1,11 +1,10 @@
 package info.u_team.music_player.gui.playlist;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-
 import info.u_team.music_player.lavaplayer.api.audio.IAudioTrack;
 import info.u_team.music_player.musicplayer.playlist.LoadedTracks;
 import info.u_team.music_player.musicplayer.playlist.Playlist;
 import info.u_team.music_player.musicplayer.playlist.Playlists;
+import net.minecraft.client.gui.GuiGraphics;
 
 public class GuiMusicPlaylistListEntryMusicTrack extends GuiMusicPlaylistListEntryFunctions {
 	
@@ -17,7 +16,7 @@ public class GuiMusicPlaylistListEntryMusicTrack extends GuiMusicPlaylistListEnt
 	}
 	
 	@Override
-	public void drawEntryExtended(PoseStack matrixStack, int entryX, int entryY, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean mouseInList, float partialTicks) {
-		addTrackInfo(matrixStack, track, entryX, entryY, entryWidth, 5, isPlaying() ? 0xe02626 : 0x419BF4);
+	public void drawEntryExtended(GuiGraphics guiGraphics, int entryX, int entryY, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean mouseInList, float partialTicks) {
+		addTrackInfo(guiGraphics, track, entryX, entryY, entryWidth, 5, isPlaying() ? 0xe02626 : 0x419BF4);
 	}
 }

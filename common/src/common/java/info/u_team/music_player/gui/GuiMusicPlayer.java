@@ -6,13 +6,12 @@ import static info.u_team.music_player.init.MusicPlayerLocalization.getTranslati
 
 import org.apache.commons.lang3.StringUtils;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-
 import info.u_team.music_player.gui.controls.GuiControls;
 import info.u_team.music_player.init.MusicPlayerResources;
 import info.u_team.u_team_core.gui.elements.ImageButton;
 import info.u_team.u_team_core.gui.elements.ScrollingText;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.network.chat.Component;
 
@@ -72,13 +71,13 @@ public class GuiMusicPlayer extends BetterScreen {
 	}
 	
 	@Override
-	public void render(PoseStack matrixStack, int mouseX, int mouseY, float partialTicks) {
-		renderDirtBackground(matrixStack);
-		playlistsList.render(matrixStack, mouseX, mouseY, partialTicks);
-		font.draw(matrixStack, getTranslation(GUI_CREATE_PLAYLIST_ADD_LIST), 20, 65, 0xFFFFFF);
-		namePlaylistField.render(matrixStack, mouseX, mouseY, partialTicks);
-		controls.render(matrixStack, mouseX, mouseY, partialTicks);
-		super.render(matrixStack, mouseX, mouseY, partialTicks);
+	public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
+		renderDirtBackground(guiGraphics);
+		playlistsList.render(guiGraphics, mouseX, mouseY, partialTicks);
+		guiGraphics.drawString(font, getTranslation(GUI_CREATE_PLAYLIST_ADD_LIST), 20, 65, 0xFFFFFF, false);
+		namePlaylistField.render(guiGraphics, mouseX, mouseY, partialTicks);
+		controls.render(guiGraphics, mouseX, mouseY, partialTicks);
+		super.render(guiGraphics, mouseX, mouseY, partialTicks);
 	}
 	
 	public GuiMusicPlayerList getPlaylistsList() {

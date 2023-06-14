@@ -1,8 +1,7 @@
 package info.u_team.music_player.gui.settings;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-
 import info.u_team.music_player.gui.BetterScrollableListEntry;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
 
@@ -15,8 +14,8 @@ class GuiMusicPlayerSettingsMixerDeviceListEntry extends BetterScrollableListEnt
 	}
 	
 	@Override
-	public void render(PoseStack matrixStack, int slotIndex, int entryY, int entryX, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float partialTicks) {
-		minecraft.font.draw(matrixStack, mixerName, entryX + 5, entryY + 5, 0x0083FF);
+	public void render(GuiGraphics guiGraphics, int slotIndex, int entryY, int entryX, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float partialTicks) {
+		guiGraphics.drawString(minecraft.font, mixerName, entryX + 5, entryY + 5, 0x0083FF, false);
 	}
 	
 	public String getMixerName() {

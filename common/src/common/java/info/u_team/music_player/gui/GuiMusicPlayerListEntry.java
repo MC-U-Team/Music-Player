@@ -7,8 +7,6 @@ import static info.u_team.music_player.init.MusicPlayerLocalization.getTranslati
 
 import org.apache.commons.lang3.tuple.Pair;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-
 import info.u_team.music_player.gui.playlist.GuiMusicPlaylist;
 import info.u_team.music_player.init.MusicPlayerResources;
 import info.u_team.music_player.lavaplayer.api.audio.IAudioTrack;
@@ -20,6 +18,7 @@ import info.u_team.music_player.musicplayer.playlist.Playlists;
 import info.u_team.music_player.musicplayer.playlist.Skip;
 import info.u_team.u_team_core.gui.elements.ImageButton;
 import info.u_team.u_team_core.gui.elements.ImageToggleButton;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
 
@@ -101,25 +100,25 @@ class GuiMusicPlayerListEntry extends BetterScrollableListEntry<GuiMusicPlayerLi
 	}
 	
 	@Override
-	public void render(PoseStack matrixStack, int slotIndex, int entryY, int entryX, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float partialTicks) {
+	public void render(GuiGraphics guiGraphics, int slotIndex, int entryY, int entryX, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float partialTicks) {
 		String name = playlist.getName();
 		if (name.isEmpty()) {
 			name = "\u00A7o" + getTranslation(GUI_PLAYLISTS_NO_NAME);
 		}
-		minecraft.font.draw(matrixStack, name, entryX + 5, entryY + 5, playlist.equals(playlists.getPlaying()) ? 0x0083FF : 0xFFF00F);
-		minecraft.font.draw(matrixStack, playlist.getEntrySize() + " " + getTranslation(playlist.getEntrySize() > 1 ? GUI_PLAYLISTS_ENTRIES : GUI_PLAYLISTS_ENTRY), entryX + 5, entryY + 30, 0xFFFFFF);
+		guiGraphics.drawString(minecraft.font, name, entryX + 5, entryY + 5, playlist.equals(playlists.getPlaying()) ? 0x0083FF : 0xFFF00F, false);
+		guiGraphics.drawString(minecraft.font, playlist.getEntrySize() + " " + getTranslation(playlist.getEntrySize() > 1 ? GUI_PLAYLISTS_ENTRIES : GUI_PLAYLISTS_ENTRY), entryX + 5, entryY + 30, 0xFFFFFF, false);
 		
 		playPlaylistButton.setX(entryWidth - 65);
 		playPlaylistButton.setY(entryY + 12);
-		playPlaylistButton.render(matrixStack, mouseX, mouseY, partialTicks);
+		playPlaylistButton.render(guiGraphics, mouseX, mouseY, partialTicks);
 		
 		openPlaylistButton.setX(entryWidth - 40);
 		openPlaylistButton.setY(entryY + 12);
-		openPlaylistButton.render(matrixStack, mouseX, mouseY, partialTicks);
+		openPlaylistButton.render(guiGraphics, mouseX, mouseY, partialTicks);
 		
 		deletePlaylistButton.setX(entryWidth - 15);
 		deletePlaylistButton.setY(entryY + 12);
-		deletePlaylistButton.render(matrixStack, mouseX, mouseY, partialTicks);
+		deletePlaylistButton.render(guiGraphics, mouseX, mouseY, partialTicks);
 	}
 	
 	public Playlist getPlaylist() {

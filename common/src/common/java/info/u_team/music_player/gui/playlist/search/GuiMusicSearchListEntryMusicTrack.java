@@ -3,12 +3,11 @@ package info.u_team.music_player.gui.playlist.search;
 import static info.u_team.music_player.init.MusicPlayerLocalization.GUI_SEARCH_ADDED;
 import static info.u_team.music_player.init.MusicPlayerLocalization.getTranslation;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-
 import info.u_team.music_player.gui.util.GuiTrackUtils;
 import info.u_team.music_player.lavaplayer.api.audio.IAudioTrack;
 import info.u_team.music_player.musicplayer.playlist.Playlist;
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.gui.GuiGraphics;
 
 public class GuiMusicSearchListEntryMusicTrack extends GuiMusicSearchListEntry {
 	
@@ -25,9 +24,9 @@ public class GuiMusicSearchListEntryMusicTrack extends GuiMusicSearchListEntry {
 	}
 	
 	@Override
-	public void render(PoseStack matrixStack, int slotIndex, int entryY, int entryX, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float partialTicks) {
-		super.render(matrixStack, slotIndex, entryY, entryX, entryWidth, entryHeight, mouseX, mouseY, hovered, partialTicks);
-		addTrackInfo(matrixStack, track, entryX, entryY, entryWidth, playlistEntry ? 15 : 5, playlistEntry ? 0x42F4F1 : 0x419BF4);
+	public void render(GuiGraphics guiGraphics, int slotIndex, int entryY, int entryX, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float partialTicks) {
+		super.render(guiGraphics, slotIndex, entryY, entryX, entryWidth, entryHeight, mouseX, mouseY, hovered, partialTicks);
+		addTrackInfo(guiGraphics, track, entryX, entryY, entryWidth, playlistEntry ? 15 : 5, playlistEntry ? 0x42F4F1 : 0x419BF4);
 	}
 	
 	public boolean isPlaylistEntry() {

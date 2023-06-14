@@ -1,7 +1,5 @@
 package info.u_team.music_player.gui.controls;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-
 import info.u_team.music_player.gui.util.GuiTrackUtils;
 import info.u_team.music_player.init.MusicPlayerColors;
 import info.u_team.music_player.lavaplayer.api.audio.IAudioTrack;
@@ -10,6 +8,7 @@ import info.u_team.u_team_core.gui.elements.ProgressBar;
 import info.u_team.u_team_core.gui.elements.ScalableText;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
+import net.minecraft.client.gui.GuiGraphics;
 
 public class GuiMusicProgressBar extends ProgressBar {
 	
@@ -36,11 +35,11 @@ public class GuiMusicProgressBar extends ProgressBar {
 	}
 	
 	@Override
-	public void render(PoseStack matrixStack, int mouseX, int mouseY, float partialTicks) {
-		super.render(matrixStack, mouseX, mouseY, partialTicks);
+	public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
+		super.render(guiGraphics, mouseX, mouseY, partialTicks);
 		
-		positionRender.render(matrixStack, mouseX, mouseY, partialTicks);
-		durationRender.render(matrixStack, mouseX, mouseY, partialTicks);
+		positionRender.render(guiGraphics, mouseX, mouseY, partialTicks);
+		durationRender.render(guiGraphics, mouseX, mouseY, partialTicks);
 	}
 	
 	private static double getProgress(ITrackManager manager) {

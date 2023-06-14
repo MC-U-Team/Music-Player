@@ -1,7 +1,5 @@
 package info.u_team.music_player.render;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-
 import info.u_team.music_player.gui.util.GuiTrackUtils;
 import info.u_team.music_player.init.MusicPlayerColors;
 import info.u_team.music_player.lavaplayer.api.audio.IAudioTrack;
@@ -11,7 +9,7 @@ import info.u_team.u_team_core.gui.elements.ScalableText;
 import info.u_team.u_team_core.gui.elements.ScrollingText;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiComponent;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Renderable;
 
 public class RenderOverlayMusicDisplay implements Renderable {
@@ -62,13 +60,13 @@ public class RenderOverlayMusicDisplay implements Renderable {
 	}
 	
 	@Override
-	public void render(PoseStack matrixStack, int mouseX, int mouseY, float partialTicks) {
+	public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
 		final IAudioTrack track = manager.getCurrentTrack();
 		if (track == null) {
 			return;
 		}
 		// Background
-		GuiComponent.fill(matrixStack, 0, 0, width, height, 0xFF212121);
+		guiGraphics.fill(0, 0, width, height, 0xFF212121);
 		
 		// Progressbar
 		final double progress;
@@ -78,15 +76,15 @@ public class RenderOverlayMusicDisplay implements Renderable {
 			progress = (double) track.getPosition() / track.getDuration();
 		}
 		
-		GuiComponent.fill(matrixStack, 6, 23, width - 6, 26, 0xFF555555);
-		GuiComponent.fill(matrixStack, 6, 23, 6 + (int) ((width - 12) * progress), 26, 0xFF3E9100);
+		guiGraphics.fill(6, 23, width - 6, 26, 0xFF555555);
+		guiGraphics.fill(6, 23, 6 + (int) ((width - 12) * progress), 26, 0xFF3E9100);
 		
 		// Draw strings
-		title.render(matrixStack, mouseX, mouseY, partialTicks);
-		author.render(matrixStack, mouseX, mouseY, partialTicks);
+		title.render(guiGraphics, mouseX, mouseY, partialTicks);
+		author.render(guiGraphics, mouseX, mouseY, partialTicks);
 		
-		position.render(matrixStack, mouseX, mouseY, partialTicks);
-		duration.render(matrixStack, mouseX, mouseY, partialTicks);
+		position.render(guiGraphics, mouseX, mouseY, partialTicks);
+		duration.render(guiGraphics, mouseX, mouseY, partialTicks);
 	}
 	
 	public int getWidth() {

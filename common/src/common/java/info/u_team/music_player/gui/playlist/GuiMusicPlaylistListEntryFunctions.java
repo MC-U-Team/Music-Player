@@ -1,7 +1,5 @@
 package info.u_team.music_player.gui.playlist;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-
 import info.u_team.music_player.init.MusicPlayerResources;
 import info.u_team.music_player.lavaplayer.api.audio.IAudioTrack;
 import info.u_team.music_player.musicplayer.playlist.LoadedTracks;
@@ -9,6 +7,7 @@ import info.u_team.music_player.musicplayer.playlist.Playlist;
 import info.u_team.music_player.musicplayer.playlist.Playlists;
 import info.u_team.music_player.util.WrappedObject;
 import info.u_team.u_team_core.gui.elements.ImageButton;
+import net.minecraft.client.gui.GuiGraphics;
 
 abstract class GuiMusicPlaylistListEntryFunctions extends GuiMusicPlaylistListEntryPlayable {
 	
@@ -44,23 +43,23 @@ abstract class GuiMusicPlaylistListEntryFunctions extends GuiMusicPlaylistListEn
 	}
 	
 	@Override
-	public void render(PoseStack matrixStack, int slotIndex, int entryY, int entryX, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float partialTicks) {
-		super.render(matrixStack, slotIndex, entryY, entryX, entryWidth, entryHeight, mouseX, mouseY, hovered, partialTicks);
-		drawEntryExtended(matrixStack, entryX, entryY, entryWidth, entryHeight, mouseX, mouseY, hovered, partialTicks);
+	public void render(GuiGraphics guiGraphics, int slotIndex, int entryY, int entryX, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float partialTicks) {
+		super.render(guiGraphics, slotIndex, entryY, entryX, entryWidth, entryHeight, mouseX, mouseY, hovered, partialTicks);
+		drawEntryExtended(guiGraphics, entryX, entryY, entryWidth, entryHeight, mouseX, mouseY, hovered, partialTicks);
 		
 		deleteTrackButton.setX(entryWidth - 15);
 		deleteTrackButton.setY(entryY + 8);
-		deleteTrackButton.render(matrixStack, mouseX, mouseY, partialTicks);
+		deleteTrackButton.render(guiGraphics, mouseX, mouseY, partialTicks);
 		
 		upButton.setX(entryWidth - 40);
 		upButton.setY(entryY + 8);
-		upButton.render(matrixStack, mouseX, mouseY, partialTicks);
+		upButton.render(guiGraphics, mouseX, mouseY, partialTicks);
 		
 		downButton.setX(entryWidth - 40);
 		downButton.setY(entryY + 18);
-		downButton.render(matrixStack, mouseX, mouseY, partialTicks);
+		downButton.render(guiGraphics, mouseX, mouseY, partialTicks);
 	}
 	
-	public abstract void drawEntryExtended(PoseStack matrixStack, int entryX, int entryY, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean mouseInList, float partialTicks);
+	public abstract void drawEntryExtended(GuiGraphics guiGraphics, int entryX, int entryY, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean mouseInList, float partialTicks);
 	
 }

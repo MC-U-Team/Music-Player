@@ -24,6 +24,7 @@ import info.u_team.u_team_core.gui.elements.ImageButton;
 import info.u_team.u_team_core.gui.elements.ImageToggleButton;
 import info.u_team.u_team_core.gui.elements.ScrollingText;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.Renderable;
 import net.minecraft.client.gui.components.events.AbstractContainerEventHandler;
@@ -181,15 +182,16 @@ public class GuiControls extends AbstractContainerEventHandler implements Better
 	}
 	
 	@Override
-	public void render(PoseStack matrixStack, int mouseX, int mouseY, float partialTicks) {
-		matrixStack.pushPose();
-		matrixStack.setIdentity();
-		buttons.forEach(button -> button.render(matrixStack, mouseX, mouseY, partialTicks));
-		songProgress.render(matrixStack, mouseX, mouseY, partialTicks);
+	public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
+		final PoseStack poseStack = guiGraphics.pose();
+		poseStack.pushPose();
+		poseStack.setIdentity();
+		buttons.forEach(button -> button.render(guiGraphics, mouseX, mouseY, partialTicks));
+		songProgress.render(guiGraphics, mouseX, mouseY, partialTicks);
 		
-		titleRender.render(matrixStack, mouseX, mouseY, partialTicks);
-		authorRender.render(matrixStack, mouseX, mouseY, partialTicks);
-		matrixStack.popPose();
+		titleRender.render(guiGraphics, mouseX, mouseY, partialTicks);
+		authorRender.render(guiGraphics, mouseX, mouseY, partialTicks);
+		poseStack.popPose();
 	}
 	
 	@Override
