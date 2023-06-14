@@ -1,6 +1,11 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [1.19.4-2.6.0.214] - 2023-06-14
+### Changed
+ - Update lavaplayer to 1.4.2
+ - Update buildscripts
+
 ## [1.19.4-2.6.0.206] - 2023-04-12
 ### Changed
  - Update forge and fabric versions
