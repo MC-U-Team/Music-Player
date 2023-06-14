@@ -31,6 +31,7 @@ body:
     attributes:
       label: Used minecraft version
       options:
+        - 1.20.x
         - 1.19.x
         - 1.18.x
         - 1.17.x
@@ -44,12 +45,12 @@ body:
         - 1.9.x
         - 1.8.x
     validations:
-      required: true
+      required: false
       
   - type: input
-    id: forge_version
+    id: modloader_version
     attributes:
-      label: Used forge version
+      label: Used forge or fabric version
       placeholder: "e.g. 37.0.103"
     validations:
       required: true
