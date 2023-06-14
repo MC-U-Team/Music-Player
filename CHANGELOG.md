@@ -1,6 +1,11 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [1.18.2-2.3.4.212] - 2023-06-14
+### Changed
+ - Update lavaplayer to 1.4.2
+ - Update buildscripts
+
 ## [1.18.2-2.3.4.201] - 2023-03-09
 ### Changed
  - Update lavaplayer to 1.4.0
