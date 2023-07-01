@@ -20,7 +20,7 @@ pluginManagement {
 		id "org.parchmentmc.librarian.forgegradle" version "1.+"
 		id "org.spongepowered.mixin" version "0.7.+"
 		
-		id "fabric-loom" version "1.2.+"
+		id "fabric-loom" version "1.3.+"
 		
 		id "info.u_team.gradle_files" version "3.0.2"
 		id "info.u_team.curse_gradle_uploader" version "1.6.0"
