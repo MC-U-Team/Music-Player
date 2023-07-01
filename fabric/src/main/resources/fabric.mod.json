@@ -9,7 +9,8 @@
 	],
 	"contact": {
 		"homepage": "https://u-team.info/mods/musicplayer",
-		"sources": "https://github.com/MC-U-Team/Music-Player"
+		"sources": "https://github.com/MC-U-Team/Music-Player",
+		"issues": "https://github.com/MC-U-Team/Music-Player/issues"
 	},
 	"license": "Apache-2.0 License",
 	"icon": "logo.png",

@@ -119,6 +119,9 @@ repositories {
 	maven {
 		url = "https://maven.parchmentmc.org"
 	}
+	maven {
+		url = "https://maven.terraformersmc.com"
+	}
 }
 
 dependencies {
@@ -132,6 +135,8 @@ dependencies {
 	modImplementation gradlefiles.fabricApiDependency()
 	
 	modImplementation "info.u-team:u_team_core-fabric-1.20.1:5.1.3.267"
+	
+	modRuntimeOnly "com.terraformersmc:modmenu:${config.modmenu.fabric.version}"
 	
 	library project(":musicplayer-lavaplayer-api")
 	shade ("net.harawata:appdirs:1.0.0") {
