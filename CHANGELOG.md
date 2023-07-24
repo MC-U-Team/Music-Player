@@ -1,6 +1,10 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [1.20.1-2.6.0.226] - 2023-07-25
+### Changed
+ - Fix crash on startup when twitch.tv and other provider sites cannot be reached
+
 ## [1.20.1-2.6.0.217] - 2023-07-01
 ### Changed
  - Updated forge and fabric api
