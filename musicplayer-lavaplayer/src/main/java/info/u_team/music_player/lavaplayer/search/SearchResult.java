@@ -25,9 +25,9 @@ public class SearchResult implements ISearchResult {
 		this(uri, null, track, null);
 	}
 	
-	private SearchResult(String uri, IAudioTrackList tracklist, IAudioTrack track, Exception exception) {
+	private SearchResult(String uri, IAudioTrackList trackList, IAudioTrack track, Exception exception) {
 		this.uri = uri;
-		trackList = tracklist;
+		this.trackList = trackList;
 		this.track = track;
 		this.exception = exception;
 	}
