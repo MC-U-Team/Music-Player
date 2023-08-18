@@ -24,5 +24,9 @@ public interface IMusicPlayer {
 	
 	void setVolume(int volume);
 	
+	float getSpeed();
+	
+	void setSpeed(float speed);
+	
 	void setOutputConsumer(IOutputConsumer consumer);
 }

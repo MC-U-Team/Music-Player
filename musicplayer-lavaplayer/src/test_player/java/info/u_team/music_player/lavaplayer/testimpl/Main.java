@@ -58,6 +58,13 @@ public class Main {
 				} else if (line.startsWith("rate")) {
 					final IAudioTrack audioTrack = manager.getCurrentTrack();
 					System.out.println((float) audioTrack.getPosition() / audioTrack.getDuration());
+				} else if (line.startsWith("speed")) {
+					try {
+						musicPlayer.setSpeed(Float.parseFloat(line.substring("speed ".length())));
+					} catch (NumberFormatException ex) {
+					}
+				} else if (line.startsWith("reset-speed")) {
+					musicPlayer.setSpeed(1);
 				} else if (line.startsWith("stop")) {
 					manager.stop();
 					System.exit(0);

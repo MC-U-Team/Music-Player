@@ -1,7 +1,11 @@
 package info.u_team.music_player.lavaplayer;
 
+import java.util.Collections;
+import java.util.function.Consumer;
+
 import javax.sound.sampled.DataLine.Info;
 
+import com.github.natanbc.lavadsp.timescale.TimescalePcmAudioFilter;
 import com.sedmelluq.discord.lavaplayer.format.AudioDataFormat;
 import com.sedmelluq.discord.lavaplayer.format.Pcm16AudioDataFormat;
 import com.sedmelluq.discord.lavaplayer.player.AudioConfiguration.ResamplingQuality;
@@ -30,6 +34,9 @@ public class MusicPlayer implements IMusicPlayer {
 	
 	private IOutputConsumer outputConsumer;
 	
+	private float speed;
+	private Consumer<Float> speedChange;
+	
 	public MusicPlayer() {
 		audioPlayerManager = new DefaultAudioPlayerManager();
 		audioDataFormat = new Pcm16AudioDataFormat(2, 48000, 960, true);
@@ -37,7 +44,11 @@ public class MusicPlayer implements IMusicPlayer {
 		audioOutput = new AudioOutput(this);
 		
 		trackSearch = new TrackSearch(audioPlayerManager);
-		trackManager = new TrackManager(audioPlayer);
+		trackManager = new TrackManager(this, audioPlayer);
+		
+		speed = 1;
+		speedChange = newSpeed -> {
+		};
 		
 		setup();
 	}
@@ -51,6 +62,14 @@ public class MusicPlayer implements IMusicPlayer {
 		audioPlayerManager.getConfiguration().setOutputFormat(audioDataFormat);
 		
 		AudioSources.registerSources(audioPlayerManager);
+		
+		audioPlayer.setFilterFactory((track, format, output) -> {
+			final TimescalePcmAudioFilter filter = new TimescalePcmAudioFilter(output, format.channelCount, format.sampleRate);
+			speedChange = newSpeed -> {
+				filter.setSpeed(newSpeed);
+			};
+			return Collections.singletonList(filter);
+		});
 	}
 	
 	public AudioPlayerManager getAudioPlayerManager() {
@@ -107,6 +126,17 @@ public class MusicPlayer implements IMusicPlayer {
 	@Override
 	public int getVolume() {
 		return audioPlayer.getVolume();
+	}
+	
+	@Override
+	public void setSpeed(float speed) {
+		this.speed = speed;
+		speedChange.accept(speed);
+	}
+	
+	@Override
+	public float getSpeed() {
+		return speed;
 	}
 	
 	@Override
