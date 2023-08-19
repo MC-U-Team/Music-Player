@@ -1,7 +1,6 @@
 package info.u_team.music_player.lavaplayer;
 
 import java.util.Collections;
-import java.util.function.Consumer;
 
 import javax.sound.sampled.DataLine.Info;
 
@@ -21,6 +20,7 @@ import info.u_team.music_player.lavaplayer.output.AudioOutput;
 import info.u_team.music_player.lavaplayer.queue.TrackManager;
 import info.u_team.music_player.lavaplayer.search.TrackSearch;
 import info.u_team.music_player.lavaplayer.sources.AudioSources;
+import info.u_team.music_player.lavaplayer.util.ObservableValue;
 
 public class MusicPlayer implements IMusicPlayer {
 	
@@ -34,8 +34,7 @@ public class MusicPlayer implements IMusicPlayer {
 	
 	private IOutputConsumer outputConsumer;
 	
-	private float speed;
-	private Consumer<Float> speedChange;
+	private final ObservableValue<Float> speed;
 	
 	public MusicPlayer() {
 		audioPlayerManager = new DefaultAudioPlayerManager();
@@ -46,9 +45,7 @@ public class MusicPlayer implements IMusicPlayer {
 		trackSearch = new TrackSearch(audioPlayerManager);
 		trackManager = new TrackManager(this, audioPlayer);
 		
-		speed = 1;
-		speedChange = newSpeed -> {
-		};
+		speed = new ObservableValue<>(1F);
 		
 		setup();
 	}
@@ -65,9 +62,9 @@ public class MusicPlayer implements IMusicPlayer {
 		
 		audioPlayer.setFilterFactory((track, format, output) -> {
 			final TimescalePcmAudioFilter filter = new TimescalePcmAudioFilter(output, format.channelCount, format.sampleRate);
-			speedChange = newSpeed -> {
-				filter.setSpeed(newSpeed);
-			};
+			speed.registerListener(value -> {
+				filter.setSpeed(value);
+			});
 			return Collections.singletonList(filter);
 		});
 	}
@@ -130,13 +127,12 @@ public class MusicPlayer implements IMusicPlayer {
 	
 	@Override
 	public void setSpeed(float speed) {
-		this.speed = speed;
-		speedChange.accept(speed);
+		this.speed.setValue(speed);
 	}
 	
 	@Override
 	public float getSpeed() {
-		return speed;
+		return speed.getValue();
 	}
 	
 	@Override
