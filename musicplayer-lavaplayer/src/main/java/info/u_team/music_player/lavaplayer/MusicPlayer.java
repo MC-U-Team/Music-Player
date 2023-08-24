@@ -1,6 +1,8 @@
 package info.u_team.music_player.lavaplayer;
 
 import java.util.Collections;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 import javax.sound.sampled.DataLine.Info;
 
@@ -11,6 +13,10 @@ import com.sedmelluq.discord.lavaplayer.player.AudioConfiguration.ResamplingQual
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayerManager;
 import com.sedmelluq.discord.lavaplayer.player.DefaultAudioPlayerManager;
+import com.sedmelluq.discord.lavaplayer.player.event.AudioEventAdapter;
+import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
+import com.sedmelluq.discord.lavaplayer.track.playback.AllocatingAudioFrameBuffer;
+import com.sedmelluq.discord.lavaplayer.track.playback.AudioFrame;
 
 import info.u_team.music_player.lavaplayer.api.IMusicPlayer;
 import info.u_team.music_player.lavaplayer.api.output.IOutputConsumer;
@@ -36,6 +42,8 @@ public class MusicPlayer implements IMusicPlayer {
 	
 	private final ObservableValue<Float> speed;
 	
+	private long currentTrackPosition;
+	
 	public MusicPlayer() {
 		audioPlayerManager = new DefaultAudioPlayerManager();
 		audioDataFormat = new Pcm16AudioDataFormat(2, 48000, 960, true);
@@ -60,12 +68,42 @@ public class MusicPlayer implements IMusicPlayer {
 		
 		AudioSources.registerSources(audioPlayerManager);
 		
-		audioPlayer.setFilterFactory((track, format, output) -> {
-			final TimescalePcmAudioFilter filter = new TimescalePcmAudioFilter(output, format.channelCount, format.sampleRate);
-			speed.registerListener(value -> {
+		audioPlayerManager.getConfiguration().setFilterHotSwapEnabled(true);
+		
+		audioPlayer.addListener(new AudioEventAdapter() {
+			
+			@Override
+			public void onTrackStart(AudioPlayer player, AudioTrack track) {
+				currentTrackPosition = track.getPosition();
+			}
+		});
+		
+		audioPlayerManager.getConfiguration().setFrameBufferFactory((bufferDuration, format, stopping) -> new AllocatingAudioFrameBuffer(bufferDuration, format, stopping) {
+			
+			@Override
+			public AudioFrame provide() {
+				return updateTrackPosition(super.provide());
+			}
+			
+			@Override
+			public AudioFrame provide(long timeout, TimeUnit unit) throws TimeoutException, InterruptedException {
+				return updateTrackPosition(super.provide(timeout, unit));
+			}
+			
+			private AudioFrame updateTrackPosition(AudioFrame frame) {
+				if (frame != null && !frame.isTerminator()) {
+					currentTrackPosition += frame.getFormat().frameDuration() * speed.getValue();
+				}
+				return frame;
+			}
+		});
+		
+		speed.registerListener(value -> {
+			audioPlayer.setFilterFactory((track, format, output) -> {
+				final TimescalePcmAudioFilter filter = new TimescalePcmAudioFilter(output, format.channelCount, format.sampleRate);
 				filter.setSpeed(value);
+				return Collections.singletonList(filter);
 			});
-			return Collections.singletonList(filter);
 		});
 	}
 	
@@ -83,6 +121,14 @@ public class MusicPlayer implements IMusicPlayer {
 	
 	public IOutputConsumer getOutputConsumer() {
 		return outputConsumer;
+	}
+	
+	public long getCurrentTrackPosition() {
+		return currentTrackPosition;
+	}
+	
+	public void setCurrentTrackPosition(long currentTrackPosition) {
+		this.currentTrackPosition = currentTrackPosition;
 	}
 	
 	@Override

@@ -5,7 +5,7 @@ import com.sedmelluq.discord.lavaplayer.player.event.AudioEventAdapter;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrackEndReason;
 
-import info.u_team.music_player.lavaplayer.api.IMusicPlayer;
+import info.u_team.music_player.lavaplayer.MusicPlayer;
 import info.u_team.music_player.lavaplayer.api.audio.IPlayingTrack;
 import info.u_team.music_player.lavaplayer.api.queue.ITrackManager;
 import info.u_team.music_player.lavaplayer.api.queue.ITrackQueue;
@@ -13,13 +13,13 @@ import info.u_team.music_player.lavaplayer.impl.PlayingTrackImpl;
 
 public class TrackManager extends AudioEventAdapter implements ITrackManager {
 	
-	private final IMusicPlayer musicPlayer;
+	private final MusicPlayer musicPlayer;
 	
 	private final AudioPlayer audioPlayer;
 	
 	private TrackQueueWrapper queueWrapper;
 	
-	public TrackManager(IMusicPlayer musicPlayer, AudioPlayer audioPlayer) {
+	public TrackManager(MusicPlayer musicPlayer, AudioPlayer audioPlayer) {
 		this.musicPlayer = musicPlayer;
 		this.audioPlayer = audioPlayer;
 		audioPlayer.addListener(this);

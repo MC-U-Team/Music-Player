@@ -15,7 +15,6 @@ public class ObservableValue<T> {
 	
 	public void registerListener(ChangeListener<T> listener) {
 		changeListener.add(listener);
-		listener.update(value);
 	}
 	
 	public void setValue(T value) {
