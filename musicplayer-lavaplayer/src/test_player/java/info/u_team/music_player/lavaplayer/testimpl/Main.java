@@ -63,8 +63,11 @@ public class Main {
 						musicPlayer.setSpeed(Float.parseFloat(line.substring("speed ".length())));
 					} catch (NumberFormatException ex) {
 					}
-				} else if (line.startsWith("reset-speed")) {
-					musicPlayer.setSpeed(1);
+				} else if (line.startsWith("pitch")) {
+					try {
+						musicPlayer.setPitch(Float.parseFloat(line.substring("pitch ".length())));
+					} catch (NumberFormatException ex) {
+					}
 				} else if (line.startsWith("stop")) {
 					manager.stop();
 					System.exit(0);

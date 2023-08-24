@@ -41,6 +41,7 @@ public class MusicPlayer implements IMusicPlayer {
 	private IOutputConsumer outputConsumer;
 	
 	private final ObservableValue<Float> speed;
+	private final ObservableValue<Float> pitch;
 	
 	private long currentTrackPosition;
 	
@@ -54,6 +55,7 @@ public class MusicPlayer implements IMusicPlayer {
 		trackManager = new TrackManager(this, audioPlayer);
 		
 		speed = new ObservableValue<>(1F);
+		pitch = new ObservableValue<>(1F);
 		
 		setup();
 	}
@@ -98,13 +100,21 @@ public class MusicPlayer implements IMusicPlayer {
 			}
 		});
 		
-		speed.registerListener(value -> {
+		speed.registerListener(speed -> updateFilters(speed, pitch.getValue()));
+		pitch.registerListener(pitch -> updateFilters(speed.getValue(), pitch));
+	}
+	
+	private void updateFilters(float speed, float pitch) {
+		if (Math.abs(speed - 1) < 0.01 && Math.abs(pitch - 1) < 0.01) {
+			audioPlayer.setFilterFactory((track, format, output) -> Collections.emptyList());
+		} else {
 			audioPlayer.setFilterFactory((track, format, output) -> {
 				final TimescalePcmAudioFilter filter = new TimescalePcmAudioFilter(output, format.channelCount, format.sampleRate);
-				filter.setSpeed(value);
+				filter.setSpeed(speed);
+				filter.setPitch(pitch);
 				return Collections.singletonList(filter);
 			});
-		});
+		}
 	}
 	
 	public AudioPlayerManager getAudioPlayerManager() {
@@ -173,12 +183,22 @@ public class MusicPlayer implements IMusicPlayer {
 	
 	@Override
 	public void setSpeed(float speed) {
-		this.speed.setValue(speed);
+		this.speed.setValue(Math.max(0.05F, Math.min(10, speed)));
 	}
 	
 	@Override
 	public float getSpeed() {
 		return speed.getValue();
+	}
+	
+	@Override
+	public void setPitch(float pitch) {
+		this.pitch.setValue(Math.max(0.05F, Math.min(10, pitch)));
+	}
+	
+	@Override
+	public float getPitch() {
+		return pitch.getValue();
 	}
 	
 	@Override
