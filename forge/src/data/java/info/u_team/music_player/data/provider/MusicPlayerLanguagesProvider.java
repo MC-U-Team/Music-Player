@@ -19,11 +19,13 @@ import static info.u_team.music_player.init.MusicPlayerLocalization.GUI_SEARCH_S
 import static info.u_team.music_player.init.MusicPlayerLocalization.GUI_SEARCH_SEARCH_SEARCH;
 import static info.u_team.music_player.init.MusicPlayerLocalization.GUI_SEARCH_SEARCH_URI;
 import static info.u_team.music_player.init.MusicPlayerLocalization.GUI_SETTINGS_MIXER_DEVICE_SELECTION;
+import static info.u_team.music_player.init.MusicPlayerLocalization.GUI_SETTINGS_PITCH;
 import static info.u_team.music_player.init.MusicPlayerLocalization.GUI_SETTINGS_POSITION_DOWN_LEFT;
 import static info.u_team.music_player.init.MusicPlayerLocalization.GUI_SETTINGS_POSITION_DOWN_RIGHT;
 import static info.u_team.music_player.init.MusicPlayerLocalization.GUI_SETTINGS_POSITION_OVERLAY;
 import static info.u_team.music_player.init.MusicPlayerLocalization.GUI_SETTINGS_POSITION_UP_LEFT;
 import static info.u_team.music_player.init.MusicPlayerLocalization.GUI_SETTINGS_POSITION_UP_RIGHT;
+import static info.u_team.music_player.init.MusicPlayerLocalization.GUI_SETTINGS_SPEED;
 import static info.u_team.music_player.init.MusicPlayerLocalization.GUI_SETTINGS_TOGGLE_INGAME_OVERLAY;
 import static info.u_team.music_player.init.MusicPlayerLocalization.GUI_SETTINGS_TOGGLE_KEY_IN_GUI;
 import static info.u_team.music_player.init.MusicPlayerLocalization.GUI_SETTINGS_TOGGLE_MENUE_OVERLAY;
@@ -88,6 +90,8 @@ public class MusicPlayerLanguagesProvider extends CommonLanguagesProvider {
 		add(GUI_SETTINGS_POSITION_UP_RIGHT, "Top right");
 		add(GUI_SETTINGS_POSITION_DOWN_RIGHT, "Bottom right");
 		add(GUI_SETTINGS_POSITION_DOWN_LEFT, "Bottom left");
+		add(GUI_SETTINGS_SPEED, "Playback speed");
+		add(GUI_SETTINGS_PITCH, "Playback pitch");
 		add(GUI_SETTINGS_MIXER_DEVICE_SELECTION, "Select audio device");
 		
 		// German
@@ -133,6 +137,8 @@ public class MusicPlayerLanguagesProvider extends CommonLanguagesProvider {
 		add("de_de", GUI_SETTINGS_POSITION_UP_RIGHT, "Oben Rechts");
 		add("de_de", GUI_SETTINGS_POSITION_DOWN_RIGHT, "Unten Rechts");
 		add("de_de", GUI_SETTINGS_POSITION_DOWN_LEFT, "Unten Links");
+		add("de_de", GUI_SETTINGS_SPEED, "Wiedergabegeschwindigkeit");
+		add("de_de", GUI_SETTINGS_PITCH, "Wiedergabetonhöhe");
 		add("de_de", GUI_SETTINGS_MIXER_DEVICE_SELECTION, "Wähle das Audiogerät");
 	}
 	

@@ -1,7 +1,9 @@
 package info.u_team.music_player.gui.settings;
 
 import static info.u_team.music_player.init.MusicPlayerLocalization.GUI_SETTINGS_MIXER_DEVICE_SELECTION;
+import static info.u_team.music_player.init.MusicPlayerLocalization.GUI_SETTINGS_PITCH;
 import static info.u_team.music_player.init.MusicPlayerLocalization.GUI_SETTINGS_POSITION_OVERLAY;
+import static info.u_team.music_player.init.MusicPlayerLocalization.GUI_SETTINGS_SPEED;
 import static info.u_team.music_player.init.MusicPlayerLocalization.GUI_SETTINGS_TOGGLE_INGAME_OVERLAY;
 import static info.u_team.music_player.init.MusicPlayerLocalization.GUI_SETTINGS_TOGGLE_KEY_IN_GUI;
 import static info.u_team.music_player.init.MusicPlayerLocalization.GUI_SETTINGS_TOGGLE_MENUE_OVERLAY;
@@ -20,8 +22,11 @@ import info.u_team.u_team_core.gui.elements.ScrollingText;
 import info.u_team.u_team_core.gui.elements.UButton;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.components.AbstractSliderButton;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
+import net.minecraft.util.Mth;
 
 public class GuiMusicPlayerSettings extends BetterScreen {
 	
@@ -66,7 +71,43 @@ public class GuiMusicPlayerSettings extends BetterScreen {
 			ingameOverlayPositionButton.setMessage(Component.nullToEmpty(getTranslation(GUI_SETTINGS_POSITION_OVERLAY) + ": " + getTranslation(settings.getIngameOverlayPosition().getLocalization())));
 		});
 		
-		mixerDeviceList = new GuiMusicPlayerSettingsMixerDeviceList(width - 24, height, 133, 183, 12, width - 12);
+		// TODO replace with uslider
+		addRenderableWidget(new AbstractSliderButton(12, 120, width / 2 - 24, 20, CommonComponents.EMPTY, MusicPlayerManager.getPlayer().getSpeed() / 4F) {
+			
+			{
+				updateMessage();
+			}
+			
+			@Override
+			protected void updateMessage() {
+				setMessage(Component.literal(getTranslation(GUI_SETTINGS_SPEED) + ": " + Math.round(MusicPlayerManager.getPlayer().getSpeed() * 100F) / 100F));
+			}
+			
+			@Override
+			protected void applyValue() {
+				MusicPlayerManager.getPlayer().setSpeed((float) Mth.clampedLerp(0.1F, 4F, value));
+			}
+		});
+		
+		// TODO replace with uslider
+		addRenderableWidget(new AbstractSliderButton(width / 2 + 14, 120, width / 2 - 24, 20, CommonComponents.EMPTY, MusicPlayerManager.getPlayer().getPitch() / 3F) {
+			
+			{
+				updateMessage();
+			}
+			
+			@Override
+			protected void updateMessage() {
+				setMessage(Component.literal(getTranslation(GUI_SETTINGS_PITCH) + ": " + Math.round(MusicPlayerManager.getPlayer().getPitch() * 100F) / 100F));
+			}
+			
+			@Override
+			protected void applyValue() {
+				MusicPlayerManager.getPlayer().setPitch((float) Mth.clampedLerp(0.1F, 3F, value));
+			}
+		});
+		
+		mixerDeviceList = new GuiMusicPlayerSettingsMixerDeviceList(width - 24, height, 163, Math.max(163 + 20, height - 12), 12, width - 12);
 		addWidget(mixerDeviceList);
 		
 		controls = new GuiControls(this, 5, width);
@@ -91,7 +132,7 @@ public class GuiMusicPlayerSettings extends BetterScreen {
 	public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
 		renderDirtBackground(guiGraphics);
 		mixerDeviceList.render(guiGraphics, mouseX, mouseY, partialTicks);
-		guiGraphics.drawString(minecraft.font, getTranslation(GUI_SETTINGS_MIXER_DEVICE_SELECTION), 13, 117, 0xFFFFFF);
+		guiGraphics.drawString(minecraft.font, getTranslation(GUI_SETTINGS_MIXER_DEVICE_SELECTION), 13, 147, 0xFFFFFF);
 		controls.render(guiGraphics, mouseX, mouseY, partialTicks);
 		super.render(guiGraphics, mouseX, mouseY, partialTicks);
 	}
