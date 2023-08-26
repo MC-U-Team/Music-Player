@@ -1,6 +1,11 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [1.20.1-2.7.0.235] - 2023-08-26
+### Changed
+ - Use lavaplayer fork from lavalink-devs
+ - Add lavadsp to support playback speed changes and pitch changes
+
 ## [1.20.1-2.6.0.226] - 2023-07-25
 ### Changed
  - Fix crash on startup when twitch.tv and other provider sites cannot be reached
