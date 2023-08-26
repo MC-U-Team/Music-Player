@@ -3,7 +3,7 @@ apply plugin: "java"
 repositories {
 	mavenCentral()
 	maven {
-		url "https://maven.arbjerg.dev/releases"
+		url "https://m2.dv8tion.net/releases"
 	}
 	maven {
 		url "https://jitpack.io"
@@ -52,10 +52,19 @@ sourceSets {
 }
 
 dependencies {
-	musicplayer "dev.arbjerg:lavaplayer:2.0.1"
+	musicplayer "com.github.walkyst:lavaplayer-fork:1.4.3"
 
-	musicplayer "org.slf4j:slf4j-simple:2.0.7"
-	musicplayer "org.slf4j:jcl-over-slf4j:2.0.7"
+	musicplayer "org.slf4j:slf4j-simple:1.7.36"
+	musicplayer "org.slf4j:jcl-over-slf4j:1.7.36"
+
+	musicplayer "org.apache.httpcomponents:httpclient:4.5.14"
+	musicplayer "org.apache.httpcomponents:httpcore:4.4.16"
+	musicplayer "commons-codec:commons-codec:1.16.0"
+	musicplayer "commons-io:commons-io:2.13.0"
+
+	musicplayer "com.fasterxml.jackson.core:jackson-databind:2.15.2"
+
+	musicplayer "org.jsoup:jsoup:1.16.1"
 
 	implementation project(":musicplayer-lavaplayer-api")
 }
