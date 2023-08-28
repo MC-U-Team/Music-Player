@@ -3,6 +3,7 @@ package info.u_team.music_player.gui.playlist;
 import info.u_team.music_player.gui.util.GuiTrackUtils;
 import info.u_team.music_player.init.MusicPlayerResources;
 import info.u_team.music_player.lavaplayer.api.audio.IAudioTrack;
+import info.u_team.music_player.lavaplayer.api.audio.IPlayingTrack;
 import info.u_team.music_player.lavaplayer.api.queue.ITrackManager;
 import info.u_team.music_player.musicplayer.MusicPlayerManager;
 import info.u_team.music_player.musicplayer.playlist.LoadedTracks;
@@ -77,7 +78,8 @@ public abstract class GuiMusicPlaylistListEntryPlayable extends GuiMusicPlaylist
 	}
 	
 	protected IAudioTrack getCurrentlyPlaying() {
-		return manager.getCurrentTrack() == null ? null : manager.getCurrentTrack().getOriginalTrack();
+		final IPlayingTrack track = manager.getCurrentTrack();
+		return track == null ? null : track.getOriginalTrack();
 	}
 	
 	protected boolean isPlaying() {
