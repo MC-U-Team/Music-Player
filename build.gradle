@@ -198,7 +198,7 @@ sourceSets {
 dependencies {
 	library project(":musicplayer-lavaplayer-api")
 	shade "org.slf4j:slf4j-simple:1.7.36"
-	shade ("net.harawata:appdirs:1.0.0") {
+	shade ("net.harawata:appdirs:1.2.2") {
 		transitive=false
 	}
 	tinyfd ("org.lwjgl:lwjgl-tinyfd:3.2.2:natives-linux") {
