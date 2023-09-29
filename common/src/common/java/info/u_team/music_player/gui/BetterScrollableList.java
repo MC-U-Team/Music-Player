@@ -8,7 +8,7 @@ public class BetterScrollableList<T extends ObjectSelectionList.Entry<T>> extend
 	
 	public BetterScrollableList(int width, int height, int top, int bottom, int left, int right, int slotHeight, int sideDistance) {
 		super(width, height, top, bottom, left, right, slotHeight, sideDistance);
-		setRenderTopAndBottom(false);
+		setRenderHeader(false, 0);
 		setRenderTransparentBorder(true);
 	}
 	

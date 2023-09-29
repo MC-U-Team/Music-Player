@@ -21,9 +21,9 @@ public interface BetterNestedGui extends ContainerEventHandler {
 	}
 	
 	@Override
-	public default boolean mouseScrolled(double mouseX, double mouseY, double button) {
+	public default boolean mouseScrolled(double mouseX, double mouseY, double button, double value) {
 		final Collection<GuiEventListener> list = getEventListenersForPos(mouseX, mouseY);
-		getEventListenersForPos(mouseX, mouseY).forEach(listener -> listener.mouseScrolled(mouseX, mouseY, button));
+		getEventListenersForPos(mouseX, mouseY).forEach(listener -> listener.mouseScrolled(mouseX, mouseY, button, value));
 		return !list.isEmpty();
 	}
 	

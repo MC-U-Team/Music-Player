@@ -66,7 +66,6 @@ public class GuiMusicPlayer extends BetterScreen {
 	
 	@Override
 	public void tick() {
-		namePlaylistField.tick();
 		controls.tick();
 	}
 	

@@ -161,8 +161,6 @@ public class GuiMusicSearch extends BetterScreen {
 	
 	@Override
 	public void tick() {
-		urlField.tick();
-		searchField.tick();
 		informationTicks++;
 	}
 	
