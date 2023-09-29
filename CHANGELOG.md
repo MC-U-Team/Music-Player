@@ -1,6 +1,11 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [1.20.1-2.7.0.236] - 2023-09-29
+### Changed
+ - Update lavaplayer (lavalink fork) to 2.0.2
+ - Fix crash in some cases
+
 ## [1.20.1-2.7.0.235] - 2023-08-26
 ### Changed
  - Use lavaplayer fork from lavalink-devs
