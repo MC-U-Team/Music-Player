@@ -177,7 +177,6 @@ curseforge {
 		releaseType = config.curse.type
 		
 		addGameVersion config.minecraft.version
-		addGameVersion "NeoForge"
 		addGameVersion "Forge"
 		addGameVersion "Java 17"
 		
