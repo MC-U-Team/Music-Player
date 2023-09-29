@@ -166,7 +166,7 @@ public class GuiMusicSearch extends BetterScreen {
 	
 	@Override
 	public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
-		renderDirtBackground(guiGraphics);
+		super.render(guiGraphics, mouseX, mouseY, partialTicks);
 		searchList.render(guiGraphics, mouseX, mouseY, partialTicks);
 		
 		guiGraphics.drawCenteredString(minecraft.font, getTranslation(GUI_SEARCH_HEADER), width / 2, 5, 0xFFFFFF);
@@ -180,7 +180,11 @@ public class GuiMusicSearch extends BetterScreen {
 		
 		urlField.render(guiGraphics, mouseX, mouseY, partialTicks);
 		searchField.render(guiGraphics, mouseX, mouseY, partialTicks);
-		super.render(guiGraphics, mouseX, mouseY, partialTicks);
+	}
+	
+	@Override
+	public void renderBackground(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
+		renderDirtBackground(guiGraphics);
 	}
 	
 	@Override

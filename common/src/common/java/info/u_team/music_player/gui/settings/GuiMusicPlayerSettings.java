@@ -130,11 +130,15 @@ public class GuiMusicPlayerSettings extends BetterScreen {
 	
 	@Override
 	public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
-		renderDirtBackground(guiGraphics);
+		super.render(guiGraphics, mouseX, mouseY, partialTicks);
 		mixerDeviceList.render(guiGraphics, mouseX, mouseY, partialTicks);
 		guiGraphics.drawString(minecraft.font, getTranslation(GUI_SETTINGS_MIXER_DEVICE_SELECTION), 13, 147, 0xFFFFFF);
 		controls.render(guiGraphics, mouseX, mouseY, partialTicks);
-		super.render(guiGraphics, mouseX, mouseY, partialTicks);
+	}
+	
+	@Override
+	public void renderBackground(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
+		renderDirtBackground(guiGraphics);
 	}
 	
 }

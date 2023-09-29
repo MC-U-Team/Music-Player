@@ -81,10 +81,14 @@ public class GuiMusicPlaylist extends BetterScreen {
 	
 	@Override
 	public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
-		renderDirtBackground(guiGraphics);
+		super.render(guiGraphics, mouseX, mouseY, partialTicks);
 		trackList.render(guiGraphics, mouseX, mouseY, partialTicks);
 		controls.render(guiGraphics, mouseX, mouseY, partialTicks);
-		super.render(guiGraphics, mouseX, mouseY, partialTicks);
+	}
+	
+	@Override
+	public void renderBackground(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
+		renderDirtBackground(guiGraphics);
 	}
 	
 	public GuiMusicPlaylistList getTrackList() {
