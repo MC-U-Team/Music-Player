@@ -60,7 +60,7 @@ sourceSets {
 }
 
 dependencies {
-	musicplayer "dev.arbjerg:lavaplayer:2.0.1"
+	musicplayer "dev.arbjerg:lavaplayer:2.0.2"
 	musicplayer "dev.arbjerg:lavadsp:0.7.8"
 	
 	musicplayer "org.slf4j:slf4j-simple:2.0.7"
