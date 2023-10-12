@@ -30,12 +30,11 @@ public class Main {
 	public Main() {
 		final MusicPlayer musicPlayer = new MusicPlayer();
 		musicPlayer.startAudioOutput();
-		
 		musicPlayer.setVolume(10);
 		
 		final ITrackManager manager = musicPlayer.getTrackManager();
 		
-		musicPlayer.getTrackSearch().getTracks("https://www.youtube.com/playlist?list=PLyseegEZ84-drkYTkLldkiIBPHRJd7Xgd", result -> {
+		musicPlayer.getTrackSearch().getTracks("https://www.youtube.com/watch?v=bnoAe_5i__8", result -> {
 			if (result.isList()) {
 				manager.setTrackQueue(new TrackQueue(result.getTrackList().getTracks()));
 			} else {
@@ -59,14 +58,22 @@ public class Main {
 					final IAudioTrack audioTrack = manager.getCurrentTrack();
 					System.out.println((float) audioTrack.getPosition() / audioTrack.getDuration());
 				} else if (line.startsWith("speed")) {
-					try {
-						musicPlayer.setSpeed(Float.parseFloat(line.substring("speed ".length())));
-					} catch (NumberFormatException ex) {
+					if (line.stripTrailing().endsWith("speed")) {
+						System.out.println(musicPlayer.getSpeed());
+					} else {
+						try {
+							musicPlayer.setSpeed(Float.parseFloat(line.substring("speed ".length())));
+						} catch (NumberFormatException ex) {
+						}
 					}
 				} else if (line.startsWith("pitch")) {
-					try {
-						musicPlayer.setPitch(Float.parseFloat(line.substring("pitch ".length())));
-					} catch (NumberFormatException ex) {
+					if (line.stripTrailing().endsWith("pitch")) {
+						System.out.println(musicPlayer.getSpeed());
+					} else {
+						try {
+							musicPlayer.setPitch(Float.parseFloat(line.substring("pitch ".length())));
+						} catch (NumberFormatException ex) {
+						}
 					}
 				} else if (line.startsWith("stop")) {
 					manager.stop();
@@ -77,6 +84,15 @@ public class Main {
 				} else if (line.startsWith("playing")) {
 					final IAudioTrack audioTrack = manager.getCurrentTrack();
 					System.out.println(audioTrack.getInfo().getAuthor() + " - " + audioTrack.getInfo().getTitle());
+				} else if (line.startsWith("devices")) {
+					System.out.println("Available devices: ");
+					musicPlayer.audioDevices().forEach(System.out::println);
+				} else if (line.startsWith("device")) {
+					if (line.stripTrailing().endsWith("device")) {
+						System.out.println(musicPlayer.getAudioDevice());
+					} else {
+						musicPlayer.setAudioDevice(line.substring("device ".length()));
+					}
 				}
 			}
 			scanner.close();

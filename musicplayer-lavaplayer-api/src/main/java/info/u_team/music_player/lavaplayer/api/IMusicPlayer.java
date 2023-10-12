@@ -1,6 +1,6 @@
 package info.u_team.music_player.lavaplayer.api;
 
-import javax.sound.sampled.DataLine;
+import java.util.List;
 
 import info.u_team.music_player.lavaplayer.api.output.IOutputConsumer;
 import info.u_team.music_player.lavaplayer.api.queue.ITrackManager;
@@ -14,11 +14,11 @@ public interface IMusicPlayer {
 	
 	void startAudioOutput();
 	
-	void setMixer(String name);
+	List<String> audioDevices();
 	
-	String getMixer();
+	void setAudioDevice(String name);
 	
-	DataLine.Info getSpeakerInfo();
+	String getAudioDevice();
 	
 	int getVolume();
 	

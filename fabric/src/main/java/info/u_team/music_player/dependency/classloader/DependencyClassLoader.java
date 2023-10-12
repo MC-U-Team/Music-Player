@@ -7,7 +7,7 @@ import java.util.Collection;
 
 public class DependencyClassLoader extends URLClassLoader {
 	
-	private final Collection<String> ourClassLoaderPackages = Arrays.asList("info.u_team.music_player.lavaplayer.api", "javax.script");
+	private final Collection<String> ourClassLoaderPackages = Arrays.asList("info.u_team.music_player.lavaplayer.api", "javax.script", "javax.lang", "org.lwjgl");
 	
 	static {
 		ClassLoader.registerAsParallelCapable();

@@ -1,10 +1,9 @@
 package info.u_team.music_player.lavaplayer;
 
 import java.util.Collections;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
-
-import javax.sound.sampled.DataLine.Info;
 
 import com.github.natanbc.lavadsp.timescale.TimescalePcmAudioFilter;
 import com.sedmelluq.discord.lavaplayer.format.AudioDataFormat;
@@ -47,7 +46,7 @@ public class MusicPlayer implements IMusicPlayer {
 	
 	public MusicPlayer() {
 		audioPlayerManager = new DefaultAudioPlayerManager();
-		audioDataFormat = new Pcm16AudioDataFormat(2, 48000, 960, true);
+		audioDataFormat = new Pcm16AudioDataFormat(2, 48000, 960, false);
 		audioPlayer = audioPlayerManager.createPlayer();
 		audioOutput = new AudioOutput(this);
 		
@@ -157,18 +156,18 @@ public class MusicPlayer implements IMusicPlayer {
 	}
 	
 	@Override
-	public void setMixer(String name) {
-		audioOutput.setMixer(name);
+	public List<String> audioDevices() {
+		return audioOutput.audioDevices();
 	}
 	
 	@Override
-	public String getMixer() {
-		return audioOutput.getMixer();
+	public void setAudioDevice(String name) {
+		audioOutput.setAudioDevice(name);
 	}
 	
 	@Override
-	public Info getSpeakerInfo() {
-		return audioOutput.getSpeakerInfo();
+	public String getAudioDevice() {
+		return audioOutput.getAudioDevice();
 	}
 	
 	@Override
