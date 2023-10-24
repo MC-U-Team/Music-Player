@@ -19,8 +19,8 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.lwjgl.glfw.GLFW;
-import org.lwjgl.util.tinyfd.TinyFileDialogs;
 
+import info.u_team.music_player.dependency.TinyFdHelper;
 import info.u_team.music_player.gui.BetterScreen;
 import info.u_team.music_player.gui.playlist.GuiMusicPlaylist;
 import info.u_team.music_player.init.MusicPlayerResources;
@@ -85,7 +85,7 @@ public class GuiMusicSearch extends BetterScreen {
 		
 		final UButton openFileButton = addButton(new UButton(width / 2 + 10, 34, width / 4 - 15, 22, getTranslation(GUI_SEARCH_LOAD_FILE)));
 		openFileButton.setPressable(() -> {
-			final String response = TinyFileDialogs.tinyfd_openFileDialog(getSearchLoadFileTitle(lang), null, null, getSearchLoadFiles(lang), false);
+			final String response = TinyFdHelper.openFileDialog(getSearchLoadFileTitle(lang), null, null, getSearchLoadFiles(lang), false);
 			if (response != null) {
 				searchList.clear();
 				addTrack(response);
@@ -94,7 +94,7 @@ public class GuiMusicSearch extends BetterScreen {
 		
 		final UButton openFolderButton = addButton(new UButton((int) (width * 0.75) + 5, 34, width / 4 - 15, 22, getTranslation(GUI_SEARCH_LOAD_FOLDER)));
 		openFolderButton.setPressable(() -> {
-			final String response = TinyFileDialogs.tinyfd_selectFolderDialog(getSearchLoadFolderTitle(lang), System.getProperty("user.home"));
+			final String response = TinyFdHelper.selectFolderDialog(getSearchLoadFolderTitle(lang), System.getProperty("user.home"));
 			if (response != null) {
 				searchList.clear();
 				try (Stream<Path> stream = Files.list(Paths.get(response))) {
