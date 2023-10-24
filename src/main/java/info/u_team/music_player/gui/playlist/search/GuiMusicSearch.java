@@ -5,7 +5,6 @@ import static info.u_team.music_player.init.MusicPlayerLocalization.GUI_SEARCH_A
 import static info.u_team.music_player.init.MusicPlayerLocalization.GUI_SEARCH_HEADER;
 import static info.u_team.music_player.init.MusicPlayerLocalization.GUI_SEARCH_LOAD_FILE;
 import static info.u_team.music_player.init.MusicPlayerLocalization.GUI_SEARCH_LOAD_FOLDER;
-import static info.u_team.music_player.init.MusicPlayerLocalization.GUI_SEARCH_MUSIC_FILES;
 import static info.u_team.music_player.init.MusicPlayerLocalization.GUI_SEARCH_SEARCH_FILE;
 import static info.u_team.music_player.init.MusicPlayerLocalization.GUI_SEARCH_SEARCH_SEARCH;
 import static info.u_team.music_player.init.MusicPlayerLocalization.GUI_SEARCH_SEARCH_URI;
@@ -35,6 +34,7 @@ import info.u_team.u_team_core.gui.elements.ImageButton;
 import info.u_team.u_team_core.gui.elements.UButton;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.widget.TextFieldWidget;
+import net.minecraft.client.resources.Language;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
@@ -77,9 +77,12 @@ public class GuiMusicSearch extends BetterScreen {
 		urlField.setMaxStringLength(10000);
 		children.add(urlField);
 		
+		final Language language = Minecraft.getInstance().getLanguageManager().getCurrentLanguage();
+		final String lang = language != null ? language.getCode() : null;
+		
 		final UButton openFileButton = addButton(new UButton(width / 2 + 10, 34, width / 4 - 15, 22, ITextComponent.getTextComponentOrEmpty(getTranslation(GUI_SEARCH_LOAD_FILE))));
 		openFileButton.setPressable(() -> {
-			final String response = TinyFileDialogs.tinyfd_openFileDialog(getTranslation(GUI_SEARCH_LOAD_FILE), null, null, getTranslation(GUI_SEARCH_MUSIC_FILES), false);
+			final String response = TinyFileDialogs.tinyfd_openFileDialog(getSearchLoadFileTitle(lang), null, null, getSearchLoadFiles(lang), false);
 			if (response != null) {
 				searchList.clear();
 				addTrack(response);
@@ -88,7 +91,7 @@ public class GuiMusicSearch extends BetterScreen {
 		
 		final UButton openFolderButton = addButton(new UButton((int) (width * 0.75) + 5, 34, width / 4 - 15, 22, ITextComponent.getTextComponentOrEmpty(getTranslation(GUI_SEARCH_LOAD_FOLDER))));
 		openFolderButton.setPressable(() -> {
-			final String response = TinyFileDialogs.tinyfd_selectFolderDialog(getTranslation(GUI_SEARCH_LOAD_FOLDER), System.getProperty("user.home"));
+			final String response = TinyFileDialogs.tinyfd_selectFolderDialog(getSearchLoadFolderTitle(lang), System.getProperty("user.home"));
 			if (response != null) {
 				searchList.clear();
 				try (Stream<Path> stream = Files.list(Paths.get(response))) {
@@ -241,5 +244,80 @@ public class GuiMusicSearch extends BetterScreen {
 				}
 			});
 		});
+	}
+	
+	/**
+	 * This method exists instead of a normal translation due to a vulnerability in the TinyFileDialogs library allowing for
+	 * command injection.
+	 */
+	private static String getSearchLoadFileTitle(String lang) {
+		switch (lang) {
+		case "jp_jp":
+			return "ファイルを読み込む";
+		case "ko_kr":
+			return "파일 불러오기";
+		case "pt_br":
+			return "Subir arquivo";
+		case "ru_ru":
+			return "Загрузить файл";
+		case "zn_cn":
+			return "加载文件";
+		case "zn_tw":
+			return "載入檔案";
+		case "de_de":
+			return "Lade eine Datei";
+		default:
+			return "Load file";
+		}
+	}
+	
+	/**
+	 * This method exists instead of a normal translation due to a vulnerability in the TinyFileDialogs library allowing for
+	 * command injection.
+	 */
+	private static String getSearchLoadFiles(String lang) {
+		switch (lang) {
+		case "jp_jp":
+			return "ミュージックファイル";
+		case "ko_kr":
+			return "음악 파일";
+		case "pt_br":
+			return "arquivos de música";
+		case "ru_ru":
+			return "Файлы с музыкой";
+		case "zn_cn":
+			return "音乐文件";
+		case "zn_tw":
+			return "音樂檔案";
+		case "de_de":
+			return "Musikdatein";
+		default:
+			return "Music files";
+		}
+	}
+	
+	/**
+	 * This method exists instead of a normal translation due to a vulnerability in the TinyFileDialogs library allowing for
+	 * command injection.
+	 */
+	private static String getSearchLoadFolderTitle(String lang) {
+		switch (lang) {
+		case "jp_jp":
+			return "フォルダを読み込む";
+		case "ko_kr":
+			return "폴더 불러오기";
+		case "pt_br":
+			return "Pasta de download";
+		case "ru_ru":
+			return "Загрузить папку";
+		case "zn_cn":
+			return "加载文件夹";
+		case "zn_tw":
+			return "載入資料夾";
+		case "de_de":
+			return "Lade einen Ordner";
+		default:
+			return "Load folder";
+		}
 	}
 }
