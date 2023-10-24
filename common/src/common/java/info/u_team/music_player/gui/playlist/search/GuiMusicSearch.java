@@ -5,7 +5,6 @@ import static info.u_team.music_player.init.MusicPlayerLocalization.GUI_SEARCH_A
 import static info.u_team.music_player.init.MusicPlayerLocalization.GUI_SEARCH_HEADER;
 import static info.u_team.music_player.init.MusicPlayerLocalization.GUI_SEARCH_LOAD_FILE;
 import static info.u_team.music_player.init.MusicPlayerLocalization.GUI_SEARCH_LOAD_FOLDER;
-import static info.u_team.music_player.init.MusicPlayerLocalization.GUI_SEARCH_MUSIC_FILES;
 import static info.u_team.music_player.init.MusicPlayerLocalization.GUI_SEARCH_SEARCH_FILE;
 import static info.u_team.music_player.init.MusicPlayerLocalization.GUI_SEARCH_SEARCH_SEARCH;
 import static info.u_team.music_player.init.MusicPlayerLocalization.GUI_SEARCH_SEARCH_URI;
@@ -75,9 +74,11 @@ public class GuiMusicSearch extends BetterScreen {
 		urlField.setMaxLength(10000);
 		addWidget(urlField);
 		
+		final String lang = Minecraft.getInstance().getLanguageManager().getSelected();
+		
 		final UButton openFileButton = addRenderableWidget(new UButton(width / 2 + 10, 34, width / 4 - 15, 22, Component.nullToEmpty(getTranslation(GUI_SEARCH_LOAD_FILE))));
 		openFileButton.setPressable(() -> {
-			final String response = TinyFileDialogs.tinyfd_openFileDialog(getTranslation(GUI_SEARCH_LOAD_FILE), null, null, getTranslation(GUI_SEARCH_MUSIC_FILES), false);
+			final String response = TinyFileDialogs.tinyfd_openFileDialog(getSearchLoadFileTitle(lang), null, null, getSearchLoadFiles(lang), false);
 			if (response != null) {
 				searchList.clear();
 				addTrack(response);
@@ -86,7 +87,7 @@ public class GuiMusicSearch extends BetterScreen {
 		
 		final UButton openFolderButton = addRenderableWidget(new UButton((int) (width * 0.75) + 5, 34, width / 4 - 15, 22, Component.nullToEmpty(getTranslation(GUI_SEARCH_LOAD_FOLDER))));
 		openFolderButton.setPressable(() -> {
-			final String response = TinyFileDialogs.tinyfd_selectFolderDialog(getTranslation(GUI_SEARCH_LOAD_FOLDER), System.getProperty("user.home"));
+			final String response = TinyFileDialogs.tinyfd_selectFolderDialog(getSearchLoadFolderTitle(lang), System.getProperty("user.home"));
 			if (response != null) {
 				searchList.clear();
 				try (Stream<Path> stream = Files.list(Paths.get(response))) {
@@ -234,5 +235,56 @@ public class GuiMusicSearch extends BetterScreen {
 				}
 			});
 		});
+	}
+	
+	/**
+	 * This method exists instead of a normal translation due to a vulnerability in the TinyFileDialogs library allowing for
+	 * command injection.
+	 */
+	private static String getSearchLoadFileTitle(String lang) {
+		return switch (lang) {
+		case "jp_jp" -> "ファイルを読み込む";
+		case "ko_kr" -> "파일 불러오기";
+		case "pt_br" -> "Subir arquivo";
+		case "ru_ru" -> "Загрузить файл";
+		case "zn_cn" -> "加载文件";
+		case "zn_tw" -> "載入檔案";
+		case "de_de" -> "Lade eine Datei";
+		default -> "Load file";
+		};
+	}
+	
+	/**
+	 * This method exists instead of a normal translation due to a vulnerability in the TinyFileDialogs library allowing for
+	 * command injection.
+	 */
+	private static String getSearchLoadFiles(String lang) {
+		return switch (lang) {
+		case "jp_jp" -> "ミュージックファイル";
+		case "ko_kr" -> "음악 파일";
+		case "pt_br" -> "arquivos de música";
+		case "ru_ru" -> "Файлы с музыкой";
+		case "zn_cn" -> "音乐文件";
+		case "zn_tw" -> "音樂檔案";
+		case "de_de" -> "Musikdatein";
+		default -> "Music files";
+		};
+	}
+	
+	/**
+	 * This method exists instead of a normal translation due to a vulnerability in the TinyFileDialogs library allowing for
+	 * command injection.
+	 */
+	private static String getSearchLoadFolderTitle(String lang) {
+		return switch (lang) {
+		case "jp_jp" -> "フォルダを読み込む";
+		case "ko_kr" -> "폴더 불러오기";
+		case "pt_br" -> "Pasta de download";
+		case "ru_ru" -> "Загрузить папку";
+		case "zn_cn" -> "加载文件夹";
+		case "zn_tw" -> "載入資料夾";
+		case "de_de" -> "Lade einen Ordner";
+		default -> "Load folder";
+		};
 	}
 }
