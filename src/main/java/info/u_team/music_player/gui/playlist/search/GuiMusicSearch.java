@@ -35,6 +35,7 @@ import info.u_team.u_team_core.gui.elements.UButton;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.EditBox;
+import net.minecraft.client.resources.language.LanguageInfo;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 
@@ -76,7 +77,8 @@ public class GuiMusicSearch extends BetterScreen {
 		urlField.setMaxLength(10000);
 		addWidget(urlField);
 		
-		final String lang = Minecraft.getInstance().getLanguageManager().getSelected();
+		final LanguageInfo language = Minecraft.getInstance().getLanguageManager().getSelected();
+		final String lang = language != null ? language.getCode() : null;
 		
 		final UButton openFileButton = addRenderableWidget(new UButton(width / 2 + 10, 34, width / 4 - 15, 22, Component.nullToEmpty(getTranslation(GUI_SEARCH_LOAD_FILE))));
 		openFileButton.setPressable(() -> {
