@@ -18,9 +18,16 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+<<<<<<< HEAD
 import org.lwjgl.input.Keyboard;
 
 import info.u_team.music_player.dependency.TinyFdHelper;
+=======
+import org.lwjgl.glfw.GLFW;
+
+import info.u_team.music_player.dependency.TinyFdHelper;
+import info.u_team.music_player.gui.BetterScreen;
+>>>>>>> bd68b4e (Fix copy pasta)
 import info.u_team.music_player.gui.playlist.GuiMusicPlaylist;
 import info.u_team.music_player.init.MusicPlayerResources;
 import info.u_team.music_player.lavaplayer.api.audio.IAudioTrack;
@@ -75,18 +82,30 @@ public class GuiMusicSearch extends GuiScreen1_13 {
 		final Language language = Minecraft.getMinecraft().getLanguageManager().getCurrentLanguage();
 		final String lang = language != null ? language.getLanguageCode() : null;
 		
+<<<<<<< HEAD
 		final GuiButtonClick openFileButton = addNewButton(new GuiButtonClick(width / 2 + 10, 34, width / 4 - 15, 22, getTranslation(gui_search_load_file)));
 		openFileButton.setClickAction(() -> {
 			String response = TinyFdHelper.openFileDialog(getSearchLoadFileTitle(lang), null, null, getSearchLoadFiles(lang), false);
+=======
+		final UButton openFileButton = addButton(new UButton(width / 2 + 10, 34, width / 4 - 15, 22, getTranslation(GUI_SEARCH_LOAD_FILE)));
+		openFileButton.setPressable(() -> {
+			final String response = TinyFdHelper.openFileDialog(getSearchLoadFileTitle(lang), null, null, getSearchLoadFiles(lang), false);
+>>>>>>> bd68b4e (Fix copy pasta)
 			if (response != null) {
 				searchList.clear();
 				addTrack(response);
 			}
 		});
 		
+<<<<<<< HEAD
 		final GuiButtonClick openFolderButton = addNewButton(new GuiButtonClick((int) (width * 0.75) + 5, 34, width / 4 - 15, 22, getTranslation(gui_search_load_folder)));
 		openFolderButton.setClickAction(() -> {
 			String response = TinyFdHelper.selectFolderDialog(getSearchLoadFolderTitle(lang), System.getProperty("user.home"));
+=======
+		final UButton openFolderButton = addButton(new UButton((int) (width * 0.75) + 5, 34, width / 4 - 15, 22, getTranslation(GUI_SEARCH_LOAD_FOLDER)));
+		openFolderButton.setPressable(() -> {
+			final String response = TinyFdHelper.selectFolderDialog(getSearchLoadFolderTitle(lang), System.getProperty("user.home"));
+>>>>>>> bd68b4e (Fix copy pasta)
 			if (response != null) {
 				searchList.clear();
 				try (Stream<Path> stream = Files.list(Paths.get(response))) {
