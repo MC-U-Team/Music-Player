@@ -1,23 +1,38 @@
 package info.u_team.music_player.gui.playlist.search;
 
-import static info.u_team.music_player.init.MusicPlayerLocalization.*;
+import static info.u_team.music_player.init.MusicPlayerLocalization.getTranslation;
+import static info.u_team.music_player.init.MusicPlayerLocalization.gui_search_add_all;
+import static info.u_team.music_player.init.MusicPlayerLocalization.gui_search_added_all;
+import static info.u_team.music_player.init.MusicPlayerLocalization.gui_search_header;
+import static info.u_team.music_player.init.MusicPlayerLocalization.gui_search_load_file;
+import static info.u_team.music_player.init.MusicPlayerLocalization.gui_search_load_folder;
+import static info.u_team.music_player.init.MusicPlayerLocalization.gui_search_search_file;
+import static info.u_team.music_player.init.MusicPlayerLocalization.gui_search_search_search;
+import static info.u_team.music_player.init.MusicPlayerLocalization.gui_search_search_uri;
 
 import java.io.IOException;
-import java.nio.file.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
-import java.util.stream.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.lwjgl.input.Keyboard;
 
 import info.u_team.music_player.dependency.TinyFdHelper;
 import info.u_team.music_player.gui.playlist.GuiMusicPlaylist;
 import info.u_team.music_player.init.MusicPlayerResources;
-import info.u_team.music_player.lavaplayer.api.audio.*;
+import info.u_team.music_player.lavaplayer.api.audio.IAudioTrack;
+import info.u_team.music_player.lavaplayer.api.audio.IAudioTrackList;
 import info.u_team.music_player.musicplayer.MusicPlayerManager;
 import info.u_team.music_player.musicplayer.playlist.Playlist;
-import info.u_team.u_team_core.gui.elements.*;
-import info.u_team.u_team_core.gui.elements.backport.*;
+import info.u_team.u_team_core.gui.elements.GuiButtonClick;
+import info.u_team.u_team_core.gui.elements.GuiButtonClickImage;
+import info.u_team.u_team_core.gui.elements.backport.GuiScreen1_13;
+import info.u_team.u_team_core.gui.elements.backport.GuiTextFieldNew;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.resources.Language;
 import net.minecraft.util.text.TextFormatting;
 
 public class GuiMusicSearch extends GuiScreen1_13 {
@@ -57,9 +72,12 @@ public class GuiMusicSearch extends GuiScreen1_13 {
 		urlField.setMaxStringLength(10000);
 		children.add(urlField);
 		
+		final Language language = Minecraft.getMinecraft().getLanguageManager().getCurrentLanguage();
+		final String lang = language != null ? language.getLanguageCode() : null;
+		
 		final GuiButtonClick openFileButton = addNewButton(new GuiButtonClick(width / 2 + 10, 34, width / 4 - 15, 22, getTranslation(gui_search_load_file)));
 		openFileButton.setClickAction(() -> {
-			String response = TinyFdHelper.openFileDialog(getTranslation(gui_search_load_file), null, null, getTranslation(gui_search_music_files), false);
+			String response = TinyFdHelper.openFileDialog(getSearchLoadFileTitle(lang), null, null, getSearchLoadFiles(lang), false);
 			if (response != null) {
 				searchList.clear();
 				addTrack(response);
@@ -68,7 +86,7 @@ public class GuiMusicSearch extends GuiScreen1_13 {
 		
 		final GuiButtonClick openFolderButton = addNewButton(new GuiButtonClick((int) (width * 0.75) + 5, 34, width / 4 - 15, 22, getTranslation(gui_search_load_folder)));
 		openFolderButton.setClickAction(() -> {
-			String response = TinyFdHelper.selectFolderDialog(getTranslation(gui_search_load_folder), System.getProperty("user.home"));
+			String response = TinyFdHelper.selectFolderDialog(getSearchLoadFolderTitle(lang), System.getProperty("user.home"));
 			if (response != null) {
 				searchList.clear();
 				try (Stream<Path> stream = Files.list(Paths.get(response))) {
@@ -199,5 +217,80 @@ public class GuiMusicSearch extends GuiScreen1_13 {
 				}
 			});
 		});
+	}
+	
+	/**
+	 * This method exists instead of a normal translation due to a vulnerability in the TinyFileDialogs library allowing for
+	 * command injection.
+	 */
+	private static String getSearchLoadFileTitle(String lang) {
+		switch (lang) {
+		case "jp_jp":
+			return "ファイルを読み込む";
+		case "ko_kr":
+			return "파일 불러오기";
+		case "pt_br":
+			return "Subir arquivo";
+		case "ru_ru":
+			return "Загрузить файл";
+		case "zn_cn":
+			return "加载文件";
+		case "zn_tw":
+			return "載入檔案";
+		case "de_de":
+			return "Lade eine Datei";
+		default:
+			return "Load file";
+		}
+	}
+	
+	/**
+	 * This method exists instead of a normal translation due to a vulnerability in the TinyFileDialogs library allowing for
+	 * command injection.
+	 */
+	private static String getSearchLoadFiles(String lang) {
+		switch (lang) {
+		case "jp_jp":
+			return "ミュージックファイル";
+		case "ko_kr":
+			return "음악 파일";
+		case "pt_br":
+			return "arquivos de música";
+		case "ru_ru":
+			return "Файлы с музыкой";
+		case "zn_cn":
+			return "音乐文件";
+		case "zn_tw":
+			return "音樂檔案";
+		case "de_de":
+			return "Musikdatein";
+		default:
+			return "Music files";
+		}
+	}
+	
+	/**
+	 * This method exists instead of a normal translation due to a vulnerability in the TinyFileDialogs library allowing for
+	 * command injection.
+	 */
+	private static String getSearchLoadFolderTitle(String lang) {
+		switch (lang) {
+		case "jp_jp":
+			return "フォルダを読み込む";
+		case "ko_kr":
+			return "폴더 불러오기";
+		case "pt_br":
+			return "Pasta de download";
+		case "ru_ru":
+			return "Загрузить папку";
+		case "zn_cn":
+			return "加载文件夹";
+		case "zn_tw":
+			return "載入資料夾";
+		case "de_de":
+			return "Lade einen Ordner";
+		default:
+			return "Load folder";
+		}
 	}
 }
