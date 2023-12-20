@@ -2,7 +2,7 @@ pluginManagement {
 	resolutionStrategy {
 		eachPlugin {
 			if (requested.id.toString().equals("info.u_team.gradle_files")) {
-				useModule("info.u-team.gradle_files:gradle_files:2.0.5")
+				useModule("info.u-team.gradle_files:gradle_files:4.0.0")
 			}
 		}
 	}
