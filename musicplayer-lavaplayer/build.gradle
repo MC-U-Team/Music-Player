@@ -64,7 +64,7 @@ dependencies {
 	musicplayer "dev.arbjerg:lavadsp:0.7.8"
 	
 	musicplayer "org.slf4j:slf4j-simple:2.0.7"
-	musicplayer "org.slf4j:jcl-over-slf4j:2.0.7"
+	musicplayer "org.slf4j:jcl-over-slf4j:2.0.11"
 	
 	implementation project(":musicplayer-lavaplayer-api")
 }
