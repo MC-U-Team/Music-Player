@@ -2,13 +2,14 @@ plugins {
 	id "java"
 }
 
-repositories {
-	mavenCentral()
-	maven {
-		url "https://maven.arbjerg.dev/releases"
+sourceSets {
+	main {
+		java
+		resources
 	}
-	maven {
-		url "https://jitpack.io"
+	test_player {
+		java
+		resources
 	}
 }
 
@@ -24,47 +25,51 @@ configurations {
 	implementation.extendsFrom(musicplayer)
 }
 
-task deleteOldDep(type: Delete) {
-	delete fileTree("build/dependencies")
-}
+evaluationDependsOn(":musicplayer-lavaplayer-api")
 
-task copyNewDep(type: Copy) {
-	dependsOn deleteOldDep
-	
-	destinationDir = project.buildDir
-	into ("dependencies") {
-		from configurations.musicplayer
-	}
-	rename { String fileName ->
-		fileName += ".packed"
-	}
-}
-
-tasks.jar.dependsOn copyNewDep
-
-jar {
+tasks.named("jar").configure {
 	archiveExtension.set(archiveExtension.get() + ".packed")
 	
 	exclude("LICENSE-DEPENDENCIES")
 }
 
-sourceSets {
-	main {
-		java
-		resources
+tasks.register("deleteOldDependencies", Delete) {
+	delete layout.buildDirectory.dir("dependencies").map { it.asFileTree }
+}
+
+tasks.register("copyNewDependencies", Copy) {
+	dependsOn tasks.named("deleteOldDependencies")
+	
+	from configurations.musicplayer
+	into layout.buildDirectory.dir("dependencies")
+	rename { fileName ->
+		fileName += ".packed"
 	}
-	test_player {
-		java
-		resources
+}
+
+tasks.named("assemble").configure {
+	dependsOn tasks.named("copyNewDependencies")
+}
+
+repositories {
+	maven {
+		url "https://repo.u-team.info"
+	}
+	maven {
+		url "https://maven.arbjerg.dev/releases"
+	}
+	mavenCentral()
+	maven {
+		url "https://jitpack.io"
 	}
 }
 
 dependencies {
-	musicplayer "dev.arbjerg:lavaplayer:2.0.2"
+	musicplayer "net.hycrafthd.lavaplayer:lavaplayer:2.1.2-SNAPSHOT-j8"
 	musicplayer "dev.arbjerg:lavadsp:0.7.8"
 	
-	musicplayer "org.slf4j:slf4j-simple:2.0.7"
-	musicplayer "org.slf4j:jcl-over-slf4j:2.0.7"
+	musicplayer "org.slf4j:slf4j-simple:2.0.12"
+	musicplayer "org.slf4j:jcl-over-slf4j:2.0.12"
 	
 	implementation project(":musicplayer-lavaplayer-api")
 }

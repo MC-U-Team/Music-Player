@@ -4,17 +4,43 @@ plugins {
 }
 
 group = "info.u-team"
-archivesBaseName = gradlefiles.archivesBaseName()
+base.archivesName = gradlefiles.archivesName()
 version = gradlefiles.version()
 
 gradlefiles {
-	vendor "Team UTeam"
-	orderCurseforgeTasks(project(":forge"), project(":fabric"))
+	vendor = "Team UTeam"
+	orderModPublishTasks(gradlefiles.project("neoforge"), gradlefiles.project("forge"), gradlefiles.project("fabric"))
 }
 
-def devPath() {
-	final def buildDir = project(":musicplayer-lavaplayer").buildDir
-	final def libs = new File(buildDir, "libs").canonicalPath
-	final def dependencies = new File(buildDir, "dependencies").canonicalPath
+ext.commonPom = { pom ->
+	pom.description = "${config.github.name}"
+	pom.url = "https://github.com/MC-U-Team/${config.github.name}"
+	pom.scm {
+		url = "https://github.com/MC-U-Team/${config.github.name}"
+		connection = "scm:git:git://github.com/MC-U-Team/${config.github.name}.git"
+		developerConnection = "scm:git:git@github.com:MC-U-Team/${config.github.name}.git"
+	}
+	pom.issueManagement {
+		system = "github"
+		url = "https://github.com/MC-U-Team/${config.github.name}/issues"
+	}
+	pom.licenses {
+		license {
+			name = "Apache License 2.0"
+			url = "https://github.com/MC-U-Team/${config.github.name}/blob/${config.github.branch}/LICENSE"
+			distribution = "repo"
+		}
+	}
+	pom.developers {
+		developer {
+			name = "HyCraftHD"
+		}
+	}
+}
+
+ext.lavaplayerLibraries = {
+	final def buildDir = project(":musicplayer-lavaplayer").layout.buildDirectory
+	final def libs = buildDir.dir("libs").get().asFile.canonicalPath
+	final def dependencies = buildDir.dir("dependencies").get().asFile.canonicalPath
 	return "${libs};${dependencies}"
 }

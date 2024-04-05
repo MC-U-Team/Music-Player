@@ -1,12 +1,12 @@
 plugins {
-	id "fabric-loom"
+	id "net.neoforged.gradle.userdev"
 	id "info.u_team.gradle_files"
 	id "me.modmuss50.mod-publish-plugin"
 	id "maven-publish"
 	id "com.github.johnrengelman.shadow" version "8.1.1"
 }
 
-gradlefiles.loaderSuffix = "fabric"
+gradlefiles.loaderSuffix = "neoforge"
 
 group = rootProject.group
 base.archivesName = gradlefiles.archivesName()
@@ -20,6 +20,11 @@ sourceSets {
 		resources {
 			srcDirs += gradlefiles.project("common").sourceSets.common.resources.srcDirs
 		}
+	}
+	data {
+		java
+		compileClasspath += main.compileClasspath + main.output
+		runtimeClasspath += main.runtimeClasspath
 	}
 }
 
@@ -35,36 +40,66 @@ configurations {
 	shade
 	library
 	library.extendsFrom(shade)
-	implementation.extendsFrom(library)
 }
 
-loom {
-	accessWidenerPath = file("src/main/resources/musicplayer.accesswidener")
+minecraft {
+	accessTransformers {
+		file("src/main/resources/META-INF/accesstransformer.cfg")
+	}
+}
+
+subsystems {
+	parchment {
+		minecraftVersion = config.neoforge.parchment.minecraft_version
+		mappingsVersion = config.neoforge.parchment.version
+	}
+}
+
+runs {
+	sourceSets.main.runs.modIdentifier = config.mod.modid
+	sourceSets.data.runs.modIdentifier = config.mod.modid
 	
-	runs {
-		client {
-			runDir "run/client"
-			property "musicplayer.dev", getRootProject().lavaplayerLibraries()
-			ideConfigGenerated true
-		}
-		
-		server {
-			runDir "run/server"
-			ideConfigGenerated true
+	configureEach {
+		dependencies {
+			runtime configurations.library
 		}
 	}
 	
-	mixin {
-		defaultRefmapName = "musicplayer.mixins.refmap.json"
+	client {
+		workingDirectory file("run/client").with { mkdirs(); it }
+		
+		systemProperties "musicplayer.dev", getRootProject().lavaplayerLibraries()
+		
+		modSources sourceSets.main
+	}
+	
+	server {
+		workingDirectory file("run/server").with { mkdirs(); it }
+		
+		modSources sourceSets.main
+	}
+	
+	data {
+		workingDirectory file("run/data").with { mkdirs(); it }
+		
+		programArguments "--mod", config.mod.modid
+		programArguments "--all"
+		programArguments "--output", gradlefiles.project("common").file("src/common_generated/resources").absolutePath
+		programArguments "--validate"
+		programArguments "--existing", gradlefiles.project("common").file("src/common/resources").absolutePath
+		
+		systemProperties "coremod.uteamcore.dataprovider-set-indent", "coremod.uteamcore.dataprovider-set-indent.value"
+		systemProperties "coremod.uteamcore.dataprovider-set-indent.value", "true"
+		
+		modSources sourceSets.main
+		modSources sourceSets.data
 	}
 }
 
 evaluationDependsOn(":musicplayer-lavaplayer")
 
-afterEvaluate {
-	net.fabricmc.loom.task.LoomTasks.getIDELaunchConfigureTaskName(project).get().configure {
-		dependsOn project(":musicplayer-lavaplayer").tasks.named("assemble")
-	}
+tasks.matching { task -> task.name == "idePostSync" }.configureEach {
+	dependsOn project(":musicplayer-lavaplayer").tasks.named("assemble")
 }
 
 tasks.named("shadowJar").configure {
@@ -109,7 +144,7 @@ tasks.withType(Javadoc).configureEach { task ->
 	task.options.addStringOption("Xdoclint:none", "-quiet")
 }
 
-signjar.sign(tasks.named("remapJar"))
+signjar.sign(tasks.named("shadowJar"))
 
 processResources {
 	doLast {
@@ -119,36 +154,10 @@ processResources {
 	}
 }
 
-processResources {
-	inputs.property "version", project.version
-	
-	filesMatching("fabric.mod.json") {
-		expand "version": project.version
-	}
-}
-
-repositories {
-	maven {
-		url = "https://maven.parchmentmc.org"
-	}
-	maven {
-		url = "https://maven.terraformersmc.com"
-	}
-}
-
 dependencies {
-	minecraft gradlefiles.fabricMinecraftDependency()
-	mappings loom.layered() {
-		officialMojangMappings()
-		parchment(config.fabric.mapping_layer)
-	}
+	implementation gradlefiles.neoForgeDependency()
 	
-	modImplementation gradlefiles.fabricLoaderDependency()
-	modImplementation gradlefiles.fabricApiDependency()
-	
-	modImplementation "info.u-team:u_team_core-forge-1.20.4:5.3.0.290"
-	
-	modRuntimeOnly "com.terraformersmc:modmenu:${config.modmenu.fabric.version}"
+	implementation "info.u-team:u_team_core-neoforge-1.20.4:5.3.0.290"
 	
 	library project(":musicplayer-lavaplayer-api")
 	shade ("net.harawata:appdirs:1.0.0") {
@@ -157,11 +166,11 @@ dependencies {
 }
 
 publishMods {
-	file = tasks.named("remapJar").flatMap { jar -> jar.archiveFile }
-	displayName = "${config.publish.display}-Fabric-${config.minecraft.version}-${project.version}"
+	file = tasks.named("jar").flatMap { jar -> jar.archiveFile }
+	displayName = "${config.publish.display}-NeoForge-${config.minecraft.version}-${project.version}"
 	changelog = "[Changelog for version ${project.version}](${gradlefiles.changelogUrl()})"
 	type = me.modmuss50.mpp.ReleaseType.of(config.publish.type)
-	modLoaders.add("fabric")
+	modLoaders.add("neoforge")
 	
 	curseforge {
 		accessToken = defaultPropertyValue("curseforge.token")
@@ -189,7 +198,7 @@ publishMods {
 		username = "Mod Update"
 		avatarUrl = "https://raw.githubusercontent.com/MC-U-Team/${config.github.name}/${config.github.branch}/logo.png"
 		
-		content = changelog.map { log -> "# ${config.minecraft.version}: ${config.publish.display} (Fabric)\n" + log}
+		content = changelog.map { log -> "# ${config.minecraft.version}: ${config.publish.display} (NeoForge)\n" + log}
 	}
 }
 
