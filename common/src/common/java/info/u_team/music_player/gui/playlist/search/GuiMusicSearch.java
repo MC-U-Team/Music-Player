@@ -132,7 +132,7 @@ public class GuiMusicSearch extends BetterScreen {
 			setInformation(ChatFormatting.GREEN + getTranslation(GUI_SEARCH_ADDED_ALL), 150);
 		});
 		
-		searchList.updateSettings(12, 130, width - 24, height);
+		searchList.updateSettings(12, 130, width - 24, height - 140);
 		addWidget(searchList);
 	}
 	

@@ -7,7 +7,7 @@ import net.minecraft.util.Mth;
 public class BetterScrollableList<T extends ObjectSelectionList.Entry<T>> extends ScrollableList<T> {
 	
 	public BetterScrollableList(int x, int y, int width, int height, int slotHeight, int sideDistance) {
-		super(x, y, width, height, slotHeight, sideDistance);
+		super(x, y, width <= 0 ? 1 : width, height <= 0 ? 1 : height, slotHeight, sideDistance);
 		setRenderHeader(false, 0);
 		setRenderTransparentBorder(true);
 	}
@@ -15,8 +15,8 @@ public class BetterScrollableList<T extends ObjectSelectionList.Entry<T>> extend
 	public void updateSettings(int x, int y, int width, int height) {
 		setX(x);
 		setY(y);
-		setWidth(width);
-		setHeight(height);
+		setWidth(width <= 0 ? 1 : width);
+		setHeight(height <= 0 ? 1 : height);
 	}
 	
 	@Override

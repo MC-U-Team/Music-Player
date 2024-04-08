@@ -46,7 +46,7 @@ public class GuiMusicPlayer extends BetterScreen {
 			namePlaylistField.setValue("");
 		});
 		
-		playlistsList = new GuiMusicPlayerList(12, 90, width - 24, height);
+		playlistsList = new GuiMusicPlayerList(12, 90, width - 24, height - 100);
 		addWidget(playlistsList);
 		
 		controls = new GuiControls(this, 5, width);

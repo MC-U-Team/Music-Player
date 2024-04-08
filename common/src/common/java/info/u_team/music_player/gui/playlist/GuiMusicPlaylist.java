@@ -56,7 +56,7 @@ public class GuiMusicPlaylist extends BetterScreen {
 			addTracksButton.active = false;
 		}
 		
-		trackList.updateSettings(12, 50, width - 24, height);
+		trackList.updateSettings(12, 50, width - 24, height - 60);
 		trackList.addAllEntries();
 		addWidget(trackList);
 		

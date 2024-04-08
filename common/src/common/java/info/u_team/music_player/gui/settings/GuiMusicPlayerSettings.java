@@ -107,7 +107,7 @@ public class GuiMusicPlayerSettings extends BetterScreen {
 			}
 		});
 		
-		mixerDeviceList = new GuiMusicPlayerSettingsMixerDeviceList(12, 163, width - 24, height);
+		mixerDeviceList = new GuiMusicPlayerSettingsMixerDeviceList(12, 163, width - 24, height - 173);
 		addWidget(mixerDeviceList);
 		
 		controls = new GuiControls(this, 5, width);
