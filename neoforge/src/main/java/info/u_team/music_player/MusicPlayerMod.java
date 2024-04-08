@@ -1,7 +1,7 @@
 package info.u_team.music_player;
 
 import info.u_team.u_team_core.util.annotation.AnnotationManager;
-import net.minecraftforge.fml.common.Mod;
+import net.neoforged.fml.common.Mod;
 
 @Mod(MusicPlayerMod.MODID)
 public class MusicPlayerMod {
