@@ -6,10 +6,17 @@ import net.minecraft.util.Mth;
 
 public class BetterScrollableList<T extends ObjectSelectionList.Entry<T>> extends ScrollableList<T> {
 	
-	public BetterScrollableList(int width, int height, int top, int bottom, int left, int right, int slotHeight, int sideDistance) {
-		super(width, height, top, bottom, left, right, slotHeight, sideDistance);
+	public BetterScrollableList(int x, int y, int width, int height, int slotHeight, int sideDistance) {
+		super(x, y, width, height, slotHeight, sideDistance);
 		setRenderHeader(false, 0);
 		setRenderTransparentBorder(true);
+	}
+	
+	public void updateSettings(int x, int y, int width, int height) {
+		setX(x);
+		setY(y);
+		setWidth(width);
+		setHeight(height);
 	}
 	
 	@Override
@@ -17,20 +24,20 @@ public class BetterScrollableList<T extends ObjectSelectionList.Entry<T>> extend
 		if (getFocused() != null && isDragging() && button == 0) {
 			getFocused().mouseDragged(mouseX, mouseY, button, dragX, dragY);
 		}
-		if (button == 0 && scrolling) {
-			if (mouseY < y0) {
-				setScrollAmount(0.0D);
-			} else if (mouseY > y1) {
-				setScrollAmount(getMaxScroll());
-			} else {
-				final double clampedMaxScroll = Math.max(1, getMaxScroll());
-				final int diff = y1 - y0;
-				final int clamped = Mth.clamp((diff * diff) / getMaxPosition(), 32, diff - 8);
-				setScrollAmount(getScrollAmount() + dragY * Math.max(1.0D, clampedMaxScroll / (diff - clamped)));
-			}
-			return true;
-		} else {
+		if (button != 0 || !scrolling) {
 			return false;
 		}
+		if (mouseY < getY()) {
+			setScrollAmount(0.0);
+		} else if (mouseY > getBottom()) {
+			setScrollAmount(getMaxScroll());
+		} else {
+			final double maxScroll = Math.max(1, getMaxScroll());
+			final int height = this.height;
+			final int clamped = Mth.clamp((int) ((float) (height * height) / (float) getMaxPosition()), 32, height - 8);
+			final double scoll = Math.max(1.0, maxScroll / (height - clamped));
+			setScrollAmount(getScrollAmount() + dragY * scoll);
+		}
+		return true;
 	}
 }

@@ -8,8 +8,8 @@ public class GuiMusicPlayerList extends BetterScrollableList<GuiMusicPlayerListE
 	
 	private final Playlists playlists;
 	
-	public GuiMusicPlayerList(int width, int height, int top, int bottom, int left, int right) {
-		super(width, height, top, bottom, left, right, 50, 20);
+	public GuiMusicPlayerList(int x, int y, int width, int height) {
+		super(x, y, width, height, 50, 20);
 		
 		playlists = MusicPlayerManager.getPlaylistManager().getPlaylists();
 		playlists.forEach(playlist -> addEntry(new GuiMusicPlayerListEntry(this, playlists, playlist)));

@@ -18,7 +18,7 @@ public class GuiMusicPlaylistList extends BetterScrollableList<GuiMusicPlaylistL
 	private int selectIndex;
 	
 	public GuiMusicPlaylistList(Playlist playlist) {
-		super(0, 0, 0, 0, 0, 0, 40, 20);
+		super(0, 0, 0, 0, 40, 20);
 		this.playlist = playlist;
 		addEntry(new GuiMusicPlaylistListEntryLoading());
 	}
