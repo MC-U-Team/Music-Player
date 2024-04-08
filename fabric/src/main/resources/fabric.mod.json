@@ -25,10 +25,10 @@
 		"musicplayer.mixins.json"
 	],
 	"depends": {
-		"uteamcore": ">=5.2.0.270",
-		"fabricloader": ">=0.14.22",
-		"fabric": ">=0.89.1+1.20.2",
-		"minecraft": "1.20.2",
+		"uteamcore": ">=5.3.0.290",
+		"fabricloader": ">=0.15.7",
+		"fabric": ">=0.96.11+1.20.4",
+		"minecraft": "1.20.4",
 		"java": ">=17"
 	},
 	"custom": {
