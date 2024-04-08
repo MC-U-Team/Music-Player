@@ -22,11 +22,10 @@ import org.apache.logging.log4j.MarkerManager;
 
 import com.google.common.base.Predicates;
 
-import info.u_team.music_player.MusicPlayerMod;
+import info.u_team.music_player.MusicPlayerReference;
 import info.u_team.music_player.dependency.classloader.DependencyClassLoader;
+import info.u_team.u_team_core.util.ServiceUtil;
 import net.minecraft.util.StringUtil;
-import net.minecraftforge.fml.ModList;
-import net.minecraftforge.forgespi.locating.IModFile;
 
 public class DependencyManager {
 	
@@ -35,6 +34,8 @@ public class DependencyManager {
 	private static final Marker MARKER_ADD = MarkerManager.getMarker("Add");
 	
 	private static final String FILE_ENDING = ".jar.packed";
+	
+	private static final PathLocator PATH_LOCATOR = ServiceUtil.loadOne(PathLocator.class);
 	
 	public static final DependencyClassLoader MUSICPLAYER_CLASSLOADER = new DependencyClassLoader();
 	
@@ -68,7 +69,7 @@ public class DependencyManager {
 	
 	private static Path createExtractDirectory() {
 		try {
-			final Path baseDirectory = Paths.get(System.getProperty("java.io.tmpdir", "/tmp"), MusicPlayerMod.MODID + "-extraction-tmp");
+			final Path baseDirectory = Paths.get(System.getProperty("java.io.tmpdir", "/tmp"), MusicPlayerReference.MODID + "-extraction-tmp");
 			final Path specificDirectory = baseDirectory.resolve(String.valueOf(System.currentTimeMillis()));
 			
 			// Try to clean base directory before
@@ -81,7 +82,7 @@ public class DependencyManager {
 			return specificDirectory;
 		} catch (final IOException unused) {
 			try {
-				return Files.createTempDirectory(MusicPlayerMod.MODID + "-extraction-tmp");
+				return Files.createTempDirectory(MusicPlayerReference.MODID + "-extraction-tmp");
 			} catch (final IOException ex) {
 				throw new RuntimeException("Cannot create extract directory for musicplayer files", ex);
 			}
@@ -118,9 +119,7 @@ public class DependencyManager {
 	}
 	
 	private static Set<Path> findJarFilesInJar(String folder) {
-		final IModFile modfile = ModList.get().getModFileById(MusicPlayerMod.MODID).getFile();
-		
-		try (final Stream<Path> stream = Files.walk(modfile.findResource(folder))) {
+		try (final Stream<Path> stream = Files.walk(PATH_LOCATOR.locate(MusicPlayerReference.MODID, folder))) {
 			return filterPackedFiles(stream);
 		} catch (final IOException | IllegalStateException ex) {
 			LOGGER.error(MARKER_LOAD, "When searching for jar files in jar an exception occured.", ex);
@@ -135,5 +134,10 @@ public class DependencyManager {
 	private static void addToMusicPlayerDependencies(URL url) {
 		MUSICPLAYER_CLASSLOADER.addURL(url);
 		LOGGER.debug(MARKER_ADD, "Added new jar file ({}) to the musicplayer dependency classloader.", url);
+	}
+	
+	public static interface PathLocator {
+		
+		Path locate(String modid, String folder) throws IOException, IllegalStateException;
 	}
 }
