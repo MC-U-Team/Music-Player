@@ -20,6 +20,11 @@ public class BetterScrollableList<T extends ObjectSelectionList.Entry<T>> extend
 	}
 	
 	@Override
+	protected boolean isValidMouseClick(int button) {
+		return button >= 0 && button <= 2;
+	}
+	
+	@Override
 	public boolean mouseDragged(double mouseX, double mouseY, int button, double dragX, double dragY) {
 		if (getFocused() != null && isDragging() && button == 0) {
 			getFocused().mouseDragged(mouseX, mouseY, button, dragX, dragY);
