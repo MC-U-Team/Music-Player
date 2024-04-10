@@ -101,6 +101,10 @@ components.named("java").configure {
 	}
 }
 
+tasks.named("remapJar").configure {
+	dependsOn tasks.named("shadowJar")
+}
+
 tasks.withType(Jar).configureEach { task ->
 	gradlefiles.defaultJar(task)
 }
