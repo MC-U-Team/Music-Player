@@ -74,7 +74,7 @@ dependencies {
 	musicplayer "com.github.topi314.lavasrc:lavasrc-protocol:4.0.1"
 	
 	musicplayer "org.slf4j:jcl-over-slf4j:2.0.12"
-	musicplayer "org.slf4j:slf4j-api:2.0.12"
+	musicplayer "org.slf4j:slf4j-simple:2.0.12"
 	
 	implementation project(":musicplayer-lavaplayer-api")
 }
