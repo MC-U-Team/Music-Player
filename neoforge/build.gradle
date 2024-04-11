@@ -83,6 +83,8 @@ runs {
 	data {
 		workingDirectory file("run/data").with { mkdirs(); it }
 		
+		systemProperties "musicplayer.dev", getRootProject().lavaplayerLibraries()
+		
 		programArguments "--mod", config.mod.modid
 		programArguments "--all"
 		programArguments "--output", gradlefiles.project("common").file("src/common_generated/resources").absolutePath

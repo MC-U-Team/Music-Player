@@ -14,7 +14,7 @@ sourceSets {
 	common {
 		java
 		resources {
-			srcDirs += "src/common-generated/resources"
+			srcDirs += "src/common_generated/resources"
 		}
 	}
 	main {

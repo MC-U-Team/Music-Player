@@ -67,26 +67,6 @@ minecraft {
 				}
 			}
 		}
-		
-		data {
-			workingDirectory file("run/data")
-			property "musicplayer.dev", getRootProject().lavaplayerLibraries()
-			
-			args "--mod", config.mod.modid
-			args "--all"
-			args "--output", gradlefiles.project("common").file("src/common-generated/resources")
-			args "--validate"
-			args "--existing", gradlefiles.project("common").file("src/common/resources")
-			
-			property "coremod.uteamcore.dataprovider-set-indent", "coremod.uteamcore.dataprovider-set-indent.value"
-			property "coremod.uteamcore.dataprovider-set-indent.value", "true"
-			
-			mods {
-				"${config.mod.modid}" {
-					source sourceSets.main
-				}
-			}
-		}
 	}
 }
 
