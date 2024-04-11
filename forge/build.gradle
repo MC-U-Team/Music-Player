@@ -130,8 +130,8 @@ components.named("java").configure {
 	}
 }
 
-tasks.matching { it.name == "reobfJar" }.configureEach { task ->
-	task.dependsOn(tasks.named("shadowJar"))
+tasks.matching { task -> task.name == "reobfJar" }.configureEach {
+	dependsOn tasks.named("shadowJar")
 }
 
 tasks.withType(Jar).configureEach { task ->
