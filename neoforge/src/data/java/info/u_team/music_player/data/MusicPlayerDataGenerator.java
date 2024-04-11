@@ -3,10 +3,10 @@ package info.u_team.music_player.data;
 import info.u_team.music_player.MusicPlayerMod;
 import info.u_team.music_player.data.provider.MusicPlayerLanguagesProvider;
 import info.u_team.u_team_core.data.GenerationData;
-import net.minecraftforge.data.event.GatherDataEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
-import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.Mod.EventBusSubscriber;
+import net.neoforged.fml.common.Mod.EventBusSubscriber.Bus;
+import net.neoforged.neoforge.data.event.GatherDataEvent;
 
 @EventBusSubscriber(modid = MusicPlayerMod.MODID, bus = Bus.MOD)
 public class MusicPlayerDataGenerator {
