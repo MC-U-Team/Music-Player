@@ -21,7 +21,6 @@ java {
 
 configurations {
 	musicplayer
-	musicplayer.exclude group: "commons-logging", module: "commons-logging"
 	implementation.extendsFrom(musicplayer)
 }
 
@@ -40,7 +39,9 @@ tasks.register("deleteOldDependencies", Delete) {
 tasks.register("copyNewDependencies", Copy) {
 	dependsOn tasks.named("deleteOldDependencies")
 	
-	from configurations.musicplayer
+	from configurations.musicplayer.copyRecursive().with {
+		exclude group: "org.slf4j", module: "slf4j-api"
+	}
 	into layout.buildDirectory.dir("dependencies")
 	rename { fileName ->
 		fileName += ".packed"
@@ -73,8 +74,7 @@ dependencies {
 	musicplayer "com.github.topi314.lavasrc:lavasrc:4.0.1"
 	musicplayer "com.github.topi314.lavasrc:lavasrc-protocol:4.0.1"
 	
-	musicplayer "org.slf4j:jcl-over-slf4j:2.0.12"
-	musicplayer "org.slf4j:slf4j-simple:2.0.12"
+	implementation "org.slf4j:slf4j-simple:2.0.12"
 	
 	implementation project(":musicplayer-lavaplayer-api")
 }
