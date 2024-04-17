@@ -21,6 +21,7 @@ java {
 
 configurations {
 	musicplayer
+	musicplayer.exclude group: "commons-logging", module: "commons-logging"
 	implementation.extendsFrom(musicplayer)
 }
 
@@ -73,6 +74,8 @@ dependencies {
 	musicplayer "dev.arbjerg:lavadsp:0.7.8"
 	musicplayer "com.github.topi314.lavasrc:lavasrc:4.0.1"
 	musicplayer "com.github.topi314.lavasrc:lavasrc-protocol:4.0.1"
+	
+	musicplayer "org.slf4j:jcl-over-slf4j:2.0.12"
 	
 	implementation "org.slf4j:slf4j-simple:2.0.12"
 	

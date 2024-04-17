@@ -1,7 +1,10 @@
 package info.u_team.music_player.musicplayer;
 
+import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.core.LoggerContext;
+import org.apache.logging.log4j.core.config.LoggerConfig;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -22,6 +25,7 @@ public class MusicPlayerManager {
 	private static final SettingsManager settingsManager = new SettingsManager(gson);
 	
 	static void setup(ClassLoader classLoader, boolean internalPlaylists) {
+		fixLogLevel(classLoader);
 		generatePlayer(classLoader);
 		player.startAudioOutput();
 		
@@ -34,6 +38,12 @@ public class MusicPlayerManager {
 		settingsManager.loadFromFile();
 		
 		player.setVolume(settingsManager.getSettings().getVolume());
+	}
+	
+	private static void fixLogLevel(ClassLoader classLoader) {
+		final String loggerName = "org.apache.http";
+		final LoggerContext context = ((LoggerContext) LogManager.getContext(classLoader, false));
+		context.getConfiguration().addLogger(loggerName, new LoggerConfig(loggerName, Level.INFO, true));
 	}
 	
 	private static void generatePlayer(ClassLoader classLoader) {
