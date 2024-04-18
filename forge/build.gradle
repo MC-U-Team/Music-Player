@@ -154,7 +154,7 @@ dependencies {
 	implementation fg.deobf("info.u-team:u_team_core-forge-1.20.1:5.1.4.269")
 	
 	library project(":musicplayer-lavaplayer-api")
-	shade ("net.harawata:appdirs:1.0.0") {
+	shade ("net.harawata:appdirs:1.2.2") {
 		transitive=false
 	}
 }
