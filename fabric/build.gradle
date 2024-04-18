@@ -134,7 +134,7 @@ dependencies {
 	modImplementation "info.u-team:u_team_core-fabric-1.19.4:5.0.2.261"
 
 	library project(":musicplayer-lavaplayer-api")
-	shade ("net.harawata:appdirs:1.0.0") {
+	shade ("net.harawata:appdirs:1.2.2") {
 		transitive=false
 	}
 }
