@@ -17,7 +17,6 @@ version = gradlefiles.version()
 sourceSets {
 	main {
 		java {
-			srcDirs += "src/data/java"
 			srcDirs += gradlefiles.project("common").sourceSets.common.java.srcDirs
 		}
 		resources {
