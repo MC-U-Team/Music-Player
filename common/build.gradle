@@ -7,8 +7,25 @@ plugins {
 gradlefiles.loaderSuffix = "common"
 
 group = rootProject.group
-archivesBaseName = gradlefiles.archivesBaseName()
+base.archivesName = gradlefiles.archivesName()
 version = gradlefiles.version()
+
+sourceSets {
+	common {
+		java
+		resources {
+			srcDirs += "src/common_generated/resources"
+		}
+	}
+	main {
+		java {
+			srcDirs += sourceSets.common.java.srcDirs
+		}
+		resources {
+			srcDirs += sourceSets.common.resources.srcDirs
+		}
+	}
+}
 
 java {
 	toolchain {
@@ -19,40 +36,27 @@ java {
 }
 
 loom {
-	accessWidenerPath = project(":fabric").file("src/main/resources/musicplayer.accesswidener")
+	accessWidenerPath = gradlefiles.project("fabric").file("src/main/resources/musicplayer.accesswidener")
 }
 
 tasks.withType(Jar).configureEach { task ->
 	gradlefiles.defaultJar(task)
+	
+	manifest {
+		attributes("Fabric-Loom-Remap": "true")
+	}
 }
 
 tasks.withType(Javadoc).configureEach { task ->
 	task.options.addStringOption("Xdoclint:none", "-quiet")
 }
 
-gradlefiles.signJar("jar")
+signjar.sign(tasks.named("remapJar"))
 
 processResources {
 	doLast {
 		fileTree(dir: outputs.files.asPath, include: "**/*.json").each { File file ->
 			file.text = groovy.json.JsonOutput.toJson(new groovy.json.JsonSlurper().parse(file))
-		}
-	}
-}
-
-sourceSets {
-	common {
-		java
-		resources {
-			srcDirs += "src/common-generated/resources"
-		}
-	}
-	main {
-		java {
-			srcDirs += sourceSets.common.java.srcDirs
-		}
-		resources {
-			srcDirs += sourceSets.common.resources.srcDirs
 		}
 	}
 }
@@ -69,14 +73,14 @@ dependencies {
 		officialMojangMappings()
 		parchment(config.fabric.mapping_layer)
 	}
-
+	
 	modImplementation gradlefiles.fabricLoaderDependency()
 	modRuntimeOnly gradlefiles.fabricApiDependency()
-
-	modImplementation "info.u-team:u_team_core-common-1.19.4:5.0.2.261"
-
+	
+	modImplementation "info.u-team:u_team_core-common-1.19.4:5.0.2.291"
+	
 	compileOnly project(":musicplayer-lavaplayer-api")
-	compileOnly ("net.harawata:appdirs:1.0.0") {
+	compileOnly ("net.harawata:appdirs:1.2.2") {
 		transitive=false
 	}
 }
@@ -93,35 +97,20 @@ publishing {
 	}
 	publications {
 		mavenJava(MavenPublication) {
-			artifactId archivesBaseName
-
-			from components.java
-
+			artifactId project.base.archivesName.get()
+			
+			from gradlefiles.filteredJavaComponent {
+				filterDependency { holder ->
+					"appdirs" == holder.dependency.name
+				}
+				filterDependency { holder ->
+					"musicplayer-lavaplayer-api" == holder.dependency.name
+				}
+			}
+			
 			pom {
-				name = project.archivesBaseName
-				description = "${config.github.name}"
-				url = "https://github.com/MC-U-Team/${config.github.name}"
-				scm {
-					url = "https://github.com/MC-U-Team/${config.github.name}"
-					connection = "scm:git:git://github.com/MC-U-Team/${config.github.name}.git"
-					developerConnection = "scm:git:git@github.com:MC-U-Team/${config.github.name}.git"
-				}
-				issueManagement {
-					system = "github"
-					url = "https://github.com/MC-U-Team/${config.github.name}/issues"
-				}
-				licenses {
-					license {
-						name = "Apache License 2.0"
-						url = "https://github.com/MC-U-Team/${config.github.name}/blob/${config.github.branch}/LICENSE"
-						distribution = "repo"
-					}
-				}
-				developers {
-					developer {
-						name = "HyCraftHD"
-					}
-				}
+				pom.name = project.base.archivesName.get()
+				rootProject.commonPom(it)
 			}
 		}
 	}
