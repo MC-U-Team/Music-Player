@@ -1,7 +1,7 @@
 plugins {
 	id "fabric-loom"
 	id "info.u_team.gradle_files"
-	id "info.u_team.curse_gradle_uploader"
+	id "me.modmuss50.mod-publish-plugin"
 	id "maven-publish"
 	id "com.github.johnrengelman.shadow" version "8.1.1"
 }
@@ -9,8 +9,19 @@ plugins {
 gradlefiles.loaderSuffix = "fabric"
 
 group = rootProject.group
-archivesBaseName = gradlefiles.archivesBaseName()
+base.archivesName = gradlefiles.archivesName()
 version = gradlefiles.version()
+
+sourceSets {
+	main {
+		java {
+			srcDirs += gradlefiles.project("common").sourceSets.common.java.srcDirs
+		}
+		resources {
+			srcDirs += gradlefiles.project("common").sourceSets.common.resources.srcDirs
+		}
+	}
+}
 
 java {
 	toolchain {
@@ -20,14 +31,20 @@ java {
 	withJavadocJar()
 }
 
+configurations {
+	shade
+	library
+	library.extendsFrom(shade)
+	implementation.extendsFrom(library)
+}
+
 loom {
 	accessWidenerPath = file("src/main/resources/musicplayer.accesswidener")
 	
 	runs {
 		client {
-			property "musicplayer.dev", getRootProject().devPath()
-			
 			runDir "run/client"
+			property "musicplayer.dev", getRootProject().lavaplayerLibraries()
 			ideConfigGenerated true
 		}
 		
@@ -36,24 +53,29 @@ loom {
 			ideConfigGenerated true
 		}
 	}
+	
+	mixin {
+		defaultRefmapName = "musicplayer.mixins.refmap.json"
+	}
 }
 
-configurations {
-	shade
-	library
-	library.extendsFrom(shade)
-	implementation.extendsFrom(library)
+evaluationDependsOn(":musicplayer-lavaplayer")
+
+afterEvaluate {
+	net.fabricmc.loom.task.LoomTasks.getIDELaunchConfigureTaskName(project).get().configure {
+		dependsOn project(":musicplayer-lavaplayer").tasks.named("assemble")
+	}
 }
 
 tasks.named("shadowJar").configure {
-	archiveClassifier = tasks.getByName("jar").archiveClassifier
-	destinationDirectory = tasks.getByName("jar").destinationDirectory
+	dependsOn tasks.named("jar")
+	dependsOn project(":musicplayer-lavaplayer-api").tasks.named("assemble")
+	dependsOn project(":musicplayer-lavaplayer").tasks.named("assemble")
+	
+	archiveClassifier = tasks.named("jar").flatMap { jar -> jar.archiveClassifier }
+	destinationDirectory = tasks.named("jar").flatMap { jar -> jar.destinationDirectory }
 	
 	configurations = [project.configurations.shade]
-	
-	dependsOn tasks.named("jar")
-	dependsOn ":musicplayer-lavaplayer-api:assemble"
-	dependsOn ":musicplayer-lavaplayer:assemble"
 	
 	from sourceSets.main.output
 	from project(":musicplayer-lavaplayer").file("src/main/resources/LICENSE-DEPENDENCIES")
@@ -63,8 +85,9 @@ tasks.named("shadowJar").configure {
 	}
 	
 	into ("dependencies") {
-		from project(":musicplayer-lavaplayer").file("build/libs/musicplayer-lavaplayer.jar.packed")
-		from project(":musicplayer-lavaplayer").file("build/dependencies")
+		final def buildDir = project.project(":musicplayer-lavaplayer").layout.buildDirectory
+		from buildDir.dir("libs").get().file("musicplayer-lavaplayer.jar.packed")
+		from buildDir.dir("dependencies")
 	}
 	
 	relocate "net.harawata.appdirs", "info.u_team.music_player.shade.net.harawata.appdirs"
@@ -72,13 +95,9 @@ tasks.named("shadowJar").configure {
 	exclude "META-INF/maven/**"
 }
 
-components.java.withVariantsFromConfiguration(configurations.getByName("shadowRuntimeElements")) {
-	skip()
-}
-
-afterEvaluate {
-	net.fabricmc.loom.task.LoomTasks.getIDELaunchConfigureTaskName(project).get().configure {
-		dependsOn ":musicplayer-lavaplayer:assemble"
+components.named("java").configure {
+	withVariantsFromConfiguration(configurations.named("shadowRuntimeElements").get()) {
+		skip()
 	}
 }
 
@@ -94,7 +113,7 @@ tasks.withType(Javadoc).configureEach { task ->
 	task.options.addStringOption("Xdoclint:none", "-quiet")
 }
 
-gradlefiles.signDefaultFabricJar()
+signjar.sign(tasks.named("remapJar"))
 
 processResources {
 	doLast {
@@ -104,14 +123,11 @@ processResources {
 	}
 }
 
-sourceSets {
-	main {
-		java {
-			srcDirs += project(":common").sourceSets.common.java.srcDirs
-		}
-		resources {
-			srcDirs += project(":common").sourceSets.common.resources.srcDirs
-		}
+processResources {
+	inputs.property "version", project.version
+	
+	filesMatching("fabric.mod.json") {
+		expand "version": project.version
 	}
 }
 
@@ -134,49 +150,50 @@ dependencies {
 	modImplementation gradlefiles.fabricLoaderDependency()
 	modImplementation gradlefiles.fabricApiDependency()
 	
-	modImplementation "info.u-team:u_team_core-fabric-1.20.1:5.1.4.269"
+	modImplementation "info.u-team:u_team_core-fabric-1.20.1:5.1.4.289"
 	
 	modRuntimeOnly "com.terraformersmc:modmenu:${config.modmenu.fabric.version}"
 	
 	library project(":musicplayer-lavaplayer-api")
-	shade ("net.harawata:appdirs:1.0.0") {
+	shade ("net.harawata:appdirs:1.2.2") {
 		transitive=false
 	}
 }
 
-gradlefiles.removePublishingDependency { dependency ->
-	"appdirs".equals(dependency.name) || "musicplayer-lavaplayer-api".equals(dependency.name)
-}
-
-processResources {
-	inputs.property "version", project.version
+publishMods {
+	file = tasks.named("remapJar").flatMap { jar -> jar.archiveFile }
+	displayName = "${config.publish.display}-Fabric-${config.minecraft.version}-${project.version}"
+	changelog = "[Changelog for version ${project.version}](${gradlefiles.changelogUrl()})"
+	type = me.modmuss50.mpp.ReleaseType.of(config.publish.type)
+	modLoaders.add("fabric")
 	
-	filesMatching("fabric.mod.json") {
-		expand "version": project.version
+	curseforge {
+		accessToken = defaultPropertyValue("curseforge.token")
+		
+		projectId = config.curse.id
+		projectSlug = config.curse.slug
+		minecraftVersions.add(config.minecraft.version)
+		javaVersions.add(JavaVersion.VERSION_17)
+		
+		requires("u-team-core")
 	}
-}
-
-curseforge {
-	apiKey = defaultPropertyValue("curseforge.token")
 	
-	project {
-		id = config.curse.id
-		releaseType = config.curse.type
+	modrinth {
+		accessToken = defaultPropertyValue("modrinth.token")
 		
-		addGameVersion config.minecraft.version
-		addGameVersion "Fabric"
-		addGameVersion "Java 17"
+		projectId = config.modrinth.id
+		minecraftVersions.add(config.minecraft.version)
 		
-		relations {
-			requiredDependency "u-team-core"
-			requiredDependency "fabric-api"
-		}
+		requires("u-team-core")
+	}
+	
+	discord {
+		webhookUrl = defaultPropertyValue("discord.update_webhook")
 		
-		mainArtifact(tasks.getByName("remapJar")) {
-			displayName = "${config.curse.display}-Fabric-${config.minecraft.version}-${project.version}"
-			changelogType = "html"
-			changelog = "<a href=\"${gradlefiles.changelogUrl()}\">Changelog of ${project.version}</a>"
-		}
+		username = "Mod Update"
+		avatarUrl = "https://raw.githubusercontent.com/MC-U-Team/${config.github.name}/${config.github.branch}/logo.png"
+		
+		content = changelog.map { log -> "# ${config.minecraft.version}: ${config.publish.display} (Fabric)\n" + log}
 	}
 }
 
@@ -192,35 +209,20 @@ publishing {
 	}
 	publications {
 		mavenJava(MavenPublication) {
-			artifactId archivesBaseName
+			artifactId project.base.archivesName.get()
 			
-			from components.java
+			from gradlefiles.filteredJavaComponent {
+				filterDependency { holder ->
+					"appdirs" == holder.dependency.name
+				}
+				filterDependency { holder ->
+					"musicplayer-lavaplayer-api" == holder.dependency.name
+				}
+			}
 			
 			pom {
-				name = project.archivesBaseName
-				description = "${config.github.name}"
-				url = "https://github.com/MC-U-Team/${config.github.name}"
-				scm {
-					url = "https://github.com/MC-U-Team/${config.github.name}"
-					connection = "scm:git:git://github.com/MC-U-Team/${config.github.name}.git"
-					developerConnection = "scm:git:git@github.com:MC-U-Team/${config.github.name}.git"
-				}
-				issueManagement {
-					system = "github"
-					url = "https://github.com/MC-U-Team/${config.github.name}/issues"
-				}
-				licenses {
-					license {
-						name = "Apache License 2.0"
-						url = "https://github.com/MC-U-Team/${config.github.name}/blob/${config.github.branch}/LICENSE"
-						distribution = "repo"
-					}
-				}
-				developers {
-					developer {
-						name = "HyCraftHD"
-					}
-				}
+				pom.name = project.base.archivesName.get()
+				rootProject.commonPom(it)
 			}
 		}
 	}
