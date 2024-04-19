@@ -56,7 +56,7 @@ public class AudioSources {
 				audioPlayerManager.registerSourceManager(manager);
 			}
 		} catch (final Exception ex) {
-			LOGGER.warn("Cannot register audio source. Some music tracks might not be playable. Most often it is caused by an unstable internet connection or blocked services", ex);
+			LOGGER.warn("Cannot register source manager. Some music tracks might not be playable. Most often it is caused by an unstable internet connection or blocked services", ex);
 		}
 	}
 }
