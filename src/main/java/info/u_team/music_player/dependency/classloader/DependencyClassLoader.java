@@ -7,7 +7,7 @@ import java.util.Collection;
 
 public class DependencyClassLoader extends URLClassLoader {
 	
-	private final Collection<String> ourClassLoaderPackages = Arrays.asList("info.u_team.music_player.lavaplayer.api", "javax.script");
+	private final Collection<String> ourClassLoaderPackages = Arrays.asList("info.u_team.music_player.lavaplayer.api", "javax.script", "javax.lang");
 	
 	static {
 		ClassLoader.registerAsParallelCapable();
@@ -17,7 +17,7 @@ public class DependencyClassLoader extends URLClassLoader {
 	
 	public DependencyClassLoader() {
 		super(new URL[] {}, null);
-		this.ourClassLoader = getClass().getClassLoader();
+		ourClassLoader = getClass().getClassLoader();
 	}
 	
 	@Override
