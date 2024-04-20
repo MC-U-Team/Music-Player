@@ -122,6 +122,8 @@ tasks.named("shadowJar").configure {
 	relocate "org.slf4j", "info.u_team.music_player.shade.org.slf4j"
 	relocate "net.harawata.appdirs", "info.u_team.music_player.shade.net.harawata.appdirs"
 	
+	mergeServiceFiles()
+	
 	exclude "META-INF/maven/**"
 }
 
