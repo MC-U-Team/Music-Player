@@ -40,7 +40,7 @@ tasks.register("deleteOldDependencies", Delete) {
 tasks.register("copyNewDependencies", Copy) {
 	dependsOn tasks.named("deleteOldDependencies")
 	
-	from configurations.musicplayer.copyRecursive()
+	from configurations.musicplayer
 	into layout.buildDirectory.dir("dependencies")
 	rename { fileName ->
 		fileName += ".packed"
