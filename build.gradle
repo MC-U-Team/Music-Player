@@ -3,17 +3,26 @@ plugins {
 	id "org.parchmentmc.librarian.forgegradle"
 	id "org.spongepowered.mixin"
 	id "info.u_team.gradle_files"
-	id "info.u_team.curse_gradle_uploader"
+	id "me.modmuss50.mod-publish-plugin"
 	id "maven-publish"
 	id "com.github.johnrengelman.shadow" version "8.1.1"
 }
 
+gradlefiles.loaderSuffix = "forge"
+
 group = "info.u-team"
-archivesBaseName = gradlefiles.archivesBaseName()
+base.archivesName = gradlefiles.archivesName()
 version = gradlefiles.version()
 
 gradlefiles {
-	vendor "Team UTeam"
+	vendor = "Team UTeam"
+}
+
+sourceSets {
+	main {
+		java
+		resources
+	}
 }
 
 java {
@@ -24,112 +33,108 @@ java {
 	withJavadocJar()
 }
 
-minecraft {
-	mappings channel: config.forge.mapping_channel, version: config.forge.mapping
-
-	accessTransformer = file("src/main/resources/META-INF/accesstransformer.cfg")
-
-	runs {
-		client = {
-			workingDirectory file("run/client")
-			property "musicplayer.dev", devPath()
-
-			mods {
-				"${config.mod.modid}" {
-					source sourceSets.main
-				}
-			}
-		}
-		server = {
-			workingDirectory file("run/server")
-			property "musicplayer.dev", devPath()
-
-			mods {
-				"${config.mod.modid}" {
-					source sourceSets.main
-				}
-			}
-		}
-	}
-}
-
-def devPath() {
-	def buildDir = project(":musicplayer-lavaplayer").buildDir
-	def libs = new File(buildDir, "libs").absolutePath
-	def dependencies = new File(buildDir, "dependencies").absolutePath
-	return "${libs};${dependencies}"
-}
-
 configurations {
 	shade
 	tinyfd
 	library
 	library.extendsFrom(shade)
 	library.extendsFrom(tinyfd)
-	implementation.extendsFrom(library)
+	minecraftLibrary.extendsFrom(library)
+}
+
+minecraft {
+	mappings channel: config.forge.mapping_channel, version: config.forge.mapping
+	
+	accessTransformer = file("src/main/resources/META-INF/accesstransformer.cfg")
+	
+	runs {
+		client {
+			workingDirectory file("run/client")
+			property "musicplayer.dev", lavaplayerLibraries()
+			
+			mods {
+				"${config.mod.modid}" {
+					source sourceSets.main
+				}
+			}
+		}
+		
+		server {
+			workingDirectory file("run/server")
+			
+			mods {
+				"${config.mod.modid}" {
+					source sourceSets.main
+				}
+			}
+		}
+	}
+}
+
+evaluationDependsOn(":musicplayer-lavaplayer")
+
+tasks.matching { task -> task.name == "prepareRuns" }.configureEach {
+	dependsOn project(":musicplayer-lavaplayer").tasks.named("assemble")
 }
 
 tasks.register("deleteTinyfd", Delete) {
-	delete fileTree("build/tinyfd")
+	delete layout.buildDirectory.dir("tinyfd").map { it.asFileTree }
 }
 
-tasks.register("extractTinyfd", Copy) {
-	dependsOn "deleteTinyfd"
-	destinationDir = file("${project.buildDir}/tinyfd")
-
+tasks.register("copyTinyfd", Copy) {
+	dependsOn tasks.named("deleteTinyfd")
+	
 	from configurations.tinyfd
-
-	rename { String fileName ->
+	into layout.buildDirectory.dir("tinyfd")
+	rename { fileName ->
 		fileName += ".packed"
 	}
 }
 
 tasks.named("shadowJar").configure {
-	archiveClassifier = ""
-
-	configurations = [project.configurations.shade]
-
 	dependsOn tasks.named("jar")
-	dependsOn tasks.named("extractTinyfd")
-	dependsOn ":musicplayer-lavaplayer-api:assemble"
-	dependsOn ":musicplayer-lavaplayer:assemble"
-
+	dependsOn tasks.named("copyTinyfd")
+	dependsOn project(":musicplayer-lavaplayer-api").tasks.named("assemble")
+	dependsOn project(":musicplayer-lavaplayer").tasks.named("assemble")
+	
+	archiveClassifier = tasks.named("jar").flatMap { jar -> jar.archiveClassifier }
+	destinationDirectory = tasks.named("jar").flatMap { jar -> jar.destinationDirectory }
+	
+	configurations = [project.configurations.shade]
+	
 	from sourceSets.main.output
 	from project(":musicplayer-lavaplayer").file("src/main/resources/LICENSE-DEPENDENCIES")
-
+	
 	doFirst {
 		from project(":musicplayer-lavaplayer-api").sourceSets.main.output
 	}
-
+	
 	into ("dependencies") {
-		from project(":musicplayer-lavaplayer").file("build/libs/musicplayer-lavaplayer.jar.packed")
-		from project(":musicplayer-lavaplayer").file("build/dependencies")
+		final def buildDir = project(":musicplayer-lavaplayer").layout.buildDirectory
+		from buildDir.dir("libs").get().file("musicplayer-lavaplayer.jar.packed")
+		from buildDir.dir("dependencies")
 	}
-
+	
 	into ("tinyfd") {
-		from "build/tinyfd"
+		from project.layout.buildDirectory.dir("tinyfd")
 	}
-
+	
 	relocate "org.slf4j", "info.u_team.music_player.shade.org.slf4j"
 	relocate "net.harawata.appdirs", "info.u_team.music_player.shade.net.harawata.appdirs"
-
+	
+	mergeServiceFiles()
+	
 	exclude "META-INF/maven/**"
 }
 
-components.java.withVariantsFromConfiguration(configurations.getByName("shadowRuntimeElements")) {
-	skip()
+components.named("java").configure {
+	withVariantsFromConfiguration(configurations.named("shadowRuntimeElements").get()) {
+		skip()
+	}
 }
 
-tasks.matching { task ->
-	task.name == "prepareRuns"
-}.configureEach { task ->
-	task.dependsOn(":musicplayer-lavaplayer:assemble")
-}
-
-tasks.matching { task ->
-	task.name == "reobfJar"
-}.configureEach { task ->
-	task.dependsOn(tasks.named("shadowJar"))
+tasks.matching { task -> task.name == "reobfJar" }.configureEach {
+	dependsOn tasks.named("shadowJar")
 }
 
 tasks.withType(Jar).configureEach { task ->
@@ -140,7 +145,7 @@ tasks.withType(Javadoc).configureEach { task ->
 	task.options.addStringOption("Xdoclint:none", "-quiet")
 }
 
-gradlefiles.signDefaultForgeJar()
+signjar.sign(tasks.named("reobfJar"))
 
 processResources {
 	doLast {
@@ -150,23 +155,17 @@ processResources {
 	}
 }
 
-sourceSets {
-	main {
-		java
-		resources
-	}
-}
-
 dependencies {
 	minecraft gradlefiles.forgeDependency()
-
-	implementation fg.deobf("info.u-team:u_team_core-1.14.4:2.8.2.256")
-
+	
+	implementation fg.deobf("info.u-team:u_team_core-forge-1.14.4:2.8.2.283")
+	
 	library project(":musicplayer-lavaplayer-api")
-	shade "org.slf4j:slf4j-simple:1.7.36"
+	shade "org.slf4j:slf4j-simple:2.0.12"
 	shade ("net.harawata:appdirs:1.0.0") {
 		transitive=false
 	}
+	
 	tinyfd ("org.lwjgl:lwjgl-tinyfd:3.2.2") {
 		transitive=false
 	}
@@ -181,32 +180,41 @@ dependencies {
 	}
 }
 
-minecraft.runs.all {
-	lazyToken("minecraft_classpath") {
-		configurations.library.copyRecursive().resolve().collect { it.absolutePath }.join(File.pathSeparator)
+publishMods {
+	file = tasks.named("jar").flatMap { jar -> jar.archiveFile }
+	displayName = "${config.publish.display}-Forge-${config.minecraft.version}-${project.version}"
+	changelog = "[Changelog for version ${project.version}](${gradlefiles.changelogUrl()})"
+	type = me.modmuss50.mpp.ReleaseType.of(config.publish.type)
+	modLoaders.add("forge")
+	
+	curseforge {
+		accessToken = defaultPropertyValue("curseforge.token")
+		
+		projectId = config.curse.id
+		projectSlug = config.curse.slug
+		minecraftVersions.add(config.minecraft.version)
+		javaVersions.add(JavaVersion.VERSION_1_8)
+		
+		requires("u-team-core")
+		optional("voice-chat")
 	}
-}
-
-curseforge {
-	apiKey = defaultPropertyValue("curseforge.token")
-
-	project {
-		id = config.curse.id
-		releaseType = config.curse.type
-
-		addGameVersion config.minecraft.version
-		addGameVersion "Forge"
-		addGameVersion "Java 8"
-
-		relations {
-			requiredDependency "u-team-core"
-		}
-
-		mainArtifact(tasks.getByName("jar")) {
-			displayName = "${config.curse.display}-${config.minecraft.version}-${project.version}"
-			changelogType = "html"
-			changelog = "<a href=\"${gradlefiles.changelogUrl()}\">Changelog of ${project.version}</a>"
-		}
+	
+	modrinth {
+		accessToken = defaultPropertyValue("modrinth.token")
+		
+		projectId = config.modrinth.id
+		minecraftVersions.add(config.minecraft.version)
+		
+		requires("u-team-core")
+	}
+	
+	discord {
+		webhookUrl = defaultPropertyValue("discord.update_webhook")
+		
+		username = "Mod Update"
+		avatarUrl = "https://raw.githubusercontent.com/MC-U-Team/${config.github.name}/${config.github.branch}/logo.png"
+		
+		content = changelog.map { log -> "# ${config.minecraft.version}: ${config.publish.display} (Forge)\n" + log}
 	}
 }
 
@@ -222,12 +230,19 @@ publishing {
 	}
 	publications {
 		mavenJava(MavenPublication) {
-			artifactId archivesBaseName
-
-			from components.java
-
+			artifactId project.base.archivesName.get()
+			
+			from gradlefiles.filteredJavaComponent {
+				filterDependency { holder ->
+					"appdirs" == holder.dependency.name
+				}
+				filterDependency { holder ->
+					"musicplayer-lavaplayer-api" == holder.dependency.name
+				}
+			}
+			
 			pom {
-				name = project.archivesBaseName
+				name = project.base.archivesName.get()
 				description = "${config.github.name}"
 				url = "https://github.com/MC-U-Team/${config.github.name}"
 				scm {
@@ -235,7 +250,6 @@ publishing {
 					connection = "scm:git:git://github.com/MC-U-Team/${config.github.name}.git"
 					developerConnection = "scm:git:git@github.com:MC-U-Team/${config.github.name}.git"
 				}
-
 				issueManagement {
 					system = "github"
 					url = "https://github.com/MC-U-Team/${config.github.name}/issues"
@@ -255,4 +269,11 @@ publishing {
 			}
 		}
 	}
+}
+
+def lavaplayerLibraries() {
+	final def buildDir = project(":musicplayer-lavaplayer").layout.buildDirectory
+	final def libs = buildDir.dir("libs").get().asFile.canonicalPath
+	final def dependencies = buildDir.dir("dependencies").get().asFile.canonicalPath
+	return "${libs};${dependencies}"
 }
