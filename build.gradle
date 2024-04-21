@@ -14,6 +14,10 @@ group = "info.u-team"
 base.archivesName = gradlefiles.archivesName()
 version = gradlefiles.version()
 
+gradlefiles {
+	vendor = "Team UTeam"
+}
+
 sourceSets {
 	main {
 		java {
@@ -114,7 +118,7 @@ tasks.named("shadowJar").configure {
 	}
 	
 	into ("dependencies") {
-		final def buildDir = project.project(":musicplayer-lavaplayer").layout.buildDirectory
+		final def buildDir = project(":musicplayer-lavaplayer").layout.buildDirectory
 		from buildDir.dir("libs").get().file("musicplayer-lavaplayer.jar.packed")
 		from buildDir.dir("dependencies")
 	}
