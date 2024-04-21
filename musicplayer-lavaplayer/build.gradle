@@ -1,13 +1,13 @@
 apply plugin: "java"
 
 repositories {
-	mavenCentral()
 	maven {
 		url "https://repo.u-team.info"
 	}
 	maven {
 		url "https://maven.arbjerg.dev/releases"
 	}
+	mavenCentral()
 	maven {
 		url "https://jitpack.io"
 	}
@@ -55,10 +55,10 @@ sourceSets {
 }
 
 dependencies {
-	musicplayer "net.hycrafthd.lavaplayer:lavaplayer:2.1.1-j8"
+	musicplayer "net.hycrafthd.lavaplayer:lavaplayer:2.1.2-SNAPSHOT-j8"
 	
-	musicplayer "org.slf4j:slf4j-simple:2.0.7"
-	musicplayer "org.slf4j:jcl-over-slf4j:2.0.7"
+	musicplayer "org.slf4j:jcl-over-slf4j:2.0.12"
+	musicplayer "org.slf4j:slf4j-simple:2.0.12"
 	
 	implementation project(":musicplayer-lavaplayer-api")
 }
