@@ -1,7 +1,6 @@
 plugins {
 	id "net.minecraftforge.gradle"
 	id "org.parchmentmc.librarian.forgegradle"
-	id "org.spongepowered.mixin"
 	id "info.u_team.gradle_files"
 	id "me.modmuss50.mod-publish-plugin"
 	id "maven-publish"
