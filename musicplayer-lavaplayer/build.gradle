@@ -70,7 +70,7 @@ dependencies {
 	musicplayer "net.hycrafthd.lavaplayer:lavaplayer:2.1.2-SNAPSHOT-j8"
 	musicplayer "dev.arbjerg:lavadsp:0.7.8"
 	
-	musicplayer "org.slf4j:jcl-over-slf4j:2.0.12"
+	musicplayer "org.slf4j:jcl-over-slf4j:2.0.13"
 	implementation "org.slf4j:slf4j-simple:2.0.13"
 	
 	implementation project(":musicplayer-lavaplayer-api")
