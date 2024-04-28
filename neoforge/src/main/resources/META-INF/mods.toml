@@ -17,7 +17,7 @@ license="Apache-2.0 License"
 	[[dependencies.musicplayer]]
 		modId="neoforge"
 		type="required"
-		versionRange="[20.4.214,)"
+		versionRange="[20.4.233,)"
 		ordering="NONE"
 		side="BOTH"
 	
