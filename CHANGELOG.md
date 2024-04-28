@@ -1,6 +1,10 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [1.12.2-2.1.1.239] - 2024-04-28
+### Changed
+ - Update to custom lavaplayer fork 2.1.2
+
 ## [1.12.2-2.1.1.228] - 2023-08-26
 ### Changed
  - Update lavaplayer to 1.4.3
