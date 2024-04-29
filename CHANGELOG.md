@@ -1,6 +1,11 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [1.14.4-2.1.1.250] - 2024-04-30
+### Changed
+ - Update to custom lavaplayer fork 2.1.2.1-SNAPSHOT
+ - Fixed [#1022](https://github.com/MC-U-Team/Music-Player/issues/1022)
+
 ## [1.14.4-2.1.1.240] - 2024-04-28
 ### Changed
  - Update to custom lavaplayer fork 2.1.2
