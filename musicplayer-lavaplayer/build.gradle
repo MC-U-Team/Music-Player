@@ -67,7 +67,7 @@ repositories {
 }
 
 dependencies {
-	musicplayer "net.hycrafthd.lavaplayer:lavaplayer:2.1.2-SNAPSHOT-j8"
+	musicplayer "net.hycrafthd.lavaplayer:lavaplayer:2.1.2.1-SNAPSHOT-j8"
 	musicplayer "dev.arbjerg:lavadsp:0.7.8"
 	
 	musicplayer "org.slf4j:jcl-over-slf4j:2.0.13"
