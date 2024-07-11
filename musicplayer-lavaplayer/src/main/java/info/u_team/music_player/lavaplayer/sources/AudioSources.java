@@ -16,7 +16,8 @@ import com.sedmelluq.discord.lavaplayer.source.soundcloud.SoundCloudAudioSourceM
 import com.sedmelluq.discord.lavaplayer.source.twitch.TwitchStreamAudioSourceManager;
 import com.sedmelluq.discord.lavaplayer.source.vimeo.VimeoAudioSourceManager;
 import com.sedmelluq.discord.lavaplayer.source.yamusic.YandexMusicAudioSourceManager;
-import com.sedmelluq.discord.lavaplayer.source.youtube.YoutubeAudioSourceManager;
+
+import dev.lavalink.youtube.YoutubeAudioSourceManager;
 
 public class AudioSources {
 	
@@ -24,7 +25,7 @@ public class AudioSources {
 	
 	public static void registerSources(AudioPlayerManager audioPlayerManager) {
 		registerManager(audioPlayerManager, () -> {
-			final YoutubeAudioSourceManager youtube = new YoutubeAudioSourceManager(true, System.getProperty("musicplayer.lavaplayer.youtube.email"), System.getProperty("musicplayer.lavaplayer.youtube.password"));
+			final YoutubeAudioSourceManager youtube = new YoutubeAudioSourceManager();
 			youtube.setPlaylistPageCount(100);
 			return youtube;
 		});
