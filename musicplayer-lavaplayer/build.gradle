@@ -70,7 +70,7 @@ repositories {
 }
 
 dependencies {
-	musicplayer "net.hycrafthd.lavaplayer:lavaplayer:2.1.2.1-SNAPSHOT-j8"
+	musicplayer "net.hycrafthd.lavaplayer:lavaplayer:2.2.1-j8"
 	musicplayer "dev.arbjerg:lavadsp:0.7.8"
 	musicplayer "com.github.topi314.lavasrc:lavasrc:4.0.1"
 	musicplayer "com.github.topi314.lavasrc:lavasrc-protocol:4.0.1"
