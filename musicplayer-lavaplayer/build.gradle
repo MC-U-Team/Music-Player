@@ -71,6 +71,7 @@ repositories {
 
 dependencies {
 	musicplayer "net.hycrafthd.lavaplayer:lavaplayer:2.2.1-j8"
+	musicplayer "dev.lavalink.youtube:v2:1.4.0"
 	musicplayer "dev.arbjerg:lavadsp:0.7.8"
 	musicplayer "com.github.topi314.lavasrc:lavasrc:4.1.1"
 	musicplayer "com.github.topi314.lavasrc:lavasrc-protocol:4.1.1"
