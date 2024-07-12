@@ -77,7 +77,7 @@ dependencies {
 	modImplementation gradlefiles.fabricLoaderDependency()
 	modRuntimeOnly gradlefiles.fabricApiDependency()
 	
-	modImplementation "info.u-team:u_team_core-common-1.20.4:5.3.0.300"
+	modImplementation "info.u-team:u_team_core-common-1.20.4:5.3.0.301"
 	
 	compileOnly project(":musicplayer-lavaplayer-api")
 	compileOnly ("net.harawata:appdirs:1.2.2") {
