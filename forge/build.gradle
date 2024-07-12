@@ -156,6 +156,7 @@ publishMods {
 		projectSlug = config.curse.slug
 		minecraftVersions.add(config.minecraft.version)
 		javaVersions.add(JavaVersion.VERSION_17)
+		clientRequired = true
 		
 		requires("u-team-core")
 		optional("voice-chat")
