@@ -17,20 +17,20 @@ license="Apache-2.0 License"
 	[[dependencies.musicplayer]]
 		modId="forge"
 		mandatory=true
-		versionRange="[50.1.10,)"
+		versionRange="[51.0.24,)"
 		ordering="NONE"
 		side="BOTH"
 	
 	[[dependencies.musicplayer]]
 		modId="minecraft"
 		mandatory=true
-		versionRange="[1.20.6]"
+		versionRange="[1.21]"
 		ordering="NONE"
 		side="BOTH"
 	    
 	[[dependencies.musicplayer]]
 		modId="uteamcore"
 		mandatory=true
-		versionRange="[5.4.0.315,)"
+		versionRange="[5.5.0.316,)"
 		ordering="NONE"
 		side="BOTH"
