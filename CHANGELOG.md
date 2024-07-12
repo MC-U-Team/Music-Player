@@ -1,18 +1,8 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
-## [1.20.4-2.7.1.258] - 2024-07-12
+## [1.20.6-2.7.1.268] - 2024-07-12
 ### Changed
+ - Port to 1.20.6
  - Update to custom lavaplayer fork 2.2.1
  - Use new lavalink youtube source manager to fix youtube playpack
-
-## [1.20.4-2.7.1.257] - 2024-04-30
-### Changed
- - Update to custom lavaplayer fork 2.1.2.1-SNAPSHOT
-
-## [1.20.4-2.7.1.247] - 2024-04-28
-### Changed
- - Port to 1.20.4
- - Update to custom lavaplayer fork 2.1.2
- - Update logging to better catch errors
- - Add "spotify" support with your own api key and secret (wip).
