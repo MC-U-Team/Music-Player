@@ -12,7 +12,7 @@ import net.minecraft.client.KeyboardHandler;
 abstract class KeyboardHandlerMixin {
 	
 	@Inject(method = "keyPress(JIIII)V", at = @At(value = "TAIL"))
-	private void keyInputAfterAllHandling(long window, int keyCode, int scanCode, int code, int modifiers, CallbackInfo info) {
+	private void musicplayer$keyInputAfterAllHandling(long window, int keyCode, int scanCode, int code, int modifiers, CallbackInfo info) {
 		MusicPlayerEventHandler.onKeyInput();
 	}
 }

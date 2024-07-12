@@ -22,13 +22,12 @@ import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.screens.PauseScreen;
 import net.minecraft.client.gui.screens.Screen;
 import net.neoforged.bus.api.IEventBus;
+import net.neoforged.neoforge.client.event.ClientTickEvent;
 import net.neoforged.neoforge.client.event.InputEvent.Key;
-import net.neoforged.neoforge.client.event.RenderGuiOverlayEvent;
+import net.neoforged.neoforge.client.event.RenderGuiLayerEvent;
 import net.neoforged.neoforge.client.event.ScreenEvent;
 import net.neoforged.neoforge.client.event.ScreenEvent.KeyPressed;
-import net.neoforged.neoforge.client.gui.overlay.VanillaGuiOverlay;
-import net.neoforged.neoforge.event.TickEvent.ClientTickEvent;
-import net.neoforged.neoforge.event.TickEvent.Phase;
+import net.neoforged.neoforge.client.gui.VanillaGuiLayers;
 
 public class MusicPlayerEventHandler {
 	
@@ -88,10 +87,9 @@ public class MusicPlayerEventHandler {
 	
 	// Render overlay
 	
-	private static void onRenderGameOverlay(RenderGuiOverlayEvent.Pre event) {
+	private static void onRenderGameOverlay(RenderGuiLayerEvent.Pre event) {
 		final Minecraft mc = Minecraft.getInstance();
-		// if (event.getType() == ElementType.TEXT && !mc.gameSettings.showDebugInfo && mc.currentScreen == null) {
-		if (event.getOverlay() == VanillaGuiOverlay.DEBUG_SCREEN.type()) {
+		if (event.getLayer() == VanillaGuiLayers.DEMO_OVERLAY) {
 			if (settingsManager.getSettings().isShowIngameOverlay()) {
 				final IngameOverlayPosition position = settingsManager.getSettings().getIngameOverlayPosition();
 				
@@ -129,7 +127,6 @@ public class MusicPlayerEventHandler {
 				poseStack.popPose();
 			}
 		}
-		// }
 	}
 	
 	// Used to add buttons and gui controls to main ingame gui
@@ -195,21 +192,19 @@ public class MusicPlayerEventHandler {
 		}
 	}
 	
-	private static void onClientTick(ClientTickEvent event) {
-		if (event.phase == Phase.END) {
-			final Screen gui = Minecraft.getInstance().screen;
-			if (gui instanceof PauseScreen) {
-				if (settingsManager.getSettings().isShowIngameMenueOverlay()) {
-					gui.children().stream() //
-							.filter(element -> element instanceof GuiControls) //
-							.map(element -> ((GuiControls) element)).findAny() //
-							.ifPresent(GuiControls::tick);
-				}
+	private static void onClientTick(ClientTickEvent.Post event) {
+		final Screen gui = Minecraft.getInstance().screen;
+		if (gui instanceof PauseScreen) {
+			if (settingsManager.getSettings().isShowIngameMenueOverlay()) {
+				gui.children().stream() //
+						.filter(element -> element instanceof GuiControls) //
+						.map(element -> ((GuiControls) element)).findAny() //
+						.ifPresent(GuiControls::tick);
 			}
 		}
 	}
 	
-	public static void registerForge(IEventBus bus) {
+	public static void registerNeoForge(IEventBus bus) {
 		bus.addListener(MusicPlayerEventHandler::onKeyInput);
 		bus.addListener(MusicPlayerEventHandler::onKeyboardPressed);
 		

@@ -29,7 +29,7 @@ import net.minecraft.client.gui.screens.Screen;
 
 public class MusicPlayerEventHandler {
 	
-	private static final SettingsManager SETTINGS_MANAGER = MusicPlayerManager.getSettingsManager();
+	private static final SettingsManager settingsManager = MusicPlayerManager.getSettingsManager();
 	
 	// Used to listen to keyboard events
 	
@@ -38,7 +38,7 @@ public class MusicPlayerEventHandler {
 	}
 	
 	public static boolean onKeyboardPressed(Screen screen, int keyCode, int scanCode, int modifiers) {
-		if (SETTINGS_MANAGER.getSettings().isKeyWorkInGui()) {
+		if (settingsManager.getSettings().isKeyWorkInGui()) {
 			return handleKeyboard(true, keyCode, scanCode);
 		}
 		return false;
@@ -89,8 +89,8 @@ public class MusicPlayerEventHandler {
 	
 	public static void onRenderGameOverlay(GuiGraphics guiGraphics, float partialTick) {
 		final Minecraft mc = Minecraft.getInstance();
-		if (SETTINGS_MANAGER.getSettings().isShowIngameOverlay()) {
-			final IngameOverlayPosition position = SETTINGS_MANAGER.getSettings().getIngameOverlayPosition();
+		if (settingsManager.getSettings().isShowIngameOverlay()) {
+			final IngameOverlayPosition position = settingsManager.getSettings().getIngameOverlayPosition();
 			
 			if (overlayRender == null) {
 				overlayRender = new RenderOverlayMusicDisplay();
@@ -132,7 +132,7 @@ public class MusicPlayerEventHandler {
 	
 	private static void onPreInitScreen(Minecraft client, Screen screen, int scaledWidth, int scaledHeight) {
 		if (screen instanceof PauseScreen) {
-			if (SETTINGS_MANAGER.getSettings().isShowIngameMenueOverlay()) {
+			if (settingsManager.getSettings().isShowIngameMenueOverlay()) {
 				screen.children().stream() //
 						.filter(element -> element instanceof GuiControls) //
 						.map(element -> ((GuiControls) element)).findAny() //
@@ -146,7 +146,7 @@ public class MusicPlayerEventHandler {
 	
 	private static void onPostInitScreen(Minecraft client, Screen screen, int scaledWidth, int scaledHeight) {
 		if (screen instanceof PauseScreen) {
-			if (SETTINGS_MANAGER.getSettings().isShowIngameMenueOverlay()) {
+			if (settingsManager.getSettings().isShowIngameMenueOverlay()) {
 				final GuiControls controls = new GuiControls(screen, 3, screen.width);
 				if (titleRender != null) {
 					controls.copyTitleRendererState(titleRender);
@@ -164,7 +164,7 @@ public class MusicPlayerEventHandler {
 	}
 	
 	private static void onDrawScreenPost(Screen screen, GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
-		if (SETTINGS_MANAGER.getSettings().isShowIngameMenueOverlay()) {
+		if (settingsManager.getSettings().isShowIngameMenueOverlay()) {
 			screen.children().stream() //
 					.filter(element -> element instanceof GuiControls) //
 					.map(element -> ((GuiControls) element)).findAny() //
@@ -173,7 +173,7 @@ public class MusicPlayerEventHandler {
 	}
 	
 	private static void onMouseReleasePre(Screen screen, double mouseX, double mouseY, int button) {
-		if (SETTINGS_MANAGER.getSettings().isShowIngameMenueOverlay()) {
+		if (settingsManager.getSettings().isShowIngameMenueOverlay()) {
 			screen.children().stream() //
 					.filter(element -> element instanceof GuiControls) //
 					.map(element -> ((GuiControls) element)).findAny() //
@@ -182,7 +182,7 @@ public class MusicPlayerEventHandler {
 	}
 	
 	private static void onClientTick(Screen screen) {
-		if (SETTINGS_MANAGER.getSettings().isShowIngameMenueOverlay()) {
+		if (settingsManager.getSettings().isShowIngameMenueOverlay()) {
 			screen.children().stream() //
 					.filter(element -> element instanceof GuiControls) //
 					.map(element -> ((GuiControls) element)).findAny() //

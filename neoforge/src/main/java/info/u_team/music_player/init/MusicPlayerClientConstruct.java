@@ -17,14 +17,14 @@ public class MusicPlayerClientConstruct implements ModConstruct {
 	public void construct() {
 		System.setProperty("http.agent", "Chrome");
 		
-		ModLoadingContext.get().registerConfig(Type.CLIENT, ClientConfig.CONFIG);
+		ModLoadingContext.get().getActiveContainer().registerConfig(Type.CLIENT, ClientConfig.CONFIG);
 		
 		DependencyManager.load();
 		
 		BusRegister.registerMod(MusicPlayerInitManager::registerMod);
 		BusRegister.registerMod(MusicPlayerKeys::registerMod);
 		
-		BusRegister.registerForge(MusicPlayerEventHandler::registerForge);
+		BusRegister.registerNeoForge(MusicPlayerEventHandler::registerNeoForge);
 	}
 	
 }

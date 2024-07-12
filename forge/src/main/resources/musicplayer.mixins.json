@@ -2,7 +2,6 @@
 	"minVersion": "0.8",
 	"required": true,
 	"compatibilityLevel": "JAVA_17",
-	"refmap": "musicplayer.mixins.refmap.json",
 	"package": "info.u_team.music_player.mixin",
 	"mixins": [],
 	"client": [

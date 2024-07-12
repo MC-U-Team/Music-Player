@@ -22,12 +22,9 @@ import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.screens.PauseScreen;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraftforge.client.event.InputEvent.Key;
-import net.minecraftforge.client.event.RenderGuiOverlayEvent;
 import net.minecraftforge.client.event.ScreenEvent;
 import net.minecraftforge.client.event.ScreenEvent.KeyPressed;
-import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
 import net.minecraftforge.event.TickEvent.ClientTickEvent;
-import net.minecraftforge.event.TickEvent.Phase;
 import net.minecraftforge.eventbus.api.IEventBus;
 
 public class MusicPlayerEventHandler {
@@ -88,48 +85,43 @@ public class MusicPlayerEventHandler {
 	
 	// Render overlay
 	
-	private static void onRenderGameOverlay(RenderGuiOverlayEvent.Pre event) {
+	public static void onRenderGameOverlay(GuiGraphics guiGraphics, float partialTick) {
 		final Minecraft mc = Minecraft.getInstance();
-		// if (event.getType() == ElementType.TEXT && !mc.gameSettings.showDebugInfo && mc.currentScreen == null) {
-		if (event.getOverlay() == VanillaGuiOverlay.DEBUG_TEXT.type()) {
-			if (settingsManager.getSettings().isShowIngameOverlay()) {
-				final IngameOverlayPosition position = settingsManager.getSettings().getIngameOverlayPosition();
-				
-				if (overlayRender == null) {
-					overlayRender = new RenderOverlayMusicDisplay();
-				}
-				
-				final Window window = mc.getWindow();
-				final int screenWidth = window.getGuiScaledWidth();
-				final int screenHeight = window.getGuiScaledHeight();
-				
-				final int height = overlayRender.getHeight();
-				final int width = overlayRender.getWidth();
-				
-				final int x;
-				if (position.isLeft()) {
-					x = 3;
-				} else {
-					x = screenWidth - 3 - width;
-				}
-				
-				final int y;
-				if (position.isUp()) {
-					y = 3;
-				} else {
-					y = screenHeight - 3 - height;
-				}
-				
-				final GuiGraphics guiGraphics = event.getGuiGraphics();
-				final PoseStack poseStack = guiGraphics.pose();
-				
-				poseStack.pushPose();
-				poseStack.translate(x, y, 500);
-				overlayRender.render(guiGraphics, 0, 0, event.getPartialTick());
-				poseStack.popPose();
+		if (settingsManager.getSettings().isShowIngameOverlay()) {
+			final IngameOverlayPosition position = settingsManager.getSettings().getIngameOverlayPosition();
+			
+			if (overlayRender == null) {
+				overlayRender = new RenderOverlayMusicDisplay();
 			}
+			
+			final Window window = mc.getWindow();
+			final int screenWidth = window.getGuiScaledWidth();
+			final int screenHeight = window.getGuiScaledHeight();
+			
+			final int height = overlayRender.getHeight();
+			final int width = overlayRender.getWidth();
+			
+			final int x;
+			if (position.isLeft()) {
+				x = 3;
+			} else {
+				x = screenWidth - 3 - width;
+			}
+			
+			final int y;
+			if (position.isUp()) {
+				y = 3;
+			} else {
+				y = screenHeight - 3 - height;
+			}
+			
+			final PoseStack poseStack = guiGraphics.pose();
+			
+			poseStack.pushPose();
+			poseStack.translate(x, y, 500);
+			overlayRender.render(guiGraphics, 0, 0, partialTick);
+			poseStack.popPose();
 		}
-		// }
 	}
 	
 	// Used to add buttons and gui controls to main ingame gui
@@ -195,16 +187,14 @@ public class MusicPlayerEventHandler {
 		}
 	}
 	
-	private static void onClientTick(ClientTickEvent event) {
-		if (event.phase == Phase.END) {
-			final Screen gui = Minecraft.getInstance().screen;
-			if (gui instanceof PauseScreen) {
-				if (settingsManager.getSettings().isShowIngameMenueOverlay()) {
-					gui.children().stream() //
-							.filter(element -> element instanceof GuiControls) //
-							.map(element -> ((GuiControls) element)).findAny() //
-							.ifPresent(GuiControls::tick);
-				}
+	private static void onClientTick(ClientTickEvent.Post event) {
+		final Screen gui = Minecraft.getInstance().screen;
+		if (gui instanceof PauseScreen) {
+			if (settingsManager.getSettings().isShowIngameMenueOverlay()) {
+				gui.children().stream() //
+						.filter(element -> element instanceof GuiControls) //
+						.map(element -> ((GuiControls) element)).findAny() //
+						.ifPresent(GuiControls::tick);
 			}
 		}
 	}
@@ -212,8 +202,6 @@ public class MusicPlayerEventHandler {
 	public static void registerForge(IEventBus bus) {
 		bus.addListener(MusicPlayerEventHandler::onKeyInput);
 		bus.addListener(MusicPlayerEventHandler::onKeyboardPressed);
-		
-		bus.addListener(MusicPlayerEventHandler::onRenderGameOverlay);
 		
 		bus.addListener(MusicPlayerEventHandler::onInitGuiPre);
 		bus.addListener(MusicPlayerEventHandler::onInitGuiPost);

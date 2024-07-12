@@ -42,7 +42,7 @@ configurations {
 
 minecraft {
 	mappings channel: config.forge.mapping_channel, version: config.forge.mapping
-
+	
 	reobf = false
 	
 	accessTransformer = file("src/main/resources/META-INF/accesstransformer.cfg")
@@ -69,6 +69,13 @@ minecraft {
 			}
 		}
 	}
+}
+
+mixin {
+	config "musicplayer.mixins.json"
+	
+	debug.verbose = true
+	debug.export = true
 }
 
 evaluationDependsOn(":musicplayer-lavaplayer")
@@ -113,8 +120,11 @@ components.named("java").configure {
 
 tasks.withType(Jar).configureEach { task ->
 	gradlefiles.defaultJar(task)
+	
+	manifest {
+		attributes("MixinConfigs": "musicplayer.mixins.json")
+	}
 }
-
 tasks.withType(Javadoc).configureEach { task ->
 	task.options.addStringOption("Xdoclint:none", "-quiet")
 }
