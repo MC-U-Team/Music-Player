@@ -78,3 +78,11 @@ updates:
     interval: daily
     time: "04:00"
   open-pull-requests-limit: 15
+
+- package-ecosystem: gradle
+  directory: "/"
+  target-branch: "1.20.6"
+  schedule:
+    interval: daily
+    time: "04:00"
+  open-pull-requests-limit: 10
