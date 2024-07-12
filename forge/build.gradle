@@ -217,6 +217,9 @@ publishing {
 				filterDependency { holder ->
 					"musicplayer-lavaplayer-api" == holder.dependency.name
 				}
+				filterDependency { holder ->
+					"jopt-simple" == holder.dependency.name
+				}
 			}
 			
 			pom {

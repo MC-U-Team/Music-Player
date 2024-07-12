@@ -219,6 +219,9 @@ publishing {
 				filterDependency { holder ->
 					"musicplayer-lavaplayer-api" == holder.dependency.name
 				}
+				filterDependency { holder ->
+					"modmenu" == holder.dependency.name
+				}
 			}
 			
 			pom {
