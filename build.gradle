@@ -133,7 +133,7 @@ components.named("java").configure {
 	}
 }
 
-tasks.matching { task -> task.name == "reobfJar" }.configureEach {
+reobf.create("jar") {
 	dependsOn tasks.named("shadowJar")
 }
 
