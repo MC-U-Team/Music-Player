@@ -1,6 +1,11 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [1.20.1-2.7.0.267] - 2024-07-12
+### Changed
+ - Update to custom lavaplayer fork 2.2.1
+ - Use new lavalink youtube source manager to fix youtube playpack
+
 ## [1.20.1-2.7.0.256] - 2024-04-30
 ### Changed
  - Update to custom lavaplayer fork 2.1.2.1-SNAPSHOT
