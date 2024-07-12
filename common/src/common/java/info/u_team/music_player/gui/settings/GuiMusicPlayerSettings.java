@@ -138,7 +138,7 @@ public class GuiMusicPlayerSettings extends BetterScreen {
 	
 	@Override
 	public void renderBackground(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
-		renderDirtBackground(guiGraphics);
+		super.renderBackground(guiGraphics, mouseX, mouseY, partialTicks);
 	}
 	
 }
