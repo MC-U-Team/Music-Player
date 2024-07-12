@@ -30,7 +30,7 @@ sourceSets {
 
 java {
 	toolchain {
-		languageVersion = JavaLanguageVersion.of(17)
+		languageVersion = JavaLanguageVersion.of(21)
 	}
 	withSourcesJar()
 	withJavadocJar()
@@ -160,7 +160,7 @@ processResources {
 dependencies {
 	implementation gradlefiles.neoForgeDependency()
 	
-	implementation "info.u-team:u_team_core-neoforge-1.20.4:5.3.0.301"
+	implementation "info.u-team:u_team_core-neoforge-1.20.6:5.4.0.313"
 	
 	library project(":musicplayer-lavaplayer-api")
 	shade ("net.harawata:appdirs:1.2.2") {
@@ -181,7 +181,7 @@ publishMods {
 		projectId = config.curse.id
 		projectSlug = config.curse.slug
 		minecraftVersions.add(config.minecraft.version)
-		javaVersions.add(JavaVersion.VERSION_17)
+		javaVersions.add(JavaVersion.VERSION_21)
 		clientRequired = true
 		
 		requires("u-team-core")

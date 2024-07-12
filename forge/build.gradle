@@ -27,7 +27,7 @@ sourceSets {
 
 java {
 	toolchain {
-		languageVersion = JavaLanguageVersion.of(17)
+		languageVersion = JavaLanguageVersion.of(21)
 	}
 	withSourcesJar()
 	withJavadocJar()
@@ -42,6 +42,8 @@ configurations {
 
 minecraft {
 	mappings channel: config.forge.mapping_channel, version: config.forge.mapping
+
+	reobf = false
 	
 	accessTransformer = file("src/main/resources/META-INF/accesstransformer.cfg")
 	
@@ -109,10 +111,6 @@ components.named("java").configure {
 	}
 }
 
-reobf.create("jar") {
-	dependsOn tasks.named("shadowJar")
-}
-
 tasks.withType(Jar).configureEach { task ->
 	gradlefiles.defaultJar(task)
 }
@@ -121,7 +119,7 @@ tasks.withType(Javadoc).configureEach { task ->
 	task.options.addStringOption("Xdoclint:none", "-quiet")
 }
 
-signjar.sign(tasks.named("reobfJar"))
+signjar.sign(tasks.named("jar"))
 
 processResources {
 	doLast {
@@ -134,7 +132,7 @@ processResources {
 dependencies {
 	minecraft gradlefiles.forgeDependency()
 	
-	implementation fg.deobf("info.u-team:u_team_core-forge-1.20.4:5.3.0.301")
+	implementation fg.deobf("info.u-team:u_team_core-forge-1.20.6:5.4.0.313")
 	
 	library project(":musicplayer-lavaplayer-api")
 	shade ("net.harawata:appdirs:1.2.2") {
@@ -155,7 +153,7 @@ publishMods {
 		projectId = config.curse.id
 		projectSlug = config.curse.slug
 		minecraftVersions.add(config.minecraft.version)
-		javaVersions.add(JavaVersion.VERSION_17)
+		javaVersions.add(JavaVersion.VERSION_21)
 		clientRequired = true
 		
 		requires("u-team-core")
