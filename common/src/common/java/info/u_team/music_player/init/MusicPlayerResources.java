@@ -26,7 +26,7 @@ public class MusicPlayerResources {
 	public static final ResourceLocation TEXTURE_SOCIAL_SOUNDCLOUD = createResource("socialmedia/soundcloud-logo");
 	
 	private static ResourceLocation createResource(String name) {
-		return new ResourceLocation(MusicPlayerReference.MODID, "textures/gui/" + name + ".png");
+		return ResourceLocation.fromNamespaceAndPath(MusicPlayerReference.MODID, "textures/gui/" + name + ".png");
 	}
 	
 }

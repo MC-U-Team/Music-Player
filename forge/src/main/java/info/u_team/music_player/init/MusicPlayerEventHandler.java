@@ -15,6 +15,7 @@ import info.u_team.music_player.musicplayer.SettingsManager;
 import info.u_team.music_player.musicplayer.settings.IngameOverlayPosition;
 import info.u_team.music_player.render.RenderOverlayMusicDisplay;
 import info.u_team.u_team_core.gui.elements.ScrollingText;
+import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
@@ -85,7 +86,7 @@ public class MusicPlayerEventHandler {
 	
 	// Render overlay
 	
-	public static void onRenderGameOverlay(GuiGraphics guiGraphics, float partialTick) {
+	public static void onRenderGameOverlay(GuiGraphics guiGraphics, DeltaTracker partialTick) {
 		final Minecraft mc = Minecraft.getInstance();
 		if (mc.screen == null) {
 			if (settingsManager.getSettings().isShowIngameOverlay()) {
@@ -120,7 +121,7 @@ public class MusicPlayerEventHandler {
 				
 				poseStack.pushPose();
 				poseStack.translate(x, y, 500);
-				overlayRender.render(guiGraphics, 0, 0, partialTick);
+				overlayRender.render(guiGraphics, 0, 0, partialTick.getGameTimeDeltaPartialTick(false));
 				poseStack.popPose();
 			}
 		}

@@ -20,6 +20,7 @@ import info.u_team.u_team_core.gui.elements.ScrollingText;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.fabricmc.fabric.api.client.screen.v1.ScreenEvents;
 import net.fabricmc.fabric.api.client.screen.v1.ScreenMouseEvents;
+import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
@@ -87,7 +88,7 @@ public class MusicPlayerEventHandler {
 	
 	// Render overlay
 	
-	public static void onRenderGameOverlay(GuiGraphics guiGraphics, float partialTick) {
+	public static void onRenderGameOverlay(GuiGraphics guiGraphics, DeltaTracker partialTick) {
 		final Minecraft mc = Minecraft.getInstance();
 		if (mc.screen == null) {
 			if (settingsManager.getSettings().isShowIngameOverlay()) {
@@ -122,7 +123,7 @@ public class MusicPlayerEventHandler {
 				
 				poseStack.pushPose();
 				poseStack.translate(x, y, 500);
-				overlayRender.render(guiGraphics, 0, 0, partialTick);
+				overlayRender.render(guiGraphics, 0, 0, partialTick.getGameTimeDeltaPartialTick(false));
 				poseStack.popPose();
 			}
 		}

@@ -124,7 +124,7 @@ public class MusicPlayerEventHandler {
 					
 					poseStack.pushPose();
 					poseStack.translate(x, y, 500);
-					overlayRender.render(guiGraphics, 0, 0, event.getPartialTick());
+					overlayRender.render(guiGraphics, 0, 0, event.getPartialTick().getGameTimeDeltaPartialTick(false));
 					poseStack.popPose();
 				}
 			}
