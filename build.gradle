@@ -264,6 +264,7 @@ curseforge {
 		addGameVersion minecraft.version
 		addGameVersion "Forge"
 		addGameVersion "Java 8"
+		addGameVersion "Client"
 		
 		options {
 			forgeGradleIntegration = false
