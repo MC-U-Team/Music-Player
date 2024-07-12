@@ -89,42 +89,44 @@ public class MusicPlayerEventHandler {
 	
 	private static void onRenderGameOverlay(RenderGuiLayerEvent.Pre event) {
 		final Minecraft mc = Minecraft.getInstance();
-		if (event.getLayer() == VanillaGuiLayers.DEMO_OVERLAY) {
-			if (settingsManager.getSettings().isShowIngameOverlay()) {
-				final IngameOverlayPosition position = settingsManager.getSettings().getIngameOverlayPosition();
-				
-				if (overlayRender == null) {
-					overlayRender = new RenderOverlayMusicDisplay();
+		if (event.getName().equals(VanillaGuiLayers.DEMO_OVERLAY)) {
+			if (mc.screen == null) {
+				if (settingsManager.getSettings().isShowIngameOverlay()) {
+					final IngameOverlayPosition position = settingsManager.getSettings().getIngameOverlayPosition();
+					
+					if (overlayRender == null) {
+						overlayRender = new RenderOverlayMusicDisplay();
+					}
+					
+					final Window window = mc.getWindow();
+					final int screenWidth = window.getGuiScaledWidth();
+					final int screenHeight = window.getGuiScaledHeight();
+					
+					final int height = overlayRender.getHeight();
+					final int width = overlayRender.getWidth();
+					
+					final int x;
+					if (position.isLeft()) {
+						x = 3;
+					} else {
+						x = screenWidth - 3 - width;
+					}
+					
+					final int y;
+					if (position.isUp()) {
+						y = 3;
+					} else {
+						y = screenHeight - 3 - height;
+					}
+					
+					final GuiGraphics guiGraphics = event.getGuiGraphics();
+					final PoseStack poseStack = guiGraphics.pose();
+					
+					poseStack.pushPose();
+					poseStack.translate(x, y, 500);
+					overlayRender.render(guiGraphics, 0, 0, event.getPartialTick());
+					poseStack.popPose();
 				}
-				
-				final Window window = mc.getWindow();
-				final int screenWidth = window.getGuiScaledWidth();
-				final int screenHeight = window.getGuiScaledHeight();
-				
-				final int height = overlayRender.getHeight();
-				final int width = overlayRender.getWidth();
-				
-				final int x;
-				if (position.isLeft()) {
-					x = 3;
-				} else {
-					x = screenWidth - 3 - width;
-				}
-				
-				final int y;
-				if (position.isUp()) {
-					y = 3;
-				} else {
-					y = screenHeight - 3 - height;
-				}
-				
-				final GuiGraphics guiGraphics = event.getGuiGraphics();
-				final PoseStack poseStack = guiGraphics.pose();
-				
-				poseStack.pushPose();
-				poseStack.translate(x, y, 500);
-				overlayRender.render(guiGraphics, 0, 0, event.getPartialTick());
-				poseStack.popPose();
 			}
 		}
 	}
