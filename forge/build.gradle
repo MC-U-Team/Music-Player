@@ -129,7 +129,7 @@ tasks.withType(Javadoc).configureEach { task ->
 	task.options.addStringOption("Xdoclint:none", "-quiet")
 }
 
-signjar.sign(tasks.named("jar"))
+signjar.sign(tasks.named("shadowJar"))
 
 processResources {
 	doLast {
