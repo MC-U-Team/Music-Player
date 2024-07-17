@@ -1,6 +1,10 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [1.20.6-2.7.1.270] - 2024-07-17
+### Changed
+ - Fix forge publishing
+
 ## [1.20.6-2.7.1.268] - 2024-07-12
 ### Changed
  - Port to 1.20.6
