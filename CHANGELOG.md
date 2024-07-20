@@ -1,11 +1,11 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
-## [1.21-2.7.1.262] - 2024-07-20
+## [1.21-2.7.1.272] - 2024-07-20
 ### Changed
  - Update to latest uteamcore and modloader versions
 
-## [1.21-2.7.1.261] - 2024-07-17
+## [1.21-2.7.1.271] - 2024-07-17
 ### Changed
  - Fix forge publishing
 
