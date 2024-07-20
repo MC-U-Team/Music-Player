@@ -17,7 +17,7 @@ license="Apache-2.0 License"
 	[[dependencies.musicplayer]]
 		modId="neoforge"
 		type="required"
-		versionRange="[21.0.85-beta,)"
+		versionRange="[21.0.113-beta,)"
 		ordering="NONE"
 		side="BOTH"
 	
@@ -31,6 +31,6 @@ license="Apache-2.0 License"
 	[[dependencies.musicplayer]]
 		modId="uteamcore"
 		type="required"
-		versionRange="[5.5.0.316,)"
+		versionRange="[5.6.0.317,)"
 		ordering="NONE"
 		side="BOTH"
