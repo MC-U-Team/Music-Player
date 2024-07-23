@@ -175,7 +175,8 @@ publishMods {
 		minecraftVersions.add(config.minecraft.version)
 		javaVersions.add(JavaVersion.VERSION_17)
 		clientRequired = true
-		
+
+		requires("fabric-api")
 		requires("u-team-core")
 	}
 	
@@ -184,7 +185,8 @@ publishMods {
 		
 		projectId = config.modrinth.id
 		minecraftVersions.add(config.minecraft.version)
-		
+
+		requires("fabric-api")
 		requires("u-team-core")
 	}
 	
