@@ -31,7 +31,7 @@ pluginManagement {
 		
 		id "info.u_team.gradle_files" version "4.0.1"
 		
-		id "me.modmuss50.mod-publish-plugin" version "0.6.2"
+		id "me.modmuss50.mod-publish-plugin" version "0.6.3"
 	}
 }
 
