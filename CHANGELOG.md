@@ -1,6 +1,10 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [1.16.5-2.3.2.277] - 2024-08-01
+### Changed
+ - Fixed [#1100](https://github.com/MC-U-Team/Music-Player/issues/1100) and [#1101](https://github.com/MC-U-Team/Music-Player/issues/1101) by updating the youtube source manager
+
 ## [1.16.5-2.3.2.263] - 2024-07-12
 ### Changed
  - Update to custom lavaplayer fork 2.2.1
