@@ -1,6 +1,10 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [1.20.6-2.7.1.282] - 2024-08-01
+### Changed
+ - Fixed [#1100](https://github.com/MC-U-Team/Music-Player/issues/1100) and [#1101](https://github.com/MC-U-Team/Music-Player/issues/1101) by updating the youtube source manager
+
 ## [1.20.6-2.7.1.270] - 2024-07-17
 ### Changed
  - Fix forge publishing
