@@ -160,7 +160,7 @@ processResources {
 dependencies {
 	implementation gradlefiles.neoForgeDependency()
 	
-	implementation "info.u-team:u_team_core-neoforge-1.21:5.6.0.317"
+	implementation "info.u-team:u_team_core-neoforge-1.21:5.6.0.318"
 	
 	library project(":musicplayer-lavaplayer-api")
 	shade ("net.harawata:appdirs:1.2.2") {
