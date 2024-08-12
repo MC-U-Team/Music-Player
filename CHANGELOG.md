@@ -1,6 +1,10 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [1.19.4-2.6.0.291] - 2024-08-12
+### Changed
+ - Updated youtube source manager to 1.5.2
+
 ## [1.19.4-2.6.0.280] - 2024-08-01
 ### Changed
  - Fixed [#1100](https://github.com/MC-U-Team/Music-Player/issues/1100) and [#1101](https://github.com/MC-U-Team/Music-Player/issues/1101) by updating the youtube source manager
