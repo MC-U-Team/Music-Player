@@ -66,7 +66,7 @@ repositories {
 
 dependencies {
 	musicplayer "net.hycrafthd.lavaplayer:lavaplayer:2.2.1-j8"
-	musicplayer "dev.lavalink.youtube:v2:1.5.2"
+	musicplayer "dev.lavalink.youtube:v2:1.7.2"
 	
 	musicplayer "org.slf4j:jcl-over-slf4j:2.0.16"
 	musicplayer "org.slf4j:slf4j-simple:2.0.16"
