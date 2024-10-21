@@ -150,7 +150,7 @@ dependencies {
 	modImplementation gradlefiles.fabricLoaderDependency()
 	modImplementation gradlefiles.fabricApiDependency()
 	
-	modImplementation "info.u-team:u_team_core-fabric-1.19.4:5.0.2.311"
+	modImplementation "info.u-team:u_team_core-fabric-1.19.4:5.0.2.325"
 	
 	modRuntimeOnly "com.terraformersmc:modmenu:${config.modmenu.fabric.version}"
 	
