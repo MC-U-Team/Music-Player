@@ -161,7 +161,7 @@ processResources {
 dependencies {
 	minecraft gradlefiles.forgeDependency()
 	
-	implementation fg.deobf("info.u-team:u_team_core-forge-1.16.5:3.2.1.308")
+	implementation fg.deobf("info.u-team:u_team_core-forge-1.16.5:3.2.1.322")
 	
 	library project(":musicplayer-lavaplayer-api")
 	shade "org.slf4j:slf4j-simple:2.0.16"
