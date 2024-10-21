@@ -70,11 +70,11 @@ repositories {
 }
 
 dependencies {
-	musicplayer "net.hycrafthd.lavaplayer:lavaplayer:2.2.1-j8"
-	musicplayer "dev.lavalink.youtube:v2:1.5.2"
+	musicplayer "net.hycrafthd.lavaplayer:lavaplayer:2.2.2-j8"
+	musicplayer "dev.lavalink.youtube:v2:1.8.3"
 	musicplayer "dev.arbjerg:lavadsp:0.7.8"
-	musicplayer "com.github.topi314.lavasrc:lavasrc:4.2.0"
-	musicplayer "com.github.topi314.lavasrc:lavasrc-protocol:4.2.0"
+	musicplayer "com.github.topi314.lavasrc:lavasrc:4.3.0"
+	musicplayer "com.github.topi314.lavasrc:lavasrc-protocol:4.3.0"
 	
 	musicplayer "org.slf4j:jcl-over-slf4j:2.0.16"
 	implementation "org.slf4j:slf4j-simple:2.0.16"
