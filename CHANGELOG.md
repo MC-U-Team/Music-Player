@@ -1,6 +1,12 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [1.20.1-2.7.0.303] - 2025-01-03
+### Changed
+ - Updated youtube source manager to 1.11.3
+ - Update year
+ - If youtube playpack fails, please try to restart your router to get a new ip address. Most likely it was blocked by youtube
+
 ## [1.20.1-2.7.0.292] - 2024-08-12
 ### Changed
  - Updated youtube source manager to 1.5.2
