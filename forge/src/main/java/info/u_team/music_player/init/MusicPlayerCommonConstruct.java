@@ -9,6 +9,8 @@ import net.minecraftforge.fml.ModLoadingContext;
 @Construct(modid = MusicPlayerMod.MODID)
 public class MusicPlayerCommonConstruct implements ModConstruct {
 	
+	@SuppressWarnings("removal")
+	// TODO remove later
 	@Override
 	public void construct() {
 		ModLoadingContext.get().registerExtensionPoint(DisplayTest.class, () -> new DisplayTest(() -> DisplayTest.IGNORESERVERONLY, (a, b) -> true));

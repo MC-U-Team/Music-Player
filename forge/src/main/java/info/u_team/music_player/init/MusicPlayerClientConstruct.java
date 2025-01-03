@@ -13,6 +13,8 @@ import net.minecraftforge.fml.config.ModConfig.Type;
 @Construct(modid = MusicPlayerMod.MODID, client = true)
 public class MusicPlayerClientConstruct implements ModConstruct {
 	
+	@SuppressWarnings("removal")
+	// TODO remove later
 	@Override
 	public void construct() {
 		System.setProperty("http.agent", "Chrome");
