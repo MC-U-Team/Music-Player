@@ -17,20 +17,20 @@ license="Apache-2.0 License"
 	[[dependencies.musicplayer]]
 		modId="neoforge"
 		type="required"
-		versionRange="[21.0.113-beta,)"
+		versionRange="[21.1.93,)"
 		ordering="NONE"
 		side="BOTH"
 	
 	[[dependencies.musicplayer]]
 		modId="minecraft"
 		type="required"
-		versionRange="[1.21]"
+		versionRange="[1.21.1]"
 		ordering="NONE"
 		side="BOTH"
 	    
 	[[dependencies.musicplayer]]
 		modId="uteamcore"
 		type="required"
-		versionRange="[5.6.0.317,)"
+		versionRange="[5.6.0.348,)"
 		ordering="NONE"
 		side="BOTH"
