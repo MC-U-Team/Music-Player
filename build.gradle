@@ -166,16 +166,16 @@ dependencies {
 		transitive=false
 	}
 	
-	tinyfd ("org.lwjgl:lwjgl-tinyfd:3.2.2") {
+	tinyfd ("org.lwjgl:lwjgl-tinyfd:3.3.5") {
 		transitive=false
 	}
-	tinyfd ("org.lwjgl:lwjgl-tinyfd:3.2.2:natives-linux") {
+	tinyfd ("org.lwjgl:lwjgl-tinyfd:3.3.5:natives-linux") {
 		transitive=false
 	}
-	tinyfd ("org.lwjgl:lwjgl-tinyfd:3.2.2:natives-macos") {
+	tinyfd ("org.lwjgl:lwjgl-tinyfd:3.3.5:natives-macos") {
 		transitive=false
 	}
-	tinyfd ("org.lwjgl:lwjgl-tinyfd:3.2.2:natives-windows") {
+	tinyfd ("org.lwjgl:lwjgl-tinyfd:3.3.5:natives-windows") {
 		transitive=false
 	}
 }
