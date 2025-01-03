@@ -4,8 +4,9 @@
     "config:recommended",
     ":prHourlyLimitNone"
   ],
+  "prConcurrentLimit": 0,
   "baseBranches": [
-    "1.21",
+    "1.21.1",
     "1.20.6",
     "1.20.1",
     "1.19.4",
