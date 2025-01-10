@@ -29,7 +29,7 @@ pluginManagement {
 		
 		id "fabric-loom" version "1.9.+"
 		
-		id "info.u_team.gradle_files" version "4.0.1"
+		id "info.u_team.gradle_files" version "4.0.4"
 		
 		id "me.modmuss50.mod-publish-plugin" version "0.8.4"
 	}
