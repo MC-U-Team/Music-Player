@@ -1,6 +1,10 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [1.21.1-2.7.1.307] - 2025-01-11
+### Changed
+ - Update uteamcore & fix data generated files
+
 ## [1.21.1-2.7.1.306] - 2025-01-04
 ### Changed
  - Port to 1.21.1
