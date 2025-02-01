@@ -1,6 +1,12 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [1.16.5-2.3.2.312] - 2025-02-01
+### Changed
+ - Updated youtube source manager to 1.11.4
+ - Fixed playback issues
+ - Update gradle wrapper
+
 ## [1.16.5-2.3.2.299] - 2025-01-03
 ### Changed
  - Updated youtube source manager to 1.11.3
