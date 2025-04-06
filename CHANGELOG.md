@@ -1,6 +1,14 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [1.14.4-2.1.1.321] - 2025-04-06
+### Changed
+ - Updated youtube source manager to 1.12.0
+ - Fixed playback issues
+ - Update gradle wrapper
+ - Update slf4j
+ - Update uteamcore
+
 ## [1.14.4-2.1.1.310] - 2025-02-01
 ### Changed
  - Updated youtube source manager to 1.11.4
