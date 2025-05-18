@@ -19,7 +19,7 @@ pluginManagement {
 		id "org.parchmentmc.librarian.forgegradle" version "1.+"
 		id "org.spongepowered.mixin" version "0.7.+"
 		
-		id "info.u_team.gradle_files" version "4.0.5"
+		id "info.u_team.gradle_files" version "4.0.6"
 		
 		id "me.modmuss50.mod-publish-plugin" version "0.8.4"
 	}
