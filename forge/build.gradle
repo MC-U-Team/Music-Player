@@ -149,7 +149,7 @@ dependencies {
 		}
 	}
 	
-	implementation "info.u-team:u_team_core-forge-1.21.1:5.6.2.364"
+	implementation "info.u-team:u_team_core-forge-1.21.1:5.6.2.374"
 	
 	library project(":musicplayer-lavaplayer-api")
 	shade ("net.harawata:appdirs:1.4.0") {
