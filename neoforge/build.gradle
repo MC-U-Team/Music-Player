@@ -156,6 +156,16 @@ processResources {
 	}
 }
 
+repositories {
+	maven {
+		url = "https://maven.neoforged.net/releases"
+	}
+	maven {
+		url = "https://repo.u-team.info"
+	}
+	mavenCentral()
+}
+
 dependencies {
 	implementation gradlefiles.neoForgeDependency()
 	
