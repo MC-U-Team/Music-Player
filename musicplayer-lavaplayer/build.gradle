@@ -55,14 +55,14 @@ tasks.named("assemble").configure {
 
 repositories {
 	maven {
-		url "https://repo.u-team.info"
+		url = "https://repo.u-team.info"
 	}
 	maven {
-		url "https://maven.arbjerg.dev/releases"
+		url = "https://maven.arbjerg.dev/releases"
 	}
 	mavenCentral()
 	maven {
-		url "https://jitpack.io"
+		url = "https://jitpack.io"
 	}
 }
 
