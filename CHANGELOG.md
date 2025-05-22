@@ -1,6 +1,15 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [1.16.5-2.3.2.334] - 2025-05-22
+### Changed
+ - Updated youtube source manager to 1.13.2
+ - Fixed playback issues for youtube
+ - Updated lavaplayer to 2.2.3-j8
+ - Soundcloud playback sometimes breaks (no fix yet)
+ - Update and futureproof gradle scripts and plugins
+ - Update uteamcore
+
 ## [1.16.5-2.3.2.323] - 2025-04-06
 ### Changed
  - Updated youtube source manager to 1.12.0
