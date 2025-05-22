@@ -155,6 +155,16 @@ processResources {
 	}
 }
 
+repositories {
+	maven {
+		url = "https://maven.minecraftforge.net"
+	}
+	maven {
+		url = "https://repo.u-team.info"
+	}
+	mavenCentral()
+}
+
 dependencies {
 	minecraft gradlefiles.forgeDependency()
 	
