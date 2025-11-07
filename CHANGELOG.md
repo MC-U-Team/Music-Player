@@ -1,6 +1,12 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [1.8.9-2.1.1.341] - 2025-11-07
+### Changed
+ - Update youtube source manager to 1.16.0
+ - Update lavaplayer to 2.2.4-fix-j8
+ - Soundcloud is still broken :(
+
 ## [1.8.9-2.1.1.330] - 2025-05-22
 ### Changed
  - Updated youtube source manager to 1.13.2
