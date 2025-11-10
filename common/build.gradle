@@ -89,7 +89,7 @@ dependencies {
 	modImplementation "info.u-team:u_team_core-common-1.19.4:5.0.2.381"
 	
 	compileOnly project(":musicplayer-lavaplayer-api")
-	compileOnly ("net.harawata:appdirs:1.4.0") {
+	compileOnly ("net.harawata:appdirs:1.5.0") {
 		transitive=false
 	}
 }
