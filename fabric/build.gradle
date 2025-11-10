@@ -162,7 +162,7 @@ dependencies {
 	modRuntimeOnly "com.terraformersmc:modmenu:${config.modmenu.fabric.version}"
 	
 	library project(":musicplayer-lavaplayer-api")
-	shade ("net.harawata:appdirs:1.4.0") {
+	shade ("net.harawata:appdirs:1.5.0") {
 		transitive=false
 	}
 }
