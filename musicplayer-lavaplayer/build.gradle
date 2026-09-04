@@ -71,8 +71,8 @@ dependencies {
 	musicplayer "dev.lavalink.youtube:v2:1.16.0"
 	musicplayer "dev.arbjerg:lavadsp:0.7.8"
 	
-	musicplayer "org.slf4j:jcl-over-slf4j:2.0.17"
-	implementation "org.slf4j:slf4j-simple:2.0.17"
+	musicplayer "org.slf4j:jcl-over-slf4j:2.0.19"
+	implementation "org.slf4j:slf4j-simple:2.0.19"
 	
 	implementation project(":musicplayer-lavaplayer-api")
 }
