@@ -50,7 +50,7 @@ public class MusicPlayer implements IMusicPlayer {
 		audioPlayerManager.getConfiguration().setOpusEncodingQuality(10);
 		audioPlayerManager.getConfiguration().setOutputFormat(audioDataFormat);
 		
-		AudioSources.registerSources(audioPlayerManager);
+		AudioSources.registerSources(audioPlayerManager, () -> audioPlayer.getPlayingTrack() != null && !audioPlayer.isPaused());
 	}
 	
 	public AudioPlayerManager getAudioPlayerManager() {
