@@ -32,8 +32,8 @@ public class AudioSources {
 		registerManager(audioPlayerManager, () -> {
 			final YoutubeSourceOptions options = new YoutubeSourceOptions();
 			try {
-				final YoutubeSourceServices services = YoutubeSourceServices.builder(Paths.get(System.getProperty("java.io.tmpdir"), "musicplayer-youtube-services")) //
-						.log(line -> LOGGER.info(line)) //
+				final YoutubeSourceServices services = YoutubeSourceServices.builder(Paths.get(System.getProperty("java.io.tmpdir", "/tmp"), "musicplayer-youtube-services")) //
+						.log(line -> LOGGER.debug(line)) //
 						.build();
 				services.start().whenComplete((unused, error) -> {
 					if (error != null) {
