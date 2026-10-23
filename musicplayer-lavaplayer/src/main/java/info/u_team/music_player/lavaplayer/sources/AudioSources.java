@@ -1,7 +1,6 @@
 package info.u_team.music_player.lavaplayer.sources;
 
-import java.io.IOException;
-import java.nio.file.Paths;
+import java.util.function.BooleanSupplier;
 import java.util.function.Supplier;
 
 import org.slf4j.Logger;
@@ -21,35 +20,14 @@ import com.sedmelluq.discord.lavaplayer.source.vimeo.VimeoAudioSourceManager;
 import com.sedmelluq.discord.lavaplayer.source.yamusic.YandexMusicAudioSourceManager;
 
 import dev.lavalink.youtube.YoutubeAudioSourceManager;
-import dev.lavalink.youtube.YoutubeSourceOptions;
-import net.hycrafthd.youtube_source_services.LocalService;
-import net.hycrafthd.youtube_source_services.YoutubeSourceServices;
 
 public class AudioSources {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(AudioSources.class);
 	
-	public static void registerSources(AudioPlayerManager audioPlayerManager) {
+	public static void registerSources(AudioPlayerManager audioPlayerManager, BooleanSupplier playing) {
 		registerManager(audioPlayerManager, () -> {
-			final YoutubeSourceOptions options = new YoutubeSourceOptions();
-			try {
-				final YoutubeSourceServices services = YoutubeSourceServices.builder(Paths.get(System.getProperty("java.io.tmpdir", "/tmp"), "musicplayer-youtube-services")) //
-						.log(line -> LOGGER.debug(line)) //
-						.build();
-				services.start().whenComplete((unused, error) -> {
-					if (error != null) {
-						LOGGER.warn("Cannot start the youtube services. Youtube tracks might not be playable", error);
-					}
-				});
-				
-				final LocalService cipher = services.cipher();
-				final LocalService poToken = services.poToken();
-				options.setRemoteCipher(cipher.getUrl(), cipher.getToken(), "musicplayer");
-				options.setRemotePoToken(poToken.getUrl(), poToken.getToken());
-			} catch (final IOException ex) {
-				LOGGER.warn("Cannot create the youtube services. Youtube tracks might not be playable", ex);
-			}
-			final YoutubeAudioSourceManager youtube = new YoutubeAudioSourceManager(options, YoutubeAudioSourceManager.DEFAULT_CLIENTS);
+			final YoutubeAudioSourceManager youtube = YoutubeServicesAudioSourceManager.create(playing);
 			youtube.setPlaylistPageCount(100);
 			return youtube;
 		});
