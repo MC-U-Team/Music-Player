@@ -30,7 +30,7 @@ public class AudioSources {
 			youtube.setPlaylistPageCount(100);
 			return youtube;
 		});
-		registerManager(audioPlayerManager, SoundCloudAudioSourceManager::createDefault);
+		registerManager(audioPlayerManager, () -> SoundCloudAudioSourceManager.builder().withFilterOutPreviewTracks(true).build());
 		registerManager(audioPlayerManager, () -> {
 			final String clientId = System.getProperty("musicplayer.lavaplayer.spotify.clientId");
 			final String clientSecret = System.getProperty("musicplayer.lavaplayer.spotify.clientSecret");
