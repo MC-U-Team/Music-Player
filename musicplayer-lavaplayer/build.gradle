@@ -56,7 +56,7 @@ repositories {
 		url = "https://repo.u-team.info"
 	}
 	maven {
-		url = "https://maven.arbjerg.dev/releases"
+		url = "https://maven.lavalink.dev/releases"
 	}
 	mavenCentral()
 	maven {
