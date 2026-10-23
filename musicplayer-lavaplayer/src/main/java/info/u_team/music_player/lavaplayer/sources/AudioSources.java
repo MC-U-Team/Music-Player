@@ -29,7 +29,7 @@ public class AudioSources {
 			youtube.setPlaylistPageCount(100);
 			return youtube;
 		});
-		registerManager(audioPlayerManager, SoundCloudAudioSourceManager::createDefault);
+		registerManager(audioPlayerManager, () -> SoundCloudAudioSourceManager.builder().withFilterOutPreviewTracks(true).build());
 		registerManager(audioPlayerManager, BandcampAudioSourceManager::new);
 		registerManager(audioPlayerManager, VimeoAudioSourceManager::new);
 		registerManager(audioPlayerManager, TwitchStreamAudioSourceManager::new);
