@@ -1,6 +1,10 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [1.12.2-2.1.3.364] - 2026-10-24
+### Changed
+ - Fixed youtube services not starting when java prefers IPv6 (e.g. on forge and neoforge)
+
 ## [1.12.2-2.1.2.353] - 2026-10-24
 ### Changed
  - Fixed youtube playback by running the signature cipher and poToken services locally
