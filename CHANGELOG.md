@@ -1,6 +1,15 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [1.21.1-2.7.2.362] - 2026-10-24
+### Changed
+ - Fixed youtube playback by running the signature cipher and poToken services locally
+ - Update youtube source manager to our own fork 1.18.3-experimental (based on 1.18.2)
+ - Update lavaplayer to 2.2.7-fix-j8
+ - Update lavasrc to 4.8.3
+ - Fixed soundcloud playback
+ - Soundcloud preview tracks (full track only with Go+) are no longer shown
+
 ## [1.21.1-2.7.1.351] - 2025-11-07
 ### Changed
  - Update youtube source manager to 1.16.0
