@@ -16,7 +16,7 @@ buildscript {
 	}
 	dependencies {
 		classpath "net.minecraftforge.gradle:ForgeGradle:${config.forge.gradle}"
-		classpath "info.u-team.curse_gradle_uploader:curse_gradle_uploader:1.4.1"
+		classpath "info.u-team.curse_gradle_uploader:curse_gradle_uploader:1.7.0"
 		classpath "com.github.jengelman.gradle.plugins:shadow:4.0.4"
 	}
 }
