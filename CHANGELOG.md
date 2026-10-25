@@ -1,6 +1,10 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [1.12.2-2.1.4.375] - 2026-10-25
+### Changed
+ - Fixed youtube services not starting on windows when the user name is longer than 8 characters
+
 ## [1.12.2-2.1.3.364] - 2026-10-24
 ### Changed
  - Fixed youtube services not starting when java prefers IPv6 (e.g. on forge and neoforge)
