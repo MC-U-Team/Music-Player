@@ -72,7 +72,7 @@ repositories {
 dependencies {
 	musicplayer "net.hycrafthd.lavaplayer:lavaplayer:2.2.7-fix-j8"
 	musicplayer "net.hycrafthd.lavaplayer-extras.youtube-source:v2:1.18.3-experimental"
-	musicplayer "net.hycrafthd.lavaplayer-extras.youtube-source-services:youtube-source-services:1.0.2"
+	musicplayer "net.hycrafthd.lavaplayer-extras.youtube-source-services:youtube-source-services:1.0.3"
 	musicplayer "dev.arbjerg:lavadsp:0.7.8"
 	musicplayer "com.github.topi314.lavasrc:lavasrc:4.8.3"
 	musicplayer "com.github.topi314.lavasrc:lavasrc-protocol:4.8.3"
