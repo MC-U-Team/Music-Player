@@ -1,6 +1,10 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [1.16.5-2.3.6.389] - 2026-11-19
+### Changed
+ - Fixed youtube services not starting after some of their files were deleted from the temp folder
+
 ## [1.16.5-2.3.5.378] - 2026-10-25
 ### Changed
  - Fixed youtube services not starting on windows when the user name is longer than 8 characters
