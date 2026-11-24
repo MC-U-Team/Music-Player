@@ -201,7 +201,7 @@ dependencies {
 	
 	library project(":musicplayer-lavaplayer-api")
 	shade "org.slf4j:slf4j-simple:2.0.17"
-	shade ("net.harawata:appdirs:1.0.0") {
+	shade ("net.harawata:appdirs:1.5.0") {
 		transitive=false
 	}
 	
